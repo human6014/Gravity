@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9179298184195577965}
   - component: {fileID: 1136610343090675073}
-  - component: {fileID: 5356129164492205971}
   m_Layer: 0
   m_Name: BuildEX2_2x2APO 1
   m_TagString: Untagged
@@ -62,19 +61,6 @@ LODGroup:
     - renderer: {fileID: 5872593299159696869}
     - renderer: {fileID: 8271878078428423157}
   m_Enabled: 1
---- !u!65 &5356129164492205971
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6213741971769440195}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 21.200012, y: 10.600015, z: 21.200006}
-  m_Center: {x: -0.0000023841858, y: 0.08477354, z: -0.00000667572}
 --- !u!1001 &661912920800438055
 PrefabInstance:
   m_ObjectHideFlags: 0
