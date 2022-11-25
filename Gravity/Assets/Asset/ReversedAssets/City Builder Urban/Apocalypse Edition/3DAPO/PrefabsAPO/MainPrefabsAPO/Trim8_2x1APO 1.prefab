@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2120761051385271850}
   - component: {fileID: 3080936472304589199}
   - component: {fileID: 947260242856668485}
-  - component: {fileID: 2033322517353139822}
   m_Layer: 0
   m_Name: Trim8_2x1APO 1
   m_TagString: Untagged
@@ -84,16 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2033322517353139822
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1595862359023144080}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 21.892803, y: 1.0600119, z: 11.292805}
-  m_Center: {x: 0, y: 0.023690432, z: 0.00000023841858}

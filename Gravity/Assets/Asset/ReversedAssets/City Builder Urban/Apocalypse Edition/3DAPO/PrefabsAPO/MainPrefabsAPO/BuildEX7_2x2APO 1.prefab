@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4658262119366601595}
-  - component: {fileID: 5129531577973099667}
   - component: {fileID: 981092044327568160}
   m_Layer: 0
   m_Name: BuildEX7_2x2APO 1
@@ -35,19 +34,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &5129531577973099667
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5471495431574876609}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 21.200006, y: 10.6, z: 21.200003}
-  m_Center: {x: -0.000008583069, y: -0.00000047683716, z: -0.000015258789}
 --- !u!205 &981092044327568160
 LODGroup:
   m_ObjectHideFlags: 0

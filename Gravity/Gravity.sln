@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{BAC10644-1E62-0C3F-845F-C609C80C4B98}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavMeshComponentsTestsPlaymode", "NavMeshComponentsTestsPlaymode.csproj", "{90FCAE0B-E670-7727-6BCC-26FC061907DE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavMeshComponentsExamples", "NavMeshComponentsExamples.csproj", "{B8D15FDD-5611-087C-34C3-09E5C0BD046B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{BAC10644-1E62-0C3F-845F-C609C80C4B98}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavMeshComponents", "NavMeshComponents.csproj", "{CA10AB13-1A12-8A73-537F-21951FEC4066}"
 EndProject
@@ -21,6 +21,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BAC10644-1E62-0C3F-845F-C609C80C4B98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAC10644-1E62-0C3F-845F-C609C80C4B98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAC10644-1E62-0C3F-845F-C609C80C4B98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAC10644-1E62-0C3F-845F-C609C80C4B98}.Release|Any CPU.Build.0 = Release|Any CPU
 		{90FCAE0B-E670-7727-6BCC-26FC061907DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{90FCAE0B-E670-7727-6BCC-26FC061907DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90FCAE0B-E670-7727-6BCC-26FC061907DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -29,10 +33,6 @@ Global
 		{B8D15FDD-5611-087C-34C3-09E5C0BD046B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8D15FDD-5611-087C-34C3-09E5C0BD046B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8D15FDD-5611-087C-34C3-09E5C0BD046B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BAC10644-1E62-0C3F-845F-C609C80C4B98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BAC10644-1E62-0C3F-845F-C609C80C4B98}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BAC10644-1E62-0C3F-845F-C609C80C4B98}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BAC10644-1E62-0C3F-845F-C609C80C4B98}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CA10AB13-1A12-8A73-537F-21951FEC4066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CA10AB13-1A12-8A73-537F-21951FEC4066}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA10AB13-1A12-8A73-537F-21951FEC4066}.Release|Any CPU.ActiveCfg = Release|Any CPU
