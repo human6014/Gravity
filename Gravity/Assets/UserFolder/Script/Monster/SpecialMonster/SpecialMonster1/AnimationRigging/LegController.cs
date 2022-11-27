@@ -21,7 +21,7 @@ public class LegController : MonoBehaviour
 
     private readonly float bodyHeightBase = 1;   //body 높이 1.3f
     private readonly float posAdjustRatio = 0.05f;  //body 위치 조정 강도
-    private readonly float rotAdjustRatio = 0.6f;   //body 회전 조정 강도
+    private readonly float rotAdjustRatio = 0.7f;   //body 회전 조정 강도
     
     public bool GetIsNavOn() => isNavOn;
     public void SetPreJump(bool _preJump) => preJump = _preJump;
@@ -92,7 +92,7 @@ public class LegController : MonoBehaviour
             {
                 tipCenter /= legs.Length;
 
-                bodyPos = tipCenter + bodyUp * bodyHeightBase;
+                bodyPos = tipCenter + bodyUp * bodyHeightBase + bodyTransform.forward;
                 //bodyTransform.position = Vector3.Lerp(bodyTransform.position, bodyPos, posAdjustRatio);
             }
 
@@ -104,7 +104,6 @@ public class LegController : MonoBehaviour
             // Interpolate rotation from old to new
             bodyRotation = Quaternion.LookRotation(bodyForward, bodyUp);
             bodyTransform.rotation = Quaternion.Slerp(bodyTransform.rotation, bodyRotation, rotAdjustRatio);
-
             yield return fixedUpdateTime;
         }
     }

@@ -32,17 +32,14 @@ public class AIController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!target) return;
-        //if (!isPreJump) AIMove();
+
     }
 
-    public void AIMove()
+    public void AIMove(Vector3 _pos, Quaternion _rot)
     {
+        //Debug.Log("°¢ : " + _rot.eulerAngles);
         cachedTransform.position = navObject.position;
-        if (!navTrace.IsOnMeshLink)
-        {
-            cachedTransform.rotation = navObject.rotation;
-        }
+        cachedTransform.rotation = navObject.rotation;
     }
 
     public void StartJumpCoroutine()
