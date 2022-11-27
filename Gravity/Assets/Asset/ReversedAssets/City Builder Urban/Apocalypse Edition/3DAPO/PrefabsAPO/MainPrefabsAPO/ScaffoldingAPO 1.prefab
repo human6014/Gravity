@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8814317175853929668}
   - component: {fileID: 3026527430786871308}
   - component: {fileID: 4976619778410234934}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ScaffoldingAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,6 +156,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5c186327194c73a409d4df2f2c25bfed,
         type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5c186327194c73a409d4df2f2c25bfed,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
@@ -257,6 +262,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 86346efb3c3e12f4b87086624f9b7dfb,
         type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 86346efb3c3e12f4b87086624f9b7dfb,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
@@ -350,6 +360,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Scaffolding
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 90cd391501044ec4e9e8d8a0dcfa9423,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 90cd391501044ec4e9e8d8a0dcfa9423,
         type: 3}

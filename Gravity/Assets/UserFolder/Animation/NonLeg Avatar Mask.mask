@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: NonLeg Avatar Mask
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: root
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_LegMiddleLeft1
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_LegMiddleLeft1/Horridomorph_LegMiddleLeft2
+    m_Weight: 0
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_LegMiddleLeft1/Horridomorph_LegMiddleLeft2/Horridomorph_LegMiddleLeft3
+    m_Weight: 0
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_LegMiddleRight1
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_LegMiddleRight1/Horridomorph_LegMiddleRight2
+    m_Weight: 0
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_LegMiddleRight1/Horridomorph_LegMiddleRight2/Horridomorph_LegMiddleLRight3
+    m_Weight: 0
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_LegFrontLeft1
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_LegFrontLeft1/Horridomorph_LegFrontLeft2
+    m_Weight: 0
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_LegFrontLeft1/Horridomorph_LegFrontLeft2/Horridomorph_LegFrontLeft3
+    m_Weight: 0
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_LegFrontRight1
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_LegFrontRight1/Horridomorph_LegFrontRight2
+    m_Weight: 0
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_LegFrontRight1/Horridomorph_LegFrontRight2/Horridomorph_LegFrontLRight3
+    m_Weight: 0
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_Neck1
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_Neck1/Horridomorph_Neck2
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_Neck1/Horridomorph_Neck2/Horridomorph_Neck3
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_Neck1/Horridomorph_Neck2/Horridomorph_Neck3/Horridomorph_Neck4
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_Neck1/Horridomorph_Neck2/Horridomorph_Neck3/Horridomorph_Neck4/Horridomorph_Neck5
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_Neck1/Horridomorph_Neck2/Horridomorph_Neck3/Horridomorph_Neck4/Horridomorph_Neck5/Horridomorph_Head
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_Neck1/Horridomorph_Neck2/Horridomorph_Neck3/Horridomorph_Neck4/Horridomorph_Neck5/Horridomorph_Head/Horridomorph_JawLower
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_Neck1/Horridomorph_Neck2/Horridomorph_Neck3/Horridomorph_Neck4/Horridomorph_Neck5/Horridomorph_Head/Horridomorph_JawUpper
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_Neck1/Horridomorph_Neck2/Horridomorph_Neck3/Horridomorph_Neck4/Horridomorph_Neck5/Horridomorph_Head/Horridomorph_MandibuleLowerLeft1
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_Neck1/Horridomorph_Neck2/Horridomorph_Neck3/Horridomorph_Neck4/Horridomorph_Neck5/Horridomorph_Head/Horridomorph_MandibuleLowerLeft1/Horridomorph_MandibuleLowerLeft2
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_Neck1/Horridomorph_Neck2/Horridomorph_Neck3/Horridomorph_Neck4/Horridomorph_Neck5/Horridomorph_Head/Horridomorph_MandibuleLowerRight1
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_Neck1/Horridomorph_Neck2/Horridomorph_Neck3/Horridomorph_Neck4/Horridomorph_Neck5/Horridomorph_Head/Horridomorph_MandibuleLowerRight1/Horridomorph_MandibuleLowerRight2
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_Neck1/Horridomorph_Neck2/Horridomorph_Neck3/Horridomorph_Neck4/Horridomorph_Neck5/Horridomorph_Head/Horridomorph_MandibuleUpperLeft1
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_Neck1/Horridomorph_Neck2/Horridomorph_Neck3/Horridomorph_Neck4/Horridomorph_Neck5/Horridomorph_Head/Horridomorph_MandibuleUpperLeft1/Horridomorph_MandibuleUpperLeft2
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_Neck1/Horridomorph_Neck2/Horridomorph_Neck3/Horridomorph_Neck4/Horridomorph_Neck5/Horridomorph_Head/Horridomorph_MandibuleUpperRight1
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_Neck1/Horridomorph_Neck2/Horridomorph_Neck3/Horridomorph_Neck4/Horridomorph_Neck5/Horridomorph_Head/Horridomorph_MandibuleUpperRight1/Horridomorph_MandibuleUpperRight2
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Tail1
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Tail1/Horridomorph_LegRearLeft1
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Tail1/Horridomorph_LegRearLeft1/Horridomorph_LegRearLeft2
+    m_Weight: 0
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Tail1/Horridomorph_LegRearLeft1/Horridomorph_LegRearLeft2/Horridomorph_LegRearLeft3
+    m_Weight: 0
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Tail1/Horridomorph_LegRearRight1
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Tail1/Horridomorph_LegRearRight1/Horridomorph_LegRearRight2
+    m_Weight: 0
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Tail1/Horridomorph_LegRearRight1/Horridomorph_LegRearRight2/Horridomorph_LegRearRight3
+    m_Weight: 0
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Tail1/Horridomorph_Tail2
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Tail1/Horridomorph_Tail2/Horridomorph_Tail3
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Tail1/Horridomorph_Tail2/Horridomorph_Tail3/Horridomorph_Tail4
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Tail1/Horridomorph_Tail2/Horridomorph_Tail3/Horridomorph_Tail4/Horridomorph_Tail5
+    m_Weight: 1
+  - m_Path: root/Horridomorph_Pelvis/Horridomorph_Tail1/Horridomorph_Tail2/Horridomorph_WeakPoint
+    m_Weight: 1
+  - m_Path: SK_Horridomorph
+    m_Weight: 1

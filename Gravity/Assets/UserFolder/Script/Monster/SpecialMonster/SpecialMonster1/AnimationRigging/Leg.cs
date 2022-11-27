@@ -37,16 +37,18 @@ public class Leg : MonoBehaviour
     [Tooltip("정면 레이 길이")]
     [SerializeField] private float maxFowardRayDist = 2f; //정면 레이     3
 
-    private readonly float maxDownRayDist = 8f; // 하단 레이    7
-    private readonly float maxBackRayDist = 5f; // 정면 -> 몸체 레이    7
+    private readonly float maxDownRayDist = 12f; // 하단 레이    7
+    private readonly float maxBackRayDist = 10f; // 정면 -> 몸체 레이    7
     private readonly float tipMaxHeight = 1.5f;  //걸을 때 관절 높이 0.2f
     private readonly float tipAnimationFrameTime = 0.02f;    // 1 / 60.0f
     private readonly float tipPassOver = 0.55f / 2.0f;   //0.55f/2.0f
 
+    private float interporation;
     private bool isJump;
 
     Vector3 right;
     Vector3 tipDirVec;
+    //발에서 진행방향 벡터
 
     /// <summary>
     /// 정면이랑 몸통쪽 하나라도 감지되면 true
@@ -115,7 +117,7 @@ public class Leg : MonoBehaviour
         Vector3 startingTipPos = TipPos;
         tipDirVec = RaycastTipPos - TipPos;
         tipDirVec += tipDirVec.normalized * tipPassOver;
-        //발에서 진행방향 벡터
+        
 
         right = Vector3.Cross(bodyTransform.up, tipDirVec.normalized).normalized;
         TipUpDir = Vector3.Cross(tipDirVec.normalized, right);
@@ -140,7 +142,7 @@ public class Leg : MonoBehaviour
     }
 
     private void UpdateIKTargetTransform() =>
-        ikTarget.SetPositionAndRotation(TipPos + bodyTransform.up.normalized * ikOffset,
+        ikTarget.SetPositionAndRotation(TipPos + bodyTransform.up * ikOffset,
         Quaternion.LookRotation(TipPos - ikTarget.position) * Quaternion.Euler(90, 0, 0));
 
 

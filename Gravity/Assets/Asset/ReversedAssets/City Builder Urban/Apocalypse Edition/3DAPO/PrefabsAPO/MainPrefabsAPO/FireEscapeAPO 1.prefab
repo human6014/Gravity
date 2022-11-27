@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6191425209742625679}
   - component: {fileID: 5864537752856961805}
-  - component: {fileID: 3386618105884699826}
   m_Layer: 0
   m_Name: FireEscapeAPO 1
   m_TagString: Untagged
@@ -63,20 +62,6 @@ LODGroup:
     renderers:
     - renderer: {fileID: 2422832105919644557}
   m_Enabled: 1
---- !u!64 &3386618105884699826
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2614809094789216253}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -5495902117074765545, guid: 831b981b721316745b05ae4e2660273b, type: 3}
 --- !u!1001 &1529404631013292104
 PrefabInstance:
   m_ObjectHideFlags: 0
