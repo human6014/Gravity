@@ -80,20 +80,24 @@ public class Leg : MonoBehaviour
         {
             RaycastTipPos = hit.point;
             RaycastTipNormal = hit.normal;
+            interporation = ikOffset - 3;
         }
         else if (backRayOrigin && Physics.Raycast(backRayOrigin.position, backRayOrigin.forward.normalized * -1, out hit, maxBackRayDist, layerMaskBack))
         {
             RaycastTipPos = hit.point;
             RaycastTipNormal = hit.normal;
+            interporation = 0;
         }
         else if (downRayOrigin && Physics.Raycast(downRayOrigin.position, downRayOrigin.up.normalized * -1, out hit, maxDownRayDist, layerMask))
         {
             RaycastTipPos = hit.point;
             RaycastTipNormal = hit.normal;
+            interporation = 0;
         }
         else
         {
             TipPos = RaycastTipPos = downRayOrigin.position + -maxDownRayDist * bodyTransform.up.normalized;
+            interporation = 0;
             UpdateIKTargetTransform();
             return;
         }
@@ -142,7 +146,7 @@ public class Leg : MonoBehaviour
     }
 
     private void UpdateIKTargetTransform() =>
-        ikTarget.SetPositionAndRotation(TipPos + bodyTransform.up * ikOffset,
+        ikTarget.SetPositionAndRotation(TipPos + bodyTransform.up * ikOffset + bodyTransform.forward * -interporation,
         Quaternion.LookRotation(TipPos - ikTarget.position) * Quaternion.Euler(90, 0, 0));
 
 

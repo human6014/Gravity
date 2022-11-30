@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5288054391706118880}
   - component: {fileID: 7964059838714388010}
   - component: {fileID: 6406924121556212697}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Camaras1NYAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

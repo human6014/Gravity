@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7725794659218490757}
   - component: {fileID: 5535906934764663119}
   - component: {fileID: 3173960035408432777}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Neon_HotDrinksAPO
   m_TagString: Untagged
   m_Icon: {fileID: 0}

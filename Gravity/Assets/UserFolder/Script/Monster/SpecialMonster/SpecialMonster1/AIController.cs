@@ -30,18 +30,6 @@ public class AIController : MonoBehaviour
         navTrace = FindObjectOfType<NavTrace>();
     }
 
-    private void FixedUpdate()
-    {
-
-    }
-
-    public void AIMove(Vector3 _pos, Quaternion _rot)
-    {
-        //Debug.Log("°¢ : " + _rot.eulerAngles);
-        cachedTransform.position = navObject.position;
-        cachedTransform.rotation = navObject.rotation;
-    }
-
     public void StartJumpCoroutine()
     {
         //StartCoroutine(Jump(0.9f));

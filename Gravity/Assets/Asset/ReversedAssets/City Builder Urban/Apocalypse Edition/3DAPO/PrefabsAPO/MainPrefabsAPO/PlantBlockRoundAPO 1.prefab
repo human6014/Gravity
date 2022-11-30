@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1317555153730731150}
   - component: {fileID: 6798507874151970242}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: PlantBlockRoundAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,6 +146,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5d76c8ed6bef24e43a35a52f52b9cc42,
         type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5d76c8ed6bef24e43a35a52f52b9cc42,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
@@ -262,6 +267,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 957c65fa71a2d19468be38fc44c82734,
         type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 957c65fa71a2d19468be38fc44c82734,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
@@ -355,6 +365,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlantBlockRound
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f0681ec81f8e56b43a6f89b0e3c3e3fd,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f0681ec81f8e56b43a6f89b0e3c3e3fd,
         type: 3}

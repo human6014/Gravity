@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7535225160025590456}
   - component: {fileID: 4782530605582542070}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: RoadBlockadeAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,6 +136,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: bed3f48e47a440d42a6a9164b2f2a92a,
         type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bed3f48e47a440d42a6a9164b2f2a92a,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
@@ -224,6 +229,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RoadBlockade
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b862da452f5443a46b1269ccd551f473,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b862da452f5443a46b1269ccd551f473,
         type: 3}
@@ -320,6 +330,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RoadBlockade2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4c122290a097ee044abad9d04c4f9186,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4c122290a097ee044abad9d04c4f9186,
         type: 3}

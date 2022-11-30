@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2139184609449892862}
   - component: {fileID: 4200484442523742004}
   - component: {fileID: 8464586187166770481}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: TrashCan5APO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

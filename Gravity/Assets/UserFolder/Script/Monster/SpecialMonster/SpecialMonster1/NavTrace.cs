@@ -5,8 +5,7 @@ using UnityEngine.AI;
 using Detector;
 public class NavTrace : MonoBehaviour
 {
-    WaitUntil waitUntil;
-
+    private WaitUntil waitUntil;
     private new Rigidbody rigidbody;
     private NavMeshAgent navMeshAgent;
     private AgentLinkMover agentLinkMover;
@@ -22,14 +21,16 @@ public class NavTrace : MonoBehaviour
     [SerializeField] private LayerMask forwardLayerMask;
     [SerializeField] private LayerMask backLayerMask;
 
+    private readonly float rotAdjustRatio = 0.1f;
     private readonly float maxSpeed = 10f;
-    private readonly float minSpeed = 5f;
-    private float distance;
+    private readonly float minSpeed = 7f;
+    private float targetDistance;
     public bool IsOnMeshLink { get; private set; } = false;
     public bool IsClimbing { get; private set; } = false;
     public bool IsSyncMove { get; set; } = false;
+    public Vector3 UpAngle { get; set; }
     public bool GetIsOnOffMeshLink() => navMeshAgent.isOnOffMeshLink;
-    void Start()
+    private void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -39,13 +40,11 @@ public class NavTrace : MonoBehaviour
 
         navMeshAgent.updateRotation = false;
         navMeshAgent.updateUpAxis = false;
-
         waitUntil = new WaitUntil(()=> !navMeshAgent.isOnOffMeshLink);
     }
 
-    RaycastHit hit;
     Vector3 targetDirection;
-    Vector3 targetUpDirection;
+    Quaternion navRotation;
     private void FixedUpdate()
     {
         if (!legController.GetIsNavOn())
@@ -64,30 +63,20 @@ public class NavTrace : MonoBehaviour
             navMeshAgent.SetDestination(target.position);
             targetDirection = (navMeshAgent.steeringTarget - transform.position).normalized;
 
-            if(Physics.Raycast(transform.position,-DownRay.up,out hit,3, forwardLayerMask)) targetUpDirection = hit.normal;
-            if(!IsOnMeshLink) transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(targetDirection, targetUpDirection), 0.3f);
+            navRotation = Quaternion.LookRotation(targetDirection, UpAngle);
+            transform.rotation = Quaternion.Lerp(transform.rotation, navRotation, rotAdjustRatio);
 
-            distance = Vector3.Distance(target.position, transform.position);
+            targetDistance = Vector3.Distance(target.position, transform.position);
 
-            if (navMeshAgent.isOnOffMeshLink)
+            if (navMeshAgent.isOnOffMeshLink && !IsOnMeshLink) StartCoroutine(MeshLinkOffDelay());
+            if (targetDistance <= navMeshAgent.stoppingDistance)
             {
-                if (!IsOnMeshLink) StartCoroutine(MeshLinkOffDelay());
+                animationController.SetIdle();
+                transform.rotation = Quaternion.Lerp(transform.rotation, navRotation, rotAdjustRatio);
             }
-            else
-            {
-                if (distance <= navMeshAgent.stoppingDistance)
-                {
-                    animationController.SetIdle();
-                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(targetDirection), 0.1f);
-                }
-                else if (navMeshAgent.velocity == Vector3.zero)
-                {
-                    animationController.SetIdle();
-                }
-                else animationController.SetWalk();
-            }
+            else animationController.SetWalk();
             //IsClimbing = !IsSameFloor();
-            navMeshAgent.speed = IsClimbing == true ? minSpeed : maxSpeed;
+            //navMeshAgent.speed = IsClimbing == true ? minSpeed : maxSpeed;
         }
         rigidbody.isKinematic = true;
         navMeshAgent.enabled = true;
@@ -111,11 +100,12 @@ public class NavTrace : MonoBehaviour
         
         IsOnMeshLink = false;
     }
+
     public void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
         //Gizmos.DrawLine(transform.position, transform.position + targetUpDirection * 15);
-
+        Gizmos.DrawLine(transform.position, transform.position + targetDirection * 5);
         Gizmos.color = Color.blue;
         //Gizmos.DrawLine(transform.position, transform.position + targetRightDirection * 15);
     }
