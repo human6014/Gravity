@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7593725512599125942}
   - component: {fileID: 7985039006985985642}
   - component: {fileID: 8844469153103624420}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: LightBig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 6340200107175349297}
   - component: {fileID: 4254880049205294773}
   - component: {fileID: 175248527214633601}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: LightSmall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -241,7 +241,7 @@ GameObject:
   - component: {fileID: 3034312742327846978}
   - component: {fileID: 3556402746554182879}
   - component: {fileID: 2060766072356989538}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: StreetLightAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -388,6 +388,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 95ec26a2c3c27e34cb333efdc02e5d4a,
         type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 95ec26a2c3c27e34cb333efdc02e5d4a,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
@@ -479,6 +484,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0ac24d11412c0d44cacf0d89bfd27cb1,
         type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0ac24d11412c0d44cacf0d89bfd27cb1,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
@@ -567,6 +577,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: StreetLight
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f52506fe317808245aa73057a944fdee,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f52506fe317808245aa73057a944fdee,
         type: 3}

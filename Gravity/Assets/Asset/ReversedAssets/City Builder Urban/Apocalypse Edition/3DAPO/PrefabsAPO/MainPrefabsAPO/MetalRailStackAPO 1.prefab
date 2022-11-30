@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6097564628550478046}
   - component: {fileID: 8320982987326626836}
   - component: {fileID: 6352543272489757391}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: MetalRailStackAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

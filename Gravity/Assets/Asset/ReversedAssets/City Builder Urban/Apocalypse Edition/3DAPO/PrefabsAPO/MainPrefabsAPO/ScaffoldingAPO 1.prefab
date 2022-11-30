@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8814317175853929668}
   - component: {fileID: 3026527430786871308}
-  - component: {fileID: 4976619778410234934}
+  - component: {fileID: 8354940861745277284}
   m_Layer: 11
   m_Name: ScaffoldingAPO 1
   m_TagString: Untagged
@@ -63,8 +63,8 @@ LODGroup:
     renderers:
     - renderer: {fileID: 7684214460455821451}
   m_Enabled: 1
---- !u!64 &4976619778410234934
-MeshCollider:
+--- !u!65 &8354940861745277284
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -73,10 +73,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -7387706064836869012, guid: 86346efb3c3e12f4b87086624f9b7dfb, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 3.635233, y: 5.2262287, z: 3.1673732}
+  m_Center: {x: -0.033335686, y: 2.6142812, z: 0.025572538}
 --- !u!1001 &6229936215621016061
 PrefabInstance:
   m_ObjectHideFlags: 0

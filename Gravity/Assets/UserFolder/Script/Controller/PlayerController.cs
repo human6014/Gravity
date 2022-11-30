@@ -17,14 +17,14 @@ namespace main
         Animator playerAnim;
         public CameraController cameraController;
 
-        public int playerSpeed = 50;
+        public int playerSpeed = 30;
 
         float xMove;
         float zMove;
         float wheelInput;
 
         bool flipOnce;
-        bool isChanging;
+        bool isChanging = false;
         bool isJumping;
         void Start()
         {
@@ -38,13 +38,14 @@ namespace main
             Move();
             Rotate();
             if (xMove != 0 || zMove != 0) playerAnim.SetBool("isRun", true);
-            else playerAnim.SetBool("isRun", false);
+            else if(playerAnim.GetBool("isRun"))playerAnim.SetBool("isRun", false);
         }
         private void KeyInput()
         {
             xMove = Input.GetAxis("Horizontal");
             zMove = Input.GetAxis("Vertical");
 
+            if      (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
             if      (Input.GetKeyDown(KeyCode.Space)) Jump();
             if      (Input.GetKeyDown(KeyCode.Z)) GravitiesManager.gravityDirection = GravityDirection.X;
             else if (Input.GetKeyDown(KeyCode.X)) GravitiesManager.gravityDirection = GravityDirection.Y;
@@ -76,7 +77,7 @@ namespace main
         private void Jump()
         {
             isJumping = true;
-            playerRigid.AddForce(transform.up * 10, ForceMode.Impulse);
+            playerRigid.AddForce(transform.up * 5, ForceMode.Impulse);
             playerAnim.SetTrigger("Jump");
         }
         private void Move()

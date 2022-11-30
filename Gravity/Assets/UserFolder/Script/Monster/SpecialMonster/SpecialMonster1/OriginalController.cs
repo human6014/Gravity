@@ -6,7 +6,7 @@ public class OriginalController : MonoBehaviour
 {
     // Player movement script
     AnimationController animationController;
-    private float MoveSpeed { get; } = 10f;
+    private float MoveSpeed { get; } = 22f;
     private float RotSpeed { get; } = 75.0f;
 
     private void Start()
@@ -41,8 +41,7 @@ public class OriginalController : MonoBehaviour
         }
         else
         {
-            //animator.SetBool("Idle", true);
-            //animator.SetBool("Walk", false);
+            animationController.SetRoar(true);
         }
     }
 

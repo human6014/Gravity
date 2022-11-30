@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 523845146293297237}
   - component: {fileID: 3331384283357318865}
   - component: {fileID: 8989751991660432799}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: BusStopAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,6 +156,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: dd4c300e1629f824a8a795d66c5d0173,
         type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: dd4c300e1629f824a8a795d66c5d0173,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
@@ -249,6 +254,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BusStop
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4a0b4a754d9dda54db0ab8d4c263d746,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4a0b4a754d9dda54db0ab8d4c263d746,
         type: 3}
@@ -350,6 +360,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BusStop2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0ad58356f1dbedf4587e4d4163ecdd28,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0ad58356f1dbedf4587e4d4163ecdd28,
         type: 3}

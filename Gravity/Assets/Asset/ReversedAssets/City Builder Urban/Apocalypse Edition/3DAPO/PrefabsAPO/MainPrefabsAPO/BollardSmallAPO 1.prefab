@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6755391899330115019}
   - component: {fileID: 6731168029005662866}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: BollardSmallAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,6 +141,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 85208bb13335a9942870ecc5e8594786,
         type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 85208bb13335a9942870ecc5e8594786,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
@@ -232,6 +237,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 2068d4e2e00f7d74f953eb948d3bb7cf,
         type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2068d4e2e00f7d74f953eb948d3bb7cf,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
@@ -320,6 +330,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BollardSmall
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 30569adeb5efb694b8db82ce088780a7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 30569adeb5efb694b8db82ce088780a7,
         type: 3}

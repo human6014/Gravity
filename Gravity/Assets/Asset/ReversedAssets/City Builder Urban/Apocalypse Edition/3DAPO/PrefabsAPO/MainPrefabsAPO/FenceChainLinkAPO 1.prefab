@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1669355437242416422}
   - component: {fileID: 3516830431999920620}
   - component: {fileID: 281649994891700957}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: FenceChainLinkAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

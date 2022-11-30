@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class LegController : MonoBehaviour
 {
-    // 스크립트 컴포넌트 위치 변경 고려
-    readonly WaitForFixedUpdate fixedUpdateTime = new();
-
-    [SerializeField] private AIController aiController;
+    [SerializeField] private NavTrace navTrace;
     [SerializeField] private Transform bodyTransform; //Body 위치
     [SerializeField] private Leg[] legs;
     
@@ -19,9 +16,9 @@ public class LegController : MonoBehaviour
     private bool readySwitchOrder = false;
     private bool stepOrder = true;
 
-    private readonly float bodyHeightBase = 1;   //body 높이 1.3f
-    private readonly float posAdjustRatio = 0.05f;  //body 위치 조정 강도
-    private readonly float rotAdjustRatio = 0.7f;   //body 회전 조정 강도
+    private readonly float bodyHeightBase = 0;   //body 높이 1.3f
+    private readonly float posAdjustRatio = 0.01f;  //body 위치 조정 강도
+    private readonly float rotAdjustRatio = 0.75f;   //body 회전 조정 강도
     
     public bool GetIsNavOn() => isNavOn;
     public void SetPreJump(bool _preJump) => preJump = _preJump;
@@ -64,7 +61,7 @@ public class LegController : MonoBehaviour
     Vector3 bodyRight;
     Quaternion bodyRotation;
     /// <summary>
-    /// 다리에 대한 몸체 위치 계산 (Couroutine)
+    /// 다리에 대한 몸체 위치, 각도 계산 (Couroutine)
     /// </summary>
     /// <returns></returns>
     private IEnumerator AdjustBodyTransform()
@@ -103,8 +100,9 @@ public class LegController : MonoBehaviour
 
             // Interpolate rotation from old to new
             bodyRotation = Quaternion.LookRotation(bodyForward, bodyUp);
-            bodyTransform.rotation = Quaternion.Slerp(bodyTransform.rotation, bodyRotation, rotAdjustRatio);
-            yield return fixedUpdateTime;
+            navTrace.UpAngle = bodyUp;
+            //bodyTransform.rotation = Quaternion.Slerp(bodyTransform.rotation, bodyRotation, rotAdjustRatio);
+            yield return null;
         }
     }
 
