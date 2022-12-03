@@ -17,6 +17,9 @@ TagManager:
   - 
   - Player
   - Monster
+  - FlyingMonster
+  - SpecialMonster
+  - BoidsMonster
   - 
   - Floor
   - Building
@@ -24,9 +27,6 @@ TagManager:
   - Deco
   - 
   - Item
-  - 
-  - 
-  - 
   - 
   - 
   - 

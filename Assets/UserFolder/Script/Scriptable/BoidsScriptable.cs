@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BoidSetting", menuName = "Scriptable Object/BoidSetting", order = int.MaxValue)]
-public class BoidsScriptable
+[CreateAssetMenu(fileName = "BoidSetting", menuName = "Scriptable Object/BoidSettings", order = int.MaxValue)]
+public class BoidsScriptable : ScriptableObject
 {
     [Header("Speed Options")]
     [Tooltip("이동 속도")]

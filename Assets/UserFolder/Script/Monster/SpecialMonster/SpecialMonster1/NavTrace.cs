@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Detector;
+
+[RequireComponent(typeof(NavMeshAgent))]
 public class NavTrace : MonoBehaviour
 {
     private WaitUntil waitUntil;
@@ -15,20 +17,18 @@ public class NavTrace : MonoBehaviour
     [SerializeField] private FloorDetector floorDetector;
     [SerializeField] private AnimationController animationController;
     [SerializeField] private Transform target;
-    [SerializeField] private Transform forwardRay;
-    [SerializeField] private Transform backRay;
-    [SerializeField] private Transform DownRay;
-    [SerializeField] private LayerMask forwardLayerMask;
-    [SerializeField] private LayerMask backLayerMask;
 
-    private readonly float rotAdjustRatio = 0.1f;
-    private readonly float maxSpeed = 10f;
+    private readonly float rotAdjustRatio = 0.5f;
+    private readonly float maxSpeed = 15f;
     private readonly float minSpeed = 7f;
+    private float currentSpeed = 12.5f;
     private float targetDistance;
+    private Vector3 navPosition;
     public bool IsOnMeshLink { get; private set; } = false;
     public bool IsClimbing { get; private set; } = false;
-    public bool IsSyncMove { get; set; } = false;
-    public Vector3 UpAngle { get; set; }
+    public Vector3 ProceduralForwardAngle { get; set; }
+    public Vector3 ProceduralUpAngle { get; set; }
+    public Vector3 ProceduralPosition { get; set; }
     public bool GetIsOnOffMeshLink() => navMeshAgent.isOnOffMeshLink;
     private void Start()
     {
@@ -38,12 +38,14 @@ public class NavTrace : MonoBehaviour
         legController = FindObjectOfType<LegController>();
         aiController = FindObjectOfType<AIController>();
 
+        navMeshAgent.updatePosition = false;
         navMeshAgent.updateRotation = false;
         navMeshAgent.updateUpAxis = false;
         waitUntil = new WaitUntil(()=> !navMeshAgent.isOnOffMeshLink);
     }
 
     Vector3 targetDirection;
+    Vector3 targetForward;
     Quaternion navRotation;
     private void FixedUpdate()
     {
@@ -61,20 +63,27 @@ public class NavTrace : MonoBehaviour
         else
         {
             navMeshAgent.SetDestination(target.position);
-            targetDirection = (navMeshAgent.steeringTarget - transform.position).normalized;
-
-            navRotation = Quaternion.LookRotation(targetDirection, UpAngle);
-            transform.rotation = Quaternion.Lerp(transform.rotation, navRotation, rotAdjustRatio);
-
-            targetDistance = Vector3.Distance(target.position, transform.position);
+            navMeshAgent.speed = currentSpeed;
 
             if (navMeshAgent.isOnOffMeshLink && !IsOnMeshLink) StartCoroutine(MeshLinkOffDelay());
+
+            targetDistance = Vector3.Distance(target.position, transform.position);
+            targetDirection = (navMeshAgent.steeringTarget - transform.position).normalized;
+            targetForward = IsOnMeshLink == true ? ProceduralForwardAngle : targetDirection;
+
+            navRotation = Quaternion.LookRotation(targetForward, ProceduralUpAngle);
+            transform.rotation = Quaternion.Lerp(transform.rotation, navRotation, rotAdjustRatio);
             if (targetDistance <= navMeshAgent.stoppingDistance)
             {
                 animationController.SetIdle();
-                transform.rotation = Quaternion.Lerp(transform.rotation, navRotation, rotAdjustRatio);
             }
-            else animationController.SetWalk();
+            else
+            {
+                animationController.SetWalk();
+                navMeshAgent.nextPosition = ProceduralPosition + Time.deltaTime * currentSpeed * targetDirection;
+                transform.position = navMeshAgent.nextPosition;
+            }
+
             //IsClimbing = !IsSameFloor();
             //navMeshAgent.speed = IsClimbing == true ? minSpeed : maxSpeed;
         }
@@ -88,7 +97,7 @@ public class NavTrace : MonoBehaviour
     private IEnumerator MeshLinkOffDelay()
     {
         IsOnMeshLink = true;
-        navMeshAgent.speed = minSpeed;
+        //navMeshAgent.speed = minSpeed;
         yield return waitUntil;
         /*
         while (navMeshAgent.isOnOffMeshLink)
@@ -96,11 +105,12 @@ public class NavTrace : MonoBehaviour
             yield return null;
         }
         */
-        navMeshAgent.speed = maxSpeed;
+        //navMeshAgent.speed = maxSpeed;
         
         IsOnMeshLink = false;
     }
 
+#if UNITY_EDITOR
     public void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
@@ -109,4 +119,5 @@ public class NavTrace : MonoBehaviour
         Gizmos.color = Color.blue;
         //Gizmos.DrawLine(transform.position, transform.position + targetRightDirection * 15);
     }
+#endif
 }
