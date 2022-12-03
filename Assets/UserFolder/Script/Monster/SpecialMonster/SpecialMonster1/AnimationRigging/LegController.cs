@@ -17,7 +17,7 @@ public class LegController : MonoBehaviour
     private bool stepOrder = true;
 
     private readonly float bodyHeightBase = 0;   //body 높이 1.3f
-    private readonly float posAdjustRatio = 0.01f;  //body 위치 조정 강도
+    private readonly float posAdjustRatio = 0.05f;  //body 위치 조정 강도
     private readonly float rotAdjustRatio = 0.75f;   //body 회전 조정 강도
     
     public bool GetIsNavOn() => isNavOn;
@@ -89,18 +89,20 @@ public class LegController : MonoBehaviour
             {
                 tipCenter /= legs.Length;
 
-                bodyPos = tipCenter + bodyUp * bodyHeightBase + bodyTransform.forward;
+                bodyPos = tipCenter + bodyUp * bodyHeightBase;
+                navTrace.ProceduralPosition = Vector3.Lerp(bodyTransform.position, bodyPos, posAdjustRatio);
                 //bodyTransform.position = Vector3.Lerp(bodyTransform.position, bodyPos, posAdjustRatio);
             }
 
             // calc rotation
             // Calculate new body axis
             bodyRight = Vector3.Cross(bodyUp, bodyTransform.forward);
-            bodyForward = Vector3.Cross(bodyRight, bodyUp);
+            bodyForward = Vector3.Cross(bodyRight, bodyUp).normalized;
 
             // Interpolate rotation from old to new
             bodyRotation = Quaternion.LookRotation(bodyForward, bodyUp);
-            navTrace.UpAngle = bodyUp;
+            navTrace.ProceduralForwardAngle = bodyForward;
+            navTrace.ProceduralUpAngle = bodyUp;
             //bodyTransform.rotation = Quaternion.Slerp(bodyTransform.rotation, bodyRotation, rotAdjustRatio);
             yield return null;
         }
