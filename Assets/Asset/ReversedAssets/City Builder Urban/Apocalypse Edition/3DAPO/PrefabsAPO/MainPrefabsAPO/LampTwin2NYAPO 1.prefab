@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4001122408824052417}
   - component: {fileID: 1180542233712061963}
   - component: {fileID: 1250707877039399714}
-  m_Layer: 12
+  m_Layer: 16
   m_Name: LampTwin2NYAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 9168107118593440465}
   - component: {fileID: 4773645491012486183}
   - component: {fileID: 7307570120595577504}
-  m_Layer: 12
+  m_Layer: 16
   m_Name: Light2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -226,7 +226,7 @@ GameObject:
   - component: {fileID: 4628538733508504153}
   - component: {fileID: 1580726774305000114}
   - component: {fileID: 282360299012400159}
-  m_Layer: 12
+  m_Layer: 16
   m_Name: Light1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

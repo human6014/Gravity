@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8016793547608279840}
   - component: {fileID: 3586358941011415585}
-  m_Layer: 12
+  m_Layer: 15
   m_Name: FenceRailAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,7 +142,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: a5cdc1e06cc1cca44b75fd5be33e9408,
         type: 3}
       propertyPath: m_Layer
-      value: 12
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a5cdc1e06cc1cca44b75fd5be33e9408,
         type: 3}
@@ -267,7 +267,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 1c7973e895b02184daee1059d9f7f78b,
         type: 3}
       propertyPath: m_Layer
-      value: 12
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1c7973e895b02184daee1059d9f7f78b,
         type: 3}
@@ -368,7 +368,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 50bcd201988c3ba458285d8949a74eed,
         type: 3}
       propertyPath: m_Layer
-      value: 12
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 50bcd201988c3ba458285d8949a74eed,
         type: 3}

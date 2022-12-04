@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e06f8beb6c4af3c4cb7824f60e80ff08, type: 3}
   m_Name: BoidSetting
   m_EditorClassIdentifier: 
-  speedRange: {x: 0, y: 0}
-  cohesionWeight: 1
-  alignmentWeight: 1
-  separationWeight: 1
+  speedRange: {x: 10, y: 10}
+  cohesionWeight: 2
+  alignmentWeight: 5
+  separationWeight: 3
   targetWeight: 5
-  boundsWeight: 10
+  boundsWeight: 7.5
   obstacleWeight: 30
   egoWeight: 1
   obstacleDistance: 5
@@ -29,4 +29,4 @@ MonoBehaviour:
     m_Bits: 2048
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 49152
+    m_Bits: 57344

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5902987786377687504}
   - component: {fileID: 4562092563078043713}
-  m_Layer: 12
+  m_Layer: 15
   m_Name: TrashCanAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,7 +142,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: dcdd59e9a734ca74a94dccae33dffa37,
         type: 3}
       propertyPath: m_Layer
-      value: 12
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: dcdd59e9a734ca74a94dccae33dffa37,
         type: 3}
@@ -243,7 +243,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d258892d1065d6d49aafc875c3cef6bc,
         type: 3}
       propertyPath: m_Layer
-      value: 12
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d258892d1065d6d49aafc875c3cef6bc,
         type: 3}
@@ -349,7 +349,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 29c27e5834d7e8c48b334612235c10db,
         type: 3}
       propertyPath: m_Layer
-      value: 12
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 29c27e5834d7e8c48b334612235c10db,
         type: 3}

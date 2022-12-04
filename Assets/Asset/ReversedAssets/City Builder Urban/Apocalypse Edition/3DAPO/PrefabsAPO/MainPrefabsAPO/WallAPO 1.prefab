@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7457837101241201011}
   - component: {fileID: 4655446707480626617}
   - component: {fileID: 7357586529680164635}
-  m_Layer: 11
+  m_Layer: 14
   m_Name: WallAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6708470999711685567}
   - component: {fileID: 79998402984381097}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 7492668638458471040}
   - component: {fileID: 6693210193684449813}
   - component: {fileID: 3414335175781976814}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CanopyThreeAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

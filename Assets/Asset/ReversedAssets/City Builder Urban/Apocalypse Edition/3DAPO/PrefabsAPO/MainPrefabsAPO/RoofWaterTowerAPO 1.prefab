@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3931926189840206403}
   - component: {fileID: 1258181328267640457}
   - component: {fileID: 6416793033091774148}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: RoofWaterTowerAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

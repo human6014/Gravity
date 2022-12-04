@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7899565737292680146}
   - component: {fileID: 6489474558614193271}
   - component: {fileID: 9073567922453131453}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: BuildEX8alt_2x2 (95)APO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

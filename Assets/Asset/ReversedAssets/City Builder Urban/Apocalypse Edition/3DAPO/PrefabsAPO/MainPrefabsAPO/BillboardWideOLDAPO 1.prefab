@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8091091479306020008}
   - component: {fileID: 6317885747364450402}
   - component: {fileID: 4493151224198697838}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: BillboardWideOLDAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

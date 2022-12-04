@@ -9,58 +9,97 @@ namespace main
     public class PlayerController : MonoBehaviour
     {
         private const float SLOWVALUE = 0.1f;
+        private const float FIXEDTIME = 0.02f;
         private const float ROTATESPEED = 5;
         private const float ROTATETIME = 0.8f;
-        private const float FIXEDTIME = 0.02f;
+        
+        private Rigidbody playerRigid;
+        private Animator playerAnim;
 
-        Rigidbody playerRigid;
-        Animator playerAnim;
-        public CameraController cameraController;
+        
+        [SerializeField] private int normalSpeed = 10;
+        [SerializeField] private int runSpeed = 60;
+        private int currentSpeed;
 
-        public int playerSpeed = 30;
+        private bool flipOnce;
+        private bool isChanging = false;
+        private bool isJumping;
 
-        float xMove;
-        float zMove;
-        float wheelInput;
+        #region KeyInput
+        private float xMoveInput;
+        private float zMoveInput;
+        private float wheelInput;
 
-        bool flipOnce;
-        bool isChanging = false;
-        bool isJumping;
+        private bool isExitInput;
+        private bool isJumpInput;
+        private bool isRunInput;
+        private bool isTimeControlInput;
+
+        private int currentGravityKeyInput = 1;
+        private readonly KeyCode[] gravityChangeInput =
+        {
+            KeyCode.Z,
+            KeyCode.X,
+            KeyCode.C
+        };
+        #endregion
+
         void Start()
         {
             playerRigid = GetComponent<Rigidbody>();
             playerAnim = GetComponentInChildren<Animator>();
+
+            currentSpeed = normalSpeed;
         }
 
         void Update()
         {
             KeyInput();
+            ProcessInput();
             Move();
             Rotate();
-            if (xMove != 0 || zMove != 0) playerAnim.SetBool("isRun", true);
-            else if(playerAnim.GetBool("isRun"))playerAnim.SetBool("isRun", false);
+
+            if (xMoveInput != 0 || zMoveInput != 0) playerAnim.SetBool("isRun", true);
+            else if (playerAnim.GetBool("isRun"))   playerAnim.SetBool("isRun", false);
         }
+
         private void KeyInput()
         {
-            xMove = Input.GetAxis("Horizontal");
-            zMove = Input.GetAxis("Vertical");
-
-            if      (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
-            if      (Input.GetKeyDown(KeyCode.Space)) Jump();
-            if      (Input.GetKeyDown(KeyCode.Z)) GravitiesManager.gravityDirection = GravityDirection.X;
-            else if (Input.GetKeyDown(KeyCode.X)) GravitiesManager.gravityDirection = GravityDirection.Y;
-            else if (Input.GetKeyDown(KeyCode.C)) GravitiesManager.gravityDirection = GravityDirection.Z;
-
+            xMoveInput = Input.GetAxis("Horizontal");
+            zMoveInput = Input.GetAxis("Vertical");
             wheelInput = Input.GetAxis("Mouse ScrollWheel");
+
+            isRunInput = Input.GetKey(KeyCode.LeftShift);
+
+            isExitInput = Input.GetKeyDown(KeyCode.Escape);
+            isJumpInput = Input.GetKeyDown(KeyCode.Space);
+            isTimeControlInput = Input.GetKeyDown(KeyCode.F);
+
+            for (int i = 0; i < gravityChangeInput.Length; i++)
+            {
+                if (Input.GetKeyDown(gravityChangeInput[i]))
+                {
+                    currentGravityKeyInput = i;
+                    break;
+                }
+            }
+        }
+        
+        private void ProcessInput()
+        {
+            if (isExitInput) Application.Quit();
+            if (isJumpInput) Jump();
+            if (isRunInput) currentSpeed = runSpeed;
+            else            currentSpeed = normalSpeed;
+            
             if (wheelInput != 0)
             {
                 flipOnce = true;
                 isChanging = true;
-                if (wheelInput > 0) GravitiesManager.GravityChange(1);
-                else GravitiesManager.GravityChange(-1);
+                GravitiesManager.gravityDirection = (GravityDirection)currentGravityKeyInput;
+                GravitiesManager.GravityChange(Mathf.FloorToInt(wheelInput * 10));
             }
-
-            if (Input.GetKeyDown(KeyCode.F))
+            if (isTimeControlInput)
             {
                 if (Time.timeScale != 1)
                 {
@@ -82,9 +121,9 @@ namespace main
         }
         private void Move()
         {
-            Vector3 moveHorizontal = transform.right * xMove;
-            Vector3 moveVertical = transform.forward * zMove;
-            Vector3 velocity = playerSpeed * Time.deltaTime * (moveHorizontal + moveVertical).normalized;
+            Vector3 moveHorizontal = transform.right * xMoveInput;
+            Vector3 moveVertical = transform.forward * zMoveInput;
+            Vector3 velocity = currentSpeed * Time.deltaTime * (moveHorizontal + moveVertical).normalized;
 
             playerRigid.MovePosition(transform.position + velocity);
         }
@@ -105,9 +144,9 @@ namespace main
                 _xRotation = Input.GetAxisRaw("Mouse X");
 
             _cameraRotationX = _xRotation * lookSensitivity;
-            
+
             if (flipOnce && (int)GravitiesManager.beforeType % 2 != (int)GravitiesManager.type % 2)
-                currentCameraRotationX *= -1; 
+                currentCameraRotationX *= -1;
 
             currentCameraRotationX += (int)GravitiesManager.type % 2 == 0 ? _cameraRotationX : -_cameraRotationX;
 

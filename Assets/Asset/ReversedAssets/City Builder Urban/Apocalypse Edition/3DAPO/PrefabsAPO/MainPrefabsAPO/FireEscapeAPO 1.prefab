@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6191425209742625679}
   - component: {fileID: 5864537752856961805}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FireEscapeAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,6 +141,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 831b981b721316745b05ae4e2660273b,
         type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 831b981b721316745b05ae4e2660273b,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
@@ -242,6 +247,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b431ffa9133c3bb439d2566eb04b12ce,
         type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b431ffa9133c3bb439d2566eb04b12ce,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
@@ -335,6 +345,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FireEscape
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 36be9da681c466d4aa76c0caed4168b7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 36be9da681c466d4aa76c0caed4168b7,
         type: 3}

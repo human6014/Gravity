@@ -69,7 +69,8 @@ public class NavTrace : MonoBehaviour
 
             targetDistance = Vector3.Distance(target.position, transform.position);
             targetDirection = (navMeshAgent.steeringTarget - transform.position).normalized;
-            targetForward = IsOnMeshLink == true ? ProceduralForwardAngle : targetDirection;
+            //targetForward = IsOnMeshLink == true ? ProceduralForwardAngle : targetDirection;
+            targetForward = ProceduralForwardAngle + targetDirection;
 
             navRotation = Quaternion.LookRotation(targetForward, ProceduralUpAngle);
             transform.rotation = Quaternion.Lerp(transform.rotation, navRotation, rotAdjustRatio);

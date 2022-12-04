@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6219553594974850767}
   - component: {fileID: 7061521755595456874}
   - component: {fileID: 5051745577690543520}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: BillboardTallAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

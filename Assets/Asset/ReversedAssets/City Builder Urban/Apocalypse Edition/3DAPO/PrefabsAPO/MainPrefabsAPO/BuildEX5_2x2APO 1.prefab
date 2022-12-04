@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3857284111896706064}
   - component: {fileID: 155383961438352309}
   - component: {fileID: 2723832980987676543}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: BuildEX5_2x2APO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

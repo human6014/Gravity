@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3032188579038951850}
   - component: {fileID: 1004452505558191456}
   - component: {fileID: 4467530302576427826}
-  m_Layer: 12
+  m_Layer: 16
   m_Name: Lamp1LAAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 1754034432710065925}
   - component: {fileID: 1404850860205977770}
   - component: {fileID: 5199770349179632703}
-  m_Layer: 12
+  m_Layer: 16
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
