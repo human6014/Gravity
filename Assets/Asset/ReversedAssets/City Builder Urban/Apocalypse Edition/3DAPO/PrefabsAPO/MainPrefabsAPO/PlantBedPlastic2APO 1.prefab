@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 887032313311558203}
   - component: {fileID: 3146794004862635761}
   - component: {fileID: 7487381871288926892}
-  m_Layer: 12
+  m_Layer: 15
   m_Name: PlantBedPlastic2APO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

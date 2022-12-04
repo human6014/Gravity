@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7010021553448569053}
   - component: {fileID: 6262047349995816824}
   - component: {fileID: 8143552297213735858}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Trim8APO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

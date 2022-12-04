@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8088755726702360206}
   - component: {fileID: 6315734650707821124}
   - component: {fileID: 80540419892360233}
-  m_Layer: 12
+  m_Layer: 15
   m_Name: FireHydrantAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

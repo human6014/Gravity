@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5569833828910791449}
   - component: {fileID: 8855165169846809788}
   - component: {fileID: 6703373332931248246}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: BillboardWideAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 6424240990085380938}
   - component: {fileID: 7361444902134724605}
   - component: {fileID: 3131476941119931168}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Quad
   m_TagString: Untagged
   m_Icon: {fileID: 0}

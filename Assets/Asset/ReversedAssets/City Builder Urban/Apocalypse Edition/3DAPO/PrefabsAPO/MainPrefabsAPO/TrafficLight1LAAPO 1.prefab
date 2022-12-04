@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 762669240528308670}
   - component: {fileID: 3274535756070026612}
   - component: {fileID: 8191139584800954577}
-  m_Layer: 12
+  m_Layer: 15
   m_Name: TrafficLight1LAAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

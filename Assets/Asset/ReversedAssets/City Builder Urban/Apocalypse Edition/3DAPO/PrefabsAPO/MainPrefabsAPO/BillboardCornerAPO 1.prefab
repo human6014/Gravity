@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8835064045502315497}
   - component: {fileID: 1390431563656170647}
   - component: {fileID: 8443511608332627629}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Quad (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 7797244858178306517}
   - component: {fileID: 2565595442874141456}
   - component: {fileID: 1597242606775159689}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Quad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -208,7 +208,7 @@ GameObject:
   - component: {fileID: 4896779588994329476}
   - component: {fileID: 7210311787327201102}
   - component: {fileID: 4130046497858685418}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: BillboardCornerAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

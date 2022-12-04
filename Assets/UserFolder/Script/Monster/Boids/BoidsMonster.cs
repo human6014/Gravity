@@ -7,7 +7,8 @@ public class BoidsMonster : PoolableScript
     #region Variables & Initializer
     [Header("Info")]
     [SerializeField] private BoidsScriptable settings;
-    readonly private List<BoidsMonster> neighbours = new();
+
+    private List<BoidsMonster> neighbours = new();
     private Boids myBoids;
 
     private Transform target;
@@ -101,6 +102,7 @@ public class BoidsMonster : PoolableScript
         separationVec = Vector3.zero;
         if (neighbours.Count > 0)
         {
+            Debug.Log(neighbours.Count);
             // 이웃 unit들의 위치 더하기
             for (int i = 0; i < neighbours.Count; i++)
             {

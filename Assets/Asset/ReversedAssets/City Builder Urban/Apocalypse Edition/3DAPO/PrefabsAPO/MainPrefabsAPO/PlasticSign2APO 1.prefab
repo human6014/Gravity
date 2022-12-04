@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3081665572076303697}
   - component: {fileID: 945951408362373531}
   - component: {fileID: 592351285451364280}
-  m_Layer: 12
+  m_Layer: 15
   m_Name: PlasticSign2APO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

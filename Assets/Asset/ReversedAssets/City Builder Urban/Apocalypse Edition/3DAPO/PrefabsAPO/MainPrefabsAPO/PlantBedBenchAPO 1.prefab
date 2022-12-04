@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7477895242652244935}
   - component: {fileID: 1222191731395693992}
   - component: {fileID: 4011997194955136694}
-  m_Layer: 12
+  m_Layer: 15
   m_Name: PlantBedBenchAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

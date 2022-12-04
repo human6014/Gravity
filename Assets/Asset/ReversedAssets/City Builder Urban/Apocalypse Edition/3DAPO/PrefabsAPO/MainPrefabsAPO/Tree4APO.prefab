@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 583189874830406366}
   - component: {fileID: 3455139767712089620}
   - component: {fileID: 5228966936427462607}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Tree4APO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,6 +179,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Tree4LOD1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 709d6e1fbf748334aafb99b0aec8538f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 709d6e1fbf748334aafb99b0aec8538f,
         type: 3}

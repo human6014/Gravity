@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5231596648334481825}
   - component: {fileID: 8034045870058581355}
   - component: {fileID: 2403719301832335199}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CanopyTwoAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

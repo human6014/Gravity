@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6730251885840395330}
   - component: {fileID: 8827722842360223880}
   - component: {fileID: 7381354322530622612}
-  m_Layer: 12
+  m_Layer: 15
   m_Name: NewspaperVending2APO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7772730234699474525}
   - component: {fileID: 5492913520781791895}
   - component: {fileID: 4543959542842859253}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: BillboardTallXLAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 2141170394641501017}
   - component: {fileID: 3957947863680847781}
   - component: {fileID: 870157613056480037}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Quad (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

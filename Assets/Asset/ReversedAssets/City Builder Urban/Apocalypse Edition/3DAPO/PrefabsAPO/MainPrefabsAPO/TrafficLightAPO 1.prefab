@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2106575911416221063}
   - component: {fileID: 2106575911416221064}
   - component: {fileID: 2832170939265166567}
-  m_Layer: 12
+  m_Layer: 15
   m_Name: TrafficLightAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,7 +157,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 926d5393d4715764aaed0a7914c00dfe,
         type: 3}
       propertyPath: m_Layer
-      value: 12
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 926d5393d4715764aaed0a7914c00dfe,
         type: 3}
@@ -253,7 +253,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2c05a4e7570f4814f93ddf56f24a65de,
         type: 3}
       propertyPath: m_Layer
-      value: 12
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 2c05a4e7570f4814f93ddf56f24a65de,
         type: 3}
@@ -349,7 +349,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 47ff2be75fa8e254a8d25adf0566bb18,
         type: 3}
       propertyPath: m_Layer
-      value: 12
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 47ff2be75fa8e254a8d25adf0566bb18,
         type: 3}

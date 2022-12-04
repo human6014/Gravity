@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4658262119366601595}
   - component: {fileID: 981092044327568160}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: BuildEX7_2x2APO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -150,6 +150,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 96943c55f4ac7a54ea31b8059d950a90,
         type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 96943c55f4ac7a54ea31b8059d950a90,
+        type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -246,6 +251,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
         type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
@@ -328,6 +338,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BuildEX7_windows (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
         type: 3}
@@ -416,6 +431,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
         type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
@@ -498,6 +518,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BuildEX7_windows (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
         type: 3}
@@ -586,6 +611,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
         type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
@@ -671,6 +701,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
         type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
@@ -753,6 +788,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BuildEX7_windows
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
         type: 3}
@@ -849,6 +889,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BuildEX7_2x2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 08008ef1da4de1a4e80e9071ebd9535d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 08008ef1da4de1a4e80e9071ebd9535d,
         type: 3}
@@ -964,6 +1009,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BuildEX7_windows (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
         type: 3}
