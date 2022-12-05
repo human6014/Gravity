@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2652178246495816900}
   - component: {fileID: 490149296163879487}
   - component: {fileID: 3750470294464575265}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BikeRail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 6847821734044212568}
   - component: {fileID: 250797890076886197}
   - component: {fileID: 2781194183486079708}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BikeRail2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 1451474788239188941}
   - component: {fileID: 3345185947364528526}
   - component: {fileID: 7064108230207727888}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BikeRail1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -273,7 +273,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7483971532210034631}
   - component: {fileID: 1896544121632747729}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BikeRailLOD
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4831063925689595318}
   - component: {fileID: 7671043257905994546}
   - component: {fileID: 4074757825760761980}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: BusStopLOD (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 339148519478481382}
   - component: {fileID: 357813451968393025}
   - component: {fileID: 8635540829072189404}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: BusStop0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -171,7 +171,7 @@ GameObject:
   - component: {fileID: 4375009735155133310}
   - component: {fileID: 799656913624311003}
   - component: {fileID: 3241471260853784593}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: BusStop2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +254,7 @@ GameObject:
   - component: {fileID: 4877354019371794991}
   - component: {fileID: 8358694338468105610}
   - component: {fileID: 6045233122791209280}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: BusStop1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

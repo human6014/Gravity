@@ -74,22 +74,22 @@ public class BoidsMonster : PoolableScript
         {
             speed = Random.Range(settings.speedRange.x, settings.speedRange.y);
             egoVector = Random.insideUnitSphere;
-            yield return new WaitForSeconds(Random.Range(1, 3f));
+            yield return new WaitForSeconds(Random.Range(1f, 3f));
         }
     }
-    Collider[] colls;
+    
     IEnumerator FindNeighbourCoroutine()
     {
+        Collider[] colls;
         while (true)
         {
             neighbours.Clear();
 
             colls = Physics.OverlapSphere(cachedTransform.position, settings.neighbourDistance, settings.boidUnitLayer);
-            for (int i = 0; i < colls.Length; i++)
+            for (int i = 0; i < colls.Length && i <= settings.maxNeighbourCount; i++)
             {
                 if (Vector3.Angle(cachedTransform.forward, colls[i].transform.position - cachedTransform.position) <= settings.FOVAngle)
                     neighbours.Add(colls[i].GetComponent<BoidsMonster>());
-                if (i > settings.maxNeighbourCount) break;
             }
             yield return new WaitForSeconds(Random.Range(1f, 2f));
         }
@@ -102,7 +102,6 @@ public class BoidsMonster : PoolableScript
         separationVec = Vector3.zero;
         if (neighbours.Count > 0)
         {
-            Debug.Log(neighbours.Count);
             // 이웃 unit들의 위치 더하기
             for (int i = 0; i < neighbours.Count; i++)
             {

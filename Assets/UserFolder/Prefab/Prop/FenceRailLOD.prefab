@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5305425613480334889}
   - component: {fileID: 9083606418930407820}
   - component: {fileID: 6479418315354598726}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: FenceRail2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 8125444593079214683}
   - component: {fileID: 6280154813590804113}
   - component: {fileID: 8068468044527449982}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: FenceRail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -190,7 +190,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2285094433893317155}
   - component: {fileID: 4697914612189963042}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: FenceRailLOD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +254,7 @@ GameObject:
   - component: {fileID: 1551903571052930450}
   - component: {fileID: 2584847555365585351}
   - component: {fileID: 5624409032423587793}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: FenceRail1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

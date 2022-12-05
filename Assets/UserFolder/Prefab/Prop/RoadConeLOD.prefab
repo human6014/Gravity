@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3123434361865803010}
   - component: {fileID: 8800490710623785779}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: RoadConeLOD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 6392601945286159696}
   - component: {fileID: 8005374892030534389}
   - component: {fileID: 5259141434037982783}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: RoadCone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -155,7 +155,7 @@ GameObject:
   - component: {fileID: 5963412421379843812}
   - component: {fileID: 7308664437428218177}
   - component: {fileID: 4794469780035771787}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: RoadCone1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

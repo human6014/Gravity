@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 597801057509953810}
   - component: {fileID: 3436008665044952536}
   - component: {fileID: 5661873375446729967}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Flag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 691779360350042439}
   - component: {fileID: 2217922759642368040}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: FlagLOD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 5493206653715447803}
   - component: {fileID: 2807432239123756553}
   - component: {fileID: 3280892832414550600}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Flag2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -270,7 +270,7 @@ GameObject:
   - component: {fileID: 1670817499822909140}
   - component: {fileID: 6040463094698826939}
   - component: {fileID: 2763979239289792416}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Flag1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
