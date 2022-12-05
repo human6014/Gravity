@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 481409493953793744}
   - component: {fileID: 466228041079320969}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BollardSmallLOD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 3181934346226223324}
   - component: {fileID: 1983655284331169657}
   - component: {fileID: 4351511542411441075}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BollardSmall2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,7 +157,7 @@ GameObject:
   - component: {fileID: 1607387811212643582}
   - component: {fileID: 3578780585731012660}
   - component: {fileID: 2888748243137039888}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BollardSmall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -253,7 +253,7 @@ GameObject:
   - component: {fileID: 2663851957974302966}
   - component: {fileID: 1393930780132413267}
   - component: {fileID: 3800136354253667225}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BollardSmall1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

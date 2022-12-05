@@ -44,7 +44,6 @@ GameObject:
   - component: {fileID: 5732628066814903940}
   - component: {fileID: 5732628066814903941}
   - component: {fileID: 5732628066814903938}
-  - component: {fileID: 5732628066814903939}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -117,20 +116,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &5732628066814903939
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5732628066814903936}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!1 &5732628067189629141
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,7 +127,6 @@ GameObject:
   - component: {fileID: 5732628067189629140}
   - component: {fileID: 5732628067189629129}
   - component: {fileID: 5732628067189629142}
-  - component: {fileID: 5732628067189629143}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -215,19 +199,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5732628067189629143
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5732628067189629141}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8364665688436732564
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,6 +209,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8364665688436732563}
   - component: {fileID: 8364665688436732562}
+  - component: {fileID: 2032600708931188225}
   m_Layer: 11
   m_Name: BoidsMonster
   m_TagString: Untagged
@@ -274,3 +246,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: a9d02e7891867cf41884a48d49bfb983, type: 2}
+--- !u!65 &2032600708931188225
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8364665688436732564}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5190684, y: 0.500802, z: 1.1190962}
+  m_Center: {x: -0.000000029802322, y: 0.0027261376, z: 0.06337243}

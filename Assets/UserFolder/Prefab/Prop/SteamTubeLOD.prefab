@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3449441250580391448}
   - component: {fileID: 592812429193024210}
   - component: {fileID: 8955309318812647083}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SteamTube1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 1401304606930765149}
   - component: {fileID: 2656477854920149752}
   - component: {fileID: 232291352969608754}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SteamTube2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,7 +191,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5449233200474674506}
   - component: {fileID: 8410820611042539831}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SteamTubeLOD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +254,7 @@ GameObject:
   - component: {fileID: 7588193630668978779}
   - component: {fileID: 6836875943284897278}
   - component: {fileID: 8720518346542940468}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SteamTube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

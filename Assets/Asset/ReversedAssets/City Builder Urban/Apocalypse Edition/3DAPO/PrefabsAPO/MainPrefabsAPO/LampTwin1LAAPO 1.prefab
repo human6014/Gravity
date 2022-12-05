@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2609208638447591546}
   - component: {fileID: 2403198676631305123}
   - component: {fileID: 771969135118291433}
-  m_Layer: 16
+  m_Layer: 15
   m_Name: Light1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 685245007446101725}
   - component: {fileID: 8286210201434666137}
   - component: {fileID: 1737577732311614094}
-  m_Layer: 16
+  m_Layer: 15
   m_Name: Light2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -242,7 +242,7 @@ GameObject:
   - component: {fileID: 2350186641732851582}
   - component: {fileID: 538599092659037108}
   - component: {fileID: 6539323168409445764}
-  m_Layer: 16
+  m_Layer: 15
   m_Name: LampTwin1LAAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
