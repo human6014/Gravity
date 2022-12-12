@@ -56,9 +56,7 @@ namespace Manager
             }
         }
 
-        public static void CompleteGravityChange()
-        {
-            IsGravityChange = false;
-        }
+        public static void CompleteGravityChange() => IsGravityChange = false;
+        
     }
 }
