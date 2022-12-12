@@ -2736,20 +2736,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3751461614746347857
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2663296966049658514}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb589b15d911a09448a7caefec67f2ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rigAnimators: []
-  rigBuilders: []
 --- !u!114 &3751461614746347848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2838,6 +2824,20 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3751461614746347857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2663296966049658514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb589b15d911a09448a7caefec67f2ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigAnimators: []
+  rigBuilders: []
 --- !u!4 &2907020775372650998 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2042401708943937811, guid: f16ce536157c8b244a716fb05ea3fb87,

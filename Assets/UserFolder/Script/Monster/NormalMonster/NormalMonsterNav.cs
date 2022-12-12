@@ -15,6 +15,9 @@ public class NormalMonsterNav : MonoBehaviour
     private NavMeshAgent navAgent;
 
     public Vector3 NewPosition { get; set; } = Vector3.zero;
+    /// <summary>
+    /// true : navMesh사용, false : 사용자 이동
+    /// </summary>
     public bool IsFloor { get; set; } = true;
     public bool IsClimbing { get; private set; } = false;
     public Vector3 Position => transform.position;
@@ -29,22 +32,21 @@ public class NormalMonsterNav : MonoBehaviour
         if (GravitiesManager.IsGravityChange)
         {
             IsFloor = false;
-            navAgent.enabled = false;
             return;
         }
-        if (!IsFloor) return;
+        if (!IsFloor)
+        {
+            navAgent.Warp(NewPosition);
+            if (IsSameFloor()) IsFloor = true;
+            return;
+        }
 
-        if (navAgent.isActiveAndEnabled)
+        if (IsFloor)
         {
             navAgent.SetDestination(targetTransform.position);
 
             if (IsSameFloor()) IsClimbing = false;
-            else IsClimbing = true;
-        }
-        else
-        {
-            navAgent.enabled = true;
-            navAgent.Warp(NewPosition);
+            else               IsClimbing = true;
         }
     }
 
