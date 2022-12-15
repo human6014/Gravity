@@ -49,6 +49,7 @@ namespace main
             playerRigid = GetComponent<Rigidbody>();
             playerAnim = GetComponentInChildren<Animator>();
 
+            AIManager.PlayerTransfrom = transform;
             currentSpeed = normalSpeed;
         }
 

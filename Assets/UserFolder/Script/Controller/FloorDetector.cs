@@ -9,7 +9,10 @@ namespace Detector
     {
         [SerializeField]
         private GameObject[] floorObject;
-
+        public void Start()
+        {
+            AIManager.FloorDetector = this;
+        }
         public GameObject GetNowFloor()
         {
             return floorObject[(int)GravitiesManager.type];

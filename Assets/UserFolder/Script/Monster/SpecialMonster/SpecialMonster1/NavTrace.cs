@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Manager;
 using Detector;
 
 [RequireComponent(typeof(NavMeshAgent))]
@@ -14,21 +15,31 @@ public class NavTrace : MonoBehaviour
     private LegController legController;
     private AIController aiController;
 
-    [SerializeField] private FloorDetector floorDetector;
     [SerializeField] private AnimationController animationController;
-    [SerializeField] private Transform target;
 
+    #region Adjustment factor
+    [Header("Adjustment factor")]
+
+    [SerializeField] [Tooltip("회전 강도")] 
     private readonly float rotAdjustRatio = 0.5f;
+
+    [SerializeField] [Tooltip("최대 이동 속도")]
     private readonly float maxSpeed = 15f;
+
+    [SerializeField] [Tooltip("최소 이동 속도")] 
     private readonly float minSpeed = 7f;
+
     private float currentSpeed = 12.5f;
-    private float targetDistance;
-    private Vector3 navPosition;
+    #endregion
+
+    #region Property
     public bool IsOnMeshLink { get; private set; } = false;
     public bool IsClimbing { get; private set; } = false;
     public Vector3 ProceduralForwardAngle { get; set; }
     public Vector3 ProceduralUpAngle { get; set; }
     public Vector3 ProceduralPosition { get; set; }
+    #endregion
+
     public bool GetIsOnOffMeshLink() => navMeshAgent.isOnOffMeshLink;
     private void Start()
     {
@@ -37,6 +48,8 @@ public class NavTrace : MonoBehaviour
         agentLinkMover = GetComponent<AgentLinkMover>();
         legController = FindObjectOfType<LegController>();
         aiController = FindObjectOfType<AIController>();
+
+        currentSpeed = navMeshAgent.speed;
 
         navMeshAgent.updatePosition = false;
         navMeshAgent.updateRotation = false;
@@ -62,19 +75,18 @@ public class NavTrace : MonoBehaviour
         }
         else
         {
-            navMeshAgent.SetDestination(target.position);
+            navMeshAgent.SetDestination(AIManager.PlayerTransfrom.position);
             navMeshAgent.speed = currentSpeed;
 
             if (navMeshAgent.isOnOffMeshLink && !IsOnMeshLink) StartCoroutine(MeshLinkOffDelay());
 
-            targetDistance = Vector3.Distance(target.position, transform.position);
             targetDirection = (navMeshAgent.steeringTarget - transform.position).normalized;
             //targetForward = IsOnMeshLink == true ? ProceduralForwardAngle : targetDirection;
             targetForward = ProceduralForwardAngle + targetDirection;
 
             navRotation = Quaternion.LookRotation(targetForward, ProceduralUpAngle);
             transform.rotation = Quaternion.Lerp(transform.rotation, navRotation, rotAdjustRatio);
-            if (targetDistance <= navMeshAgent.stoppingDistance)
+            if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
             {
                 animationController.SetIdle();
             }
@@ -91,6 +103,7 @@ public class NavTrace : MonoBehaviour
         rigidbody.isKinematic = true;
         navMeshAgent.enabled = true;
         agentLinkMover.enabled = true;
+        //점프 등 패턴따라 사용될 수도 있음
     }
 
     //public bool IsSameFloor() => navMeshAgent.navMeshOwner.name == floorDetector.GetNowFloor().name;
@@ -98,7 +111,7 @@ public class NavTrace : MonoBehaviour
     private IEnumerator MeshLinkOffDelay()
     {
         IsOnMeshLink = true;
-        //navMeshAgent.speed = minSpeed;
+        //currentSpeed = minSpeed;
         yield return waitUntil;
         /*
         while (navMeshAgent.isOnOffMeshLink)
@@ -106,8 +119,8 @@ public class NavTrace : MonoBehaviour
             yield return null;
         }
         */
-        //navMeshAgent.speed = maxSpeed;
-        
+        //currentSpeed = maxSpeed;
+
         IsOnMeshLink = false;
     }
 
