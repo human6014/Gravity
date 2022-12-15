@@ -10,6 +10,7 @@ public class NewNormalMonsterTest : PoolableScript, IMonster
     [SerializeField] private Transform targetTransform;
     [SerializeField] private FloorDetector floorDetector;
     [SerializeField] private NormalMonsterNavTest normalMonsterNav;
+    [SerializeField] private LayerMask climbingDetectLayer;
 
     private Transform cachedTransform;
     private new Rigidbody rigidbody;
@@ -80,7 +81,8 @@ public class NewNormalMonsterTest : PoolableScript, IMonster
     {
         if (!normalMonsterNav.IsClimbing) return;
 
-        climbingLookRot = Quaternion.LookRotation(other.transform.position , GravitiesManager.GravityVector);
+        if (Physics.Raycast(cachedTransform.position, other.transform.position - cachedTransform.position, out RaycastHit hit, climbingDetectLayer))
+            climbingLookRot = Quaternion.LookRotation(-hit.normal, GravitiesManager.GravityVector);
     }
 
     public override void ReturnObject()

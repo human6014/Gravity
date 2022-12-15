@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    static Transform PlayerTransfrom { get; set; }
+   
     void Start()
     {
         
