@@ -495,7 +495,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3751461613455011974
 Transform:
   m_ObjectHideFlags: 0
@@ -2438,6 +2438,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 8609713882163509133, guid: f16ce536157c8b244a716fb05ea3fb87,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8859377104377185639, guid: f16ce536157c8b244a716fb05ea3fb87,
         type: 3}
       propertyPath: m_Layer
@@ -2780,9 +2785,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2336000a1c92d34ba122944f27e6636, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floorDetector: {fileID: 0}
   animationController: {fileID: 3751461614746347857}
-  target: {fileID: 0}
 --- !u!195 &3751461614746347852
 NavMeshAgent:
   m_ObjectHideFlags: 0

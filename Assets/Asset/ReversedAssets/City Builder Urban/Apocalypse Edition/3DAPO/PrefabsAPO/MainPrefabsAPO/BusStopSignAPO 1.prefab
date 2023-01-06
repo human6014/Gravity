@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7546128650555029345}
   - component: {fileID: 5515345530112586277}
   - component: {fileID: 3370352200075880577}
-  m_Layer: 15
+  m_Layer: 0
   m_Name: BusStopSignAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 17.390999, y: -0.078693815, z: 2.0410042}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7563124854816475463}
   - {fileID: 205713394424078226}
@@ -74,7 +73,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -6453615262258438565, guid: 4c3653c6a350e8f4fba4c9f2871401f1, type: 3}
 --- !u!1001 &382927204357683321
@@ -84,11 +83,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7546128650555029345}
     m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 92d109a7a9ad245469800fa8a72e4e7f,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92d109a7a9ad245469800fa8a72e4e7f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -103,11 +97,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 92d109a7a9ad245469800fa8a72e4e7f,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92d109a7a9ad245469800fa8a72e4e7f,
         type: 3}
@@ -126,6 +115,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 92d109a7a9ad245469800fa8a72e4e7f,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 92d109a7a9ad245469800fa8a72e4e7f,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 92d109a7a9ad245469800fa8a72e4e7f,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
@@ -141,11 +140,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 92d109a7a9ad245469800fa8a72e4e7f,
         type: 3}
-      propertyPath: m_DynamicOccludee
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: 92d109a7a9ad245469800fa8a72e4e7f,
-        type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: d56863fcfe2b82746abfa7418c3bf4e8, type: 2}
@@ -153,11 +147,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BusStopSign1
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 92d109a7a9ad245469800fa8a72e4e7f,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 92d109a7a9ad245469800fa8a72e4e7f,
         type: 3}
@@ -187,11 +176,6 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 4c3653c6a350e8f4fba4c9f2871401f1,
         type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4c3653c6a350e8f4fba4c9f2871401f1,
-        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -204,11 +188,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4c3653c6a350e8f4fba4c9f2871401f1,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4c3653c6a350e8f4fba4c9f2871401f1,
         type: 3}
@@ -227,6 +206,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4c3653c6a350e8f4fba4c9f2871401f1,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4c3653c6a350e8f4fba4c9f2871401f1,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4c3653c6a350e8f4fba4c9f2871401f1,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
@@ -242,16 +231,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 4c3653c6a350e8f4fba4c9f2871401f1,
         type: 3}
-      propertyPath: m_CastShadows
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: 4c3653c6a350e8f4fba4c9f2871401f1,
-        type: 3}
-      propertyPath: m_DynamicOccludee
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: 4c3653c6a350e8f4fba4c9f2871401f1,
-        type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: d56863fcfe2b82746abfa7418c3bf4e8, type: 2}
@@ -259,11 +238,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BusStopSign2
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 4c3653c6a350e8f4fba4c9f2871401f1,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4c3653c6a350e8f4fba4c9f2871401f1,
         type: 3}
@@ -293,11 +267,6 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: e6ff11068528e45448131e3c21144e1b,
         type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: e6ff11068528e45448131e3c21144e1b,
-        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -310,11 +279,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: e6ff11068528e45448131e3c21144e1b,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e6ff11068528e45448131e3c21144e1b,
         type: 3}
@@ -333,6 +297,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e6ff11068528e45448131e3c21144e1b,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e6ff11068528e45448131e3c21144e1b,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e6ff11068528e45448131e3c21144e1b,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
@@ -348,11 +322,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: e6ff11068528e45448131e3c21144e1b,
         type: 3}
-      propertyPath: m_DynamicOccludee
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: e6ff11068528e45448131e3c21144e1b,
-        type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: d56863fcfe2b82746abfa7418c3bf4e8, type: 2}
@@ -360,11 +329,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BusStopSign
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: e6ff11068528e45448131e3c21144e1b,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e6ff11068528e45448131e3c21144e1b,
         type: 3}

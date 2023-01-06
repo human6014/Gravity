@@ -41,6 +41,9 @@ public class NavTrace : MonoBehaviour
     #endregion
 
     public bool GetIsOnOffMeshLink() => navMeshAgent.isOnOffMeshLink;
+    public void SetNavMeshEnable(bool isOn) => navMeshAgent.enabled = isOn;
+    public void SetNavMeshPos(Vector3 pos) => navMeshAgent.Warp(pos);
+    
     private void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -70,7 +73,7 @@ public class NavTrace : MonoBehaviour
 
         if (!navMeshAgent.isActiveAndEnabled) //점프 끝날 때 작동
         {
-            navMeshAgent.Warp(aiController.GetPosition());
+            //navMeshAgent.Warp(aiController.GetPosition());
             transform.rotation = aiController.GetRotation();
         }
         else
@@ -100,9 +103,6 @@ public class NavTrace : MonoBehaviour
             //IsClimbing = !IsSameFloor();
             //navMeshAgent.speed = IsClimbing == true ? minSpeed : maxSpeed;
         }
-        rigidbody.isKinematic = true;
-        navMeshAgent.enabled = true;
-        agentLinkMover.enabled = true;
         //점프 등 패턴따라 사용될 수도 있음
     }
 

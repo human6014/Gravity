@@ -15,7 +15,7 @@ namespace Detector
         }
         public GameObject GetNowFloor()
         {
-            return floorObject[(int)GravitiesManager.type];
+            return floorObject[(int)GravitiesManager.currentGravityType];
         }
     }
 }

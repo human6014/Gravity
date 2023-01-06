@@ -46,7 +46,7 @@ public class AIController : MonoBehaviour
 
         direction = target.position - cachedTransform.position;
         float dir = 0;
-        switch (GravitiesManager.type)
+        switch (GravitiesManager.currentGravityType)
         {
             case GravitiesType.xUp:
             case GravitiesType.xDown:
@@ -73,10 +73,11 @@ public class AIController : MonoBehaviour
 
         //DrawPath(groundDirection.normalized, v0, angle, time, _step); //경로 그리기
 
-        if (Input.GetKeyDown(KeyCode.Backspace) && !isPreJump)
+        if (Input.GetKeyDown(KeyCode.Backspace) && !isPreJump && !navTrace.GetIsOnOffMeshLink())
             StartCoroutine(Coroutine_Movement(groundDirection.normalized, v0, angle, time));
     }
 
+#if UNITY_EDITOR
     private void DrawPath(Vector3 direction, float v0, float angle, float time, float step)
     {
         step = Mathf.Max(0.01f, step);
@@ -94,6 +95,7 @@ public class AIController : MonoBehaviour
         float yFinal = v0 * time * Mathf.Sin(angle) - 0.5f * Physics.gravity.magnitude * Mathf.Pow(time, 2);
         lineRenderer.SetPosition(count, cachedTransform.position + direction * xFinal - GravitiesManager.GravityVector * yFinal);
     }
+#endif
 
     private float QuadraticEquation(float a, float b, float c, float sign) =>
         (-b + sign * Mathf.Sqrt(b * b - 4 * a * c)) / (2 * a);
@@ -119,6 +121,7 @@ public class AIController : MonoBehaviour
 
     IEnumerator Coroutine_Movement(Vector3 direction, float v0, float angle, float time)
     {
+        navTrace.SetNavMeshEnable(false);
         isPreJump = true;
         legController.SetPreJump(true);
 
@@ -139,18 +142,22 @@ public class AIController : MonoBehaviour
         startPos = cachedTransform.position;
         Quaternion startRotation = cachedTransform.rotation;
         Quaternion targetRot = Quaternion.LookRotation(groundDirection,target.up);
+        Debug.Log("time : " + time);
         while (elapsedTime < time)
         {
             float x = v0 * elapsedTime * Mathf.Cos(angle);
             float y = v0 * elapsedTime * Mathf.Sin(angle) - 0.5f * Physics.gravity.magnitude * Mathf.Pow(elapsedTime, 2);
             transform.SetPositionAndRotation(startPos + direction * x - GravitiesManager.GravityVector * y, 
                              Quaternion.Lerp(startRotation, targetRot, elapsedTime / time));
-            elapsedTime += Time.deltaTime * (time / 1.5f);
+            //elapsedTime += Time.deltaTime * (time / 1.5f);
             //elapsedTime += Time.deltaTime;
+            elapsedTime += Time.deltaTime * 2.5f;
             yield return null;
         }
         legController.Jump(false);
         isPreJump = false;
+        navTrace.SetNavMeshEnable(true);
+        navTrace.SetNavMeshPos(transform.position);
     }
     #endregion
 }

@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 5585741563791314967}
   - component: {fileID: 8803219845369143218}
   - component: {fileID: 6759804665412807544}
-  - component: {fileID: 2018406512416514786}
-  - component: {fileID: 7641836323108669537}
-  m_Layer: 14
+  - component: {fileID: 2264972776895960267}
+  - component: {fileID: 6287939642989699992}
+  m_Layer: 0
   m_Name: RoofAirConDuctAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,7 +30,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.437465, y: 67.34557, z: 20.733627}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -54,12 +53,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -84,9 +81,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2018406512416514786
-BoxCollider:
+--- !u!64 &2264972776895960267
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -95,11 +91,12 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 8.902056, y: 2.7943954, z: 3.075697}
-  m_Center: {x: 1.32689, y: -0.22859573, z: -3.1548853}
---- !u!65 &7641836323108669537
-BoxCollider:
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5495902117074765545, guid: b3eb696f22999e847bcd3a8be6ab8820, type: 3}
+--- !u!64 &6287939642989699992
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -108,6 +105,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3.9664502, y: 2.8085861, z: 9.9364805}
-  m_Center: {x: -1.167352, y: -0.2215004, z: 0.27014303}
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5495902117074765545, guid: b3eb696f22999e847bcd3a8be6ab8820, type: 3}
