@@ -7,8 +7,8 @@ namespace Manager
 {
     public class GravitiesManager
     {
-        public static GravitiesType type = GravitiesType.yUp;
-        public static GravitiesType beforeType = GravitiesType.yUp;
+        public static GravitiesType currentGravityType = GravitiesType.yUp;
+        public static GravitiesType beforeGravityType = GravitiesType.yUp;
         public static GravityDirection gravityDirection = GravityDirection.Y;
         /// <summary>
         /// 중력 방향 마우스 스크롤 아래  : -1 , 위 : 1
@@ -29,24 +29,24 @@ namespace Manager
         
         public static void GravityChange(int direct)
         {
-            beforeType = type;
+            beforeGravityType = currentGravityType;
             GravityDirectionValue = direct;
             switch (gravityDirection)
             {
                 case GravityDirection.X:
-                    type = direct < 0 ? GravitiesType.xUp : GravitiesType.xDown;
+                    currentGravityType = direct < 0 ? GravitiesType.xUp : GravitiesType.xDown;
                     GravityVector = new Vector3(direct, 0, 0);
                     break;
                 case GravityDirection.Y:
-                    type = direct < 0 ? GravitiesType.yUp : GravitiesType.yDown;
+                    currentGravityType = direct < 0 ? GravitiesType.yUp : GravitiesType.yDown;
                     GravityVector = new Vector3(0, direct, 0);
                     break;
                 case GravityDirection.Z:
-                    type = direct < 0 ? GravitiesType.zUp : GravitiesType.zDown;
+                    currentGravityType = direct < 0 ? GravitiesType.zUp : GravitiesType.zDown;
                     GravityVector = new Vector3(0, 0, direct);
                     break;
             }
-            if (beforeType == type) IsGravityDupleicated = true;
+            if (beforeGravityType == currentGravityType) IsGravityDupleicated = true;
             else
             {
                 Physics.gravity = GravityVector * Physics.gravity.magnitude;

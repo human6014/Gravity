@@ -146,15 +146,15 @@ namespace main
 
             _cameraRotationX = _xRotation * lookSensitivity;
 
-            if (flipOnce && (int)GravitiesManager.beforeType % 2 != (int)GravitiesManager.type % 2)
+            if (flipOnce && (int)GravitiesManager.beforeGravityType % 2 != (int)GravitiesManager.currentGravityType % 2)
                 currentCameraRotationX *= -1;
 
-            currentCameraRotationX += (int)GravitiesManager.type % 2 == 0 ? _cameraRotationX : -_cameraRotationX;
+            currentCameraRotationX += (int)GravitiesManager.currentGravityType % 2 == 0 ? _cameraRotationX : -_cameraRotationX;
 
-            switch (GravitiesManager.type)
+            switch (GravitiesManager.currentGravityType)
             {
                 case GravitiesType.xUp:
-                    interpolationAngle = (int)GravitiesManager.beforeType >= 4 && !GravitiesManager.IsGravityDupleicated ? -90 : 0;
+                    interpolationAngle = (int)GravitiesManager.beforeGravityType >= 4 && !GravitiesManager.IsGravityDupleicated ? -90 : 0;
 
                     newRotation.x = currentCameraRotationX + interpolationAngle;
 
@@ -162,7 +162,7 @@ namespace main
                     newRotation.z = -90;
                     break;
                 case GravitiesType.xDown:
-                    interpolationAngle = (int)GravitiesManager.beforeType >= 4 && !GravitiesManager.IsGravityDupleicated ? -90 : 0;
+                    interpolationAngle = (int)GravitiesManager.beforeGravityType >= 4 && !GravitiesManager.IsGravityDupleicated ? -90 : 0;
 
                     newRotation.x = currentCameraRotationX + interpolationAngle;
 
@@ -177,7 +177,7 @@ namespace main
                     newRotation.z = 0;
                     break;
                 case GravitiesType.yDown:
-                    interpolationAngle = (int)GravitiesManager.beforeType >= 3 && !GravitiesManager.IsGravityDupleicated ? -180 : 0;
+                    interpolationAngle = (int)GravitiesManager.beforeGravityType >= 3 && !GravitiesManager.IsGravityDupleicated ? -180 : 0;
 
                     newRotation.y = currentCameraRotationX + interpolationAngle;
 
@@ -185,7 +185,7 @@ namespace main
                     newRotation.z = 180;
                     break;
                 case GravitiesType.zUp:
-                    interpolationAngle = (int)GravitiesManager.beforeType <= 1 ? -90 : 90;
+                    interpolationAngle = (int)GravitiesManager.beforeGravityType <= 1 ? -90 : 90;
 
                     newRotation.x = currentCameraRotationX + interpolationAngle;
 
@@ -193,7 +193,7 @@ namespace main
                     newRotation.z = -90;
                     break;
                 case GravitiesType.zDown:
-                    interpolationAngle = (int)GravitiesManager.beforeType == 5 && !GravitiesManager.IsGravityDupleicated ? -180 : -90;
+                    interpolationAngle = (int)GravitiesManager.beforeGravityType == 5 && !GravitiesManager.IsGravityDupleicated ? -180 : -90;
 
                     newRotation.x = currentCameraRotationX + interpolationAngle;
 

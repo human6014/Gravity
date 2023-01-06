@@ -6,25 +6,26 @@ namespace Manager
 {
     public class PerformanceManager : MonoBehaviour {
 
-        [SerializeField] Text uiText;
-        private int lastFrameIndex;
-        private float[] frameDeltaTimeArray;
-        private float total;
-        void Awake() => frameDeltaTimeArray = new float[50];
+        [SerializeField] private Text text;
 
-        void Update()
+        private float frame;
+        private float timeElapsed;
+        private float frameTime;
+
+        private void Update()
         {
-            frameDeltaTimeArray[lastFrameIndex] = Time.deltaTime;
-            lastFrameIndex = (lastFrameIndex + 1) % frameDeltaTimeArray.Length;
-
-            uiText.text = Mathf.RoundToInt(CalculateFPS()).ToString();
+            frame++;
+            timeElapsed += Time.unscaledDeltaTime;
+            if (timeElapsed > 1)
+            {
+                frameTime = timeElapsed / frame;
+                timeElapsed -= 1;
+                UpdateText();
+                frame = 0;
+            }
         }
 
-        float CalculateFPS()
-        {
-            total = 0f;
-            foreach(float deltaTime in frameDeltaTimeArray) total += deltaTime;
-            return frameDeltaTimeArray.Length / total;
-        }
+        private void UpdateText() =>
+            text.text = string.Format("FPS : {0}, FrameTime : {1:F2} ms", frame, frameTime * 1000.0f);
     }
 }
