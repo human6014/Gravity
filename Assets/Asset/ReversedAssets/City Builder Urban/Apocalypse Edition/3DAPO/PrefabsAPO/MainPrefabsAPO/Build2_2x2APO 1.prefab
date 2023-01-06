@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1232477877468493430}
   - component: {fileID: 6840448298833501799}
   - component: {fileID: 620091152949472317}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Quad (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0.7071017, z: -0, w: -0.70711195}
   m_LocalPosition: {x: -10.252, y: 2.3156, z: 3.245}
   m_LocalScale: {x: 3.8364203, y: 2.9924216, z: 3.7256792}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2989178939439210347}
   m_RootOrder: 2
@@ -52,12 +51,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -82,7 +79,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &2121509099298958445
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,7 +90,7 @@ GameObject:
   - component: {fileID: 6457602169847354417}
   - component: {fileID: 4541263932598093493}
   - component: {fileID: 4930782244541634163}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Quad (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,7 +107,6 @@ Transform:
   m_LocalRotation: {x: -0, y: 0.70710987, z: -0, w: -0.7071037}
   m_LocalPosition: {x: 10.369398, y: 2.338545, z: -3.026001}
   m_LocalScale: {x: 3.8364203, y: 2.9924216, z: 3.7256792}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2989178939439210347}
   m_RootOrder: 0
@@ -135,12 +130,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -165,7 +158,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &2463577594116310481
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,7 +169,8 @@ GameObject:
   - component: {fileID: 2989178939439210347}
   - component: {fileID: 2221517052375814350}
   - component: {fileID: 4120968158654080004}
-  m_Layer: 14
+  - component: {fileID: 2159718042250332505}
+  m_Layer: 0
   m_Name: Build2_2x2APO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,7 +187,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 9.9746, y: -0.0042638, z: 24.777}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6457602169847354417}
   - {fileID: 1127474618244600120}
@@ -221,13 +213,11 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 0
-  m_StaticShadowCaster: 0
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -252,7 +242,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2159718042250332505
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2463577594116310481}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 21.632544, y: 5.3000107, z: 21.632545}
+  m_Center: {x: -0.000002861023, y: 2.6489038, z: -0.0000014305115}
 --- !u!1 &2835669033035203462
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,7 +266,7 @@ GameObject:
   - component: {fileID: 1127474618244600120}
   - component: {fileID: 7249993962895194046}
   - component: {fileID: 9034036529765458462}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Quad (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -281,7 +283,6 @@ Transform:
   m_LocalRotation: {x: -0, y: 0.0000058859578, z: -0, w: -1}
   m_LocalPosition: {x: -2.929, y: 2.3156, z: -10.247}
   m_LocalScale: {x: 3.8364203, y: 2.9924216, z: 3.7256792}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2989178939439210347}
   m_RootOrder: 1
@@ -305,12 +306,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -335,7 +334,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &7786854576314944376
 GameObject:
   m_ObjectHideFlags: 0
@@ -347,7 +345,7 @@ GameObject:
   - component: {fileID: 6496420795625826486}
   - component: {fileID: 2735066736385657913}
   - component: {fileID: 5648051243385704588}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Quad (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -364,7 +362,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -1, z: -0, w: -0.000008687377}
   m_LocalPosition: {x: 3.12, y: 2.3156, z: 10.247}
   m_LocalScale: {x: 3.8364203, y: 2.9924216, z: 3.7256792}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2989178939439210347}
   m_RootOrder: 3
@@ -388,12 +385,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -418,4 +413,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8960198003476750287}
   - component: {fileID: 1026552847920191962}
   - component: {fileID: 1429428773281774364}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Burger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.293, y: -0.095, z: 0.359}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 5
@@ -52,12 +51,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -82,7 +79,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &845679158754973880
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,7 +90,7 @@ GameObject:
   - component: {fileID: 4524397616712610373}
   - component: {fileID: 794037089198957776}
   - component: {fileID: 9135971557722607342}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Sauce5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,7 +107,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.598, y: -0.144, z: 1.135}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 15
@@ -135,12 +130,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -165,7 +158,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1133842690972682464
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,7 +169,7 @@ GameObject:
   - component: {fileID: 933486265980971292}
   - component: {fileID: 7630790670924843742}
   - component: {fileID: 8262936458546802407}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Can1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,7 +186,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.2801, y: 0.104, z: -0.7589}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 6
@@ -218,12 +209,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -248,7 +237,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1561251436764413585
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,7 +248,7 @@ GameObject:
   - component: {fileID: 7551690838514906813}
   - component: {fileID: 8159865992410242153}
   - component: {fileID: 731209000501123989}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Bowl1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,7 +265,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.146, y: 0.05, z: -0.464}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 0
@@ -301,12 +288,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -331,7 +316,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1656139773746591128
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,7 +327,7 @@ GameObject:
   - component: {fileID: 1656139773746591129}
   - component: {fileID: 1656139773746591135}
   - component: {fileID: 1656139773746591134}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Can3 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -360,7 +344,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.0989, y: 0.2496, z: -0.8096}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 29
@@ -384,12 +367,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -414,7 +395,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1656139773958732354
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,7 +406,7 @@ GameObject:
   - component: {fileID: 1656139773958732355}
   - component: {fileID: 1656139773958732353}
   - component: {fileID: 1656139773958732352}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Burger (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -443,7 +423,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.115, y: -0.095, z: 0.359}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 20
@@ -467,12 +446,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -497,7 +474,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1656139774097763103
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,7 +485,7 @@ GameObject:
   - component: {fileID: 1656139774097763100}
   - component: {fileID: 1656139774097763170}
   - component: {fileID: 1656139774097763101}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Bun2 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -526,7 +502,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.039, y: -0.068, z: 0.741}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 25
@@ -550,12 +525,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -580,7 +553,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1656139774142086142
 GameObject:
   m_ObjectHideFlags: 0
@@ -592,7 +564,7 @@ GameObject:
   - component: {fileID: 1656139774142086143}
   - component: {fileID: 1656139774142086141}
   - component: {fileID: 1656139774142086140}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Bun2 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -609,7 +581,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.591, y: -0.294, z: 0.127}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 16
@@ -633,12 +604,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -663,7 +632,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1656139774285735048
 GameObject:
   m_ObjectHideFlags: 0
@@ -675,7 +643,7 @@ GameObject:
   - component: {fileID: 1656139774285735049}
   - component: {fileID: 1656139774285735055}
   - component: {fileID: 1656139774285735054}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: HotDog (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -692,7 +660,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.27, y: -0.08, z: 0.075}
   m_LocalScale: {x: 0.89586, y: 0.89586, z: 0.89586}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 18
@@ -716,12 +683,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -746,7 +711,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1656139774488114065
 GameObject:
   m_ObjectHideFlags: 0
@@ -758,7 +722,7 @@ GameObject:
   - component: {fileID: 1656139774488114070}
   - component: {fileID: 1656139774488114068}
   - component: {fileID: 1656139774488114071}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Bun2 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -775,7 +739,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.123, y: -0.068, z: 0.741}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 26
@@ -799,12 +762,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -829,7 +790,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1656139774777995521
 GameObject:
   m_ObjectHideFlags: 0
@@ -841,7 +801,7 @@ GameObject:
   - component: {fileID: 1656139774777995526}
   - component: {fileID: 1656139774777995524}
   - component: {fileID: 1656139774777995527}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Burger (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -858,7 +818,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.054, y: -0.095, z: 0.138}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 21
@@ -882,12 +841,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -912,7 +869,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1656139775033579281
 GameObject:
   m_ObjectHideFlags: 0
@@ -924,7 +880,7 @@ GameObject:
   - component: {fileID: 1656139775033579286}
   - component: {fileID: 1656139775033579284}
   - component: {fileID: 1656139775033579287}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: HotDog (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -941,7 +897,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.203, y: -0.08, z: 0.075}
   m_LocalScale: {x: 0.89586, y: 0.89586, z: 0.89586}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 19
@@ -965,12 +920,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -995,7 +948,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1656139775287560673
 GameObject:
   m_ObjectHideFlags: 0
@@ -1007,7 +959,7 @@ GameObject:
   - component: {fileID: 1656139775287560678}
   - component: {fileID: 1656139775287560676}
   - component: {fileID: 1656139775287560679}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Sauce5 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1024,7 +976,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.57, y: -0.373, z: -1.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 24
@@ -1048,12 +999,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1078,7 +1027,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1656139775691954608
 GameObject:
   m_ObjectHideFlags: 0
@@ -1090,7 +1038,7 @@ GameObject:
   - component: {fileID: 1656139775691954609}
   - component: {fileID: 1656139775691954615}
   - component: {fileID: 1656139775691954614}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: HotDog (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1107,7 +1055,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.333, y: -0.08, z: 0.075}
   m_LocalScale: {x: 0.89586, y: 0.89586, z: 0.89586}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 17
@@ -1131,12 +1078,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1161,7 +1106,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1656139775814390974
 GameObject:
   m_ObjectHideFlags: 0
@@ -1173,7 +1117,7 @@ GameObject:
   - component: {fileID: 1656139775814390975}
   - component: {fileID: 1656139775814390973}
   - component: {fileID: 1656139775814390972}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Bun (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1190,7 +1134,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.2933, y: 0.001, z: 0.7675}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 28
@@ -1214,12 +1157,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1244,7 +1185,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1656139775814908998
 GameObject:
   m_ObjectHideFlags: 0
@@ -1256,7 +1196,7 @@ GameObject:
   - component: {fileID: 1656139775814908999}
   - component: {fileID: 1656139775814908997}
   - component: {fileID: 1656139775814908996}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Sauce (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1273,7 +1213,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.564, y: -0.393, z: -1.061}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 22
@@ -1297,12 +1236,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1327,7 +1264,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1656139775840770133
 GameObject:
   m_ObjectHideFlags: 0
@@ -1339,7 +1275,7 @@ GameObject:
   - component: {fileID: 1656139775840770138}
   - component: {fileID: 1656139775840770136}
   - component: {fileID: 1656139775840770139}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Bun (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1356,7 +1292,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.2619, y: -0.073, z: 0.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 27
@@ -1380,12 +1315,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1410,7 +1343,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1656139775869373198
 GameObject:
   m_ObjectHideFlags: 0
@@ -1422,7 +1354,7 @@ GameObject:
   - component: {fileID: 1656139775869373199}
   - component: {fileID: 1656139775869373197}
   - component: {fileID: 1656139775869373196}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Sauce4 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1439,7 +1371,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.567, y: -0.373, z: -1.351}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 23
@@ -1463,12 +1394,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1493,7 +1422,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1763613394686478216
 GameObject:
   m_ObjectHideFlags: 0
@@ -1505,7 +1433,7 @@ GameObject:
   - component: {fileID: 5038266761741664503}
   - component: {fileID: 6414264800171968206}
   - component: {fileID: 6013974970818739699}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Bowl3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1522,7 +1450,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.288, y: -0.307, z: -1.295}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 2
@@ -1546,12 +1473,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1576,7 +1501,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1890002799709175208
 GameObject:
   m_ObjectHideFlags: 0
@@ -1587,7 +1511,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1256912372817782546}
   - component: {fileID: 1656139774793617629}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: FoodCartAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1604,7 +1528,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0.5750839, z: 0, w: 0.8180945}
   m_LocalPosition: {x: 19.635416, y: 1.249, z: 12.37166}
   m_LocalScale: {x: 0.89, y: 0.89, z: 0.89}
-  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7551690838514906813}
   - {fileID: 5355500381438038086}
@@ -1663,7 +1586,7 @@ GameObject:
   - component: {fileID: 4919139347309592916}
   - component: {fileID: 4097821197168539254}
   - component: {fileID: 937392162193793275}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Bun2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1680,7 +1603,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.033, y: -0.068, z: 0.741}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 4
@@ -1704,12 +1626,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1734,7 +1654,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &2942052763267756875
 GameObject:
   m_ObjectHideFlags: 0
@@ -1746,7 +1665,7 @@ GameObject:
   - component: {fileID: 9221316767669867703}
   - component: {fileID: 1184162122797564478}
   - component: {fileID: 7443778728041015381}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Can2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1763,7 +1682,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.152, y: 0.104, z: -0.803}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 7
@@ -1787,12 +1705,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1817,7 +1733,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &3971582624824900690
 GameObject:
   m_ObjectHideFlags: 0
@@ -1829,7 +1744,7 @@ GameObject:
   - component: {fileID: 3852251466601653762}
   - component: {fileID: 321354323932415338}
   - component: {fileID: 8388227530187143950}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Sauce2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1846,7 +1761,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.583, y: -0.144, z: 0.836}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 12
@@ -1870,12 +1784,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1900,7 +1812,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &4746733710934484694
 GameObject:
   m_ObjectHideFlags: 0
@@ -1912,7 +1823,7 @@ GameObject:
   - component: {fileID: 6113030357725152847}
   - component: {fileID: 8336746480673515720}
   - component: {fileID: 6240735681579788009}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Sauce4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1929,7 +1840,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.601, y: -0.144, z: 0.984}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 14
@@ -1953,12 +1863,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1983,7 +1891,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &5151384595679568007
 GameObject:
   m_ObjectHideFlags: 0
@@ -1996,7 +1903,7 @@ GameObject:
   - component: {fileID: 1324428648006233459}
   - component: {fileID: 3778927674872893397}
   - component: {fileID: 1656139774997420053}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: FoodCart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2013,7 +1920,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.000000029802322, y: -0.000000014901161, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 9
@@ -2037,12 +1943,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2067,7 +1971,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!64 &1656139774997420053
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2093,7 +1996,7 @@ GameObject:
   - component: {fileID: 2304075352657376997}
   - component: {fileID: 9071726133693274819}
   - component: {fileID: 2966278346051037773}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Can3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2110,7 +2013,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.0418, y: 0.104, z: -0.8058}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 8
@@ -2134,12 +2036,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2164,7 +2064,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &7057924908295756121
 GameObject:
   m_ObjectHideFlags: 0
@@ -2176,7 +2075,7 @@ GameObject:
   - component: {fileID: 5355500381438038086}
   - component: {fileID: 1625416340545427051}
   - component: {fileID: 1401335375423766425}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Bowl2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2193,7 +2092,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.32, y: -0.308, z: -0.842}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 1
@@ -2217,12 +2115,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2247,7 +2143,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &7751009764394955318
 GameObject:
   m_ObjectHideFlags: 0
@@ -2259,7 +2154,7 @@ GameObject:
   - component: {fileID: 7518825738446456004}
   - component: {fileID: 2325305984983517157}
   - component: {fileID: 2186622448241829965}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Bun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2276,7 +2171,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.3331, y: -0.073, z: 0.6713}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 3
@@ -2300,12 +2194,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2330,7 +2222,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &7996409309346373612
 GameObject:
   m_ObjectHideFlags: 0
@@ -2342,7 +2233,7 @@ GameObject:
   - component: {fileID: 247698290360149317}
   - component: {fileID: 2082594249643528156}
   - component: {fileID: 7581538366421916202}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Sauce3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2359,7 +2250,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.584, y: -0.155, z: 0.698}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 13
@@ -2383,12 +2273,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2413,7 +2301,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &8557713760545897568
 GameObject:
   m_ObjectHideFlags: 0
@@ -2425,7 +2312,7 @@ GameObject:
   - component: {fileID: 4629860358992572891}
   - component: {fileID: 4363141098372242321}
   - component: {fileID: 5859299787114628029}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Sauce
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2442,7 +2329,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.604, y: -0.164, z: 1.274}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 11
@@ -2466,12 +2352,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2496,7 +2380,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &8588037204875503817
 GameObject:
   m_ObjectHideFlags: 0
@@ -2508,7 +2391,7 @@ GameObject:
   - component: {fileID: 5282421052958918720}
   - component: {fileID: 8844537299140657619}
   - component: {fileID: 9119026111055210692}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: HotDog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2525,7 +2408,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.59, y: -0.27957, z: 0.124}
   m_LocalScale: {x: 0.89586, y: 0.89586, z: 0.89586}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256912372817782546}
   m_RootOrder: 10
@@ -2549,12 +2431,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2579,4 +2459,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}

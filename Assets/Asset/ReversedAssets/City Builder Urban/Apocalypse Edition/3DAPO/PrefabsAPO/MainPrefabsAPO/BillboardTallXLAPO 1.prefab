@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7772730234699474525}
   - component: {fileID: 5492913520781791895}
   - component: {fileID: 4543959542842859253}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: BillboardTallXLAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +29,6 @@ Transform:
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -11.1, y: 51.44, z: -6.62}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2141170394641501017}
   m_Father: {fileID: 0}
@@ -54,12 +53,10 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -84,7 +81,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!64 &4543959542842859253
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -110,7 +106,7 @@ GameObject:
   - component: {fileID: 2141170394641501017}
   - component: {fileID: 3957947863680847781}
   - component: {fileID: 870157613056480037}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Quad (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +123,6 @@ Transform:
   m_LocalRotation: {x: -0, y: -0.7071064, z: -0, w: 0.7071072}
   m_LocalPosition: {x: 0.059999958, y: 5.231003, z: -0.14900005}
   m_LocalScale: {x: 14.668613, y: 27.996063, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6661267373917235704}
   m_RootOrder: 0
@@ -151,12 +146,10 @@ MeshRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -181,4 +174,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
