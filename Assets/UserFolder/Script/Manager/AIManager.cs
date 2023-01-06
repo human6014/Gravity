@@ -29,7 +29,7 @@ namespace Manager
         /// </summary>
         /// <param name="transform">평면 위치에 해당하는 transform</param>
         /// <returns>값을 구할 수 있을 경우 유효한 Vector3 값, 오류일 경우 Vector3.zero</returns>
-        public static Vector3 CurrentTargetDirection(Transform transform)
+        public static Vector3 CurrentTargetPosition(Transform transform)
         {
             Vector3 playerPos = PlayerTransfrom.position;
             switch (GravitiesManager.gravityDirection)
