@@ -56,8 +56,8 @@ public class FinalNormalMonster : MonoBehaviour
 
         currentSpeed = navMeshAgent.speed;
 
-        navMeshAgent.updateRotation = false;
-        navMeshAgent.updateUpAxis = false;
+        //navMeshAgent.updateRotation = false;
+        //navMeshAgent.updateUpAxis = false;
     }
 
     private void FixedUpdate()
@@ -73,23 +73,29 @@ public class FinalNormalMonster : MonoBehaviour
             navSupporter.OnNoneMode(true);
         }
 
-        IsSameFloor = AIManager.IsSameFloor(navMeshAgent);
 
+        //Debug.Log(IsSameFloor);
         if (IsNoneMode)
         {
             CheckMode();
             return;
         }
+        navMeshAgent.SetDestination(AIManager.PlayerTransfrom.position);
+        IsSameFloor = AIManager.IsSameFloor(navMeshAgent);
+        HasPath = !navMeshAgent.pathPending;
 
-        if (navMeshAgent.isPathStale)
+        if (navMeshAgent.pathPending)
         {
             IsAutoMode = false;
         }
 
-        navMeshAgent.SetDestination(AIManager.PlayerTransfrom.position);
-        HasPath = !navMeshAgent.isPathStale;
+        
         //위 두줄 중요함
         //IsSameFloor = AIManager.IsSameFloor(navMeshAgent);
+        Debug.Log("navMeshAgent.pathStatus : " + navMeshAgent.pathStatus) ;
+        Debug.Log("navMeshAgent.pathPending : " + navMeshAgent.pathPending);
+        Debug.Log("navMeshAgent.hasPath : " + navMeshAgent.hasPath);
+        Debug.Log("navMeshAgent.isPathStale : " + navMeshAgent.isPathStale);
 
         navMeshAgent.isStopped = !IsAutoMode;
         navMeshAgent.updatePosition = IsAutoMode;
@@ -105,7 +111,7 @@ public class FinalNormalMonster : MonoBehaviour
         if (IsSameFloor)
         {
             navMeshAgent.SetDestination(AIManager.PlayerTransfrom.position);
-            HasPath = !navMeshAgent.isPathStale;
+            HasPath = !navMeshAgent.pathPending;
             navMeshAgent.updatePosition = true;
             IsAutoMode = HasPath;
             rigidbody.useGravity = false;
@@ -121,12 +127,16 @@ public class FinalNormalMonster : MonoBehaviour
 
         targetPosition = navMeshAgent.steeringTarget;
 
-        autoTargetDir = (targetPosition - cachedTransform.position).normalized;
-        autoTargetDir.y = 0;
+
         IsClimbing = !IsSameFloor;
 
         if (IsClimbing) autoTargetRot = climbingLookRot;
-        else            autoTargetRot = Quaternion.LookRotation(autoTargetDir, -GravitiesManager.GravityVector);
+        else
+        {
+            autoTargetDir = (targetPosition - cachedTransform.position).normalized;
+            autoTargetRot = Quaternion.LookRotation(autoTargetDir, -GravitiesManager.GravityVector);
+            //가까우면 아래쪽을 봄
+        }
         cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, autoTargetRot, 0.2f);
     }
 
@@ -139,15 +149,15 @@ public class FinalNormalMonster : MonoBehaviour
             IsAutoMode = true;
             return;
         }
-        manualTargetDir = (AIManager.CurrentTargetDirection(cachedTransform) - cachedTransform.position).normalized;
+        manualTargetDir = (AIManager.CurrentTargetPosition(cachedTransform) - cachedTransform.position).normalized;
         manualTargetRot = Quaternion.LookRotation(manualTargetDir, -GravitiesManager.GravityVector);
         cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, manualTargetRot, 0.2f);
 
         remainingDistance = Vector3.Distance(cachedTransform.position, AIManager.PlayerTransfrom.position);
 
         if (remainingDistance < navMeshAgent.stoppingDistance) return;
-        navMeshAgent.nextPosition += Time.deltaTime * currentSpeed * manualTargetDir;
-        cachedTransform.position = navMeshAgent.nextPosition;
+        cachedTransform.position += Time.deltaTime * currentSpeed * manualTargetDir;
+        navMeshAgent.Warp(cachedTransform.position);
     }
 
     private void OnTriggerStay(Collider other)
