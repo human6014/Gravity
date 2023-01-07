@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Manager;
-public class NewFlyingMonster : MonoBehaviour, IMonster
+public class NewFlyingMonster : MonoBehaviour
 {
     [SerializeField] private LayerMask obstacleLayer;
     private Transform cachedTransform;

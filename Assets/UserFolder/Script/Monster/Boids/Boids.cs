@@ -6,7 +6,7 @@ public class Boids : MonoBehaviour
 {
     #region Variables & Initializer
 
-    ObjectPoolManager.PoolingObject poolingObj;
+    private ObjectPoolManager.PoolingObject poolingObj;
 
     [Header("Boid Options")]
     [SerializeField] private BoidsMonster boidUnitPrefab;
@@ -14,9 +14,11 @@ public class Boids : MonoBehaviour
     [SerializeField] private Transform target;
 
     [Range(5, 5000)]
-    public int boidCount;
+    [SerializeField] private int boidCount;
     [Range(5, 100)]
-    public float spawnRange = 20;
+    [SerializeField] private float spawnRange = 20;
+
+    public float SpawnRange { get => spawnRange; private set => spawnRange = value; }
     
     void Start()
     {

@@ -126,7 +126,7 @@ public class BoidsMonster : PoolableScript
     {
         targetForwardVec = Vector3.zero;
         Vector3 offsetToCenter = myBoids.transform.position - cachedTransform.position;
-        return offsetToCenter.magnitude >= myBoids.spawnRange ? offsetToCenter.normalized : Vector3.zero;
+        return offsetToCenter.magnitude >= myBoids.SpawnRange ? offsetToCenter.normalized : Vector3.zero;
     }
 
     private Vector3 CalculateObstacleVector()

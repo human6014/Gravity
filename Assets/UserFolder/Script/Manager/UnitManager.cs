@@ -6,6 +6,8 @@ namespace Manager
 {
     public class UnitManager : MonoBehaviour
     {
+        private ObjectPoolManager.PoolingObject poolingObj;
+
         [SerializeField] private GameObject oldmanZombie;
         [SerializeField] private GameObject urbanZombie;
         [SerializeField] private GameObject womenZombie;
