@@ -27,6 +27,10 @@ namespace Manager
         /// </summary>
         public static Vector3 GravityVector { get; private set; } = Vector3.down;
         
+        /// <summary>
+        /// 중력 변경, 중력이 향하는 방향이 아니라 반대임
+        /// </summary>
+        /// <param name="direct"></param>
         public static void GravityChange(int direct)
         {
             beforeGravityType = currentGravityType;
@@ -54,6 +58,7 @@ namespace Manager
                 IsGravityChange = true;
                 IsGravityDupleicated = false;
             }
+            Debug.Log("current : " + currentGravityType);
         }
 
         public static void CompleteGravityChange() => IsGravityChange = false;

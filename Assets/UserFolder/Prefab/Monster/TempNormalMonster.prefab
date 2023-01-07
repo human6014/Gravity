@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 2501558722071614359}
   - component: {fileID: 2501558722071614358}
   - component: {fileID: 2501558722071614357}
-  - component: {fileID: 2501558722071614346}
+  - component: {fileID: 811661437374996866}
   m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
@@ -366,7 +366,7 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &2501558722071614346
+--- !u!114 &811661437374996866
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -375,7 +375,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2501558722071614355}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95a33110e52cdb54a985bcd734b96833, type: 3}
+  m_Script: {fileID: 11500000, guid: 90eeb1bbc96b9d549a00e0922bf160b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   climbingDetectLayer:

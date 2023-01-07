@@ -114,12 +114,14 @@ namespace main
                 }
             }
         }
+
         private void Jump()
         {
             isJumping = true;
             playerRigid.AddForce(transform.up * 5, ForceMode.Impulse);
             playerAnim.SetTrigger("Jump");
         }
+
         private void Move()
         {
             Vector3 moveHorizontal = transform.right * xMoveInput;

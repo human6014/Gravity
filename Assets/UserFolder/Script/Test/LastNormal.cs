@@ -128,7 +128,7 @@ public class LastNormal : MonoBehaviour
         IsAutoMode = false;
         navMeshAgent.isStopped = true;
 
-        manualTargetDir = (AIManager.CurrentTargetDirection(cachedTransform) - cachedTransform.position).normalized;
+        manualTargetDir = (AIManager.CurrentTargetPosition(cachedTransform) - cachedTransform.position).normalized;
         manualTargetRot = Quaternion.LookRotation(manualTargetDir, -GravitiesManager.GravityVector);
         cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, manualTargetRot, 0.2f);
 
