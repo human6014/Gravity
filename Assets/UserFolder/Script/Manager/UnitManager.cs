@@ -6,8 +6,6 @@ namespace Manager
 {
     public class UnitManager : MonoBehaviour
     {
-        private ObjectPoolManager.PoolingObject poolingObj;
-
         [SerializeField] private GameObject oldmanZombie;
         [SerializeField] private GameObject urbanZombie;
         [SerializeField] private GameObject womenZombie;
@@ -18,7 +16,7 @@ namespace Manager
         [SerializeField] private GameObject specialMonster2;
         [SerializeField] private GameObject specialMonster3;
 
-
+        [SerializeField] private NormalMonster testNormalMonster;
         public GameObject OldmanZombie { get => oldmanZombie; private set => oldmanZombie = value; }
         public GameObject UrbanZombie { get => urbanZombie; private set => urbanZombie = value; }
         public GameObject WomenZombie { get => womenZombie; private set => womenZombie = value; }
@@ -29,13 +27,9 @@ namespace Manager
         public GameObject SpecialMonster2 { get => specialMonster2; private set => specialMonster2 = value; }
         public GameObject SpecialMonster3 { get => specialMonster3; private set => specialMonster3 = value; }
 
+
+        public NormalMonster TestNormalMonster { get => testNormalMonster; private set => testNormalMonster = value; }
         void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
         {
 
         }

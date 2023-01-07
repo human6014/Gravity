@@ -22,8 +22,8 @@ public class Boids : MonoBehaviour
     
     void Start()
     {
-        poolingObj = ObjectPoolManager.objectPoolManager.Register(boidUnitPrefab,boidsPool);
-        poolingObj.GenerateObj(boidCount);
+        poolingObj = ObjectPoolManager.Register(boidUnitPrefab, boidsPool);
+        poolingObj.GenerateObj(boidCount + 100);
 
         Vector3 randomVec;
         Quaternion randomRot;
@@ -35,7 +35,7 @@ public class Boids : MonoBehaviour
 
             currUnit = (BoidsMonster)poolingObj.GetObject();
             currUnit.transform.SetPositionAndRotation(transform.position + randomVec, randomRot);
-            currUnit.InitializeUnit(this, target);
+            currUnit.Init(this, target);
         }
     }
 
