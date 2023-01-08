@@ -29,7 +29,7 @@ public class BoidsMonster : PoolableScript
     private Vector3 obstacleVec;
     private Vector3 egoVec;
     #endregion
-    public void InitializeUnit(Boids _boids, Transform _target)
+    public void Init(Boids _boids, Transform _target)
     {
         myBoids = _boids;
         speed = Random.Range(settings.speedRange.x, settings.speedRange.y);
@@ -39,6 +39,7 @@ public class BoidsMonster : PoolableScript
         StartCoroutine(FindNeighbourCoroutine());
         StartCoroutine(CalculateEgoVectorCoroutine());
     }
+
     void Update()
     {
         if (additionalSpeed > 0) additionalSpeed -= Time.deltaTime;
@@ -146,11 +147,11 @@ public class BoidsMonster : PoolableScript
         Vector3 offsetToTarget = target.position - cachedTransform.position;
         return offsetToTarget.normalized;
     }
+    #endregion
 
+    //호출할 때 this
     public override void ReturnObject()
     {
         myBoids.ReturnObj(this);
     }
-    #endregion
-
 }

@@ -39,10 +39,10 @@ public class NormalMonsterAI : MonoBehaviour
         navMeshAgent.updateUpAxis = false;
     }
 
-    public void Init()
+    public void Init(Vector3 pos)
     {
         IsBatch = true;
-        transform.rotation = Quaternion.LookRotation(transform.forward, -GravitiesManager.GravityVector);
+        transform.SetPositionAndRotation(pos, Quaternion.LookRotation(transform.forward, -GravitiesManager.GravityVector));
     }
 
     private void Update()

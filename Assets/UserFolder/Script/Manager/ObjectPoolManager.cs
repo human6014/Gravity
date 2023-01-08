@@ -7,14 +7,9 @@ namespace Manager
 {
     public class ObjectPoolManager : MonoBehaviour
     {
-        public static ObjectPoolManager objectPoolManager;
-        private Transform cachedTransform;
+        private static Transform cachedTransform;
 
-        private void Awake()
-        {
-            objectPoolManager = this;
-            cachedTransform = transform;
-        }
+        private void Start() => ObjectPoolManager.cachedTransform = transform;
 
         /// <summary>
         /// Pooing 객체 등록
@@ -22,7 +17,7 @@ namespace Manager
         /// <param name="_poolableScript"> PoolableScript를 상속받는 객체 </param>
         /// <param name="_parent"> Hierarchy 오브젝트 위치 </param>
         /// <returns></returns>
-        public PoolingObject Register(PoolableScript _poolableScript, Transform _parent) => new(_poolableScript, _parent);
+        public static PoolingObject Register(PoolableScript _poolableScript, Transform _parent) => new(_poolableScript, _parent);
 
         /// <summary>
         /// Pooling 정보 객체
@@ -32,6 +27,7 @@ namespace Manager
             private readonly Queue<PoolableScript> poolableQueue;
             private readonly PoolableScript script;
             private readonly Transform parent;
+
             public PoolingObject(PoolableScript _script, Transform _parent)
             {
                 poolableQueue = new();
@@ -56,7 +52,8 @@ namespace Manager
             {
                 var newObj = Instantiate(script);
                 newObj.gameObject.SetActive(false);
-                newObj.transform.SetParent(objectPoolManager.cachedTransform);
+                newObj.transform.SetParent(ObjectPoolManager.cachedTransform);
+                Debug.Log(ObjectPoolManager.cachedTransform);
                 return newObj;
             }
 
@@ -83,7 +80,7 @@ namespace Manager
             public void ReturnObject(PoolableScript obj)
             {
                 obj.gameObject.SetActive(false);
-                obj.transform.SetParent(objectPoolManager.cachedTransform);
+                obj.transform.SetParent(ObjectPoolManager.cachedTransform);
                 poolableQueue.Enqueue(obj);
             }
         }
