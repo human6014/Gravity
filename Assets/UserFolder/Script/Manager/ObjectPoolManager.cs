@@ -9,7 +9,7 @@ namespace Manager
     {
         private static Transform cachedTransform;
 
-        private void Start() => ObjectPoolManager.cachedTransform = transform;
+        private void Awake() => cachedTransform = transform;
 
         /// <summary>
         /// Pooing °´Ã¼ µî·Ï
@@ -52,8 +52,7 @@ namespace Manager
             {
                 var newObj = Instantiate(script);
                 newObj.gameObject.SetActive(false);
-                newObj.transform.SetParent(ObjectPoolManager.cachedTransform);
-                Debug.Log(ObjectPoolManager.cachedTransform);
+                newObj.transform.SetParent(cachedTransform);
                 return newObj;
             }
 
@@ -80,7 +79,7 @@ namespace Manager
             public void ReturnObject(PoolableScript obj)
             {
                 obj.gameObject.SetActive(false);
-                obj.transform.SetParent(ObjectPoolManager.cachedTransform);
+                obj.transform.SetParent(cachedTransform);
                 poolableQueue.Enqueue(obj);
             }
         }

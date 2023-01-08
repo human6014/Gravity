@@ -14,6 +14,16 @@ namespace EnumType
     {
         X, Y, Z
     }
+
+    public enum NoramlMonster
+    {
+        UrbanZombie = 0,
+        OldManZombie = 1,
+        WomenZombie = 2,
+        BigZombie = 3,
+        GiantZombie = 4
+    }
+
     public enum Boss1
     {
         normalAttack = 0,   //가까이서 평타

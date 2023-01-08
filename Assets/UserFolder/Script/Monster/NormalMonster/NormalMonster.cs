@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Manager;
+using EnumType;
 public class NormalMonster : PoolableScript, IMonster
 {
-    NormalMonsterAI normalMonsterAI;
+    [SerializeField] private Scriptable.NormalMonsterScriptable settings;
+
+    private NormalMonsterAI normalMonsterAI;
+
 
     private void Awake()
     {
