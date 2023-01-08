@@ -46,7 +46,6 @@ public class UrbanZombie_CharacterCustomize : MonoBehaviour
 		V2,
 		V3,
 		V4
-
 	}
 
 	public enum TankTopSkin
@@ -71,23 +70,11 @@ public class UrbanZombie_CharacterCustomize : MonoBehaviour
 	public TrousersSkin trousersType;
 	public TankTopSkin tanktopType;
 	public HoodieSkin hoodieType;
-	
-	void Start()
-	{
-
-	}
-
-	// Update is called once per frame
-	void Update()
-	{
-
-	}
 
 	public void charCustomize(int body, int trousers, int tanktop, int hoodie, int head)
 	{
 		materialsList = gameObject.GetComponent<UrbanZombie_AssetsList>();
 		Material[] mat;
-		GameObject obj;
 		hoodieT = transform.Find("Geo/Hoodie");
 		tanktopT = transform.Find("Geo/TankTop");
 		bodyToHideT = transform.Find("Geo/Body_ToHide");
@@ -97,7 +84,6 @@ public class UrbanZombie_CharacterCustomize : MonoBehaviour
 		headT_B = transform.Find("Geo/BodyExposed/HeadB");
 
 		// Body_Exposed hands
-
 		for (int i = 0; i <= 3; i++)
 		{
 			Transform curSub = bodyExposedT.Find("Hands_LOD" + i);
@@ -106,8 +92,6 @@ public class UrbanZombie_CharacterCustomize : MonoBehaviour
 		}
 
 		// Body_Exposed Trousers
-
-
 		for (int i = 0; i <= 3; i++)
 		{
 			Transform curSub = bodyExposedT.Find("Trousers_LOD" + i);
@@ -116,37 +100,24 @@ public class UrbanZombie_CharacterCustomize : MonoBehaviour
 		}
 
 		// Body_Exposed HeadA
-
 		for (int i = 0; i <= 3; i++)
 		{
-
-
 			Transform curSub = headT_A.Find("HeadA_LOD" + i);
 
 			Renderer skinRend = curSub.GetComponent<Renderer>();
 			skinRend.material = materialsList.BodyMaterials[body];
-
-
-
 		}
 
 		// Body_Exposed HeadB
-
 		for (int i = 0; i <= 3; i++)
 		{
-
-
 			Transform curSub = headT_B.Find("HeadB_LOD" + i);
 
 			Renderer skinRend = curSub.GetComponent<Renderer>();
 			skinRend.material = materialsList.BodyMaterials[body];
-
-
-
 		}
 
 		//Head Type
-
 		if(head == 1)
         {
 			headT_A.gameObject.SetActive(false);
@@ -158,14 +129,10 @@ public class UrbanZombie_CharacterCustomize : MonoBehaviour
 			headT_A.gameObject.SetActive(true);
 		}
 
-
 		//BodyToHide
-
 		for (int i = 0; i <= 3; i++)
 		{
 			Transform curSub = transform.Find("Geo/Body_ToHide/Body_ToHide_LOD" + i);
-
-
 
 			Renderer skinRend = curSub.GetComponent<Renderer>();
 			mat = new Material[2];
@@ -173,16 +140,9 @@ public class UrbanZombie_CharacterCustomize : MonoBehaviour
 			mat[1] = materialsList.TrousersMaterials[trousers];
 
 			skinRend.materials = mat;
-
 		}
 
-
-
-
 		// Hoodie
-
-
-
 		if (hoodie < 1)
 		{
 
@@ -196,63 +156,42 @@ public class UrbanZombie_CharacterCustomize : MonoBehaviour
 			bodyToHideT.gameObject.SetActive(false);
 			for (int i = 0; i <= 3; i++)
 			{
-
-
-
-
 				Transform curSub = hoodieT.Find("Hoodie_LOD" + i);
-
 				Renderer skinRend = curSub.GetComponent<Renderer>();
 				skinRend.material = materialsList.HoodieMaterials[hoodie - 1];
 			}
 
 			if (tanktopOld)
 			{
-
 				tanktopT.gameObject.SetActive(false);
 				tanktopType = 0;
 				tanktopOld = false;
 				tanktop = 0;
-
 			}
-
 		}
 
 		// TankTop
-
-
 		if (tanktop < 1)
 		{
-
 			tanktopT.gameObject.SetActive(false);
 		}
-
 		else
 		{
 			tanktopT.gameObject.SetActive(true);
 			bodyToHideT.gameObject.SetActive(true);
 			for (int i = 0; i <= 3; i++)
 			{
-
-
-
 				Transform curSub = tanktopT.Find("TankTop_LOD" + i);
-
 				Renderer skinRend = curSub.GetComponent<Renderer>();
 				skinRend.material = materialsList.TankTopMaterials[tanktop - 1];
 
-
 				tanktopOld = true;
-
 			}
-
 			hoodieT.gameObject.SetActive(false);
-
 			hoodieType = 0;
-
 		}
-
 	}
+
 	void OnValidate()
 	{
 		//code for In Editor customize
@@ -262,9 +201,6 @@ public class UrbanZombie_CharacterCustomize : MonoBehaviour
 		tanktopTyp = (int)tanktopType;
 		hoodieTyp = (int)hoodieType;
 		
-
-
 		charCustomize(bodyTyp, trousersTyp, tanktopTyp, hoodieTyp, headTyp);
-
 	}
 }

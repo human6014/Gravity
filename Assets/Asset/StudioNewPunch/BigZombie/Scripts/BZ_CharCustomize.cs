@@ -48,17 +48,7 @@ public class BZ_CharCustomize : MonoBehaviour
 	public float closeLeftEyeBS;
 	public float closeRightEyeBS;
 	public float closeBothEyesBS;
-	// Start is called before the first frame update
-	void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 	public void charCustomize(int body, int top, int bottom)
 	{
 		materialsList = gameObject.GetComponent<BZ_AssetsList>();

@@ -6,29 +6,35 @@ namespace Manager
 {
     public class UnitManager : MonoBehaviour
     {
-        [SerializeField] private GameObject oldmanZombie;
-        [SerializeField] private GameObject urbanZombie;
-        [SerializeField] private GameObject womenZombie;
-        [SerializeField] private GameObject bigZomibe;
-        [SerializeField] private GameObject giantZombie;
+        // 유닛 소환 순서
+        // urban -> oldman -> women -> big -> giant
+        [Header("SerializeField Unit")]
+        [SerializeField] private NormalMonster urbanZombie;
+        [SerializeField] private NormalMonster oldmanZombie;
+        [SerializeField] private NormalMonster womenZombie;
+        [SerializeField] private NormalMonster bigZomibe;
+        [SerializeField] private NormalMonster giantZombie;
 
-        [SerializeField] private GameObject specialMonster1;
-        [SerializeField] private GameObject specialMonster2;
-        [SerializeField] private GameObject specialMonster3;
+        [Space(15)]
+        [SerializeField] private SpecialMonster1 specialMonster1;
+        [SerializeField] private SpecialMonster2 specialMonster2;
+        [SerializeField] private SpecialMonster3 specialMonster3;
 
-        [SerializeField] private NormalMonster testNormalMonster;
-        public GameObject OldmanZombie { get => oldmanZombie; private set => oldmanZombie = value; }
-        public GameObject UrbanZombie { get => urbanZombie; private set => urbanZombie = value; }
-        public GameObject WomenZombie { get => womenZombie; private set => womenZombie = value; }
-        public GameObject BigZomibe { get => bigZomibe; private set => bigZomibe = value; }
-        public GameObject GiantZombie { get => giantZombie; private set => giantZombie = value; }
+        [Header("info")]
+        [Tooltip("미리 생성할 유닛 수 urban -> oldman -> women -> big -> giant")]
+        [Range(0, 100)] [SerializeField] private int [] poolingCount;
 
-        public GameObject SpecialMonster1 { get => specialMonster1; private set => specialMonster1 = value; }
-        public GameObject SpecialMonster2 { get => specialMonster2; private set => specialMonster2 = value; }
-        public GameObject SpecialMonster3 { get => specialMonster3; private set => specialMonster3 = value; }
+        #region Property
+        public NormalMonster OldmanZombie { get => oldmanZombie; private set => oldmanZombie = value; }
+        public NormalMonster UrbanZombie { get => urbanZombie; private set => urbanZombie = value; }
+        public NormalMonster WomenZombie { get => womenZombie; private set => womenZombie = value; }
+        public NormalMonster BigZomibe { get => bigZomibe; private set => bigZomibe = value; }
+        public NormalMonster GiantZombie { get => giantZombie; private set => giantZombie = value; }
 
-
-        public NormalMonster TestNormalMonster { get => testNormalMonster; private set => testNormalMonster = value; }
+        public SpecialMonster1 SpecialMonster1 { get => specialMonster1; private set => specialMonster1 = value; }
+        public SpecialMonster2 SpecialMonster2 { get => specialMonster2; private set => specialMonster2 = value; }
+        public SpecialMonster3 SpecialMonster3 { get => specialMonster3; private set => specialMonster3 = value; }
+        #endregion
         void Start()
         {
 

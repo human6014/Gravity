@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Manager
 {
+    [RequireComponent(typeof(UnitManager))]
     public class SpawnManager : MonoBehaviour
     {
         [SerializeField] private Transform [] spawnAreaTransform = new Transform[6];
@@ -20,28 +21,37 @@ namespace Manager
 
         private UnitManager unitManager;
 
-        private ObjectPoolManager.PoolingObject poolingObj;
+        private List <ObjectPoolManager.PoolingObject> poolingObj;
 
-        [SerializeField] private NormalMonster testNormalMonster;
         private float timer;
         private void Awake()
         {
             unitManager = GetComponent<UnitManager>();
 
-            spawnAreaXDown = spawnAreaTransform[0].GetComponentsInChildren<BoxCollider>();
-            spawnAreaXUp = spawnAreaTransform[1].GetComponentsInChildren<BoxCollider>();
+            spawnAreaXDown  = spawnAreaTransform[0].GetComponentsInChildren<BoxCollider>();
+            spawnAreaXUp    = spawnAreaTransform[1].GetComponentsInChildren<BoxCollider>();
 
-            spawnAreaYDown = spawnAreaTransform[2].GetComponentsInChildren<BoxCollider>();
-            spawnAreaYUp = spawnAreaTransform[3].GetComponentsInChildren<BoxCollider>();
+            spawnAreaYDown  = spawnAreaTransform[2].GetComponentsInChildren<BoxCollider>();
+            spawnAreaYUp    = spawnAreaTransform[3].GetComponentsInChildren<BoxCollider>();
 
-            spawnAreaZDown = spawnAreaTransform[4].GetComponentsInChildren<BoxCollider>();
-            spawnAreaZUp = spawnAreaTransform[5].GetComponentsInChildren<BoxCollider>();
+            spawnAreaZDown  = spawnAreaTransform[4].GetComponentsInChildren<BoxCollider>();
+            spawnAreaZUp    = spawnAreaTransform[5].GetComponentsInChildren<BoxCollider>();
         }
 
         private void Start()
         {
-            poolingObj = ObjectPoolManager.Register(testNormalMonster, activeUnitPool);
-            poolingObj.GenerateObj(50);
+            //순서대로 넣어야 해~
+            //urban -> oldman -> women -> big -> giant
+            poolingObj = new List<ObjectPoolManager.PoolingObject>
+            {
+                ObjectPoolManager.Register(unitManager.UrbanZombie, activeUnitPool)
+                //등등
+            };
+
+            for (int i = 0; i < poolingObj.Count; i++)
+            {
+                poolingObj[i].GenerateObj(50);
+            }
         }
 
         /// <summary>
@@ -101,7 +111,7 @@ namespace Manager
 
                 //GameObject obj = Instantiate(unitManager.UrbanZombie, GetRandomPos(), Quaternion.identity);
                 //obj.GetComponent<NormalMonsterAI>().Init();
-                NormalMonster currentUnit = (NormalMonster)poolingObj.GetObject();
+                NormalMonster currentUnit = (NormalMonster)poolingObj[0].GetObject();
                 currentUnit.Init(GetRandomPos());
 
             }
