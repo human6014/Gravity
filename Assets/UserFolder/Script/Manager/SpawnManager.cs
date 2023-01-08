@@ -7,6 +7,7 @@ namespace Manager
     public class SpawnManager : MonoBehaviour
     {
         [SerializeField] private Transform [] spawnAreaTransform = new Transform[6];
+        [SerializeField] private Transform activeUnitPool;
 
         private BoxCollider[] spawnAreaXDown;
         private BoxCollider[] spawnAreaXUp;
@@ -16,8 +17,12 @@ namespace Manager
 
         private BoxCollider[] spawnAreaZDown;
         private BoxCollider[] spawnAreaZUp;
+
         private UnitManager unitManager;
 
+        private ObjectPoolManager.PoolingObject poolingObj;
+
+        [SerializeField] private NormalMonster testNormalMonster;
         private float timer;
         private void Awake()
         {
@@ -31,6 +36,12 @@ namespace Manager
 
             spawnAreaZDown = spawnAreaTransform[4].GetComponentsInChildren<BoxCollider>();
             spawnAreaZUp = spawnAreaTransform[5].GetComponentsInChildren<BoxCollider>();
+        }
+
+        private void Start()
+        {
+            poolingObj = ObjectPoolManager.Register(testNormalMonster, activeUnitPool);
+            poolingObj.GenerateObj(50);
         }
 
         /// <summary>
@@ -88,8 +99,10 @@ namespace Manager
             {
                 timer = 0;
 
-                GameObject obj = Instantiate(unitManager.UrbanZombie, GetRandomPos(), Quaternion.identity);
-                obj.GetComponent<NormalMonsterAI>().Init();
+                //GameObject obj = Instantiate(unitManager.UrbanZombie, GetRandomPos(), Quaternion.identity);
+                //obj.GetComponent<NormalMonsterAI>().Init();
+                NormalMonster currentUnit = (NormalMonster)poolingObj.GetObject();
+                currentUnit.Init(GetRandomPos());
 
             }
         }
