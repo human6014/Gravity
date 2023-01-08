@@ -6448,11 +6448,11 @@ GameObject:
   - component: {fileID: 210446135282825008}
   - component: {fileID: 210446135282825009}
   - component: {fileID: 210446135282825014}
-  - component: {fileID: 8788656830445074135}
-  - component: {fileID: 8788656830445074132}
-  - component: {fileID: 210446135282824904}
   - component: {fileID: -8942009122545042035}
-  m_Layer: 0
+  - component: {fileID: 210446135282824904}
+  - component: {fileID: 936973447244131809}
+  - component: {fileID: 8646926564359664190}
+  m_Layer: 8
   m_Name: UrbanZombie_Customizable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6603,7 +6603,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &8788656830445074135
+--- !u!114 &-8942009122545042035
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6612,7 +6612,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 8446216341772307336}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7a7518966614934bb04076e17ed01f2, type: 3}
+  m_Script: {fileID: 11500000, guid: ce5ed18794e00e84691d5ca76ed189ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings: {fileID: 0}
+--- !u!114 &210446135282824904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8446216341772307336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90eeb1bbc96b9d549a00e0922bf160b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  climbingDetectLayer:
+    serializedVersion: 2
+    m_Bits: 24576
+--- !u!114 &936973447244131809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8446216341772307336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2167bba7ead3c0a46aa068b52e5b6b4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   faceType: 0
@@ -6620,7 +6648,7 @@ MonoBehaviour:
   trousersType: 0
   tanktopType: 0
   hoodieType: 0
---- !u!114 &8788656830445074132
+--- !u!114 &8646926564359664190
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6629,7 +6657,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8446216341772307336}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5447c8677b0659469b73613b01e3da0, type: 3}
+  m_Script: {fileID: 11500000, guid: 532fcd178d50e1f4d8bb6120b0f6735a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   BodyMaterials:
@@ -6653,33 +6681,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 1bddd5a7eb4dcfe41a3546f498169870, type: 2}
   - {fileID: 2100000, guid: 5e3889ca34deacb448acf42eafef31ea, type: 2}
   - {fileID: 2100000, guid: a92ee38c977a69342a5114bc2ff1b363, type: 2}
---- !u!114 &210446135282824904
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8446216341772307336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90eeb1bbc96b9d549a00e0922bf160b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  climbingDetectLayer:
-    serializedVersion: 2
-    m_Bits: 24576
---- !u!114 &-8942009122545042035
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8446216341772307336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce5ed18794e00e84691d5ca76ed189ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8466638729159488321
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Manager;
+
 public class Boids : MonoBehaviour
 {
     #region Variables & Initializer
@@ -13,13 +14,14 @@ public class Boids : MonoBehaviour
     [SerializeField] private Transform boidsPool;
     [SerializeField] private Transform target;
 
-    [Range(5, 5000)]
-    [SerializeField] private int boidCount;
-    [Range(5, 100)]
-    [SerializeField] private float spawnRange = 20;
+    [Tooltip("미리 생성할 유닛 수")]
+    [Range(5, 5000)] [SerializeField] private int boidCount;
+
+    [Tooltip("생성 범위")]
+    [Range(5, 100)] [SerializeField] private float spawnRange = 20;
 
     public float SpawnRange { get => spawnRange; private set => spawnRange = value; }
-    
+
     void Start()
     {
         poolingObj = ObjectPoolManager.Register(boidUnitPrefab, boidsPool);
@@ -42,3 +44,4 @@ public class Boids : MonoBehaviour
     public void ReturnObj(PoolableScript _poolableScript) => poolingObj.ReturnObject(_poolableScript);
     #endregion
 }
+

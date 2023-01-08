@@ -48,10 +48,6 @@ public class BZ_CharCustomizeBP : MonoBehaviour
 	public float closeLeftEyeBS;
 	public float closeRightEyeBS;
 	public float closeBothEyesBS;
-	void Start()
-    {
-        
-    }
 
 	public void charCustomize(int body, int top, int bottom)
 	{

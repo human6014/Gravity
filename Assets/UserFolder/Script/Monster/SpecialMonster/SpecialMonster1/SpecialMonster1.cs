@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Manager;
 using EnumType;
-public class AIController : MonoBehaviour
+public class SpecialMonster1 : MonoBehaviour
 {
     // Parabola
     [Header("Parabola")]
@@ -24,10 +24,15 @@ public class AIController : MonoBehaviour
     public Quaternion GetRotation() => cachedTransform.rotation;
     public Vector3 GetPosition() => cachedTransform.position;
 
-    private void Start()
+    private void Awake()
     {
         cachedTransform = GetComponent<Transform>();
         navTrace = FindObjectOfType<NavTrace>();
+    }
+
+    public void Init()
+    {
+
     }
 
     public void StartJumpCoroutine()

@@ -74,16 +74,6 @@ public class UrbanZombie_Parts_CharacterCustomize : MonoBehaviour
 	public TankTopSkin tanktopType;
 	public HoodieSkin hoodieType;
 
-	void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 	public void charCustomize(int body, int trousers, int tanktop, int hoodie, int head)
 	{
 		materialsList = gameObject.GetComponent<UrbanZombie_AssetsList>();

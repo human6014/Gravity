@@ -13,7 +13,7 @@ public class NavTrace : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     private AgentLinkMover agentLinkMover;
     private LegController legController;
-    private AIController aiController;
+    private SpecialMonster1 aiController;
 
     [SerializeField] private AnimationController animationController;
 
@@ -50,7 +50,7 @@ public class NavTrace : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         agentLinkMover = GetComponent<AgentLinkMover>();
         legController = FindObjectOfType<LegController>();
-        aiController = FindObjectOfType<AIController>();
+        aiController = FindObjectOfType<SpecialMonster1>();
 
         currentSpeed = navMeshAgent.speed;
 
