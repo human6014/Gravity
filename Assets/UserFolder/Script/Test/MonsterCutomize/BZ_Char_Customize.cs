@@ -19,11 +19,11 @@ namespace Test
 
         public enum ShirtType
         {
+            None,
             V1,
             V2,
             V3,
-            V4,
-            No
+            V4
         }
 
         public enum ShortsType
@@ -59,14 +59,13 @@ namespace Test
             curSub = gameObject.transform.Find("Geo/BigZombieShirt");
             foreach (Transform child in curSub)
             {
-                if (top != 4)
+                if (top < 1) curSub.gameObject.SetActive(false);
+                else
                 {
                     curSub.gameObject.SetActive(true);
                     skinRend = child.GetComponent<Renderer>();
-
                     skinRend.material = materialsList.ClothesMaterials[top];
                 }
-                else curSub.gameObject.SetActive(false);
             }
         }
 

@@ -27,12 +27,12 @@ namespace Test
 		{
 			materialsList = gameObject.GetComponent<OldManAssetList>();
 			Material[] mat = new Material[2];
-			Renderer skinnedMeshRenderer = transform.Find("ONE_Mesh/OldManZombie_One").GetComponent<Renderer>();
+			Renderer skinnedRenderer = transform.Find("ONE_Mesh/OldManZombie_One").GetComponent<Renderer>();
 
 			mat[0] = materialsList.BodySkinMaterials[body];
 			mat[1] = materialsList.TrousersMaterials[trousers];
 
-			skinnedMeshRenderer.materials = mat;
+			skinnedRenderer.materials = mat;
 		}
 		void OnValidate()
 		{

@@ -26,12 +26,12 @@ namespace Test
 		{
 			materialsList = gameObject.GetComponent<WomenAssetList>();
 			Material[] mat = new Material[2];
-			Renderer skinnedMeshRenderer = transform.Find("Geo/ZombieGirl_B").GetComponent<Renderer>();
+			Renderer skinnedRenderer = transform.Find("Geo/ZombieGirl_B").GetComponent<Renderer>();
 
 			mat[0] = materialsList.BodySkinMaterials[body];
 			mat[1] = materialsList.HairMaterials[hair];
 
-			skinnedMeshRenderer.materials = mat;
+			skinnedRenderer.materials = mat;
 		}
 		void OnValidate()
 		{
