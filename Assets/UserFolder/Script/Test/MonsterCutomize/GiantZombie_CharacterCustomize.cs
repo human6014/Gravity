@@ -6,26 +6,15 @@ namespace Test
 {
     public class GiantZombie_CharacterCustomize : MonoBehaviour
     {
-        private bool tanktopOld;
         private Transform tshirtT;
         private Transform tanktopT;
         private Transform bodyToHideT;
         private Transform bodyExposedT;
         private Transform trousersT;
         private Transform legsT;
-        private Transform sneakerR_T;
-        private Transform sneakerL_T;
-        private Transform footR_T;
         private Transform footL_T;
 
-        private Transform headT_A;
-        private Transform headT_B;
-        private Transform headT_C;
-        private Transform headT_D;
-
         private GiantZombie_AssetsList materialsList;
-
-        private SkinnedMeshRenderer skinnedMeshRenderer;
 
         public enum FaceType
         {
@@ -43,28 +32,12 @@ namespace Test
             BodyV4
         }
 
-        public enum LegsSkin
-        {
-            LegsV1,
-            LegsV2,
-            LegsV3,
-            LegsV4
-        }
-
         public enum TrousersSkin
         {
             TrousersV1,
             TrousersV2,
             TrousersV3,
             TrousersV4
-        }
-
-        public enum SneakersSkin
-        {
-            SneakersV1,
-            SneakersV2,
-            SneakersV3,
-            SneakersV4
         }
 
         public enum TankTopSkin
@@ -75,6 +48,7 @@ namespace Test
             TankTopV3,
             TankTopV4
         }
+
         public enum TshirtSkin
         {
             None,
@@ -86,16 +60,11 @@ namespace Test
 
         public FaceType faceType;
         public BodySkin bodySkin;
-        public LegsSkin legsSkin;
         public TrousersSkin trousersSkin;
-        public SneakersSkin sneakersSkin;
         public TankTopSkin tanktopSkin;
         public TshirtSkin tshirtSkin;
 
-        public bool trousersVisible = true;
-        public bool sneakerRightVisible = true;
-
-        public void charCustomize(int body, int trousers, int tanktop, int tshirt, int head, bool trousersV, int sneakers, int legs)
+        public void charCustomize(int body, int trousers, int tanktop, int tshirt, int head)
         {
             materialsList = gameObject.GetComponent<GiantZombie_AssetsList>();
 
@@ -105,17 +74,7 @@ namespace Test
             bodyToHideT = transform.Find("Giant_GRP/Giant_Zombie_SECTIONS/Torso");
             bodyExposedT = transform.Find("Giant_GRP/Giant_Zombie_SECTIONS/Arms");
             legsT = transform.Find("Giant_GRP/Giant_Zombie_SECTIONS/Legs");
-            sneakerL_T = transform.Find("Giant_GRP/Giant_Zombie_SECTIONS/Sneakers_L");
-            sneakerR_T = transform.Find("Giant_GRP/Giant_Zombie_SECTIONS/Sneakers_R");
-
             footL_T = transform.Find("Giant_GRP/Giant_Zombie_SECTIONS/Foot_L");
-            footR_T = transform.Find("Giant_GRP/Giant_Zombie_SECTIONS/Foot_R");
-
-            headT_A = transform.Find("Giant_GRP/Giant_Zombie_SECTIONS/Head_A");
-            headT_B = transform.Find("Giant_GRP/Giant_Zombie_SECTIONS/Head_B");
-            headT_C = transform.Find("Giant_GRP/Giant_Zombie_SECTIONS/Head_C");
-            headT_D = transform.Find("Giant_GRP/Giant_Zombie_SECTIONS/Head_D");
-
 
             for (int i = 0; i <= 3; i++)
                 materialsList.HeadTypes[i].gameObject.SetActive(false);
@@ -132,17 +91,16 @@ namespace Test
             skinRend = bodyToHideT.GetComponent<Renderer>();
             skinRend.material = materialsList.BodyMaterials[body];
 
+            // legs
+            skinRend = legsT.GetComponent<Renderer>();
+            skinRend.material = materialsList.LegsMaterials[body];
+
+            skinRend = footL_T.GetComponent<Renderer>();
+            skinRend.material = materialsList.LegsMaterials[body];
+
             //Trousers
             skinRend = trousersT.GetComponent<Renderer>();
             skinRend.material = materialsList.LowerBodyMaterials[trousers];
-
-            // legs
-            skinRend = legsT.GetComponent<Renderer>();
-            skinRend.material = materialsList.LegsMaterials[legs];
-            skinRend = footR_T.GetComponent<Renderer>();
-            skinRend.material = materialsList.LegsMaterials[legs];
-            skinRend = footL_T.GetComponent<Renderer>();
-            skinRend.material = materialsList.LegsMaterials[legs];
 
             // Tshirt
             if (tshirt < 1)
@@ -157,54 +115,27 @@ namespace Test
 
                 skinRend = tshirtT.GetComponent<Renderer>();
                 skinRend.material = materialsList.TshirtMaterials[tshirt - 1];
-                if (tanktopOld)
-                {
-                    tanktopT.gameObject.SetActive(false);
-                    tanktopSkin = 0;
-                    tanktopOld = false;
-                    tanktop = 0;
-                }
             }
 
             // TankTop
-            if (tanktop < 1) tanktopT.gameObject.SetActive(false);
+            // Tshirt가 우선권이 있음
+            if (tanktop < 1 || tshirt > 0)
+            {
+                tanktopT.gameObject.SetActive(false);
+                tanktopSkin = 0;
+            }
             else
             {
                 tanktopT.gameObject.SetActive(true);
                 bodyToHideT.gameObject.SetActive(true);
                 skinRend = tanktopT.GetComponent<Renderer>();
                 skinRend.material = materialsList.TankTopMaterials[tanktop - 1];
-
-                tanktopOld = true;
-                tshirtT.gameObject.SetActive(false);
-                tshirtSkin = 0;
             }
-
-            //TrousersVisible
-            if (trousersVisible)
-            {
-                trousersT.gameObject.SetActive(true);
-                legsT.gameObject.SetActive(false);
-            }
-            else
-            {
-                trousersT.gameObject.SetActive(false);
-                legsT.gameObject.SetActive(true);
-            }
-
-            //Sneakers Visible
-            if (sneakerRightVisible)
-            {
-                sneakerR_T.gameObject.SetActive(true);
-                skinRend = sneakerR_T.GetComponent<Renderer>();
-                skinRend.material = materialsList.LowerBodyMaterials[sneakers];
-            }
-            else sneakerR_T.gameObject.SetActive(false);
         }
 
         void OnValidate()
         {
-            charCustomize((int)bodySkin, (int)trousersSkin, (int)tanktopSkin, (int)tshirtSkin, (int)faceType, trousersVisible, (int)sneakersSkin, (int)legsSkin);
+            charCustomize((int)bodySkin, (int)trousersSkin, (int)tanktopSkin, (int)tshirtSkin, (int)faceType);
         }
     }
 }
