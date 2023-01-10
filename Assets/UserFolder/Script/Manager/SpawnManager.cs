@@ -8,7 +8,13 @@ namespace Manager
     public class SpawnManager : MonoBehaviour
     {
         [SerializeField] private Transform [] spawnAreaTransform = new Transform[6];
+
+        [Header("Polling info")]
+        [Tooltip("활성화된 유닛의 transform")]
         [SerializeField] private Transform activeUnitPool;
+
+        [Tooltip("미리 생성할 유닛 수 urban -> oldman -> women -> big -> giant")]
+        [Range(0, 100)] [SerializeField] private int[] poolingCount;
 
         private BoxCollider[] spawnAreaXDown;
         private BoxCollider[] spawnAreaXUp;

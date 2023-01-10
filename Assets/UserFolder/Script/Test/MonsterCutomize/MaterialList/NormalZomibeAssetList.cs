@@ -9,7 +9,7 @@ namespace Test
     {
         [Serializable] public struct UrbanZomibe
         {
-            public Material[] BodyMaterials;// = new Material[5];
+            public Material[] BodySkinMaterials;// = new Material[5];
             public Material[] TrousersMaterials;// = new Material[4];
             public Material[] HoodieMaterials;// = new Material[4];
             public Material[] TankTopMaterials;// = new Material[4];
@@ -36,7 +36,7 @@ namespace Test
 
         [Serializable] public struct BigZombie
         {
-            public Material[] SkinMaterials;// = new Material[4];
+            public Material[] BodySkinMaterials;// = new Material[4];
             public Material[] ClothesMaterials;// = new Material[4];
         }
         [Space(12)] [Tooltip("¶×¶× Á»ºñ")]
@@ -44,8 +44,8 @@ namespace Test
 
         [Serializable] public struct GiantZombie
         {
-            public Material[] BodyMaterials;// = new Material[4];
-            public Material[] LowerBodyMaterials;// = new Material[4];
+            public Material[] BodySkinMaterialsMaterials;// = new Material[4];
+            public Material[] TrousersMaterials;// = new Material[4];
             public Material[] TshirtMaterials;// = new Material[4];
             public Material[] TankTopMaterials;// = new Material[4];
             public Material[] LegsMaterials;// = new Material[4];

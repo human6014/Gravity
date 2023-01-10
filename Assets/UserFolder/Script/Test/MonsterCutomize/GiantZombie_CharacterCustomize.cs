@@ -11,7 +11,6 @@ namespace Test
         private Transform bodyToHideT;
         private Transform bodyExposedT;
         private Transform trousersT;
-        private Transform legsT;
         private Transform footL_T;
 
         private GiantZombie_AssetsList materialsList;
@@ -66,41 +65,55 @@ namespace Test
 
         public void charCustomize(int body, int trousers, int tanktop, int tshirt, int head)
         {
-            materialsList = gameObject.GetComponent<GiantZombie_AssetsList>();
+            materialsList = GetComponent<GiantZombie_AssetsList>();
 
             tshirtT = transform.Find("Giant_GRP/Tshirt");
             tanktopT = transform.Find("Giant_GRP/TankTop");
             trousersT = transform.Find("Giant_GRP/Trousers");
             bodyToHideT = transform.Find("Giant_GRP/Giant_Zombie_SECTIONS/Torso");
             bodyExposedT = transform.Find("Giant_GRP/Giant_Zombie_SECTIONS/Arms");
-            legsT = transform.Find("Giant_GRP/Giant_Zombie_SECTIONS/Legs");
             footL_T = transform.Find("Giant_GRP/Giant_Zombie_SECTIONS/Foot_L");
 
             for (int i = 0; i <= 3; i++)
                 materialsList.HeadTypes[i].gameObject.SetActive(false);
 
             materialsList.HeadTypes[head].gameObject.SetActive(true);
-            Renderer skinRend = materialsList.HeadTypes[head].GetComponent<Renderer>();
-            skinRend.material = materialsList.BodyMaterials[body];
+
+            Renderer skinRend;
+            foreach (Transform child in materialsList.HeadTypes[head])
+            {
+                skinRend = child.GetComponent<Renderer>();
+                skinRend.material = materialsList.BodyMaterials[body];
+            }
 
             // Body_Exposed arms
-            skinRend = bodyExposedT.GetComponent<Renderer>();
-            skinRend.material = materialsList.BodyMaterials[body];
+            foreach(Transform child in bodyExposedT)
+            {
+                skinRend = child.GetComponent<Renderer>();
+                skinRend.material = materialsList.BodyMaterials[body];
+            }
+
 
             //Torso to hide
-            skinRend = bodyToHideT.GetComponent<Renderer>();
-            skinRend.material = materialsList.BodyMaterials[body];
+            foreach(Transform child in bodyToHideT)
+            {
+                skinRend = child.GetComponent<Renderer>();
+                skinRend.material = materialsList.BodyMaterials[body];
+            }
 
-            // legs
-            skinRend = legsT.GetComponent<Renderer>();
-            skinRend.material = materialsList.LegsMaterials[body];
-
-            skinRend = footL_T.GetComponent<Renderer>();
-            skinRend.material = materialsList.LegsMaterials[body];
+            foreach(Transform child in footL_T)
+            {
+                skinRend = child.GetComponent<Renderer>();
+                skinRend.material = materialsList.LegsMaterials[body];
+            }
 
             //Trousers
-            skinRend = trousersT.GetComponent<Renderer>();
-            skinRend.material = materialsList.LowerBodyMaterials[trousers];
+            foreach(Transform child in trousersT)
+            {
+                skinRend = child.GetComponent<Renderer>();
+                skinRend.material = materialsList.LowerBodyMaterials[trousers];
+            }
+
 
             // Tshirt
             if (tshirt < 1)
@@ -113,8 +126,11 @@ namespace Test
                 tshirtT.gameObject.SetActive(true);
                 bodyToHideT.gameObject.SetActive(false);
 
-                skinRend = tshirtT.GetComponent<Renderer>();
-                skinRend.material = materialsList.TshirtMaterials[tshirt - 1];
+                foreach(Transform child in tshirtT)
+                {
+                    skinRend = child.GetComponent<Renderer>();
+                    skinRend.material = materialsList.TshirtMaterials[tshirt - 1];
+                }
             }
 
             // TankTop
@@ -128,8 +144,13 @@ namespace Test
             {
                 tanktopT.gameObject.SetActive(true);
                 bodyToHideT.gameObject.SetActive(true);
-                skinRend = tanktopT.GetComponent<Renderer>();
-                skinRend.material = materialsList.TankTopMaterials[tanktop - 1];
+
+                foreach(Transform child in tanktopT)
+                {
+                    skinRend = child.GetComponent<Renderer>();
+                    skinRend.material = materialsList.TankTopMaterials[tanktop - 1];
+                }
+
             }
         }
 

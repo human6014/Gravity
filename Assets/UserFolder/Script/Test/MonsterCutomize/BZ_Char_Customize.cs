@@ -40,14 +40,14 @@ namespace Test
 
         public void charCustomize(int body, int top, int bottom)
         {
-            materialsList = gameObject.GetComponent<BZ_AssetsList>();
+            materialsList = GetComponent<BZ_AssetsList>();
             Material[] mat;
 
             // Set BodyType, BottomType
-            Transform curSub = gameObject.transform.Find("Geo/BigZombie");
+            Transform curSub = transform.Find("Geo/BigZombie");
             foreach (Transform child in curSub)
             {
-                skinRend = child.gameObject.GetComponent<Renderer>();
+                skinRend = child.GetComponent<Renderer>();
                 
                 mat = new Material[2];
                 mat[0] = materialsList.ClothesMaterials[bottom];
@@ -56,7 +56,7 @@ namespace Test
             }
 
             // Set ShirtType
-            curSub = gameObject.transform.Find("Geo/BigZombieShirt");
+            curSub = transform.Find("Geo/BigZombieShirt");
             foreach (Transform child in curSub)
             {
                 if (top < 1) curSub.gameObject.SetActive(false);

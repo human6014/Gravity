@@ -72,7 +72,7 @@ namespace Test
 
         public void charCustomize(int body, int trousers, int tanktop, int hoodie, int head)
 		{
-			materialsList = gameObject.GetComponent<UrbanZombie_AssetsList>();
+			materialsList = GetComponent<UrbanZombie_AssetsList>();
 			
 			hoodieT = transform.Find("Geo/Hoodie");
 			tanktopT = transform.Find("Geo/TankTop");
