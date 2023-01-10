@@ -20,10 +20,6 @@ namespace Manager
         [SerializeField] private SpecialMonster2 specialMonster2;
         [SerializeField] private SpecialMonster3 specialMonster3;
 
-        [Header("info")]
-        [Tooltip("미리 생성할 유닛 수 urban -> oldman -> women -> big -> giant")]
-        [Range(0, 100)] [SerializeField] private int [] poolingCount;
-
         #region Property
         public NormalMonster OldmanZombie { get => oldmanZombie; private set => oldmanZombie = value; }
         public NormalMonster UrbanZombie { get => urbanZombie; private set => urbanZombie = value; }
