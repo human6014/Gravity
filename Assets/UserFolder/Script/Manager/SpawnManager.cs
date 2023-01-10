@@ -8,7 +8,13 @@ namespace Manager
     public class SpawnManager : MonoBehaviour
     {
         [SerializeField] private Transform [] spawnAreaTransform = new Transform[6];
+
+        [Header("Polling info")]
+        [Tooltip("활성화된 유닛의 transform")]
         [SerializeField] private Transform activeUnitPool;
+
+        [Tooltip("미리 생성할 유닛 수 urban -> oldman -> women -> big -> giant")]
+        [Range(0, 100)] [SerializeField] private int[] poolingCount;
 
         private BoxCollider[] spawnAreaXDown;
         private BoxCollider[] spawnAreaXUp;
@@ -22,6 +28,7 @@ namespace Manager
         private UnitManager unitManager;
 
         private List <ObjectPoolManager.PoolingObject> poolingObj;
+        // LIst -> 배열
 
         private float timer;
         private void Awake()
@@ -93,7 +100,6 @@ namespace Manager
         private Vector3 GetRandomPos()
         {
             BoxCollider currentCol = GetClosetArea();
-            //매번 할 필요없다고 생각함 -> 중력이 바뀔때만 해주면 댐
 
             float rangeX = Random.Range(-currentCol.bounds.size.x * 0.5f, currentCol.bounds.size.x * 0.5f);
             float rangeZ = Random.Range(-currentCol.bounds.size.z * 0.5f, currentCol.bounds.size.z * 0.5f);

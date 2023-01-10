@@ -22,17 +22,23 @@ namespace Test
 		public BodySkin bodySkin;
 		public TrousersSkin trousersSkin;
 		OldManAssetList materialsList;
+		Renderer skinnedRenderer;
 
 		public void charCustomize(int body, int trousers)
 		{
-			materialsList = gameObject.GetComponent<OldManAssetList>();
+			materialsList = GetComponent<OldManAssetList>();
 			Material[] mat = new Material[2];
-			Renderer skinnedMeshRenderer = transform.Find("ONE_Mesh/OldManZombie_One").GetComponent<Renderer>();
+			Transform curSub = transform.Find("ONE_Mesh/OldManZombie_One");
 
-			mat[0] = materialsList.BodySkinMaterials[body];
-			mat[1] = materialsList.TrousersMaterials[trousers];
+			foreach (Transform child in curSub)
+            {
+				skinnedRenderer = child.GetComponent<Renderer>();
 
-			skinnedMeshRenderer.materials = mat;
+				mat[0] = materialsList.BodySkinMaterials[body];
+				mat[1] = materialsList.TrousersMaterials[trousers];
+
+				skinnedRenderer.materials = mat;
+			}
 		}
 		void OnValidate()
 		{

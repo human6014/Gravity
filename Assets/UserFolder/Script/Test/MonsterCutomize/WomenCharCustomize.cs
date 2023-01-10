@@ -21,17 +21,23 @@ namespace Test
 		public BodySkin bodySkin;
 		public Hair hair;
 		WomenAssetList materialsList;
+		Renderer skinnedRenderer;
 
 		public void charCustomize(int body, int hair)
 		{
-			materialsList = gameObject.GetComponent<WomenAssetList>();
+			materialsList = GetComponent<WomenAssetList>();
 			Material[] mat = new Material[2];
-			Renderer skinnedMeshRenderer = transform.Find("Geo/ZombieGirl_B").GetComponent<Renderer>();
+			Transform curSub = transform.Find("Geo/WomenZombie");
 
-			mat[0] = materialsList.BodySkinMaterials[body];
-			mat[1] = materialsList.HairMaterials[hair];
+			foreach(Transform child in curSub)
+            {
+				skinnedRenderer = child.GetComponent<Renderer>();
 
-			skinnedMeshRenderer.materials = mat;
+				mat[0] = materialsList.BodySkinMaterials[body];
+				mat[1] = materialsList.HairMaterials[hair];
+
+				skinnedRenderer.materials = mat;
+			}
 		}
 		void OnValidate()
 		{

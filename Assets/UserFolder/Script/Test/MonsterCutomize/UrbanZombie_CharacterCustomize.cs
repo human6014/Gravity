@@ -4,18 +4,20 @@ using UnityEngine;
 
 namespace Test
 {
+	[RequireComponent(typeof(UrbanZombie_AssetsList))]
 	public class UrbanZombie_CharacterCustomize : MonoBehaviour
 	{
 		private bool tanktopOld;
+
 		private Transform hoodieT;
 		private Transform tanktopT;
 		private Transform bodyToHideT;
-		private Transform bodyExposedT;
+		private Transform bodyExposedHandT;
+		private Transform bodyExposedTrouserT;
 		private Transform headT_A;
 		private Transform headT_B;
 
 		private UrbanZombie_AssetsList materialsList;
-		private SkinnedMeshRenderer skinnedMeshRenderer;
 
 		public enum FaceType
 		{
@@ -63,72 +65,60 @@ namespace Test
 		public TankTopSkin tanktopType;
 		public HoodieSkin hoodieType;
 
-		public void charCustomize(int body, int trousers, int tanktop, int hoodie, int head)
+        private void Awake()
+        {
+            
+        }
+
+        public void charCustomize(int body, int trousers, int tanktop, int hoodie, int head)
 		{
-			Material[] mat;
-			materialsList = gameObject.GetComponent<UrbanZombie_AssetsList>();
+			materialsList = GetComponent<UrbanZombie_AssetsList>();
 			
 			hoodieT = transform.Find("Geo/Hoodie");
 			tanktopT = transform.Find("Geo/TankTop");
 			bodyToHideT = transform.Find("Geo/Body_ToHide");
-			bodyExposedT = transform.Find("Geo/BodyExposed/");
+			bodyExposedHandT = transform.Find("Geo/BodyExposed/Hands");
+			bodyExposedTrouserT = transform.Find("Geo/BodyExposed/Trousers");
 
 			headT_A = transform.Find("Geo/BodyExposed/HeadA");
 			headT_B = transform.Find("Geo/BodyExposed/HeadB");
 
 			// Body_Exposed hands
-			// LOD변경으로 인한 for문
-			for (int i = 0; i <= 3; i++)
-			{
-				Transform curSub = bodyExposedT.Find("Hands_LOD" + i);
-				Renderer skinRend = curSub.GetComponent<Renderer>();
+			foreach(Transform child in bodyExposedHandT)
+            {
+				Renderer skinRend = child.GetComponent<Renderer>();
 				skinRend.material = materialsList.BodyMaterials[body];
 			}
 
-			// Body_Exposed Trousers
-			for (int i = 0; i <= 3; i++)
+			foreach (Transform child in bodyExposedTrouserT)
 			{
-				Transform curSub = bodyExposedT.Find("Trousers_LOD" + i);
-				Renderer skinRend = curSub.GetComponent<Renderer>();
+				Renderer skinRend = child.GetComponent<Renderer>();
 				skinRend.material = materialsList.TrousersMaterials[trousers];
 			}
 
 			// Body_Exposed HeadA
-			for (int i = 0; i <= 3; i++)
+			foreach (Transform child in headT_A)
 			{
-				Transform curSub = headT_A.Find("HeadA_LOD" + i);
-
-				Renderer skinRend = curSub.GetComponent<Renderer>();
+				Renderer skinRend = child.GetComponent<Renderer>();
 				skinRend.material = materialsList.BodyMaterials[body];
 			}
 
 			// Body_Exposed HeadB
-			for (int i = 0; i <= 3; i++)
-			{
-				Transform curSub = headT_B.Find("HeadB_LOD" + i);
-
-				Renderer skinRend = curSub.GetComponent<Renderer>();
+			foreach (Transform child in headT_B)
+            {
+				Renderer skinRend = child.GetComponent<Renderer>();
 				skinRend.material = materialsList.BodyMaterials[body];
 			}
 
 			//Head Type
-			if (head == 1)
-			{
-				headT_A.gameObject.SetActive(false);
-				headT_B.gameObject.SetActive(true);
-			}
-			else
-			{
-				headT_B.gameObject.SetActive(false);
-				headT_A.gameObject.SetActive(true);
-			}
+			headT_A.gameObject.SetActive(head != 1);
+			headT_B.gameObject.SetActive(head == 1);
 
 			//BodyToHide
-			for (int i = 0; i <= 3; i++)
-			{
-				Transform curSub = transform.Find("Geo/Body_ToHide/Body_ToHide_LOD" + i);
-
-				Renderer skinRend = curSub.GetComponent<Renderer>();
+			Material[] mat;
+			foreach (Transform child in bodyToHideT)
+            {
+				Renderer skinRend = child.GetComponent<Renderer>();
 				mat = new Material[2];
 				mat[0] = materialsList.BodyMaterials[body];
 				mat[1] = materialsList.TrousersMaterials[trousers];
@@ -142,15 +132,13 @@ namespace Test
 				hoodieT.gameObject.SetActive(false);
 				bodyToHideT.gameObject.SetActive(true);
 			}
-
 			else
 			{
 				hoodieT.gameObject.SetActive(true);
 				bodyToHideT.gameObject.SetActive(false);
-				for (int i = 0; i <= 3; i++)
-				{
-					Transform curSub = hoodieT.Find("Hoodie_LOD" + i);
-					Renderer skinRend = curSub.GetComponent<Renderer>();
+				foreach(Transform child in hoodieT)
+                {
+					Renderer skinRend = child.GetComponent<Renderer>();
 					skinRend.material = materialsList.HoodieMaterials[hoodie - 1];
 				}
 
@@ -169,10 +157,9 @@ namespace Test
 			{
 				tanktopT.gameObject.SetActive(true);
 				bodyToHideT.gameObject.SetActive(true);
-				for (int i = 0; i <= 3; i++)
-				{
-					Transform curSub = tanktopT.Find("TankTop_LOD" + i);
-					Renderer skinRend = curSub.GetComponent<Renderer>();
+				foreach(Transform child in tanktopT)
+                {
+					Renderer skinRend = child.GetComponent<Renderer>();
 					skinRend.material = materialsList.TankTopMaterials[tanktop - 1];
 				}
 				tanktopOld = true;
