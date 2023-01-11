@@ -26,7 +26,7 @@ namespace Manager
         private BoxCollider[] spawnAreaZUp;
 
         private UnitManager unitManager;
-
+        private Customization customization;
         private List <ObjectPoolManager.PoolingObject> poolingObj;
         // LIst -> ¹è¿­
 
@@ -34,6 +34,7 @@ namespace Manager
         private void Awake()
         {
             unitManager = GetComponent<UnitManager>();
+            customization = GetComponent<Customization>();
 
             spawnAreaXDown  = spawnAreaTransform[0].GetComponentsInChildren<BoxCollider>();
             spawnAreaXUp    = spawnAreaTransform[1].GetComponentsInChildren<BoxCollider>();
@@ -118,6 +119,7 @@ namespace Manager
                 //GameObject obj = Instantiate(unitManager.UrbanZombie, GetRandomPos(), Quaternion.identity);
                 //obj.GetComponent<NormalMonsterAI>().Init();
                 NormalMonster currentUnit = (NormalMonster)poolingObj[0].GetObject();
+                //customization.Customize(currentUnit);
                 currentUnit.Init(GetRandomPos());
 
             }

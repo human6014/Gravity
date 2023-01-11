@@ -9,7 +9,7 @@ namespace Scriptable
     {
         [Header("Script info")]
         [Tooltip("몬스터 타입")] 
-        public EnumType.NoramlMonster monsterType;
+        public EnumType.NoramlMonsterType monsterType;
 
         [Header("Stat value")]
         [Tooltip("체력")] 
