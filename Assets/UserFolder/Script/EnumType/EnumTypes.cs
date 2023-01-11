@@ -15,7 +15,7 @@ namespace EnumType
         X, Y, Z
     }
 
-    public enum NoramlMonster
+    public enum NoramlMonsterType
     {
         UrbanZombie = 0,
         OldManZombie = 1,

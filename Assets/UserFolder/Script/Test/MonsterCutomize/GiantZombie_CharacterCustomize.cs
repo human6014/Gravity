@@ -67,12 +67,12 @@ namespace Test
         {
             materialsList = GetComponent<GiantZombie_AssetsList>();
 
-            tshirtT = transform.Find("Giant_GRP/Tshirt");
-            tanktopT = transform.Find("Giant_GRP/TankTop");
-            trousersT = transform.Find("Giant_GRP/Trousers");
-            bodyToHideT = transform.Find("Giant_GRP/Giant_Zombie_SECTIONS/Torso");
-            bodyExposedT = transform.Find("Giant_GRP/Giant_Zombie_SECTIONS/Arms");
-            footL_T = transform.Find("Giant_GRP/Giant_Zombie_SECTIONS/Foot_L");
+            tshirtT = transform.Find("Geo/Tshirt");
+            tanktopT = transform.Find("Geo/TankTop");
+            trousersT = transform.Find("Geo/Trousers");
+            bodyToHideT = transform.Find("Geo/Torso");
+            bodyExposedT = transform.Find("Geo/Arms");
+            footL_T = transform.Find("Geo/Foot_L");
 
             for (int i = 0; i <= 3; i++)
                 materialsList.HeadTypes[i].gameObject.SetActive(false);

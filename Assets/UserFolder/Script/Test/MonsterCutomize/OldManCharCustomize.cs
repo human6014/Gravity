@@ -28,7 +28,7 @@ namespace Test
 		{
 			materialsList = GetComponent<OldManAssetList>();
 			Material[] mat = new Material[2];
-			Transform curSub = transform.Find("ONE_Mesh/OldManZombie_One");
+			Transform curSub = transform.Find("Geo/OldManZombie_One");
 
 			foreach (Transform child in curSub)
             {
