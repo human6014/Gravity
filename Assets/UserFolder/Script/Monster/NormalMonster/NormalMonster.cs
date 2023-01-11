@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EnumType;
+
 public class NormalMonster : PoolableScript, IMonster
 {
     [SerializeField] private Scriptable.NormalMonsterScriptable settings;
 
     private NormalMonsterAI normalMonsterAI;
 
+    public NoramlMonsterType GetMonsterType() => settings.monsterType;
 
     private void Awake()
     {

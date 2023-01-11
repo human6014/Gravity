@@ -77,11 +77,11 @@ namespace Test
 			hoodieT = transform.Find("Geo/Hoodie");
 			tanktopT = transform.Find("Geo/TankTop");
 			bodyToHideT = transform.Find("Geo/Body_ToHide");
-			bodyExposedHandT = transform.Find("Geo/BodyExposed/Hands");
-			bodyExposedTrouserT = transform.Find("Geo/BodyExposed/Trousers");
+			bodyExposedHandT = transform.Find("Geo/Hands");
+			bodyExposedTrouserT = transform.Find("Geo/Trousers");
 
-			headT_A = transform.Find("Geo/BodyExposed/HeadA");
-			headT_B = transform.Find("Geo/BodyExposed/HeadB");
+			headT_A = transform.Find("Geo/HeadA");
+			headT_B = transform.Find("Geo/HeadB");
 
 			// Body_Exposed hands
 			foreach(Transform child in bodyExposedHandT)

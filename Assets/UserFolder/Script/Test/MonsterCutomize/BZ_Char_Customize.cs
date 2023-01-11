@@ -56,6 +56,7 @@ namespace Test
             }
 
             // Set ShirtType
+            // Clothes2번씀
             curSub = transform.Find("Geo/BigZombieShirt");
             foreach (Transform child in curSub)
             {
