@@ -31,9 +31,5 @@ namespace Manager
         public SpecialMonster2 SpecialMonster2 { get => specialMonster2; private set => specialMonster2 = value; }
         public SpecialMonster3 SpecialMonster3 { get => specialMonster3; private set => specialMonster3 = value; }
         #endregion
-        void Start()
-        {
-
-        }
     }
 }
