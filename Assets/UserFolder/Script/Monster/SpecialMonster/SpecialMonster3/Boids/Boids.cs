@@ -21,7 +21,7 @@ public class Boids : MonoBehaviour
     [Range(5, 100)] [SerializeField] private float spawnRange = 20;
 
     public float SpawnRange { get => spawnRange; private set => spawnRange = value; }
-
+    #endregion
     void Start()
     {
         poolingObj = ObjectPoolManager.Register(boidUnitPrefab, boidsPool);
@@ -42,6 +42,6 @@ public class Boids : MonoBehaviour
     }
 
     public void ReturnObj(PoolableScript _poolableScript) => poolingObj.ReturnObject(_poolableScript);
-    #endregion
+    
 }
 

@@ -41,8 +41,9 @@ public class NormalMonsterAI : MonoBehaviour
 
     public void Init(Vector3 pos)
     {
-        IsBatch = true;
         transform.SetPositionAndRotation(pos, Quaternion.LookRotation(transform.forward, -GravitiesManager.GravityVector));
+        IsBatch = true;
+        navMeshAgent.enabled = true;
     }
 
     private void Update()
@@ -83,7 +84,7 @@ public class NormalMonsterAI : MonoBehaviour
             {
                 if (hit.normal == -GravitiesManager.GravityVector)
                 {
-                    Debug.Log("≈ª√‚");
+                    //Debug.Log("≈ª√‚");
                     IsFolling = false;
                     navMeshAgent.enabled = true;
                     cachedRigidbody.useGravity = false;
@@ -96,7 +97,7 @@ public class NormalMonsterAI : MonoBehaviour
 
     private void AutoMode()
     {
-        Debug.Log("AutoMode");
+        //Debug.Log("AutoMode");
 
         IsAutoMode = true;
         navMeshAgent.isStopped = false;
@@ -124,7 +125,7 @@ public class NormalMonsterAI : MonoBehaviour
 
     private void ManualMode()
     {
-        Debug.Log("ManualMode");
+        //Debug.Log("ManualMode");
 
         IsAutoMode = false;
         navMeshAgent.isStopped = true;
@@ -134,12 +135,12 @@ public class NormalMonsterAI : MonoBehaviour
         cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, manualTargetRot, 0.2f);
 
         if (navMeshAgent.remainingDistance < navMeshAgent.stoppingDistance) return;
-        Debug.Log("Move");
         transform.position += Time.deltaTime * currentSpeed * manualTargetDir;
     }
 
     private void OnTriggerStay(Collider other)
     {
+        if (!IsBatch) return;
         IsClimbing = false;
         if (!navMeshAgent.isActiveAndEnabled || !IsAutoMode) return;
         if (!AIManager.IsSameFloor(navMeshAgent))
