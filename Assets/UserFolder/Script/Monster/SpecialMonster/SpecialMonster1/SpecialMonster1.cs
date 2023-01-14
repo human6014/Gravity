@@ -107,8 +107,6 @@ public class SpecialMonster1 : MonoBehaviour
     
     private void CalculatePathWithHeight(Vector2 targetPos, float h, out float v0, out float angle, out float time)
     {
-        //float xt = targetPos.x;
-        //float yt = targetPos.y;
         float g = Physics.gravity.magnitude;
 
         float a = (-0.5f * g);

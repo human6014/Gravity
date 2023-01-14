@@ -6,20 +6,36 @@ using EnumType;
 public class NormalMonster : PoolableScript, IMonster
 {
     [SerializeField] private Scriptable.NormalMonsterScriptable settings;
+    private Manager.ObjectPoolManager.PoolingObject poolingObject;
 
+    private Animator animator;
     private NormalMonsterAI normalMonsterAI;
 
     public NoramlMonsterType GetMonsterType() => settings.monsterType;
 
     private void Awake()
     {
+        animator = GetComponent<Animator>();
         normalMonsterAI = GetComponent<NormalMonsterAI>();
     }
 
-    public void Init(Vector3 pos)
+    private void Update()
+    {
+        Move();
+    }
+
+    public void Init(Vector3 pos, Manager.ObjectPoolManager.PoolingObject poolingObject)
     {
         normalMonsterAI.Init(pos);
+        this.poolingObject = poolingObject;
     }
+
+    public void Move()
+    {
+        normalMonsterAI.Move();
+        animator.SetBool("isMove",true);
+    }
+
     public void Attack()
     {
         throw new System.NotImplementedException();
@@ -30,18 +46,14 @@ public class NormalMonster : PoolableScript, IMonster
         throw new System.NotImplementedException();
     }
 
-    public void Hit()
+    public void Hit(int damage)
     {
         throw new System.NotImplementedException();
     }
 
-    public void Init()
-    {
-        throw new System.NotImplementedException();
-    }
-
+    [ContextMenu("ReturnObject")]
     public override void ReturnObject()
     {
-        throw new System.NotImplementedException();
+        poolingObject.ReturnObject(this);
     }
 }

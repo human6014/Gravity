@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class SpecialMonster3 : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    Boids boids;
+    Animator animator;
+    private void Awake()
     {
-        
+        boids = GetComponent<Boids>();
+        //animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        
+        boids.GenerateBoidMonster(500);
     }
 }
