@@ -7,6 +7,8 @@ namespace Manager
     [RequireComponent(typeof(UnitManager))]
     public class SpawnManager : MonoBehaviour
     {
+        public bool isActiveSpawn;
+
         [SerializeField] private Transform [] spawnAreaTransform = new Transform[6];
 
         [Header("Polling info")]
@@ -27,10 +29,13 @@ namespace Manager
 
         private UnitManager unitManager;
         private Customization customization;
-        private List <ObjectPoolManager.PoolingObject> poolingObj;
-        // LIst -> 배열
 
+        private ObjectPoolManager.PoolingObject[] poolingObjectArray;
+
+        private float[] probs = new float[] { 30, 25, 20, 15, 10 };
+        
         private float timer;
+        private int randomUnitIndex;
         private void Awake()
         {
             unitManager = GetComponent<UnitManager>();
@@ -48,21 +53,18 @@ namespace Manager
 
         private void Start()
         {
+            int unitLength = unitManager.GetNormalMonsterArrayLength();
+            if (unitLength != poolingCount.Length)
+                Debug.LogWarning("Polling Count is different from the number of PoolingObject's length");
+
             //순서대로 넣어야 해~
             //urban -> oldman -> women -> big -> giant
-            poolingObj = new List<ObjectPoolManager.PoolingObject>
+            
+            poolingObjectArray = new ObjectPoolManager.PoolingObject[unitLength];
+            for (int i = 0; i < unitLength; i++)
             {
-                ObjectPoolManager.Register(unitManager.UrbanZombie, activeUnitPool),
-                ObjectPoolManager.Register(unitManager.OldmanZombie, activeUnitPool),
-                ObjectPoolManager.Register(unitManager.WomenZombie, activeUnitPool),
-                ObjectPoolManager.Register(unitManager.BigZomibe, activeUnitPool),
-                ObjectPoolManager.Register(unitManager.GiantZombie, activeUnitPool)
-                //등등
-            };
-
-            for (int i = 0; i < poolingObj.Count; i++)
-            {
-                poolingObj[i].GenerateObj(poolingCount[i]);
+                poolingObjectArray[i] = ObjectPoolManager.Register(unitManager.GetNormalMonster(i), activeUnitPool);
+                poolingObjectArray[i].GenerateObj(poolingCount[i]);
             }
         }
 
@@ -113,17 +115,32 @@ namespace Manager
             return currentCol.transform.position + randomPos;
         }
 
+        private int RandomUnit()
+        {
+            float total = 0;
+            foreach (float elem in probs) total += elem;
+
+            float randomPoint = Random.value * total;
+            for (int i = 0; i < probs.Length; i++)
+            {
+                if (randomPoint < probs[i]) return i;
+                else randomPoint -= probs[i];
+            }
+            return probs.Length - 1;
+        }
+
         private void Update()
         {
+            if (!isActiveSpawn) return;
             timer += Time.deltaTime;
             if (timer >= 3)
             {
                 timer = 0;
+                randomUnitIndex = RandomUnit();
 
-                NormalMonster currentUnit = (NormalMonster)poolingObj[4].GetObject();
+                NormalMonster currentUnit = (NormalMonster)poolingObjectArray[randomUnitIndex].GetObject();
                 customization.Customize(currentUnit);
-                currentUnit.Init(GetRandomPos());
-
+                currentUnit.Init(GetRandomPos(), poolingObjectArray[randomUnitIndex]);
             }
         }
     }

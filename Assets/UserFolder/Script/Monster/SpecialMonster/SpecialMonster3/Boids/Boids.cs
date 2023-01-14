@@ -22,15 +22,18 @@ public class Boids : MonoBehaviour
 
     public float SpawnRange { get => spawnRange; private set => spawnRange = value; }
     #endregion
-    void Start()
+    private void Start()
     {
         poolingObj = ObjectPoolManager.Register(boidUnitPrefab, boidsPool);
-        poolingObj.GenerateObj(boidCount + 100);
+        poolingObj.GenerateObj(boidCount);
+    }
 
+    public void GenerateBoidMonster(int spawnCount)
+    {
         Vector3 randomVec;
         Quaternion randomRot;
         BoidsMonster currUnit;
-        for (int i = 0; i < boidCount; i++)
+        for (int i = 0; i < spawnCount; i++)
         {
             randomVec = Random.insideUnitSphere * spawnRange;
             randomRot = Quaternion.Euler(0, Random.Range(0, 360f), 0);
