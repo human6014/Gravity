@@ -52,13 +52,17 @@ namespace Manager
             //urban -> oldman -> women -> big -> giant
             poolingObj = new List<ObjectPoolManager.PoolingObject>
             {
-                ObjectPoolManager.Register(unitManager.UrbanZombie, activeUnitPool)
+                ObjectPoolManager.Register(unitManager.UrbanZombie, activeUnitPool),
+                ObjectPoolManager.Register(unitManager.OldmanZombie, activeUnitPool),
+                ObjectPoolManager.Register(unitManager.WomenZombie, activeUnitPool),
+                ObjectPoolManager.Register(unitManager.BigZomibe, activeUnitPool),
+                ObjectPoolManager.Register(unitManager.GiantZombie, activeUnitPool)
                 //µîµî
             };
 
             for (int i = 0; i < poolingObj.Count; i++)
             {
-                poolingObj[i].GenerateObj(50);
+                poolingObj[i].GenerateObj(poolingCount[i]);
             }
         }
 
@@ -116,10 +120,8 @@ namespace Manager
             {
                 timer = 0;
 
-                //GameObject obj = Instantiate(unitManager.UrbanZombie, GetRandomPos(), Quaternion.identity);
-                //obj.GetComponent<NormalMonsterAI>().Init();
-                NormalMonster currentUnit = (NormalMonster)poolingObj[0].GetObject();
-                //customization.Customize(currentUnit);
+                NormalMonster currentUnit = (NormalMonster)poolingObj[4].GetObject();
+                customization.Customize(currentUnit);
                 currentUnit.Init(GetRandomPos());
 
             }
