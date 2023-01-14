@@ -41,9 +41,10 @@ public class NormalMonsterAI : MonoBehaviour
 
     public void Init(Vector3 pos)
     {
-        transform.SetPositionAndRotation(pos, Quaternion.LookRotation(transform.forward, -GravitiesManager.GravityVector));
         IsBatch = true;
         navMeshAgent.enabled = true;
+        navMeshAgent.Warp(pos);
+        transform.rotation = Quaternion.LookRotation(transform.forward, -GravitiesManager.GravityVector);
     }
 
     private void Update()
@@ -62,7 +63,15 @@ public class NormalMonsterAI : MonoBehaviour
             DetectCol();
             return;
         }
+    }
 
+    public void Move()
+    {
+        if (!IsBatch) return;
+        if (navMeshAgent.isOnNavMesh)
+        {
+            //DetectCol() 이걸로 대체 할 수도 있을 듯
+        }
         path = new NavMeshPath();
         navMeshAgent.CalculatePath(AIManager.PlayerTransfrom.position, path);
 
@@ -73,7 +82,6 @@ public class NormalMonsterAI : MonoBehaviour
         }
         else AutoMode();
     }
-
     private void DetectCol()
     {
         Collider[] col = Physics.OverlapSphere(cachedTransform.position, 1.5f, climbingDetectLayer);

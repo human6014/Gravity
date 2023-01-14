@@ -13,7 +13,9 @@ namespace Scriptable
 
         [Header("Stat value")]
         [Tooltip("체력")] 
-        public int HP;
+        public int hp;
+        [Tooltip("방어력")]
+        public int def;
         [Tooltip("공격력")] 
         public int damage;
         [Tooltip("이동속도")]
