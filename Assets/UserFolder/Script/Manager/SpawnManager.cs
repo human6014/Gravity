@@ -9,6 +9,9 @@ namespace Manager
     {
         public bool isActiveSpawn;
 
+        #region SerializeField
+        [Header("Spawn Area")]
+        [Tooltip("스폰영역을 자식으로 가지는 Transform")]
         [SerializeField] private Transform [] spawnAreaTransform = new Transform[6];
 
         [Header("Polling info")]
@@ -17,7 +20,9 @@ namespace Manager
 
         [Tooltip("미리 생성할 유닛 수 urban -> oldman -> women -> big -> giant")]
         [Range(0, 100)] [SerializeField] private int[] poolingCount;
+        #endregion
 
+        #region Object Value
         private BoxCollider[] spawnAreaXDown;
         private BoxCollider[] spawnAreaXUp;
 
@@ -31,11 +36,15 @@ namespace Manager
         private Customization customization;
 
         private ObjectPoolManager.PoolingObject[] poolingObjectArray;
+        #endregion
 
-        private float[] probs = new float[] { 30, 25, 20, 15, 10 };
-        
+        #region Normal Value
+        private readonly float[] probs = new float[] { 45, 20, 20, 10, 5 };
+        private float total = 0;
+
         private float timer;
         private int randomUnitIndex;
+        #endregion
         private void Awake()
         {
             unitManager = GetComponent<UnitManager>();
@@ -53,6 +62,9 @@ namespace Manager
 
         private void Start()
         {
+            total = 0;
+            foreach (float elem in probs) total += elem;
+
             int unitLength = unitManager.GetNormalMonsterArrayLength();
             if (unitLength != poolingCount.Length)
                 Debug.LogWarning("Polling Count is different from the number of PoolingObject's length");
@@ -117,10 +129,8 @@ namespace Manager
 
         private int RandomUnit()
         {
-            float total = 0;
-            foreach (float elem in probs) total += elem;
-
             float randomPoint = Random.value * total;
+
             for (int i = 0; i < probs.Length; i++)
             {
                 if (randomPoint < probs[i]) return i;
@@ -137,6 +147,7 @@ namespace Manager
             {
                 timer = 0;
                 randomUnitIndex = RandomUnit();
+                
 
                 NormalMonster currentUnit = (NormalMonster)poolingObjectArray[randomUnitIndex].GetObject();
                 customization.Customize(currentUnit);
