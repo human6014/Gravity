@@ -47,7 +47,7 @@ public class NormalMonsterAI : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(transform.forward, -GravitiesManager.GravityVector);
     }
 
-    private void Update()
+    public void Move()
     {
         if (!IsBatch) return;
         if (GravitiesManager.IsGravityChange)
@@ -63,11 +63,6 @@ public class NormalMonsterAI : MonoBehaviour
             DetectCol();
             return;
         }
-    }
-
-    public void Move()
-    {
-        if (!IsBatch) return;
         if (navMeshAgent.isOnNavMesh)
         {
             //DetectCol() 이걸로 대체 할 수도 있을 듯
@@ -159,5 +154,6 @@ public class NormalMonsterAI : MonoBehaviour
                 climbingLookRot = Quaternion.LookRotation(-hit.normal, -GravitiesManager.GravityVector);
             }
         }
+        //이상함
     }
 }
