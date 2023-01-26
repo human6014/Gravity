@@ -127,10 +127,10 @@ public class NavTrace : MonoBehaviour
 #if UNITY_EDITOR
     public void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
+        //Gizmos.color = Color.yellow;
         //Gizmos.DrawLine(transform.position, transform.position + targetUpDirection * 15);
-        Gizmos.DrawLine(transform.position, transform.position + targetDirection * 5);
-        Gizmos.color = Color.blue;
+        //Gizmos.DrawLine(transform.position, transform.position + targetDirection * 5);
+        //Gizmos.color = Color.blue;
         //Gizmos.DrawLine(transform.position, transform.position + targetRightDirection * 15);
     }
 #endif

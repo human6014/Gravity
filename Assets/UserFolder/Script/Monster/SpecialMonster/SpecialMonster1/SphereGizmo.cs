@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SphereGizmo : MonoBehaviour
 {
-    public static bool Enabled = true;
+    public bool Enabled = true;
 
     public float size = 0.1f;
     public Color color = Color.red;
