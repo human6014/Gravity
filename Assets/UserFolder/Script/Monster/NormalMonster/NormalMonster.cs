@@ -22,6 +22,7 @@ public class NormalMonster : PoolableScript, IMonster
     private void Update()
     {
         Move();
+        //¼º´É issue
     }
 
     public void Init(Vector3 pos, Manager.ObjectPoolManager.PoolingObject poolingObject)
