@@ -150,8 +150,10 @@ public class Leg : MonoBehaviour
         Quaternion.LookRotation(TipPos - ikTarget.position) * Quaternion.Euler(90, 0, 0));
 
 
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
+        /*
         Gizmos.color = Color.magenta;
         Gizmos.DrawSphere(RaycastTipPos, 0.1f);
 
@@ -182,5 +184,7 @@ public class Leg : MonoBehaviour
             Gizmos.color = Color.blue;
             Gizmos.DrawRay(backRayOrigin.position, backRayOrigin.forward.normalized * -maxBackRayDist);
         }
+        */
     }
+#endif
 }
