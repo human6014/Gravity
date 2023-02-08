@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Manager;
-using Detector;
+using Manager.AI;
+using Contoller.Floor;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class NavTrace : MonoBehaviour

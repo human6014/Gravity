@@ -1,10 +1,12 @@
 using EnumType;
 using Manager;
+using Manager.AI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace main
+
+namespace Contoller.Player
 {
     public class PlayerController : MonoBehaviour
     {
@@ -81,7 +83,7 @@ namespace main
                 if (Input.GetKeyDown(gravityChangeInput[i]))
                 {
                     currentGravityKeyInput = i;
-                    break;
+                    return;
                 }
             }
         }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace main
+namespace Contoller.Camera
 {
     public class CameraController : MonoBehaviour
     {
@@ -21,7 +21,7 @@ namespace main
         private float currentCameraRotationY;
 
         [SerializeField]
-        private Camera mainCamera;
+        private UnityEngine.Camera mainCamera;
         private Rigidbody myRigid;
 
         void Start()
