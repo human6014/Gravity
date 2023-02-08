@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Manager;
+using Manager.AI;
+
 public class FlyingMonster : MonoBehaviour
 {
     Transform target;
