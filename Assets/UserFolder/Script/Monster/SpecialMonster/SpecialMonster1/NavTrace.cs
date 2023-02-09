@@ -22,7 +22,7 @@ public class NavTrace : MonoBehaviour
     [Header("Adjustment factor")]
 
     [SerializeField] [Tooltip("회전 강도")] 
-    private readonly float rotAdjustRatio = 0.5f;
+    private readonly float rotAdjustRatio = 0.3f;
 
     [SerializeField] [Tooltip("최대 이동 속도")]
     private readonly float maxSpeed = 15f;
@@ -30,7 +30,7 @@ public class NavTrace : MonoBehaviour
     [SerializeField] [Tooltip("최소 이동 속도")] 
     private readonly float minSpeed = 7f;
 
-    private float currentSpeed = 12.5f;
+    private float currentSpeed = 10;
     #endregion
 
     #region Property

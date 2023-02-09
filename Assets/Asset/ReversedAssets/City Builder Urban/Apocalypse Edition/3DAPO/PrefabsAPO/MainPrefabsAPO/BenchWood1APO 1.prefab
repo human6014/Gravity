@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9101454862138218759}
   - component: {fileID: 6461024651791363533}
   - component: {fileID: 3533762269461785842}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BenchWood1APO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

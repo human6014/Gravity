@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6470986104172038504}
   - component: {fileID: 9090930202128235938}
   - component: {fileID: 2033350925829356826}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BenchMetal3APO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

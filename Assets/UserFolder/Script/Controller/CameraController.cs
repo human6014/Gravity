@@ -35,7 +35,7 @@ namespace Contoller.Camera
 
         void Update()  // 컴퓨터마다 다르지만 대략 1초에 60번 실행
         {
-            //Move();                 // 1 키보드 입력에 따라 이동
+            Move();                 // 1 키보드 입력에 따라 이동
             CameraRotation();       // 2️ 마우스를 위아래(Y) 움직임에 따라 카메라 X 축 회전 
             //CharacterRotation();    // 3 마우스 좌우(X) 움직임에 따라 캐릭터 Y 축 회전 
         }

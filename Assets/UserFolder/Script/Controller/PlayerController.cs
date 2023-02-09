@@ -20,7 +20,7 @@ namespace Contoller.Player
 
         
         [SerializeField] private int normalSpeed = 10;
-        [SerializeField] private int runSpeed = 60;
+        [SerializeField] private int runSpeed = 30;
         private int currentSpeed;
 
         private bool flipOnce;
@@ -95,7 +95,7 @@ namespace Contoller.Player
             if (isRunInput) currentSpeed = runSpeed;
             else            currentSpeed = normalSpeed;
             
-            if (wheelInput != 0)
+            if (wheelInput != 0 && !GravitiesManager.IsGravityChange)
             {
                 flipOnce = true;
                 isChanging = true;
@@ -128,8 +128,8 @@ namespace Contoller.Player
         {
             Vector3 moveHorizontal = transform.right * xMoveInput;
             Vector3 moveVertical = transform.forward * zMoveInput;
-            Vector3 velocity = currentSpeed * Time.deltaTime * (moveHorizontal + moveVertical).normalized;
-
+            Vector3 velocity = 0.02f * currentSpeed * (moveHorizontal + moveVertical).normalized;
+            //deltaTime 없앰 -> 이게 맞는 것 같음
             playerRigid.MovePosition(transform.position + velocity);
         }
 
