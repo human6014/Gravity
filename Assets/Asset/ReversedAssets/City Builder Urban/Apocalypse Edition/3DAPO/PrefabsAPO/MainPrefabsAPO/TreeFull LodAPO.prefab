@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 5710049497133047882}
   - component: {fileID: 7555593811684201600}
   - component: {fileID: 426199130562721304}
+  - component: {fileID: 4203386795983658449}
+  - component: {fileID: 180283303277918350}
   m_Layer: 0
   m_Name: TreeFull LodAPO
   m_TagString: Untagged
@@ -113,6 +115,34 @@ LODGroup:
     renderers:
     - renderer: {fileID: 3587077481666730121}
   m_Enabled: 1
+--- !u!136 &4203386795983658449
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8348021119180879189}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.8
+  m_Height: 13.91
+  m_Direction: 1
+  m_Center: {x: 0, y: 6.32, z: 0}
+--- !u!136 &180283303277918350
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8348021119180879189}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 3.5
+  m_Height: 10
+  m_Direction: 1
+  m_Center: {x: 0, y: 9.1, z: 0}
 --- !u!1001 &601076678453754349
 PrefabInstance:
   m_ObjectHideFlags: 0

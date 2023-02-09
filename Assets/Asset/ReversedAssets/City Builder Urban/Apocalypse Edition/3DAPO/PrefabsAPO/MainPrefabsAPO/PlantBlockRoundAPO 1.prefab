@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1317555153730731150}
   - component: {fileID: 6798507874151970242}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: PlantBlockRoundAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
