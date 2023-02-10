@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7535225160025590456}
   - component: {fileID: 4782530605582542070}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: RoadBlockadeAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

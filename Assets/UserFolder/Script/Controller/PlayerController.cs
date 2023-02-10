@@ -46,16 +46,18 @@ namespace Contoller.Player
         };
         #endregion
 
-        void Start()
+        private void Awake()
         {
             playerRigid = GetComponent<Rigidbody>();
             playerAnim = GetComponentInChildren<Animator>();
-
+        }
+        private void Start()
+        {
             AIManager.PlayerTransfrom = transform;
             currentSpeed = normalSpeed;
         }
 
-        void Update()
+        private void Update()
         {
             KeyInput();
             ProcessInput();

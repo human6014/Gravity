@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 697652153158079815}
   - component: {fileID: 3335612228829634957}
   - component: {fileID: 8834492557004173788}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: RoadBlockLargePlastic3APO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
