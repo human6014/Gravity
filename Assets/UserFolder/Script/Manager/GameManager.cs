@@ -2,17 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+namespace Manager
 {
-   
-    void Start()
+    public class GameManager : MonoBehaviour
     {
-        
-    }
 
-    
-    void Update()
-    {
-        
+        void Start()
+        {
+
+        }
+
+
+        void Update()
+        {
+
+        }
     }
 }

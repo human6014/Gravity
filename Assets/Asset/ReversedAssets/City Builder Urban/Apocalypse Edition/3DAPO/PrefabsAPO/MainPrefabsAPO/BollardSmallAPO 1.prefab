@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6755391899330115019}
   - component: {fileID: 6731168029005662866}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BollardSmallAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

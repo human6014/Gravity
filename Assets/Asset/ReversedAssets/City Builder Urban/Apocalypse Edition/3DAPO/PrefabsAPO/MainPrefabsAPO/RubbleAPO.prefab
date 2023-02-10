@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3096487287258080387}
   - component: {fileID: 2114217225476434726}
   - component: {fileID: 4229937868410724332}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: RubbleAPO
   m_TagString: Untagged
   m_Icon: {fileID: 0}

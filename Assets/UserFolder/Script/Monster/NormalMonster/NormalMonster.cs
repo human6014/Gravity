@@ -3,58 +3,61 @@ using System.Collections.Generic;
 using UnityEngine;
 using EnumType;
 
-public class NormalMonster : PoolableScript, IMonster
+namespace Entity.Unit.Normal
 {
-    [SerializeField] private Scriptable.NormalMonsterScriptable settings;
-    private Manager.ObjectPoolManager.PoolingObject poolingObject;
-
-    private Animator animator;
-    private NormalMonsterAI normalMonsterAI;
-
-    public NoramlMonsterType GetMonsterType() => settings.monsterType;
-
-    private void Awake()
+    public class NormalMonster : PoolableScript, IMonster
     {
-        animator = GetComponent<Animator>();
-        normalMonsterAI = GetComponent<NormalMonsterAI>();
-    }
+        [SerializeField] private Scriptable.NormalMonsterScriptable settings;
+        private Manager.ObjectPoolManager.PoolingObject poolingObject;
 
-    private void Update()
-    {
-        Move();
-        //성능 issue
-    }
+        private Animator animator;
+        private NormalMonsterAI normalMonsterAI;
 
-    public void Init(Vector3 pos, Manager.ObjectPoolManager.PoolingObject poolingObject)
-    {
-        normalMonsterAI.Init(pos);
-        this.poolingObject = poolingObject;
-    }
+        public NoramlMonsterType GetMonsterType() => settings.monsterType;
 
-    public void Move()
-    {
-        normalMonsterAI.Move();
-        animator.SetBool("isMove",true);
-    }
+        private void Awake()
+        {
+            animator = GetComponent<Animator>();
+            normalMonsterAI = GetComponent<NormalMonsterAI>();
+        }
 
-    public void Attack()
-    {
-        throw new System.NotImplementedException();
-    }
+        private void Update()
+        {
+            Move();
+            //성능 issue
+        }
 
-    public void Die()
-    {
-        throw new System.NotImplementedException();
-    }
+        public void Init(Vector3 pos, Manager.ObjectPoolManager.PoolingObject poolingObject)
+        {
+            normalMonsterAI.Init(pos);
+            this.poolingObject = poolingObject;
+        }
 
-    public void Hit(int damage)
-    {
-        throw new System.NotImplementedException();
-    }
+        public void Move()
+        {
+            normalMonsterAI.Move();
+            animator.SetBool("isMove", true);
+        }
 
-    [ContextMenu("ReturnObject")]
-    public override void ReturnObject()
-    {
-        poolingObject.ReturnObject(this);
+        public void Attack()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Die()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Hit(int damage)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        [ContextMenu("ReturnObject")]
+        public override void ReturnObject()
+        {
+            poolingObject.ReturnObject(this);
+        }
     }
 }

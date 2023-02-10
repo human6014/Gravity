@@ -107,7 +107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5301271212473735977}
   - component: {fileID: 3754997912816712767}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BikeRailAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

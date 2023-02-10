@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Manager.AI;
 using Manager;
 
 [RequireComponent(typeof(NavMeshAgent))]
@@ -21,6 +22,8 @@ public class NormalMonsterAI : MonoBehaviour
     private Vector3 manualTargetDir;
 
     private float currentSpeed;
+
+    private int updateCount;
 
     public bool IsBatch { get; private set; } = false;
     public bool IsFolling { get; private set; } = false;
@@ -50,6 +53,7 @@ public class NormalMonsterAI : MonoBehaviour
     public void Move()
     {
         if (!IsBatch) return;
+        
         if (GravitiesManager.IsGravityChange)
         {
             cachedRigidbody.useGravity = true;
@@ -67,7 +71,11 @@ public class NormalMonsterAI : MonoBehaviour
         {
             //DetectCol() 이걸로 대체 할 수도 있을 듯
         }
-        path = new NavMeshPath();
+
+        //if (updateCount++ < 10) return;
+        //updateCount = 0;
+
+        path = new NavMeshPath(); 
         navMeshAgent.CalculatePath(AIManager.PlayerTransfrom.position, path);
 
         if (path.status == NavMeshPathStatus.PathPartial) ManualMode();
@@ -105,7 +113,9 @@ public class NormalMonsterAI : MonoBehaviour
         IsAutoMode = true;
         navMeshAgent.isStopped = false;
 
-        navMeshAgent.destination = AIManager.PlayerTransfrom.position;
+        navMeshAgent.SetPath(path);
+        //navMeshAgent.path = path;
+        
 
         autoTargetDir = (navMeshAgent.steeringTarget - cachedTransform.position).normalized;
         switch (GravitiesManager.gravityDirection)

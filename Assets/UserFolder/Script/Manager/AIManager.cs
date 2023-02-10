@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using Detector;
+using Contoller.Floor;
 using EnumType;
 
-namespace Manager
+namespace Manager.AI
 {
     public class AIManager : MonoBehaviour
     {
-        public static FloorDetector FloorDetector { get; set; }
+        public static FloorController FloorDetector { get; set; }
         public static Transform PlayerTransfrom { get; set; }
 
         /// <summary>
