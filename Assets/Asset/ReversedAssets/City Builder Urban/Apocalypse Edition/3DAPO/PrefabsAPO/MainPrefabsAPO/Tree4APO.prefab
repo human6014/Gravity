@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3455139767712089620}
   - component: {fileID: 5228966936427462607}
   - component: {fileID: 196600667981985867}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Tree4APO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,10 +119,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.23
-  m_Height: 7.54
+  m_Radius: 0.072237566
+  m_Height: 7.4441175
   m_Direction: 1
-  m_Center: {x: 0.06272471, y: 3.59, z: 0.067465186}
+  m_Center: {x: 0, y: 3.637941, z: 0}
 --- !u!1001 &1030391884155855108
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -194,6 +194,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Tree4LOD1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 709d6e1fbf748334aafb99b0aec8538f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 709d6e1fbf748334aafb99b0aec8538f,
         type: 3}

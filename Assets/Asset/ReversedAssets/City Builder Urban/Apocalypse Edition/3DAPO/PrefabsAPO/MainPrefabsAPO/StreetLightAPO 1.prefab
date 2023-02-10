@@ -241,7 +241,7 @@ GameObject:
   - component: {fileID: 3034312742327846978}
   - component: {fileID: 3556402746554182879}
   - component: {fileID: 2060766072356989538}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: StreetLightAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

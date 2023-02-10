@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3556276474182814968}
   - component: {fileID: 1638916457010968626}
   - component: {fileID: 6197787840016286623}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Lamsp2NYAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

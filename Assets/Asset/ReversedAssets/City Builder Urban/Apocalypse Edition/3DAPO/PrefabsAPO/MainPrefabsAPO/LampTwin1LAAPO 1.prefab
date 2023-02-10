@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 2350186641732851582}
   - component: {fileID: 538599092659037108}
   - component: {fileID: 6539323168409445764}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: LampTwin1LAAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

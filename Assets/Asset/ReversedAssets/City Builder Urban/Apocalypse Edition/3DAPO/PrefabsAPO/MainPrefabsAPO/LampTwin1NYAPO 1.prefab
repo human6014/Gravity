@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4043358980041963138}
   - component: {fileID: 2303611929175360072}
   - component: {fileID: 643839487971685117}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: LampTwin1NYAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2106575911416221063}
   - component: {fileID: 2106575911416221064}
   - component: {fileID: 2832170939265166567}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: TrafficLightAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
