@@ -25,7 +25,7 @@ public class LegController : MonoBehaviour
     private readonly float maxTipWait = 1.5f; //값이 작으면 발 위치 고정 시간이 길어짐 0.7f
     private readonly float bodyHeightBase = 0;   //body 높이 1.3f
     private readonly float posAdjustRatio = 0.05f;  //body 위치 조정 강도
-    private readonly float rotAdjustRatio = 0.75f;   //body 회전 조정 강도, NavTrace.cs로감
+    private readonly float rotAdjustRatio = 0.75f;   //body 회전 조정 강도, NavTrace.cs로 이동
 
     public Transform BodyTransform { get => bodyTransform; }
     public AnimationCurve SpeedCurve { get => speedCurve; }
