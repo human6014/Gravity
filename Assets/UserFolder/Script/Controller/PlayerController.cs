@@ -18,7 +18,7 @@ namespace Contoller.Player
         private Rigidbody playerRigid;
         private Animator playerAnim;
 
-        
+        [SerializeField] private LayerMask reversePosLayer;
         [SerializeField] private int normalSpeed = 10;
         [SerializeField] private int runSpeed = 30;
         private int currentSpeed;
@@ -50,10 +50,11 @@ namespace Contoller.Player
         {
             playerRigid = GetComponent<Rigidbody>();
             playerAnim = GetComponentInChildren<Animator>();
+            AIManager.PlayerTransfrom = transform;
         }
         private void Start()
         {
-            AIManager.PlayerTransfrom = transform;
+            
             currentSpeed = normalSpeed;
         }
 
@@ -63,6 +64,7 @@ namespace Contoller.Player
             ProcessInput();
             Move();
             Rotate();
+            PositionRay();
 
             if (xMoveInput != 0 || zMoveInput != 0) playerAnim.SetBool("isRun", true);
             else if (playerAnim.GetBool("isRun"))   playerAnim.SetBool("isRun", false);
@@ -239,6 +241,14 @@ namespace Contoller.Player
             }
             isChanging = false;
             GravitiesManager.CompleteGravityChange();
+        }
+
+        private void PositionRay()
+        {
+            if (Physics.Raycast(transform.position, transform.up, out RaycastHit hit, 10, reversePosLayer))
+                AIManager.PlayerRerversePosition = hit.point;
+            else 
+                AIManager.PlayerRerversePosition = Vector3.zero;
         }
     }
 }

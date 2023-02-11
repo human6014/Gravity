@@ -35,6 +35,7 @@ public class NavTrace : MonoBehaviour
     private readonly float minSpeed = 7f;
 
     private float currentSpeed = 10;
+
     #endregion
 
     #region Property
@@ -57,10 +58,7 @@ public class NavTrace : MonoBehaviour
         agentLinkMover = GetComponent<AgentLinkMover>();
         legController = FindObjectOfType<LegController>();
         specialMonster1 = FindObjectOfType<SpecialMonster1>();
-    }
 
-    private void Start()
-    {
         currentSpeed = navMeshAgent.speed;
 
         navMeshAgent.updatePosition = false;
@@ -84,18 +82,24 @@ public class NavTrace : MonoBehaviour
         }
         else
         {
-            navMeshAgent.SetDestination(AIManager.PlayerTransfrom.position);
-            navMeshAgent.speed = currentSpeed;
+            if (navMeshAgent.pathPending == true) return;
 
+            if(AIManager.PlayerRerversePosition != Vector3.zero)
+                navMeshAgent.SetDestination(AIManager.PlayerRerversePosition);
+            else
+                navMeshAgent.SetDestination(AIManager.PlayerTransfrom.position);
 
             if (navMeshAgent.isOnOffMeshLink)
             {
+                navMeshAgent.updateUpAxis = false;
                 NavMeshLink link = (NavMeshLink)navMeshAgent.navMeshOwner;
                 Debug.Log(link.name);
                 //여기서 NavMeshLink 감지 가능
             }
-
-            if (navMeshAgent.isOnOffMeshLink && !IsOnMeshLink) StartCoroutine(MeshLinkOffDelay());
+            else
+            {
+                navMeshAgent.updateUpAxis = true;
+            }
 
             Vector3 targetDirection = (navMeshAgent.steeringTarget - cachedTransform.position).normalized;
             //targetForward = IsOnMeshLink == true ? ProceduralForwardAngle : targetDirection;
@@ -103,6 +107,7 @@ public class NavTrace : MonoBehaviour
 
             Quaternion navRotation = Quaternion.LookRotation(targetForward, ProceduralUpAngle);
             cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, navRotation, rotAdjustRatio);
+
             if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
             {
                 navMeshAgent.nextPosition = transform.position;
@@ -122,22 +127,6 @@ public class NavTrace : MonoBehaviour
 
     //public bool IsSameFloor() => navMeshAgent.navMeshOwner.name == floorDetector.GetNowFloor().name;
     //MeshLink 타는 중에 점프 하면 버그생김
-    private IEnumerator MeshLinkOffDelay()
-    {
-        IsOnMeshLink = true;
-        //currentSpeed = minSpeed;
-        yield return waitUntil;
-        /*
-        while (navMeshAgent.isOnOffMeshLink)
-        {
-            yield return null;
-        }
-        */
-        //currentSpeed = maxSpeed;
-
-
-        IsOnMeshLink = false;
-    }
 
 #if UNITY_EDITOR
     public void OnDrawGizmos()
