@@ -23,7 +23,7 @@ public class NormalMonsterAI : MonoBehaviour
 
     private float currentSpeed;
 
-    private int updateCount;
+    private float updateTimer;
 
     public bool IsBatch { get; private set; } = false;
     public bool IsFolling { get; private set; } = false;
@@ -72,9 +72,6 @@ public class NormalMonsterAI : MonoBehaviour
             //DetectCol() 이걸로 대체 할 수도 있을 듯
         }
 
-        //if (updateCount++ < 10) return;
-        //updateCount = 0;
-
         path = new NavMeshPath(); 
         navMeshAgent.CalculatePath(AIManager.PlayerTransfrom.position, path);
 
@@ -113,9 +110,23 @@ public class NormalMonsterAI : MonoBehaviour
         IsAutoMode = true;
         navMeshAgent.isStopped = false;
 
-        navMeshAgent.SetPath(path);
-        //navMeshAgent.path = path;
-        
+        updateTimer += Time.deltaTime;
+        if(updateTimer >= 0.1f)
+        {
+            updateTimer = 0;
+            //navMeshAgent.SetPath(path);
+            navMeshAgent.SetDestination(AIManager.PlayerTransfrom.position);
+        }
+
+        if (!navMeshAgent.isOnOffMeshLink)
+        {
+            if (!AIManager.IsSameFloor(navMeshAgent))
+            {
+                IsClimbing = true;
+                climbingLookRot = Quaternion.LookRotation((navMeshAgent.navMeshOwner as Component).gameObject.transform.position, -GravitiesManager.GravityVector);
+            }
+        }
+        else IsClimbing = false;
 
         autoTargetDir = (navMeshAgent.steeringTarget - cachedTransform.position).normalized;
         switch (GravitiesManager.gravityDirection)
@@ -151,6 +162,7 @@ public class NormalMonsterAI : MonoBehaviour
         transform.position += Time.deltaTime * currentSpeed * manualTargetDir;
     }
 
+    /*
     private void OnTriggerStay(Collider other)
     {
         if (!IsBatch) return;
@@ -166,4 +178,5 @@ public class NormalMonsterAI : MonoBehaviour
         }
         //이상함
     }
+    */
 }

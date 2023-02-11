@@ -58,7 +58,7 @@ namespace Manager
                 IsGravityChange = true;
                 IsGravityDupleicated = false;
             }
-            Debug.Log("current : " + currentGravityType);
+            //Debug.Log("current : " + currentGravityType);
         }
 
         public static void CompleteGravityChange() => IsGravityChange = false;

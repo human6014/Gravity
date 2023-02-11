@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8940002209176243738}
   - component: {fileID: 6626400258496182992}
   - component: {fileID: 8447824457026275161}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: TrafficLightMini1NYAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
