@@ -13,11 +13,6 @@ namespace UnityEngine.AI
         public int agentTypeID { get { return m_AgentTypeID; } set { m_AgentTypeID = value; UpdateLink(); } }
 
         [SerializeField]
-        int m_AgentTypeID2;
-        public int agentTypeID2 { get { return m_AgentTypeID2; } set { m_AgentTypeID2 = value; } }
-
-
-        [SerializeField]
         Vector3 m_StartPoint = new Vector3(0.0f, 0.0f, -2.5f);
         public Vector3 startPoint { get { return m_StartPoint; } set { m_StartPoint = value; UpdateLink(); } }
 
@@ -46,7 +41,6 @@ namespace UnityEngine.AI
         public int area { get { return m_Area; } set { m_Area = value; UpdateLink(); } }
 
         NavMeshLinkInstance m_LinkInstance = new NavMeshLinkInstance();
-        NavMeshLinkInstance m_LinkInstance2 = new NavMeshLinkInstance();
 
         Vector3 m_LastPosition = Vector3.zero;
         Quaternion m_LastRotation = Quaternion.identity;
@@ -56,25 +50,20 @@ namespace UnityEngine.AI
         void OnEnable()
         {
             AddLink();
-            AddLink2();
             if (m_AutoUpdatePosition && m_LinkInstance.valid)
                 AddTracking(this);
-            if (!m_LinkInstance2.valid) Debug.LogWarning("Link2 can't tracked");
         }
 
         void OnDisable()
         {
             RemoveTracking(this);
             m_LinkInstance.Remove();
-            m_LinkInstance2.Remove();
         }
 
         public void UpdateLink()
         {
             m_LinkInstance.Remove();
-            m_LinkInstance2.Remove();
             AddLink();
-            AddLink2();
         }
 
         static void AddTracking(NavMeshLink link)
@@ -136,33 +125,7 @@ namespace UnityEngine.AI
             if (m_LinkInstance.valid)
                 m_LinkInstance.owner = this;
         }
-        void AddLink2()
-        {
-#if UNITY_EDITOR
-            if (m_LinkInstance2.valid)
-            {
-                Debug.LogError("Link2 is already added: " + this);
-                return;
-            }
-#endif
 
-            var link2 = new NavMeshLinkData();
-            link2.startPosition = m_StartPoint;
-            link2.endPosition = m_EndPoint;
-            link2.width = m_Width;
-            link2.costModifier = m_CostModifier;
-            link2.bidirectional = m_Bidirectional;
-            link2.area = m_Area;
-            link2.agentTypeID = m_AgentTypeID2;
-
-            m_LinkInstance2 = NavMesh.AddLink(link2, transform.position, transform.rotation);
-
-            if (m_LinkInstance2.valid)
-                m_LinkInstance2.owner = this;
-
-            m_LastPosition = transform.position;
-            m_LastRotation = transform.rotation;
-        }
         bool HasTransformChanged()
         {
             if (m_LastPosition != transform.position) return true;
