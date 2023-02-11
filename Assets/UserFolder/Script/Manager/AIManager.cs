@@ -12,7 +12,7 @@ namespace Manager.AI
     {
         public static FloorController FloorDetector { get; set; }
         public static Transform PlayerTransfrom { get; set; }
-
+        public static Vector3 PlayerRerversePosition { get; set; }
         /// <summary>
         /// 해당 navMeshAgent가 현재 중력에 맞는 지상을 밝고 있는지 구합니다
         /// </summary>
