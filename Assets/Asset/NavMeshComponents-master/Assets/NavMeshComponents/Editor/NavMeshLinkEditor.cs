@@ -8,7 +8,6 @@ namespace UnityEditor.AI
     class NavMeshLinkEditor : Editor
     {
         SerializedProperty m_AgentTypeID;
-        SerializedProperty m_AgentTypeID2;
         SerializedProperty m_Area;
         SerializedProperty m_CostModifier;
         SerializedProperty m_AutoUpdatePosition;
@@ -26,7 +25,6 @@ namespace UnityEditor.AI
         void OnEnable()
         {
             m_AgentTypeID = serializedObject.FindProperty("m_AgentTypeID");
-            m_AgentTypeID2 = serializedObject.FindProperty("m_AgentTypeID2");
             m_Area = serializedObject.FindProperty("m_Area");
             m_CostModifier = serializedObject.FindProperty("m_CostModifier");
             m_AutoUpdatePosition = serializedObject.FindProperty("m_AutoUpdatePosition");
@@ -78,7 +76,6 @@ namespace UnityEditor.AI
             serializedObject.Update();
 
             NavMeshComponentsGUIUtility.AgentTypePopup("Agent Type", m_AgentTypeID);
-            NavMeshComponentsGUIUtility.AgentTypePopup("Agent Type2", m_AgentTypeID2);
             EditorGUILayout.Space();
 
             EditorGUILayout.PropertyField(m_StartPoint);

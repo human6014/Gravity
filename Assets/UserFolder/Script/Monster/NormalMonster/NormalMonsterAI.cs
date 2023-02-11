@@ -75,12 +75,15 @@ public class NormalMonsterAI : MonoBehaviour
         path = new NavMeshPath(); 
         navMeshAgent.CalculatePath(AIManager.PlayerTransfrom.position, path);
 
+        Debug.Log(path.status);
+
         if (path.status == NavMeshPathStatus.PathPartial) ManualMode();
         else if (path.status == NavMeshPathStatus.PathInvalid)
         {
 
         }
         else AutoMode();
+
     }
     private void DetectCol()
     {
@@ -161,22 +164,4 @@ public class NormalMonsterAI : MonoBehaviour
         if (navMeshAgent.remainingDistance < navMeshAgent.stoppingDistance) return;
         transform.position += Time.deltaTime * currentSpeed * manualTargetDir;
     }
-
-    /*
-    private void OnTriggerStay(Collider other)
-    {
-        if (!IsBatch) return;
-        IsClimbing = false;
-        if (!navMeshAgent.isActiveAndEnabled || !IsAutoMode) return;
-        if (!AIManager.IsSameFloor(navMeshAgent))
-        {
-            if (Physics.Raycast(cachedTransform.position, other.transform.position - cachedTransform.position, out RaycastHit hit, climbingDetectLayer))
-            {
-                IsClimbing = true;
-                climbingLookRot = Quaternion.LookRotation(-hit.normal, -GravitiesManager.GravityVector);
-            }
-        }
-        //ÀÌ»óÇÔ
-    }
-    */
 }
