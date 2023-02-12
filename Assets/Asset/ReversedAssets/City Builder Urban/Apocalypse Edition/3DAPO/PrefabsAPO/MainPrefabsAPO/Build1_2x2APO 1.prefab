@@ -343,7 +343,6 @@ GameObject:
   - component: {fileID: 5391333319208181594}
   - component: {fileID: 9042672264120537343}
   - component: {fileID: 6528796461612557365}
-  - component: {fileID: 7011919689643088054}
   m_Layer: 0
   m_Name: Build1_2x2APO 1
   m_TagString: Untagged
@@ -420,16 +419,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7011919689643088054
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4727105852594570720}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 21.63237, y: 5.3000145, z: 21.631931}
-  m_Center: {x: -0.000019550323, y: 2.6496873, z: 0.0000014305115}
