@@ -22,7 +22,6 @@ public class NormalMonsterAI : MonoBehaviour
     private Vector3 manualTargetDir;
 
     private float currentSpeed;
-
     private float updateTimer;
 
     public bool IsBatch { get; private set; } = false;
@@ -75,8 +74,6 @@ public class NormalMonsterAI : MonoBehaviour
         path = new NavMeshPath(); 
         navMeshAgent.CalculatePath(AIManager.PlayerTransfrom.position, path);
 
-        Debug.Log(path.status);
-
         if (path.status == NavMeshPathStatus.PathPartial) ManualMode();
         else if (path.status == NavMeshPathStatus.PathInvalid)
         {
@@ -126,27 +123,28 @@ public class NormalMonsterAI : MonoBehaviour
             if (!AIManager.IsSameFloor(navMeshAgent))
             {
                 IsClimbing = true;
-                climbingLookRot = Quaternion.LookRotation((navMeshAgent.navMeshOwner as Component).gameObject.transform.position, -GravitiesManager.GravityVector);
+                autoTargetRot = Quaternion.LookRotation((navMeshAgent.navMeshOwner as Component).gameObject.transform.position, -GravitiesManager.GravityVector);
             }
         }
-        else IsClimbing = false;
-
-        autoTargetDir = (navMeshAgent.steeringTarget - cachedTransform.position).normalized;
-        switch (GravitiesManager.gravityDirection)
+        else
         {
-            case EnumType.GravityDirection.X:
-                autoTargetDir.x = 0;
-                break;
-            case EnumType.GravityDirection.Y:
-                autoTargetDir.y = 0;
-                break;
-            case EnumType.GravityDirection.Z:
-                autoTargetDir.z = 0;
-                break;
+            IsClimbing = false;
+            autoTargetDir = (navMeshAgent.steeringTarget - cachedTransform.position).normalized;
+            switch (GravitiesManager.gravityDirection)
+            {
+                case EnumType.GravityDirection.X:
+                    autoTargetDir.x = 0;
+                    break;
+                case EnumType.GravityDirection.Y:
+                    autoTargetDir.y = 0;
+                    break;
+                case EnumType.GravityDirection.Z:
+                    autoTargetDir.z = 0;
+                    break;
+            }
+            autoTargetRot = Quaternion.LookRotation(autoTargetDir, -GravitiesManager.GravityVector);
         }
 
-        if (IsClimbing) autoTargetRot = climbingLookRot;
-        else            autoTargetRot = Quaternion.LookRotation(autoTargetDir, -GravitiesManager.GravityVector);
         cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, autoTargetRot, 0.2f);
     }
 

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 89748310162933222}
   - component: {fileID: 3931926189840206403}
   - component: {fileID: 1258181328267640457}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: RoofWaterTowerAPO 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,12 +95,12 @@ GameObject:
   m_Component:
   - component: {fileID: 6119045707968393222}
   - component: {fileID: 6570054674079369604}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Collider1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6119045707968393222
 Transform:
@@ -141,12 +141,12 @@ GameObject:
   m_Component:
   - component: {fileID: 7319357761740405706}
   - component: {fileID: 7246069830973478828}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Coliider2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &7319357761740405706
 Transform:
