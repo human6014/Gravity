@@ -13,8 +13,8 @@ NavMeshProjectSettings:
     cost: 2
   - name: Rail
     cost: 2
-  - name: 
-    cost: 1
+  - name: NavMeshLink
+    cost: 10
   - name: 
     cost: 1
   - name: 
