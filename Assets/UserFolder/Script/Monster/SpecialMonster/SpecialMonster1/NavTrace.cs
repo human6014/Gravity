@@ -91,14 +91,13 @@ public class NavTrace : MonoBehaviour
 
             if (navMeshAgent.isOnOffMeshLink)
             {
-                navMeshAgent.updateUpAxis = false;
                 NavMeshLink link = (NavMeshLink)navMeshAgent.navMeshOwner;
                 Debug.Log(link.name);
                 //여기서 NavMeshLink 감지 가능
             }
             else
             {
-                navMeshAgent.updateUpAxis = true;
+
             }
 
             Vector3 targetDirection = (navMeshAgent.steeringTarget - cachedTransform.position).normalized;

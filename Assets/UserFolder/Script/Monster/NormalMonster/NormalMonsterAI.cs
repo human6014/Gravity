@@ -123,27 +123,26 @@ public class NormalMonsterAI : MonoBehaviour
             if (!AIManager.IsSameFloor(navMeshAgent))
             {
                 IsClimbing = true;
-                autoTargetRot = Quaternion.LookRotation((navMeshAgent.navMeshOwner as Component).gameObject.transform.position, -GravitiesManager.GravityVector);
+                climbingLookRot = Quaternion.LookRotation((navMeshAgent.navMeshOwner as Component).transform.position, -GravitiesManager.GravityVector);
             }
         }
-        else
+        else IsClimbing = false;
+        
+        autoTargetDir = (navMeshAgent.steeringTarget - cachedTransform.position).normalized;
+        switch (GravitiesManager.gravityDirection)
         {
-            IsClimbing = false;
-            autoTargetDir = (navMeshAgent.steeringTarget - cachedTransform.position).normalized;
-            switch (GravitiesManager.gravityDirection)
-            {
-                case EnumType.GravityDirection.X:
-                    autoTargetDir.x = 0;
-                    break;
-                case EnumType.GravityDirection.Y:
-                    autoTargetDir.y = 0;
-                    break;
-                case EnumType.GravityDirection.Z:
-                    autoTargetDir.z = 0;
-                    break;
-            }
-            autoTargetRot = Quaternion.LookRotation(autoTargetDir, -GravitiesManager.GravityVector);
+            case EnumType.GravityDirection.X:
+                autoTargetDir.x = 0;
+                break;
+            case EnumType.GravityDirection.Y:
+                autoTargetDir.y = 0;
+                break;
+            case EnumType.GravityDirection.Z:
+                autoTargetDir.z = 0;
+                break;
         }
+        if (IsClimbing) autoTargetRot = climbingLookRot;
+        else autoTargetRot = Quaternion.LookRotation(autoTargetDir, -GravitiesManager.GravityVector);
 
         cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, autoTargetRot, 0.2f);
     }
