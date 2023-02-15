@@ -13,8 +13,8 @@ NavMeshProjectSettings:
     cost: 2
   - name: Rail
     cost: 2
-  - name: 
-    cost: 1
+  - name: NavMeshLink
+    cost: 10
   - name: 
     cost: 1
   - name: 
@@ -76,7 +76,7 @@ NavMeshProjectSettings:
     agentRadius: 0.45
     agentHeight: 1.7
     agentSlope: 50
-    agentClimb: 0.4
+    agentClimb: 0.6
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     minRegionArea: 2

@@ -22,7 +22,6 @@ public class NormalMonsterAI : MonoBehaviour
     private Vector3 manualTargetDir;
 
     private float currentSpeed;
-
     private float updateTimer;
 
     public bool IsBatch { get; private set; } = false;
@@ -81,6 +80,7 @@ public class NormalMonsterAI : MonoBehaviour
 
         }
         else AutoMode();
+
     }
     private void DetectCol()
     {
@@ -123,11 +123,11 @@ public class NormalMonsterAI : MonoBehaviour
             if (!AIManager.IsSameFloor(navMeshAgent))
             {
                 IsClimbing = true;
-                climbingLookRot = Quaternion.LookRotation((navMeshAgent.navMeshOwner as Component).gameObject.transform.position, -GravitiesManager.GravityVector);
+                climbingLookRot = Quaternion.LookRotation((navMeshAgent.navMeshOwner as Component).transform.position, -GravitiesManager.GravityVector);
             }
         }
         else IsClimbing = false;
-
+        
         autoTargetDir = (navMeshAgent.steeringTarget - cachedTransform.position).normalized;
         switch (GravitiesManager.gravityDirection)
         {
@@ -141,9 +141,9 @@ public class NormalMonsterAI : MonoBehaviour
                 autoTargetDir.z = 0;
                 break;
         }
-
         if (IsClimbing) autoTargetRot = climbingLookRot;
-        else            autoTargetRot = Quaternion.LookRotation(autoTargetDir, -GravitiesManager.GravityVector);
+        else autoTargetRot = Quaternion.LookRotation(autoTargetDir, -GravitiesManager.GravityVector);
+
         cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, autoTargetRot, 0.2f);
     }
 
@@ -161,22 +161,4 @@ public class NormalMonsterAI : MonoBehaviour
         if (navMeshAgent.remainingDistance < navMeshAgent.stoppingDistance) return;
         transform.position += Time.deltaTime * currentSpeed * manualTargetDir;
     }
-
-    /*
-    private void OnTriggerStay(Collider other)
-    {
-        if (!IsBatch) return;
-        IsClimbing = false;
-        if (!navMeshAgent.isActiveAndEnabled || !IsAutoMode) return;
-        if (!AIManager.IsSameFloor(navMeshAgent))
-        {
-            if (Physics.Raycast(cachedTransform.position, other.transform.position - cachedTransform.position, out RaycastHit hit, climbingDetectLayer))
-            {
-                IsClimbing = true;
-                climbingLookRot = Quaternion.LookRotation(-hit.normal, -GravitiesManager.GravityVector);
-            }
-        }
-        //ÀÌ»óÇÔ
-    }
-    */
 }
