@@ -143,12 +143,12 @@ namespace Manager
         private void Update()
         {
             if (!isActiveSpawn) return;
+
             timer += Time.deltaTime;
             if (timer >= 3)
             {
                 timer = 0;
                 randomUnitIndex = RandomUnit();
-                
 
                 NormalMonster currentUnit = (NormalMonster)poolingObjectArray[randomUnitIndex].GetObject();
                 customization.Customize(currentUnit);

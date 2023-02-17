@@ -10,18 +10,22 @@ namespace Manager
         public static GravitiesType currentGravityType = GravitiesType.yUp;
         public static GravitiesType beforeGravityType = GravitiesType.yUp;
         public static GravityDirection gravityDirection = GravityDirection.Y;
+
         /// <summary>
         /// 중력 방향 마우스 스크롤 아래  : -1 , 위 : 1
         /// </summary>
         public static float GravityDirectionValue { get; private set; } = -1;
+
         /// <summary>
         /// 중력 값 변경시 true, 플레이어 회전 끝나면 false
         /// </summary>
         public static bool IsGravityChange { get; private set; } = false;
+
         /// <summary>
         /// 중력 값 변경시 곂칠경우 true
         /// </summary>
         public static bool IsGravityDupleicated { get; private set; } = false;
+
         /// <summary>
         /// 중력 백터 일반화
         /// </summary>
@@ -58,7 +62,6 @@ namespace Manager
                 IsGravityChange = true;
                 IsGravityDupleicated = false;
             }
-            //Debug.Log("current : " + currentGravityType);
         }
 
         public static void CompleteGravityChange() => IsGravityChange = false;

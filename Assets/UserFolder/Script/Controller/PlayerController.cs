@@ -21,6 +21,7 @@ namespace Contoller.Player
         [SerializeField] private LayerMask reversePosLayer;
         [SerializeField] private int normalSpeed = 10;
         [SerializeField] private int runSpeed = 30;
+
         private int currentSpeed;
 
         private bool flipOnce;
@@ -51,10 +52,6 @@ namespace Contoller.Player
             playerRigid = GetComponent<Rigidbody>();
             playerAnim = GetComponentInChildren<Animator>();
             AIManager.PlayerTransfrom = transform;
-        }
-        private void Start()
-        {
-            
             currentSpeed = normalSpeed;
         }
 
@@ -153,9 +150,6 @@ namespace Contoller.Player
                 _xRotation = Input.GetAxisRaw("Mouse X");
 
             _cameraRotationX = _xRotation * lookSensitivity;
-
-            if (flipOnce && (int)GravitiesManager.beforeGravityType % 2 != (int)GravitiesManager.currentGravityType % 2)
-                currentCameraRotationX *= -1;
 
             currentCameraRotationX += (int)GravitiesManager.currentGravityType % 2 == 0 ? _cameraRotationX : -_cameraRotationX;
 

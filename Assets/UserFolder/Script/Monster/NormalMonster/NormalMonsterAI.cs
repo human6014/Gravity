@@ -46,7 +46,7 @@ public class NormalMonsterAI : MonoBehaviour
         IsBatch = true;
         navMeshAgent.enabled = true;
         navMeshAgent.Warp(pos);
-        transform.rotation = Quaternion.LookRotation(transform.forward, -GravitiesManager.GravityVector);
+        cachedTransform.rotation = Quaternion.LookRotation(cachedTransform.forward, -GravitiesManager.GravityVector);
     }
 
     public void Move()
@@ -58,17 +58,25 @@ public class NormalMonsterAI : MonoBehaviour
             cachedRigidbody.useGravity = true;
             cachedRigidbody.isKinematic = false;
             navMeshAgent.enabled = false;
+            //DetectCol() 연결
             IsFolling = true;
             return;
         }
         if (IsFolling)
         {
             DetectCol();
+
+            /*
+            if (navMeshAgent.isOnNavMesh && AIManager.IsSameFloor(navMeshAgent))
+            {
+                IsFolling = false;
+                navMeshAgent.enabled = true;
+                cachedRigidbody.useGravity = false;
+                cachedRigidbody.isKinematic = true;
+            }
+            */
+
             return;
-        }
-        if (navMeshAgent.isOnNavMesh)
-        {
-            //DetectCol() 이걸로 대체 할 수도 있을 듯
         }
 
         path = new NavMeshPath(); 
@@ -80,8 +88,8 @@ public class NormalMonsterAI : MonoBehaviour
 
         }
         else AutoMode();
-
     }
+
     private void DetectCol()
     {
         Collider[] col = Physics.OverlapSphere(cachedTransform.position, 1.5f, climbingDetectLayer);
@@ -114,8 +122,8 @@ public class NormalMonsterAI : MonoBehaviour
         if(updateTimer >= 0.1f)
         {
             updateTimer = 0;
-            //navMeshAgent.SetPath(path);
-            navMeshAgent.SetDestination(AIManager.PlayerTransfrom.position);
+            navMeshAgent.SetPath(path);
+            //navMeshAgent.SetDestination(AIManager.PlayerTransfrom.position);
         }
 
         if (!navMeshAgent.isOnOffMeshLink)
@@ -127,23 +135,25 @@ public class NormalMonsterAI : MonoBehaviour
             }
         }
         else IsClimbing = false;
-        
-        autoTargetDir = (navMeshAgent.steeringTarget - cachedTransform.position).normalized;
-        switch (GravitiesManager.gravityDirection)
-        {
-            case EnumType.GravityDirection.X:
-                autoTargetDir.x = 0;
-                break;
-            case EnumType.GravityDirection.Y:
-                autoTargetDir.y = 0;
-                break;
-            case EnumType.GravityDirection.Z:
-                autoTargetDir.z = 0;
-                break;
-        }
-        if (IsClimbing) autoTargetRot = climbingLookRot;
-        else autoTargetRot = Quaternion.LookRotation(autoTargetDir, -GravitiesManager.GravityVector);
 
+        if (IsClimbing) autoTargetRot = climbingLookRot;
+        else
+        {
+            autoTargetDir = (navMeshAgent.steeringTarget - cachedTransform.position).normalized;
+            switch (GravitiesManager.gravityDirection)
+            {
+                case EnumType.GravityDirection.X:
+                    autoTargetDir.x = 0;
+                    break;
+                case EnumType.GravityDirection.Y:
+                    autoTargetDir.y = 0;
+                    break;
+                case EnumType.GravityDirection.Z:
+                    autoTargetDir.z = 0;
+                    break;
+            }
+            autoTargetRot = Quaternion.LookRotation(autoTargetDir, -GravitiesManager.GravityVector);
+        }
         cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, autoTargetRot, 0.2f);
     }
 
@@ -159,6 +169,6 @@ public class NormalMonsterAI : MonoBehaviour
         cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, manualTargetRot, 0.2f);
 
         if (navMeshAgent.remainingDistance < navMeshAgent.stoppingDistance) return;
-        transform.position += Time.deltaTime * currentSpeed * manualTargetDir;
+        cachedTransform.position += Time.deltaTime * currentSpeed * manualTargetDir;
     }
 }
