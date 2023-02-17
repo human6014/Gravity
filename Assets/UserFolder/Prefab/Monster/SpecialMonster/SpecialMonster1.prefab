@@ -59,6 +59,24 @@ MonoBehaviour:
   - {fileID: 130940771662174268}
   - {fileID: 130940771401476780}
   - {fileID: 130940771371550281}
+  speedCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  heightCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  layerMaskBack:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &130940771086349378
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,6 +230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Enabled: 1
   size: 0.2
   color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &130940771144118162
@@ -258,6 +277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Enabled: 1
   size: 0.1
   color: {r: 0.9245283, g: 0.8155037, b: 0.8155037, a: 1}
 --- !u!1 &130940771257420457
@@ -558,6 +578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Enabled: 1
   size: 0.1
   color: {r: 0.04460144, g: 0, b: 1, a: 1}
 --- !u!1 &130940771594530141
@@ -604,6 +625,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Enabled: 1
   size: 0.1
   color: {r: 0, g: 1, b: 0.013520718, a: 1}
 --- !u!1 &130940771629150575
@@ -650,6 +672,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Enabled: 1
   size: 0.1
   color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &130940771644348672
@@ -1036,6 +1059,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Enabled: 1
   size: 0.1
   color: {r: 0, g: 1, b: 0.013520718, a: 1}
 --- !u!1 &130940772093629010
@@ -1138,6 +1162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Enabled: 1
   size: 0.1
   color: {r: 0, g: 1, b: 0.013520718, a: 1}
 --- !u!1 &130940772196541195
@@ -1216,6 +1241,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Enabled: 1
   size: 0.2
   color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &130940772304477487
@@ -1293,6 +1319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Enabled: 1
   size: 0.2
   color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &130940772341798916
@@ -1339,6 +1366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Enabled: 1
   size: 0.1
   color: {r: 0, g: 1, b: 0.013520718, a: 1}
 --- !u!1 &130940772398121008
@@ -1416,6 +1444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Enabled: 1
   size: 0.1
   color: {r: 0.04460144, g: 0, b: 1, a: 1}
 --- !u!1 &130940772419246697
@@ -1494,6 +1523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Enabled: 1
   size: 0.2
   color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &130940772461639355
@@ -1627,6 +1657,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Enabled: 1
   size: 0.2
   color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &130940772552698182
@@ -2022,6 +2053,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Enabled: 1
   size: 0.1
   color: {r: 0.1792453, g: 0.1530349, b: 0.1530349, a: 1}
 --- !u!1 &130940773133255739
@@ -2124,8 +2156,142 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Enabled: 1
   size: 0.2
   color: {r: 1, g: 0, b: 0, a: 1}
+--- !u!1 &5862327366166150652
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6669492758422588209}
+  - component: {fileID: 269282638204786529}
+  m_Layer: 0
+  m_Name: Rig
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6669492758422588209
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5862327366166150652}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1995314684721540587}
+  m_Father: {fileID: 5351916245404127817}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &269282638204786529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5862327366166150652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70b342d8ce5c2fd48b8fa3147d48d1d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Weight: 1
+  m_Effectors: []
+--- !u!1 &8396382112844869281
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1995314684721540587}
+  - component: {fileID: 66170441405379993}
+  m_Layer: 0
+  m_Name: Head Rig
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1995314684721540587
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8396382112844869281}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6669492758422588209}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &66170441405379993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8396382112844869281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3c430f382484144e925c097c2d33cfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Weight: 1
+  m_Data:
+    m_ConstrainedObject: {fileID: 5100169353165604360}
+    m_SourceObjects:
+      m_Length: 1
+      m_Item0:
+        transform: {fileID: 0}
+        weight: 1
+      m_Item1:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item2:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item3:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item4:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item5:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item6:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item7:
+        transform: {fileID: 0}
+        weight: 0
+    m_Offset: {x: 0, y: 0, z: 0}
+    m_MinLimit: -180
+    m_MaxLimit: 180
+    m_AimAxis: 4
+    m_UpAxis: 2
+    m_WorldUpType: 0
+    m_WorldUpObject: {fileID: 0}
+    m_WorldUpAxis: 2
+    m_MaintainOffset: 0
+    m_ConstrainedAxes:
+      x: 1
+      y: 1
+      z: 1
 --- !u!1001 &130940772294125020
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2629,74 +2795,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee17bd872786e3b498e918f724c65e2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodyTransform: {fileID: 1900749185515397393}
+  legController: {fileID: 0}
   downRayOrigin: {fileID: 130940771143632684}
   forwardRayOrigin: {fileID: 0}
   backRayOrigin: {fileID: 0}
   ikTarget: {fileID: 130940771884269080}
-  speedCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  heightCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.5
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -2
-      outSlope: -2
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 24576
-  layerMaskBack:
-    serializedVersion: 2
-    m_Bits: 16384
   tipMoveDist: 1.1
   tipAnimationTime: 0.35
   ikOffset: 2.5
@@ -2719,74 +2822,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee17bd872786e3b498e918f724c65e2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodyTransform: {fileID: 1900749185515397393}
+  legController: {fileID: 0}
   downRayOrigin: {fileID: 130940772213884669}
   forwardRayOrigin: {fileID: 130940771594530140}
   backRayOrigin: {fileID: 0}
   ikTarget: {fileID: 130940771689890283}
-  speedCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  heightCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.5
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -2
-      outSlope: -2
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 24576
-  layerMaskBack:
-    serializedVersion: 2
-    m_Bits: 16384
   tipMoveDist: 1.9
   tipAnimationTime: 0.55
   ikOffset: 3
@@ -2883,81 +2923,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee17bd872786e3b498e918f724c65e2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodyTransform: {fileID: 1900749185515397393}
+  legController: {fileID: 0}
   downRayOrigin: {fileID: 130940772422968648}
   forwardRayOrigin: {fileID: 0}
   backRayOrigin: {fileID: 0}
   ikTarget: {fileID: 130940772552698185}
-  speedCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  heightCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.5
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -2
-      outSlope: -2
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 24576
-  layerMaskBack:
-    serializedVersion: 2
-    m_Bits: 16384
   tipMoveDist: 1.1
   tipAnimationTime: 0.35
   ikOffset: 2.5
   maxFowardRayDist: 3
+--- !u!4 &5100169353165604360 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5122353032007377876, guid: f16ce536157c8b244a716fb05ea3fb87,
+    type: 3}
+  m_PrefabInstance: {fileID: 130940772294125020}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5263078930171818853 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5249798134184220345, guid: f16ce536157c8b244a716fb05ea3fb87,
+    type: 3}
+  m_PrefabInstance: {fileID: 130940772294125020}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5351916245404127817 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5446226925183858581, guid: f16ce536157c8b244a716fb05ea3fb87,
     type: 3}
   m_PrefabInstance: {fileID: 130940772294125020}
   m_PrefabAsset: {fileID: 0}
@@ -2979,74 +2968,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee17bd872786e3b498e918f724c65e2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodyTransform: {fileID: 1900749185515397393}
+  legController: {fileID: 0}
   downRayOrigin: {fileID: 130940772482792124}
   forwardRayOrigin: {fileID: 130940772179913818}
   backRayOrigin: {fileID: 130940772398376531}
   ikTarget: {fileID: 130940771257420456}
-  speedCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  heightCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.5
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -2
-      outSlope: -2
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 24576
-  layerMaskBack:
-    serializedVersion: 2
-    m_Bits: 16384
   tipMoveDist: 3.9
   tipAnimationTime: 0.6
   ikOffset: 5.5
@@ -3125,74 +3051,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee17bd872786e3b498e918f724c65e2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodyTransform: {fileID: 1900749185515397393}
+  legController: {fileID: 0}
   downRayOrigin: {fileID: 130940773139530581}
   forwardRayOrigin: {fileID: 130940772341798919}
   backRayOrigin: {fileID: 130940771458780958}
   ikTarget: {fileID: 130940771258732366}
-  speedCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  heightCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.5
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -2
-      outSlope: -2
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 24576
-  layerMaskBack:
-    serializedVersion: 2
-    m_Bits: 16384
   tipMoveDist: 3.9
   tipAnimationTime: 0.6
   ikOffset: 5.5
@@ -3270,6 +3133,8 @@ MonoBehaviour:
     m_Active: 1
   - m_Rig: {fileID: 130940771644348674}
     m_Active: 1
+  - m_Rig: {fileID: 269282638204786529}
+    m_Active: 1
   m_Effectors: []
 --- !u!1 &8226579948620804036 stripped
 GameObject:
@@ -3289,74 +3154,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee17bd872786e3b498e918f724c65e2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodyTransform: {fileID: 1900749185515397393}
+  legController: {fileID: 0}
   downRayOrigin: {fileID: 130940772319286108}
   forwardRayOrigin: {fileID: 130940772068400355}
   backRayOrigin: {fileID: 0}
   ikTarget: {fileID: 130940772419246696}
-  speedCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  heightCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.5
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -2
-      outSlope: -2
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 24576
-  layerMaskBack:
-    serializedVersion: 2
-    m_Bits: 16384
   tipMoveDist: 1.9
   tipAnimationTime: 0.55
   ikOffset: 3

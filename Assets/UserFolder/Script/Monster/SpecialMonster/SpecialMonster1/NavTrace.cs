@@ -64,6 +64,7 @@ public class NavTrace : MonoBehaviour
         navMeshAgent.updatePosition = false;
         navMeshAgent.updateRotation = false;
         navMeshAgent.updateUpAxis = false;
+
         waitUntil = new WaitUntil(() => !navMeshAgent.isOnOffMeshLink);
     }
 
@@ -84,20 +85,18 @@ public class NavTrace : MonoBehaviour
         {
             if (navMeshAgent.pathPending == true) return;
 
-            if(AIManager.PlayerRerversePosition != Vector3.zero)
-                navMeshAgent.SetDestination(AIManager.PlayerRerversePosition);
-            else
-                navMeshAgent.SetDestination(AIManager.PlayerTransfrom.position);
+            SetDestination();
 
             if (navMeshAgent.isOnOffMeshLink)
             {
                 NavMeshLink link = (NavMeshLink)navMeshAgent.navMeshOwner;
                 Debug.Log(link.name);
+                navMeshAgent.updateUpAxis = false;
                 //여기서 NavMeshLink 감지 가능
             }
             else
             {
-
+                navMeshAgent.updateUpAxis = true;
             }
 
             Vector3 targetDirection = (navMeshAgent.steeringTarget - cachedTransform.position).normalized;
@@ -122,6 +121,22 @@ public class NavTrace : MonoBehaviour
             //IsClimbing = !IsSameFloor();
         }
         //점프 등 패턴따라 사용될 수도 있음
+    }
+
+    private void SetDestination()
+    {
+        if (AIManager.PlayerRerversePosition != Vector3.zero)
+        {
+            float reversedDistance = Vector3.Distance(cachedTransform.position, AIManager.PlayerRerversePosition);
+            float normalDistance = Vector3.Distance(cachedTransform.position, AIManager.PlayerTransfrom.position);
+
+            if (reversedDistance < normalDistance)
+            {
+                navMeshAgent.SetDestination(AIManager.PlayerRerversePosition);
+                return;
+            }
+        }
+        navMeshAgent.SetDestination(AIManager.PlayerTransfrom.position);
     }
 
     //public bool IsSameFloor() => navMeshAgent.navMeshOwner.name == floorDetector.GetNowFloor().name;
