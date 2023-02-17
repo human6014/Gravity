@@ -81,9 +81,10 @@ public class LegController : MonoBehaviour
     /// <returns></returns>
     private IEnumerator AdjustBodyTransform()
     {
+        Vector3 tipCenter;
         while (true)
         {
-            Vector3 tipCenter = Vector3.zero;
+            tipCenter = Vector3.zero;
             bodyUp = Vector3.zero;
 
             // Collect leg information to calculate body transform
