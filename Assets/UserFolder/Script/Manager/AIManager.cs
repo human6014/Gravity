@@ -13,6 +13,7 @@ namespace Manager.AI
         public static FloorController FloorDetector { get; set; }
         public static Transform PlayerTransfrom { get; set; }
         public static Vector3 PlayerRerversePosition { get; set; }
+
         /// <summary>
         /// 해당 navMeshAgent가 현재 중력에 맞는 지상을 밝고 있는지 구합니다
         /// </summary>
@@ -40,28 +41,6 @@ namespace Manager.AI
                 default: break;
             }
             return Vector3.zero;
-        }
-
-        public static bool GetPath(NavMeshPath path, Vector3 fromPos, Vector3 toPos)
-        {
-            path.ClearCorners();
-
-            return NavMesh.CalculatePath(fromPos, toPos, NavMesh.AllAreas, path);
-        }
-
-        public static float GetPathLength(NavMeshPath path)
-        {
-            float lng = 0.0f;
-
-            if ((path.status != NavMeshPathStatus.PathInvalid) && (path.corners.Length > 1))
-            {
-                for (int i = 1; i < path.corners.Length; ++i)
-                {
-                    lng += Vector3.Distance(path.corners[i - 1], path.corners[i]);
-                }
-            }
-
-            return lng;
         }
     }
 }
