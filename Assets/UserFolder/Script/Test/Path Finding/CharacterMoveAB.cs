@@ -33,9 +33,8 @@ public class CharacterMoveAB : MonoBehaviour
                 yield return new WaitForSeconds(0.2f);
             }
             while (_Agent.Status != AStarAgentStatus.Finished)
-            {
                 yield return null;
-            }
+            
             Transform pom = pointA;
             pointA = pointB;
             pointB = pom;

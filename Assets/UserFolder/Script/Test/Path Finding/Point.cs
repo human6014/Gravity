@@ -5,18 +5,14 @@ using UnityEngine;
 [System.Serializable]
 public class Point
 {
-    public Vector3Int Coords { get; set; }
-    public Vector3 WorldPosition { get; set; }
-    public bool InValid { get; set; }
-    public List<Vector3Int> Neighbours { get; set; }
-    public List<MovingData> MovingData { get; set; }
-    
-    
+    public Vector3Int Coords { get; private set; }
+    public Vector3 WorldPosition { get; private set; }
+    public bool InValid { get; private set; }
+    public List<Vector3Int> Neighbours { get; private set; }
+    public List<MovingData> MovingData { get; private set; }
+
+
     public float distanceFactor = 0.5f;
-    public Point()
-    {
-        Neighbours = new List<Vector3Int>();
-    }
 
     public Point(Vector3Int coords, Vector3 worldPosition, bool inValid)
     {
@@ -26,12 +22,12 @@ public class Point
         InValid = inValid;
     }
 
-    public void AddMovingData(AStarAgent obj, float time,bool stationary=false)
+    public void AddMovingData(AStarAgent obj, float time, bool stationary = false)
     {
         if (MovingData == null) MovingData = new List<MovingData>();
-        
+
         MovingData existing = MovingData.Find(x => x.MovingObj == obj);
-        if (existing == null) MovingData.Add(new MovingData() { MovingObj = obj, TimeToReach = time, TimeStarted = Time.time,Stationary=stationary });
+        if (existing == null) MovingData.Add(new MovingData() { MovingObj = obj, TimeToReach = time, TimeStarted = Time.time, Stationary = stationary });
         else
         {
             existing.TimeStarted = Time.time;
@@ -60,12 +56,12 @@ public class Point
                             toRemove.Add(data);
                             break;
                         }
-                        if (data.MovingObj.Priority < data2.MovingObj.Priority )
+                        if (data.MovingObj.Priority < data2.MovingObj.Priority)
                         {
                             float ttReach = data.TrueTimeToReach();
                             float ttReach2 = data2.TrueTimeToReach();
                             if (ttReach <= 0 || ttReach2 <= 0) continue;
-                            
+
                             float difference = Mathf.Abs(data.TrueTimeToReach() - data2.TrueTimeToReach());
                             if (difference < distanceFactor)
                             {
@@ -78,9 +74,9 @@ public class Point
             }
             for (int i = 0; i < toRemove.Count; i++)
                 MovingData.Remove(toRemove[i]);
-            
+
             for (int i = 0; i < toRemove.Count; i++)
-                toRemove[i].MovingObj.RePath();  
+                toRemove[i].MovingObj.RePath();
         }
     }
 
@@ -93,7 +89,6 @@ public class Point
             for (int i = 0; i < MovingData.Count; i++)
             {
                 if (MovingData[i].Stationary) return false;
-                
                 if (MovingData[i].MovingObj.Priority > priority)
                 {
                     float ttReach = MovingData[i].TrueTimeToReach();
