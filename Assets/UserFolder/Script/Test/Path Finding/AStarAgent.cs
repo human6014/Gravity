@@ -17,24 +17,33 @@ public class AStarAgent : MonoBehaviour
     private Point _end;
     private Vector3 _startPosition;
     private Vector3 _endPosition;
-    
+
+    private List<Point> TotalPath = new List<Point>();
+    private List<Point> CornerPoints = new List<Point>();
+    private PathCreator PathCreator;
+    private WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
+    private WaitForSeconds waitForSeconds = new WaitForSeconds(0.2f);
+    private Coroutine coroutine_RePath = null;
     [HideInInspector] public int Priority { get; private set; }
     [HideInInspector] public AStarAgentStatus Status = AStarAgentStatus.Finished;
-    [HideInInspector] public List<Point> TotalPath;
-    [HideInInspector] public List<Point> CornerPoints;
-    [HideInInspector] public PathCreator PathCreator;
 
-    [SerializeField] private PathCreator _PathCreatorPrefab;
-    [SerializeField] private Color _DebugPathColor;
-    [SerializeField] private float Speed = 1.5f;
-    [SerializeField] private float TurnSpeed = 0.5f;
-    [SerializeField] private float _CornerSmooth = 1;
-    [SerializeField] private bool CurvePath = true;
-    [SerializeField] private bool _DebugPath;
+    [SerializeField] private PathCreator pathCreatorPrefab;
+    [SerializeField] private Color debugPathColor;
+    [SerializeField] private float movementSpeed = 1.5f;
+    [SerializeField] private float turnSpeed = 0.5f;
+    [SerializeField] private float cornerSmooth = 1;
+    [SerializeField] private bool curvePath = true;
+    [SerializeField] private bool debugPath = false;
 
 
-    private void Awake() => AssignPriority();
-    
+
+    #region 지역변수 맴버로 전환용
+    List<Point> totalPath = new List<Point>();
+    List<PointData> openSet = new List<PointData>();
+    List<Vector3> points = new List<Vector3>();
+    #endregion
+    //private void Awake() => AssignPriority();
+
 
     private void Start() => SetStationaryPoint();
 
@@ -49,7 +58,7 @@ public class AStarAgent : MonoBehaviour
         {
             for (int j = i; j < agents.Length; j++)
             {
-                if (agents[i].Speed > agents[j].Speed)
+                if (agents[i].movementSpeed > agents[j].movementSpeed)
                 {
                     AStarAgent pom = agents[i];
                     agents[i] = agents[j];
@@ -66,8 +75,8 @@ public class AStarAgent : MonoBehaviour
 
     private List<Point> ReconstructPath(PointData start, PointData current, PointData[][][] dataSet)
     {
-        CornerPoints = new List<Point>();
-        List<Point> totalPath = new List<Point>();
+        CornerPoints.Clear();
+        totalPath.Clear();
 
         PointData currentPointData = dataSet[current.Coords.x][current.Coords.y][current.Coords.z];
         Point currentPoint = WorldManager.Instance.Grid[current.Coords.x][current.Coords.y][current.Coords.z];
@@ -83,9 +92,8 @@ public class AStarAgent : MonoBehaviour
         CornerPoints.Add(currentPoint);
 
         int count = 0;
-        while (current.CameFrom.x != -1 && count < 10000)
+        while (current.CameFrom.x != -1 && count++ < 10000)
         {
-
             currentPoint = WorldManager.Instance.Grid[current.Coords.x][current.Coords.y][current.Coords.z];
             PointData cameFromPointData = dataSet[current.CameFrom.x][current.CameFrom.y][current.CameFrom.z];
             cameFromPoint = WorldManager.Instance.Grid[current.CameFrom.x][current.CameFrom.y][current.CameFrom.z];
@@ -105,7 +113,7 @@ public class AStarAgent : MonoBehaviour
         currentPoint = WorldManager.Instance.Grid[current.Coords.x][current.Coords.y][current.Coords.z];
         CornerPoints.Add(currentPoint);
 
-        for (int i = 0; i < totalPath.Count; i++) 
+        for (int i = 0; i < totalPath.Count; i++)
             totalPath[i].CheckForIntersections();
 
         return totalPath;
@@ -126,18 +134,16 @@ public class AStarAgent : MonoBehaviour
         }
     }
 
+
     private void HeapifyDeletion(List<PointData> list, int i)
     {
         int smallest = i;
         int l = 2 * i + 1;
         int r = 2 * i + 2;
 
-        if (l < list.Count && list[l].FScore < list[smallest].FScore)
-            smallest = l;
-        
-        if (r < list.Count && list[r].FScore < list[smallest].FScore)
-            smallest = r;
-        
+        if (l < list.Count && list[l].FScore < list[smallest].FScore) smallest = l;
+        if (r < list.Count && list[r].FScore < list[smallest].FScore) smallest = r;
+
         if (smallest != i)
         {
             PointData pom = list[i];
@@ -149,7 +155,7 @@ public class AStarAgent : MonoBehaviour
         }
     }
 
-    public AStarAgentStatus Pathfinding(Vector3 goal,bool supressMovement=false)
+    public AStarAgentStatus Pathfinding(Vector3 goal, bool supressMovement = false)
     {
         _startPosition = transform.position;
         _endPosition = goal;
@@ -175,7 +181,7 @@ public class AStarAgent : MonoBehaviour
                 dataSet[i][j] = new PointData[WorldManager.Instance.Grid[i][j].Length];
         }
 
-        List<PointData> openSet = new List<PointData>();
+        openSet.Clear();
 
         PointData startPoint = new PointData(_start);
         dataSet[_start.Coords.x][_start.Coords.y][_start.Coords.z] = startPoint;
@@ -188,7 +194,6 @@ public class AStarAgent : MonoBehaviour
         while (openSet.Count > 0)
         {
             PointData current = openSet[0];
-
 
             if (current.Coords == _end.Coords)
             {
@@ -222,7 +227,7 @@ public class AStarAgent : MonoBehaviour
 
 
                 float distance = (currentPoint.WorldPosition - neighbour.WorldPosition).magnitude;
-                float timeToReach = current.TimeToReach + distance / Speed;
+                float timeToReach = current.TimeToReach + distance / movementSpeed;
                 bool neighbourAvailable = neighbour.CheckPointAvailability(timeToReach, Priority);
                 if (neighbour == _end)
                 {
@@ -257,19 +262,19 @@ public class AStarAgent : MonoBehaviour
 
     public void RePath()
     {
-        if (Status!=AStarAgentStatus.RePath)
+        if (Status != AStarAgentStatus.RePath)
         {
-            StopAllCoroutines();
-            StartCoroutine(Coroutine_RePath());
+            if (coroutine_RePath != null) StopCoroutine(coroutine_RePath);
+            coroutine_RePath = StartCoroutine(Coroutine_RePath());
         }
     }
 
-    IEnumerator Coroutine_RePath()
+    private IEnumerator Coroutine_RePath()
     {
         Status = AStarAgentStatus.RePath;
 
         Point p = WorldManager.Instance.GetClosestPointWorldSpace(transform.position);
-        p.AddMovingData(this, 0,true);
+        p.AddMovingData(this, 0, true);
 
         while (Status == AStarAgentStatus.RePath)
         {
@@ -277,18 +282,21 @@ public class AStarAgent : MonoBehaviour
             if (Status == AStarAgentStatus.Invalid)
             {
                 Status = AStarAgentStatus.RePath;
-                yield return new WaitForSeconds(0.2f);
+                yield return waitForSeconds;
             }
         }
     }
 
+    /// <summary>
+    /// 버지어 곡선 생성
+    /// </summary>
     public void CreateBezierPath()
     {
         if (PathCreator == null)
-            PathCreator = Instantiate(_PathCreatorPrefab, Vector3.zero, Quaternion.identity);
-        
+            PathCreator = Instantiate(pathCreatorPrefab, Vector3.zero, Quaternion.identity);
 
-        List<Vector3> points = new List<Vector3>();
+
+        points.Clear();
 
 
         points.Add(CornerPoints[CornerPoints.Count - 1].WorldPosition);
@@ -300,19 +308,21 @@ public class AStarAgent : MonoBehaviour
         points.Add(CornerPoints[0].WorldPosition);
 
 
-        BezierPath bezierPath = new BezierPath(points, false, PathSpace.xyz);
-        bezierPath.ControlPointMode = BezierPath.ControlMode.Free;
+        BezierPath bezierPath = new BezierPath(points, false, PathSpace.xyz)
+        {
+            ControlPointMode = BezierPath.ControlMode.Free
+        };
         int cornerIndex = CornerPoints.Count - 1;
 
 
         bezierPath.SetPoint(1, CornerPoints[cornerIndex].WorldPosition, true);
         for (int i = 2; i < bezierPath.NumPoints - 2; i += 3)
         {
-            Vector3 position = bezierPath.GetPoint(i + 1) + (CornerPoints[cornerIndex].WorldPosition - bezierPath.GetPoint(i + 1)) * _CornerSmooth;
+            Vector3 position = bezierPath.GetPoint(i + 1) + (CornerPoints[cornerIndex].WorldPosition - bezierPath.GetPoint(i + 1)) * cornerSmooth;
             bezierPath.SetPoint(i, position, true);
             if (cornerIndex > 0)
             {
-                position = bezierPath.GetPoint(i + 2) + (CornerPoints[cornerIndex - 1].WorldPosition - bezierPath.GetPoint(i + 2)) * _CornerSmooth;
+                position = bezierPath.GetPoint(i + 2) + (CornerPoints[cornerIndex - 1].WorldPosition - bezierPath.GetPoint(i + 2)) * cornerSmooth;
                 bezierPath.SetPoint(i + 2, position, true);
             }
             cornerIndex--;
@@ -327,10 +337,11 @@ public class AStarAgent : MonoBehaviour
     private void StartMoving()
     {
         StopAllCoroutines();
-        StartCoroutine(Coroutine_CharacterFollowPath());
+        //StartCoroutine(Coroutine_CharacterFollowPath());
+        StartCoroutine(Coroutine_CharacterFollowPathCurve());
     }
 
-    IEnumerator Coroutine_CharacterFollowPath()
+    private IEnumerator Coroutine_CharacterFollowPath()
     {
         Status = AStarAgentStatus.InProgress;
         for (int i = TotalPath.Count - 1; i >= 0; i--)
@@ -338,29 +349,29 @@ public class AStarAgent : MonoBehaviour
             SetPathColor();
             float length = (transform.position - TotalPath[i].WorldPosition).magnitude;
             float l = 0;
-            while (l<length)
+            while (l < length)
             {
                 SetPathColor();
                 Vector3 forwardDirection = (TotalPath[i].WorldPosition - transform.position).normalized;
-                if (CurvePath)
+                if (curvePath)
                 {
-                    transform.position += transform.forward * Time.deltaTime * Speed;
-                    transform.forward = Vector3.Slerp(transform.forward, forwardDirection, Time.deltaTime * TurnSpeed);
+                    transform.position += movementSpeed * Time.deltaTime * transform.forward;
+                    transform.forward = Vector3.Slerp(transform.forward, forwardDirection, Time.deltaTime * turnSpeed);
                 }
                 else
                 {
                     transform.forward = forwardDirection;
-                    transform.position = Vector3.MoveTowards(transform.position, TotalPath[i].WorldPosition, Time.deltaTime * Speed);
+                    transform.position = Vector3.MoveTowards(transform.position, TotalPath[i].WorldPosition, Time.deltaTime * movementSpeed);
                 }
-                l += Time.deltaTime * Speed;
-                yield return new WaitForFixedUpdate();
+                l += Time.deltaTime * movementSpeed;
+                yield return waitForFixedUpdate;
             }
         }
         SetStationaryPoint();
         Status = AStarAgentStatus.Finished;
     }
 
-    IEnumerator Coroutine_CharacterFollowPathCurve()
+    private IEnumerator Coroutine_CharacterFollowPathCurve()
     {
         Status = AStarAgentStatus.InProgress;
         CreateBezierPath();
@@ -371,13 +382,12 @@ public class AStarAgent : MonoBehaviour
         while (l < length)
         {
             SetPathColor();
-            transform.position += transform.forward * Time.deltaTime * Speed;
+            transform.position += movementSpeed * Time.deltaTime * transform.forward;
             Vector3 forwardDirection = (PathCreator.path.GetPointAtDistance(l, EndOfPathInstruction.Stop) - transform.position).normalized;
-            transform.forward = Vector3.Slerp(transform.forward, forwardDirection, Time.deltaTime * TurnSpeed);
-            l += Time.deltaTime * Speed;
-            yield return new WaitForFixedUpdate();
+            transform.forward = Vector3.Slerp(transform.forward, forwardDirection, Time.deltaTime * turnSpeed);
+            l += Time.deltaTime * movementSpeed;
+            yield return waitForFixedUpdate;
         }
-
 
         SetStationaryPoint();
         Status = AStarAgentStatus.Finished;
@@ -392,14 +402,12 @@ public class AStarAgent : MonoBehaviour
 
     public void SetPathColor()
     {
-        if (_DebugPath)
+        if (debugPath)
         {
             if (TotalPath != null)
             {
                 for (int j = TotalPath.Count - 2; j >= 0; j--)
-                {
-                    Debug.DrawLine(TotalPath[j + 1].WorldPosition, TotalPath[j].WorldPosition, _DebugPathColor, 1);
-                }
+                    Debug.DrawLine(TotalPath[j + 1].WorldPosition, TotalPath[j].WorldPosition, debugPathColor, 1);
             }
         }
     }

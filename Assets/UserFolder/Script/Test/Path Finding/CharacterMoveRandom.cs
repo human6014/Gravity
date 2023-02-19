@@ -24,9 +24,7 @@ public class CharacterMoveRandom : MonoBehaviour
             Point p = freePoints[Random.Range(0, freePoints.Count)];
             _Agent.Pathfinding(p.WorldPosition);
             while (_Agent.Status != AStarAgentStatus.Finished)
-            {
                 yield return null;
-            }
         }
     }
 }
