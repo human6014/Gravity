@@ -33,14 +33,14 @@ public class PointData
 public class CharacterMoveControl : MonoBehaviour
 {
     private float timer = 0f;
+    private bool isArrive = false;
     private AStarAgent _Agent;
     [SerializeField] private Transform moveToPoint;
     Vector3 oldPos;
     private void Start()
     {
         _Agent = GetComponent<AStarAgent>();
-        oldPos = moveToPoint.position;
-        StartCoroutine(MoveToTarget());
+        StartCoroutine(Coroutine_MoveToTarget());
     }
 
     private void Update()
@@ -58,17 +58,32 @@ public class CharacterMoveControl : MonoBehaviour
         */
     }
 
-    private IEnumerator MoveToTarget()
+    IEnumerator Coroutine_MoveToTarget()
     {
         while (true)
         {
             _Agent.Pathfinding(moveToPoint.position);
-            while (oldPos == moveToPoint.position)
+            while (_Agent.Status == AStarAgentStatus.Invalid)
             {
+                isArrive = true;
+                yield return new WaitForSeconds(0.5f);
+                _Agent.Pathfinding(moveToPoint.position);
+            }
+            isArrive = false;
+            while (_Agent.Status != AStarAgentStatus.Finished)
+            {
+                //이동중일때
                 yield return null;
             }
-            oldPos = moveToPoint.position;
-            yield return new WaitForSeconds(0.2f);
+            yield return null;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (isArrive)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(moveToPoint.position, -Manager.GravitiesManager.GravityVector), 0.1f);
         }
     }
 }
