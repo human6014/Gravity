@@ -22,14 +22,14 @@ public class CharacterMoveAB : MonoBehaviour
         yield return null;
         while (true)
         {
-            _Agent.Pathfinding(pointB.position);
+            //_Agent.Pathfinding(pointB.position);
             while (_Agent.Status == AStarAgentStatus.Invalid)
             {
                 Transform pom1 = pointA;
                 pointA = pointB;
                 pointB = pom1;
                 transform.position = pointA.position;
-                _Agent.Pathfinding(pointB.position);
+                //_Agent.Pathfinding(pointB.position);
                 yield return new WaitForSeconds(0.2f);
             }
             while (_Agent.Status != AStarAgentStatus.Finished)

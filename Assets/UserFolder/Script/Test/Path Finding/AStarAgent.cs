@@ -13,17 +13,17 @@ public enum AStarAgentStatus
 
 public class AStarAgent : MonoBehaviour
 {
-    private Point _start;
-    private Point _end;
-    private Vector3 _startPosition;
-    private Vector3 _endPosition;
+    private Point startPoint;
+    private Point endPoint;
+    private Vector3 startPosition;
+    private Vector3 endPosition;
 
     private List<Point> TotalPath = new List<Point>();
     private List<Point> CornerPoints = new List<Point>();
     private PathCreator PathCreator;
     private WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
     private WaitForSeconds waitForSeconds = new WaitForSeconds(0.2f);
-    private Coroutine coroutine_RePath = null;
+    private Coroutine coroutineRePath = null;
     [HideInInspector] public int Priority { get; private set; }
     [HideInInspector] public AStarAgentStatus Status = AStarAgentStatus.Finished;
 
@@ -42,10 +42,17 @@ public class AStarAgent : MonoBehaviour
     List<PointData> openSet = new List<PointData>();
     List<Vector3> points = new List<Vector3>();
     #endregion
-    //private void Awake() => AssignPriority();
+
+    public PointData[,,] dataSet;
+
+    private void Awake() => AssignPriority();
 
 
-    private void Start() => SetStationaryPoint();
+    private void Start()
+    {
+        //dataSet = new PointData[WorldManager.Instance.GridWidth, WorldManager.Instance.GridHeight, WorldManager.Instance.GridLength];
+        SetStationaryPoint();
+    }
 
     /// <summary>
     /// 다른 AStart 오브젝트와 우선순위 결정
@@ -62,7 +69,7 @@ public class AStarAgent : MonoBehaviour
                 {
                     AStarAgent pom = agents[i];
                     agents[i] = agents[j];
-                    agents[j] = agents[i];
+                    agents[j] = pom;
                 }
             }
         }
@@ -73,12 +80,28 @@ public class AStarAgent : MonoBehaviour
 
     private float HeuristicFunction(Vector3 p1, Vector3 p2) => (p2 - p1).sqrMagnitude;
 
-    private List<Point> ReconstructPath(PointData start, PointData current, PointData[][][] dataSet)
+    private void ResetPath()
+    {
+        for (int i = 0; i < dataSet.GetLength(0); i++)
+        {
+            for (int j = 0; j < dataSet.GetLength(1); j++)
+            {
+                for (int k = 0; k < dataSet.GetLength(2); k++)
+                {
+                    if (dataSet[i, j, k] == null) continue;
+                    dataSet[i, j, k].Reset();
+                }
+            }
+        }
+
+    }
+
+    private List<Point> ReconstructPath(PointData start, PointData current, PointData[,,] dataSet)
     {
         CornerPoints.Clear();
         totalPath.Clear();
 
-        PointData currentPointData = dataSet[current.Coords.x][current.Coords.y][current.Coords.z];
+        PointData currentPointData = dataSet[current.Coords.x, current.Coords.y, current.Coords.z];
         Point currentPoint = WorldManager.Instance.Grid[current.Coords.x][current.Coords.y][current.Coords.z];
 
         currentPoint.AddMovingData(this, currentPointData.TimeToReach);
@@ -95,7 +118,7 @@ public class AStarAgent : MonoBehaviour
         while (current.CameFrom.x != -1 && count++ < 10000)
         {
             currentPoint = WorldManager.Instance.Grid[current.Coords.x][current.Coords.y][current.Coords.z];
-            PointData cameFromPointData = dataSet[current.CameFrom.x][current.CameFrom.y][current.CameFrom.z];
+            PointData cameFromPointData = dataSet[current.CameFrom.x, current.CameFrom.y, current.CameFrom.z];
             cameFromPoint = WorldManager.Instance.Grid[current.CameFrom.x][current.CameFrom.y][current.CameFrom.z];
 
             Vector3 dir = (currentPoint.Coords - cameFromPoint.Coords);
@@ -107,7 +130,7 @@ public class AStarAgent : MonoBehaviour
 
             cameFromPoint.AddMovingData(this, cameFromPointData.TimeToReach);
             totalPath.Add(cameFromPoint);
-            current = dataSet[current.CameFrom.x][current.CameFrom.y][current.CameFrom.z];
+            current = dataSet[current.CameFrom.x, current.CameFrom.y, current.CameFrom.z];
         }
 
         currentPoint = WorldManager.Instance.Grid[current.Coords.x][current.Coords.y][current.Coords.z];
@@ -119,49 +142,42 @@ public class AStarAgent : MonoBehaviour
         return totalPath;
     }
 
-    private void Heapify(List<PointData> list, int i)
+    #region Heap Control
+    void Heapify(List<PointData> list, int i)
     {
-        int parent = (i - 1) / 2;
-        if (parent > -1)
+        var parent = (i - 1) / 2;
+        while (parent >= 0 && list[i].FScore < list[parent].FScore)
         {
-            if (list[i].FScore < list[parent].FScore)
-            {
-                PointData pom = list[i];
-                list[i] = list[parent];
-                list[parent] = pom;
-                Heapify(list, parent);
-            }
+            (list[i], list[parent]) = (list[parent], list[i]);
+            i = parent; parent = (i - 1) / 2;
         }
     }
 
-
-    private void HeapifyDeletion(List<PointData> list, int i)
+    void HeapifyDeletion(List<PointData> list, int i)
     {
-        int smallest = i;
-        int l = 2 * i + 1;
-        int r = 2 * i + 2;
-
-        if (l < list.Count && list[l].FScore < list[smallest].FScore) smallest = l;
-        if (r < list.Count && list[r].FScore < list[smallest].FScore) smallest = r;
-
-        if (smallest != i)
+        int smallest;
+        int l, r;
+        while (true)
         {
-            PointData pom = list[i];
-            list[i] = list[smallest];
-            list[smallest] = pom;
-
-            // Recursively heapify the affected sub-tree
-            HeapifyDeletion(list, smallest);
+            smallest = i;
+            l = 2 * i + 1;
+            r = 2 * i + 2;
+            if (l < list.Count && list[l].FScore < list[smallest].FScore) smallest = l;
+            if (r < list.Count && list[r].FScore < list[smallest].FScore) smallest = r;
+            if (smallest == i) break;
+            (list[i], list[smallest]) = (list[smallest], list[i]);
+            i = smallest;
         }
     }
+    #endregion
 
     public AStarAgentStatus Pathfinding(Vector3 goal, bool supressMovement = false)
     {
-        _startPosition = transform.position;
-        _endPosition = goal;
-        _start = WorldManager.Instance.GetClosestPointWorldSpace(transform.position);
-        _end = WorldManager.Instance.GetClosestPointWorldSpace(goal);
-        if (_start == _end || _start.InValid || _end.InValid)
+        startPosition = transform.position;
+        endPosition = goal;
+        startPoint = WorldManager.Instance.GetClosestPointWorldSpace(transform.position);
+        endPoint = WorldManager.Instance.GetClosestPointWorldSpace(goal);
+        if (startPoint == endPoint || startPoint.InValid || endPoint.InValid)
         {
             Status = AStarAgentStatus.Invalid;
             return Status;
@@ -173,31 +189,25 @@ public class AStarAgent : MonoBehaviour
                 TotalPath[i].MovingData.Remove(TotalPath[i].MovingData.Find(x => x.MovingObj == this));
         }
 
-        PointData[][][] dataSet = new PointData[WorldManager.Instance.Grid.Length][][];
-        for (int i = 0; i < dataSet.Length; i++)
-        {
-            dataSet[i] = new PointData[WorldManager.Instance.Grid[i].Length][];
-            for (int j = 0; j < dataSet[i].Length; j++)
-                dataSet[i][j] = new PointData[WorldManager.Instance.Grid[i][j].Length];
-        }
+
+        dataSet = new PointData[WorldManager.Instance.GridWidth, WorldManager.Instance.GridHeight, WorldManager.Instance.GridLength];
 
         openSet.Clear();
 
-        PointData startPoint = new PointData(_start);
-        dataSet[_start.Coords.x][_start.Coords.y][_start.Coords.z] = startPoint;
-        startPoint.GScore = 0;
-        startPoint.TimeToReach = 0;
+        PointData _startPoint = new PointData(startPoint);
+        dataSet[startPoint.Coords.x, startPoint.Coords.y, startPoint.Coords.z] = _startPoint;
+        _startPoint.GScore = 0;
+        _startPoint.TimeToReach = 0;
 
-        openSet.Add(startPoint);
-
+        openSet.Add(_startPoint);
 
         while (openSet.Count > 0)
         {
             PointData current = openSet[0];
 
-            if (current.Coords == _end.Coords)
+            if (current.Coords == endPoint.Coords)
             {
-                TotalPath = ReconstructPath(startPoint, current, dataSet);
+                TotalPath = ReconstructPath(_startPoint, current, dataSet);
                 if (!supressMovement)
                 {
                     Status = AStarAgentStatus.InProgress;
@@ -215,23 +225,22 @@ public class AStarAgent : MonoBehaviour
             {
                 Vector3Int indexes = currentPoint.Neighbours[i];
                 Point neighbour = WorldManager.Instance.Grid[indexes.x][indexes.y][indexes.z];
-                PointData neighbourData = dataSet[indexes.x][indexes.y][indexes.z];
+                PointData neighbourData = dataSet[indexes.x, indexes.y, indexes.z];
 
                 bool neighbourPassed = true;
                 if (neighbourData == null)
                 {
                     neighbourData = new PointData(neighbour);
-                    dataSet[indexes.x][indexes.y][indexes.z] = neighbourData;
+                    dataSet[indexes.x, indexes.y, indexes.z] = neighbourData;
                     neighbourPassed = false;
                 }
-
 
                 float distance = (currentPoint.WorldPosition - neighbour.WorldPosition).magnitude;
                 float timeToReach = current.TimeToReach + distance / movementSpeed;
                 bool neighbourAvailable = neighbour.CheckPointAvailability(timeToReach, Priority);
-                if (neighbour == _end)
+                if (neighbour == endPoint)
                 {
-                    if (neighbourAvailable == false)
+                    if (!neighbourAvailable)
                     {
                         Status = AStarAgentStatus.Invalid;
                         return Status;
@@ -244,7 +253,7 @@ public class AStarAgent : MonoBehaviour
                     {
                         neighbourData.CameFrom = current.Coords;
                         neighbourData.GScore = tenativeScore;
-                        neighbourData.FScore = neighbourData.GScore + HeuristicFunction(neighbour.WorldPosition, _end.WorldPosition);
+                        neighbourData.FScore = neighbourData.GScore + HeuristicFunction(neighbour.WorldPosition, endPoint.WorldPosition);
                         neighbourData.TimeToReach = timeToReach;
                         if (!neighbourPassed)
                         {
@@ -264,8 +273,8 @@ public class AStarAgent : MonoBehaviour
     {
         if (Status != AStarAgentStatus.RePath)
         {
-            if (coroutine_RePath != null) StopCoroutine(coroutine_RePath);
-            coroutine_RePath = StartCoroutine(Coroutine_RePath());
+            if (coroutineRePath != null) StopCoroutine(coroutineRePath);
+            coroutineRePath = StartCoroutine(Coroutine_RePath());
         }
     }
 
@@ -278,7 +287,7 @@ public class AStarAgent : MonoBehaviour
 
         while (Status == AStarAgentStatus.RePath)
         {
-            Status = Pathfinding(_endPosition);
+            Status = Pathfinding(endPosition);
             if (Status == AStarAgentStatus.Invalid)
             {
                 Status = AStarAgentStatus.RePath;

@@ -24,7 +24,7 @@ public class FlyingController : MonoBehaviour
         {
             Point p = freePoints[Random.Range(0, freePoints.Count)];
 
-            _Agent.Pathfinding(p.WorldPosition);
+            //_Agent.Pathfinding(p.WorldPosition);
             while (_Agent.Status != AStarAgentStatus.Finished)
             {
                 yield return null;
