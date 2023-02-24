@@ -3,32 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PointData
-{
-    public float GScore;
-    public float FScore;
-    public Vector3Int CameFrom;
-    public Vector3Int Coords;
-    public float TimeToReach;
-
-    public PointData(Point point)
-    {
-        GScore = Mathf.Infinity;
-        FScore = Mathf.Infinity;
-        CameFrom = new Vector3Int(-1, -1, -1);
-        Coords = point.Coords;
-    }
-
-    public void Reset()
-    {
-        GScore = Mathf.Infinity;
-        FScore = Mathf.Infinity;
-        CameFrom = new Vector3Int(-1, -1, -1);
-        Coords = Vector3Int.zero;
-        TimeToReach = 0;
-    }
-}
-
 [RequireComponent(typeof(AStarAgent))]
 public class CharacterMoveControl : MonoBehaviour
 {
@@ -58,7 +32,7 @@ public class CharacterMoveControl : MonoBehaviour
         */
     }
 
-    IEnumerator Coroutine_MoveToTarget()
+    private IEnumerator Coroutine_MoveToTarget()
     {
         while (true)
         {
@@ -83,7 +57,8 @@ public class CharacterMoveControl : MonoBehaviour
     {
         if (isArrive)
         {
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(moveToPoint.position, -Manager.GravitiesManager.GravityVector), 0.1f);
+            Vector3 dir = (Manager.AI.AIManager.PlayerTransfrom.position + Manager.AI.AIManager.PlayerTransfrom.up * 0.5f - transform.position).normalized;
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir, -Manager.GravitiesManager.GravityVector), 0.1f);
         }
     }
 }

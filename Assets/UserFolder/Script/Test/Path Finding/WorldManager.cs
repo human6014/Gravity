@@ -17,7 +17,8 @@ public class WorldManager : MonoBehaviour
     public int GridLength { get => gridLength; private set => gridLength = value; }
     public static WorldManager Instance { get; private set; }
     public Point[][][] Grid { get; private set; }
-    public PointData[][][] GridData { get; private set; }
+    private PointData[,,] pointDatas;
+    public PointData[,,] GridData { get => (PointData[,,])pointDatas.Clone(); private set => pointDatas = value; }
 
     private void Awake()
     {
@@ -44,6 +45,7 @@ public class WorldManager : MonoBehaviour
     {
         startPoint = new Vector3(-gridWidth, -gridHeight, -gridLength) / 2f * PointDistance + transform.position;
         Grid = new Point[gridWidth][][];
+        pointDatas = new PointData[gridWidth, gridHeight, gridLength];
         Vector3Int coords;
         Vector3 worldPos;
         bool inValid;
@@ -111,6 +113,7 @@ public class WorldManager : MonoBehaviour
         int z = Mathf.Clamp(Mathf.RoundToInt(percentageZ * gridLength), 0, gridLength - 1);
 
         Point result = Grid[x][y][z];
+        
         while (result.InValid)
         {
             int step = 1;
