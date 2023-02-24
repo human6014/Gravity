@@ -42,6 +42,9 @@ public class Point
     {
         if (MovingData != null)
         {
+            float ttReach;
+            float ttReach2;
+            float difference;
             List<MovingData> toRemove = new List<MovingData>();
             for (int i = 0; i < MovingData.Count; i++)
             {
@@ -58,11 +61,11 @@ public class Point
                         }
                         if (data.MovingObj.Priority < data2.MovingObj.Priority)
                         {
-                            float ttReach = data.TrueTimeToReach();
-                            float ttReach2 = data2.TrueTimeToReach();
+                            ttReach = data.TrueTimeToReach();
+                            ttReach2 = data2.TrueTimeToReach();
                             if (ttReach <= 0 || ttReach2 <= 0) continue;
 
-                            float difference = Mathf.Abs(data.TrueTimeToReach() - data2.TrueTimeToReach());
+                            difference = Mathf.Abs(ttReach - ttReach2);
                             if (difference < distanceFactor)
                             {
                                 toRemove.Add(data);
@@ -85,19 +88,21 @@ public class Point
         bool available = true;
         if (MovingData != null)
         {
+            float ttReach;
+            float difference;
             List<MovingData> toRemove = new List<MovingData>();
             for (int i = 0; i < MovingData.Count; i++)
             {
                 if (MovingData[i].Stationary) return false;
                 if (MovingData[i].MovingObj.Priority > priority)
                 {
-                    float ttReach = MovingData[i].TrueTimeToReach();
+                    ttReach = MovingData[i].TrueTimeToReach();
                     if (ttReach <= 0)
                     {
                         toRemove.Add(MovingData[i]);
                         continue;
                     }
-                    float difference = Mathf.Abs(ttReach - timeToReach);
+                    difference = Mathf.Abs(ttReach - timeToReach);
                     if (difference < distanceFactor)
                     {
                         available = false;

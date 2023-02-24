@@ -109,8 +109,8 @@ public class AStarAgent : MonoBehaviour
 
         Point cameFromPoint = WorldManager.Instance.Grid[current.CameFrom.x][current.CameFrom.y][current.CameFrom.z];
 
-        Vector3 direction = (currentPoint.Coords - cameFromPoint.Coords);
-        direction = direction.normalized;
+        Vector3 direction = ((Vector3)currentPoint.Coords - cameFromPoint.Coords).normalized;
+        //direction = direction.normalized;
 
         CornerPoints.Add(currentPoint);
 
@@ -118,8 +118,8 @@ public class AStarAgent : MonoBehaviour
         while (current.CameFrom.x != -1 && count++ < 10000)
         {
             currentPoint = WorldManager.Instance.Grid[current.Coords.x][current.Coords.y][current.Coords.z];
-            PointData cameFromPointData = dataSet[current.CameFrom.x, current.CameFrom.y, current.CameFrom.z];
             cameFromPoint = WorldManager.Instance.Grid[current.CameFrom.x][current.CameFrom.y][current.CameFrom.z];
+            PointData cameFromPointData = dataSet[current.CameFrom.x, current.CameFrom.y, current.CameFrom.z];
 
             Vector3 dir = (currentPoint.Coords - cameFromPoint.Coords);
             if (dir != direction)
@@ -143,7 +143,7 @@ public class AStarAgent : MonoBehaviour
     }
 
     #region Heap Control
-    void Heapify(List<PointData> list, int i)
+    private void Heapify(List<PointData> list, int i)
     {
         var parent = (i - 1) / 2;
         while (parent >= 0 && list[i].FScore < list[parent].FScore)
@@ -153,7 +153,7 @@ public class AStarAgent : MonoBehaviour
         }
     }
 
-    void HeapifyDeletion(List<PointData> list, int i)
+    private void HeapifyDeletion(List<PointData> list, int i)
     {
         int smallest;
         int l, r;
@@ -173,15 +173,11 @@ public class AStarAgent : MonoBehaviour
 
     public AStarAgentStatus Pathfinding(Vector3 goal, bool supressMovement = false)
     {
-        startPosition = transform.position;
+        //startPosition = transform.position;
         endPosition = goal;
         startPoint = WorldManager.Instance.GetClosestPointWorldSpace(transform.position);
         endPoint = WorldManager.Instance.GetClosestPointWorldSpace(goal);
-        if (startPoint == endPoint || startPoint.InValid || endPoint.InValid)
-        {
-            Status = AStarAgentStatus.Invalid;
-            return Status;
-        }
+        if (startPoint == endPoint || startPoint.InValid || endPoint.InValid) return Status = AStarAgentStatus.Invalid;
 
         if (TotalPath != null)
         {
@@ -189,16 +185,13 @@ public class AStarAgent : MonoBehaviour
                 TotalPath[i].MovingData.Remove(TotalPath[i].MovingData.Find(x => x.MovingObj == this));
         }
 
-
-        dataSet = new PointData[WorldManager.Instance.GridWidth, WorldManager.Instance.GridHeight, WorldManager.Instance.GridLength];
-
-        openSet.Clear();
-
+        dataSet = WorldManager.Instance.GridData;//new PointData[WorldManager.Instance.GridWidth, WorldManager.Instance.GridHeight, WorldManager.Instance.GridLength];
         PointData _startPoint = new PointData(startPoint);
         dataSet[startPoint.Coords.x, startPoint.Coords.y, startPoint.Coords.z] = _startPoint;
         _startPoint.GScore = 0;
         _startPoint.TimeToReach = 0;
 
+        openSet.Clear();
         openSet.Add(_startPoint);
 
         while (openSet.Count > 0)
@@ -238,14 +231,8 @@ public class AStarAgent : MonoBehaviour
                 float distance = (currentPoint.WorldPosition - neighbour.WorldPosition).magnitude;
                 float timeToReach = current.TimeToReach + distance / movementSpeed;
                 bool neighbourAvailable = neighbour.CheckPointAvailability(timeToReach, Priority);
-                if (neighbour == endPoint)
-                {
-                    if (!neighbourAvailable)
-                    {
-                        Status = AStarAgentStatus.Invalid;
-                        return Status;
-                    }
-                }
+
+                if (neighbour == endPoint && !neighbourAvailable) return Status = AStarAgentStatus.Invalid;
                 if (!neighbour.InValid && neighbourAvailable)
                 {
                     float tenativeScore = current.GScore + WorldManager.Instance.PointDistance;
@@ -264,9 +251,7 @@ public class AStarAgent : MonoBehaviour
                 }
             }
         }
-        Status = AStarAgentStatus.Invalid;
-        return Status;
-
+        return Status = AStarAgentStatus.Invalid;
     }
 
     public void RePath()
@@ -301,12 +286,9 @@ public class AStarAgent : MonoBehaviour
     /// </summary>
     public void CreateBezierPath()
     {
-        if (PathCreator == null)
-            PathCreator = Instantiate(pathCreatorPrefab, Vector3.zero, Quaternion.identity);
-
+        if (PathCreator == null) PathCreator = Instantiate(pathCreatorPrefab, Vector3.zero, Quaternion.identity);
 
         points.Clear();
-
 
         points.Add(CornerPoints[CornerPoints.Count - 1].WorldPosition);
         for (int i = CornerPoints.Count - 2; i >= 0; i--)
@@ -343,13 +325,25 @@ public class AStarAgent : MonoBehaviour
         PathCreator.bezierPath = bezierPath;
     }
 
+    private Coroutine coroutineCharacterFollowPath = null;
     private void StartMoving()
     {
-        StopAllCoroutines();
-        //StartCoroutine(Coroutine_CharacterFollowPath());
-        StartCoroutine(Coroutine_CharacterFollowPathCurve());
+        //StopAllCoroutines();
+        if (coroutineCharacterFollowPath != null) StopCoroutine(coroutineCharacterFollowPath);
+        coroutineCharacterFollowPath = StartCoroutine(Coroutine_CharacterFollowPath());
+        //StartCoroutine(Coroutine_CharacterFollowPathCurve());
     }
 
+    public void StopMovement()
+    {
+        if (coroutineCharacterFollowPath != null) StopCoroutine(coroutineCharacterFollowPath);
+        Status = AStarAgentStatus.Finished;
+    }
+
+    /// <summary>
+    /// 실질적인 이동
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator Coroutine_CharacterFollowPath()
     {
         Status = AStarAgentStatus.InProgress;
@@ -365,7 +359,7 @@ public class AStarAgent : MonoBehaviour
                 if (curvePath)
                 {
                     transform.position += movementSpeed * Time.deltaTime * transform.forward;
-                    transform.forward = Vector3.Slerp(transform.forward, forwardDirection, Time.deltaTime * turnSpeed);
+                    transform.forward = Vector3.Lerp(transform.forward, forwardDirection, Time.deltaTime * turnSpeed);
                 }
                 else
                 {
@@ -416,7 +410,9 @@ public class AStarAgent : MonoBehaviour
             if (TotalPath != null)
             {
                 for (int j = TotalPath.Count - 2; j >= 0; j--)
+                {
                     Debug.DrawLine(TotalPath[j + 1].WorldPosition, TotalPath[j].WorldPosition, debugPathColor, 1);
+                }
             }
         }
     }
