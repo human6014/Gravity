@@ -150,9 +150,10 @@ namespace Manager
                 timer = 0;
                 randomUnitIndex = RandomUnit();
 
-                NormalMonster currentUnit = (NormalMonster)poolingObjectArray[randomUnitIndex].GetObject();
+                NormalMonster currentUnit = (NormalMonster)poolingObjectArray[randomUnitIndex].GetObject(false);
                 customization.Customize(currentUnit);
                 currentUnit.Init(GetRandomPos(), poolingObjectArray[randomUnitIndex]);
+                currentUnit.gameObject.SetActive(true);
             }
         }
     }

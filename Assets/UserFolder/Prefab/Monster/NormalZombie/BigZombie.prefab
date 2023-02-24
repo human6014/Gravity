@@ -3265,7 +3265,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   climbingDetectLayer:
     serializedVersion: 2
-    m_Bits: 24576
+    m_Bits: 417792
+  RayDistance: 3
 --- !u!114 &-6412295647024621301
 MonoBehaviour:
   m_ObjectHideFlags: 0

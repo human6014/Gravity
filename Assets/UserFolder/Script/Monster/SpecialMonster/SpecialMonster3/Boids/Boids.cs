@@ -38,7 +38,7 @@ public class Boids : MonoBehaviour
             randomVec = Random.insideUnitSphere * spawnRange;
             randomRot = Quaternion.Euler(0, Random.Range(0, 360f), 0);
 
-            currUnit = (BoidsMonster)poolingObj.GetObject();
+            currUnit = (BoidsMonster)poolingObj.GetObject(true);
             currUnit.transform.SetPositionAndRotation(transform.position + randomVec, randomRot);
             currUnit.Init(this, target);
         }
