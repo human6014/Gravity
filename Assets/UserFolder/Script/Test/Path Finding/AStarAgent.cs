@@ -21,8 +21,8 @@ public class AStarAgent : MonoBehaviour
     private List<Point> TotalPath = new List<Point>();
     private List<Point> CornerPoints = new List<Point>();
     private PathCreator PathCreator;
-    private WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
-    private WaitForSeconds waitForSeconds = new WaitForSeconds(0.2f);
+    private readonly WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
+    private readonly WaitForSeconds waitForSeconds = new WaitForSeconds(0.2f);
     private Coroutine coroutineRePath = null;
     [HideInInspector] public int Priority { get; private set; }
     [HideInInspector] public AStarAgentStatus Status = AStarAgentStatus.Finished;
