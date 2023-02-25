@@ -6700,7 +6700,8 @@ MonoBehaviour:
   climbingDetectLayer:
     serializedVersion: 2
     m_Bits: 417792
-  RayDistance: 2.5
+  castHeight: 2
+  castRadius: 0.5
 --- !u!114 &6681876166821450025
 MonoBehaviour:
   m_ObjectHideFlags: 0

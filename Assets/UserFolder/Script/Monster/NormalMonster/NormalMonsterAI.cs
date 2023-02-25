@@ -10,6 +10,7 @@ public class NormalMonsterAI : MonoBehaviour
 {
     [SerializeField] private LayerMask climbingDetectLayer;
 
+    private WaitForSeconds waitForSeconds = new(0.2f);
     private NavMeshAgent navMeshAgent;
     private NavMeshPath path;
     private Transform cachedTransform;
@@ -21,10 +22,12 @@ public class NormalMonsterAI : MonoBehaviour
     private Vector3 autoTargetDir;
     private Vector3 manualTargetDir;
 
+    private float stopDistance;
     private float currentSpeed;
     private float updateTimer;
     private bool detectCol;
-    [SerializeField] private float RayDistance = 2f;
+    [SerializeField] private float castHeight = 1.8f;
+    [SerializeField] private float castRadius = 0.5f;
 
     public bool IsBatch { get; private set; } = false;
     public bool IsFolling { get; private set; } = false;
@@ -38,6 +41,7 @@ public class NormalMonsterAI : MonoBehaviour
         cachedTransform = GetComponent<Transform>();
         cachedRigidbody = GetComponent<Rigidbody>();
 
+        stopDistance = navMeshAgent.stoppingDistance;
         currentSpeed = navMeshAgent.speed;
         navMeshAgent.updateRotation = false;
         navMeshAgent.updateUpAxis = false;
@@ -67,37 +71,32 @@ public class NormalMonsterAI : MonoBehaviour
         }
         if (IsFolling)
         {
-            detectCol = true;
-            //DetectCol();
+            DetectCol();
             return;
         }
 
-
-        if (!navMeshAgent.isActiveAndEnabled)
+        if (IsAutoMode)
         {
-            Debug.LogError("isActiveAndEnabled == false");
-            return;
+            path.ClearCorners();
+            navMeshAgent.CalculatePath(AIManager.PlayerTransfrom.position, path);
         }
 
-        path.ClearCorners();
-        navMeshAgent.CalculatePath(AIManager.PlayerTransfrom.position, path);
-
-        if (path.status == NavMeshPathStatus.PathPartial) ManualMode();
+        if (path.status == NavMeshPathStatus.PathPartial) { }// ManualMode();
         else if (path.status == NavMeshPathStatus.PathInvalid)
         {
 
         }
         else AutoMode();
-        Debug.Log(path.status);
     }
 
-    /*
+    
     private void DetectCol()
     {
         //건물 오르는 중에 중력이 바뀌면 회전하면서 떨어짐
         //따라서 위쪽방향 직선이 아니라 Collider가 필요
         //레이어도 관리 필요함 (울타리 같은 애들)
-        if (Physics.Raycast(cachedTransform.position, cachedTransform.up, RayDistance, climbingDetectLayer))
+        Collider[] colliders = Physics.OverlapCapsule(cachedTransform.position + cachedTransform.up * 0.2f, cachedTransform.position + cachedTransform.up * castHeight, castRadius, climbingDetectLayer);
+        if (colliders.Length > 0)
         {
             IsFolling = false;
             cachedRigidbody.useGravity = false;
@@ -105,23 +104,11 @@ public class NormalMonsterAI : MonoBehaviour
             navMeshAgent.enabled = true;
         }
     }
-    */
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (!detectCol) return;
-        
-        Debug.Log("CollisionEnter");
-        IsFolling = false;
-        detectCol = false;
-        cachedRigidbody.useGravity = false;
-        cachedRigidbody.isKinematic = true;
-        navMeshAgent.enabled = true;
-    }
+    
 
     private void AutoMode()
     {
-        //Debug.Log("AutoMode");
+        Debug.Log("AutoMode");
 
         IsAutoMode = true;
         navMeshAgent.isStopped = false;
@@ -164,26 +151,32 @@ public class NormalMonsterAI : MonoBehaviour
         }
         cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, autoTargetRot, 0.2f);
     }
-
+    /*
     private Coroutine navDetect = null;
     private void ManualMode()
     {
-        //Debug.Log("ManualMode");
+        
+        Debug.Log("ManualMode");
         if (navDetect == null) navDetect = StartCoroutine(DetectNavMeshOn());
-
+        
         IsAutoMode = false;
-        navMeshAgent.isStopped = true;
 
+        //벽뚫고 옴
         manualTargetDir = (AIManager.CurrentTargetPosition(cachedTransform) - cachedTransform.position).normalized;
         manualTargetRot = Quaternion.LookRotation(manualTargetDir, -GravitiesManager.GravityVector);
         cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, manualTargetRot, 0.2f);
 
-        if (navMeshAgent.remainingDistance < navMeshAgent.stoppingDistance) return;
+        if (Vector3.Distance(cachedTransform.position, AIManager.CurrentTargetPosition(cachedTransform)) < stopDistance) return;
         cachedTransform.position += Time.deltaTime * currentSpeed * manualTargetDir;
     }
 
+    
     private IEnumerator DetectNavMeshOn()
     {
+        //성능 부하 엄청남
+        //의도대로 안움직임
+        //-> 위에서 연결되지 않은 땅으로 떨어지는 경우
+        //중간중간에 계속 navMeshAgent를 켜서 위치를 강제 이동시켜서 그런 것 같음
         while (true)
         {
             navMeshAgent.enabled = true;
@@ -195,19 +188,21 @@ public class NormalMonsterAI : MonoBehaviour
                 {
                     cachedRigidbody.useGravity = false;
                     cachedRigidbody.isKinematic = true;
+                    IsAutoMode = true;
                     navDetect = null;
                     yield break;
                 }
             }
             navMeshAgent.enabled = false;
-            yield return new WaitForSeconds(0.25f);
+            yield return null;
         }
     }
+    */
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, 1);
-        Gizmos.DrawRay(transform.position, transform.up * RayDistance);
+        Gizmos.DrawSphere(transform.position + transform.up * 0.2f, castRadius);
+        Gizmos.DrawSphere(transform.position + transform.up * castHeight, castRadius);
     }
 }
