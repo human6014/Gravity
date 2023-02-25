@@ -5187,7 +5187,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5867953557993454527}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.4
   m_Speed: 3.5
@@ -5230,7 +5230,8 @@ MonoBehaviour:
   climbingDetectLayer:
     serializedVersion: 2
     m_Bits: 417792
-  RayDistance: 3.4
+  castHeight: 2.4
+  castRadius: 0.6
 --- !u!114 &-6130877166836249328
 MonoBehaviour:
   m_ObjectHideFlags: 0
