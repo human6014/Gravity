@@ -77,16 +77,19 @@ public class NormalMonsterAI : MonoBehaviour
 
         if (IsAutoMode)
         {
-            path.ClearCorners();
-            navMeshAgent.CalculatePath(AIManager.PlayerTransfrom.position, path);
+            AutoMode();
+            //path.ClearCorners();
+            //navMeshAgent.CalculatePath(AIManager.PlayerTransfrom.position, path);
         }
 
+        /*
         if (path.status == NavMeshPathStatus.PathPartial) { }// ManualMode();
         else if (path.status == NavMeshPathStatus.PathInvalid)
         {
 
         }
         else AutoMode();
+        */
     }
 
     
@@ -102,24 +105,16 @@ public class NormalMonsterAI : MonoBehaviour
             cachedRigidbody.useGravity = false;
             cachedRigidbody.isKinematic = true;
             navMeshAgent.enabled = true;
+            IsAutoMode = true;
         }
     }
     
 
     private void AutoMode()
     {
-        Debug.Log("AutoMode");
+        //Debug.Log("AutoMode");
 
-        IsAutoMode = true;
-        navMeshAgent.isStopped = false;
-
-        updateTimer += Time.deltaTime;
-        if (updateTimer >= 0.15f)
-        {
-            updateTimer = 0;
-            //navMeshAgent.SetPath(path);
-            navMeshAgent.SetDestination(AIManager.PlayerTransfrom.position);
-        }
+        navMeshAgent.SetDestination(AIManager.PlayerTransfrom.position);
 
         if (!navMeshAgent.isOnOffMeshLink)
         {
