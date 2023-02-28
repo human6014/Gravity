@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 6424540953875346554}
   - component: {fileID: 4195622113693779140}
   - component: {fileID: 9186447878411120905}
+  - component: {fileID: 842746504144415368}
   m_Layer: 17
   m_Name: Rail (2)APO 1
   m_TagString: Untagged
@@ -167,3 +168,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.75964737, y: 1.6578026, z: 11.986109}
   m_Center: {x: 4.034646, y: 8.275707, z: -0.009157181}
+--- !u!65 &842746504144415368
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2854611542589159104}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 9.00324, y: 1.441412, z: 2.2173767}
+  m_Center: {x: -0.00029230118, y: 8.3431635, z: 0.045448184}
