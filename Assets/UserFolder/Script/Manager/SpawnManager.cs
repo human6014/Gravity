@@ -128,7 +128,7 @@ namespace Manager
             return currentCol.transform.position + randomPos;
         }
 
-        private int RandomUnit()
+        private int RandomUnitIndex()
         {
             float randomPoint = Random.value * total;
 
@@ -148,8 +148,9 @@ namespace Manager
             if (timer >= 3)
             {
                 timer = 0;
-                randomUnitIndex = RandomUnit();
+                randomUnitIndex = RandomUnitIndex();
 
+                //프레임 저하 심함 (Garbage Collector)
                 NormalMonster currentUnit = (NormalMonster)poolingObjectArray[randomUnitIndex].GetObject(false);
                 customization.Customize(currentUnit);
                 currentUnit.Init(GetRandomPos(), poolingObjectArray[randomUnitIndex]);

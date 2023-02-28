@@ -15,7 +15,7 @@ namespace Manager
         /// </summary>
         /// <param name="_poolableScript"> PoolableScript를 상속받는 객체 </param>
         /// <param name="_parent"> Hierarchy 오브젝트 위치 </param>
-        /// <returns></returns>
+        /// <returns>PoolingObject</returns>
         public static PoolingObject Register(PoolableScript _poolableScript, Transform _parent) => new(_poolableScript, _parent);
 
         /// <summary>

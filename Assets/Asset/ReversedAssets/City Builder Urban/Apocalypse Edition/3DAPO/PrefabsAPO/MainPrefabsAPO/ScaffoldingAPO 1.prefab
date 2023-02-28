@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 7758432719583171491}
   - component: {fileID: 8756048951387415642}
   - component: {fileID: 3839691979544462295}
+  - component: {fileID: 4465043014358840253}
+  - component: {fileID: 7520483131777250845}
   m_Layer: 0
   m_Name: ScaffoldingAPO 1
   m_TagString: Untagged
@@ -76,8 +78,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.7014437, y: 1.6946399, z: 3.1628413}
-  m_Center: {x: 0, y: 4.3824387, z: -0.018482924}
+  m_Size: {x: 3.7014437, y: 0.17080927, z: 3.1628413}
+  m_Center: {x: 0, y: 5.144355, z: -0.018482924}
 --- !u!65 &8756048951387415642
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -89,8 +91,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.13018227, y: 3.563222, z: 3.1512897}
-  m_Center: {x: 1.783263, y: 1.7920008, z: 0}
+  m_Size: {x: 0.22517371, y: 5.160404, z: 0.19260883}
+  m_Center: {x: 1.7357672, y: 2.590592, z: 1.4793403}
 --- !u!65 &3839691979544462295
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -102,8 +104,34 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.13018227, y: 3.563222, z: 3.1512897}
-  m_Center: {x: -1.7832632, y: 1.7920008, z: 0}
+  m_Size: {x: 0.19226456, y: 5.145519, z: 0.14375973}
+  m_Center: {x: -1.7522221, y: 2.5831492, z: 1.5037649}
+--- !u!65 &4465043014358840253
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6927891897183640689}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.19226456, y: 5.145519, z: 0.14375973}
+  m_Center: {x: -1.7522221, y: 2.5831492, z: -1.5}
+--- !u!65 &7520483131777250845
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6927891897183640689}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.19226456, y: 5.145519, z: 0.14375973}
+  m_Center: {x: 1.75, y: 2.5831492, z: -1.5}
 --- !u!1001 &6229936215621016061
 PrefabInstance:
   m_ObjectHideFlags: 0
