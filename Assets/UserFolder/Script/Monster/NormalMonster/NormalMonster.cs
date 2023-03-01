@@ -13,6 +13,7 @@ namespace Entity.Unit.Normal
         private Animator animator;
         private NormalMonsterAI normalMonsterAI;
 
+
         public NoramlMonsterType GetMonsterType() => settings.monsterType;
 
         private void Awake()
@@ -23,8 +24,10 @@ namespace Entity.Unit.Normal
 
         private void Update()
         {
-            Move();
             //¼º´É issue
+            Move();
+            if (normalMonsterAI.IsMalfunction) ReturnObject();
+            
         }
 
         public void Init(Vector3 pos, Manager.ObjectPoolManager.PoolingObject poolingObject)

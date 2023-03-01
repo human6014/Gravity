@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 3248944905785156037}
   - component: {fileID: 3231482754596608266}
   - component: {fileID: 6256660239219344038}
+  - component: {fileID: 6217472689069135953}
   m_Layer: 17
   m_Name: RailBrokenAPO 1
   m_TagString: Untagged
@@ -167,3 +168,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.1406593, y: 1.484962, z: 12.045713}
   m_Center: {x: -3.91, y: 8.385017, z: 0.020646572}
+--- !u!65 &6217472689069135953
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3009535044084876544}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 9.003241, y: 1.421627, z: 2.4961548}
+  m_Center: {x: -0.00029277802, y: 8.409727, z: -0.05506897}

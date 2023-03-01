@@ -559,7 +559,7 @@ NavMeshAgent:
   m_Height: 1.85
   m_BaseOffset: 0
   m_WalkableMask: 29
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 2
 --- !u!114 &-127741219502407457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -588,8 +588,8 @@ MonoBehaviour:
   climbingDetectLayer:
     serializedVersion: 2
     m_Bits: 417792
-  castHeight: 1.9
-  castRadius: 0.5
+  castHeight: 2.2
+  castRadius: 0.75
 --- !u!114 &8833514753336622347
 MonoBehaviour:
   m_ObjectHideFlags: 0

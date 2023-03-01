@@ -18,7 +18,11 @@ public class SpecialMonster1 : MonoBehaviour
     [SerializeField] private LegController legController;
 
     private Transform cachedTransform;
-    private NavTrace navTrace;
+    private SpecialMonsterAI specialMonsterAI;
+
+    private Vector3 groundDirection = Vector3.zero;
+    private Vector3 targetPos = Vector3.zero;
+    private Vector3 direction;
 
     bool isPreJump = false;
     public Quaternion GetRotation() => cachedTransform.rotation;
@@ -27,7 +31,7 @@ public class SpecialMonster1 : MonoBehaviour
     private void Awake()
     {
         cachedTransform = GetComponent<Transform>();
-        navTrace = FindObjectOfType<NavTrace>();
+        specialMonsterAI = FindObjectOfType<SpecialMonsterAI>();
     }
 
     public void Init()
@@ -35,16 +39,10 @@ public class SpecialMonster1 : MonoBehaviour
 
     }
 
-    public void StartJumpCoroutine()
+    private void FixedUpdate()
     {
-        //StartCoroutine(Jump(0.9f));
+        specialMonsterAI.OperateAIBehavior(cachedTransform.rotation);
     }
-
-    #region 포물선 테스트중
-
-    Vector3 groundDirection = Vector3.zero;
-    Vector3 targetPos = Vector3.zero;
-    Vector3 direction;
     void Update()
     {
         if (!target) return;
@@ -58,7 +56,7 @@ public class SpecialMonster1 : MonoBehaviour
                 groundDirection = new(0, direction.y, direction.z);
                 dir = direction.x;
                 break;
-            
+
             case GravitiesType.yUp: //Init
             case GravitiesType.yDown:
                 groundDirection = new(direction.x, 0, direction.z);
@@ -78,9 +76,19 @@ public class SpecialMonster1 : MonoBehaviour
 
         //DrawPath(groundDirection.normalized, v0, angle, time, _step); //경로 그리기
 
-        if (Input.GetKeyDown(KeyCode.Backspace) && !isPreJump && !navTrace.GetIsOnOffMeshLink())
+        if (Input.GetKeyDown(KeyCode.Backspace) && !isPreJump && !specialMonsterAI.GetIsOnOffMeshLink())
             StartCoroutine(Coroutine_Movement(groundDirection.normalized, v0, angle, time));
     }
+
+    public void StartJumpCoroutine()
+    {
+        //StartCoroutine(Jump(0.9f));
+    }
+
+    #region 포물선 테스트중
+
+
+
 
 #if UNITY_EDITOR
     private void DrawPath(Vector3 direction, float v0, float angle, float time, float step)
@@ -124,7 +132,7 @@ public class SpecialMonster1 : MonoBehaviour
 
     IEnumerator Coroutine_Movement(Vector3 direction, float v0, float angle, float time)
     {
-        navTrace.SetNavMeshEnable(false);
+        specialMonsterAI.SetNavMeshEnable(false);
         isPreJump = true;
         legController.SetPreJump(true);
 
@@ -159,8 +167,8 @@ public class SpecialMonster1 : MonoBehaviour
         }
         legController.Jump(false);
         isPreJump = false;
-        navTrace.SetNavMeshEnable(true);
-        navTrace.SetNavMeshPos(transform.position);
+        specialMonsterAI.SetNavMeshEnable(true);
+        specialMonsterAI.SetNavMeshPos(transform.position);
     }
     #endregion
 }
