@@ -61,22 +61,67 @@ MonoBehaviour:
   - {fileID: 130940771371550281}
   speedCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   heightCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: -0.0047187805
+      inSlope: 2.043496
+      outSlope: 2.043496
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.49166667
+      value: 1
+      inSlope: 0.03814137
+      outSlope: 0.03814137
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1.9672132
+      outSlope: -1.9672132
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   layerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 155648
   layerMaskBack:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 16384
 --- !u!1 &130940771086349378
 GameObject:
   m_ObjectHideFlags: 0
@@ -2824,7 +2869,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2336000a1c92d34ba122944f27e6636, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationController: {fileID: 130940772857521256}
 --- !u!114 &130940772857521267
 MonoBehaviour:
   m_ObjectHideFlags: 0

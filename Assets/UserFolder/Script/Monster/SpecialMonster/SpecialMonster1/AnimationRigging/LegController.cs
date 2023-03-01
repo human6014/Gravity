@@ -5,7 +5,7 @@ using UnityEngine;
 public class LegController : MonoBehaviour
 {
     [Header("")]
-    [SerializeField] private NavTrace navTrace;
+    [SerializeField] private SpecialMonsterAI navTrace;
     [SerializeField] private Transform bodyTransform; //Body À§Ä¡
     [SerializeField] private Leg[] legs;
 
