@@ -224,9 +224,9 @@ public class NormalMonsterAI : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, castRadius);
-        Gizmos.DrawSphere(transform.position + transform.up * castHeight, castRadius);
+        //Gizmos.color = Color.red;
+        //Gizmos.DrawSphere(transform.position, castRadius);
+        //Gizmos.DrawSphere(transform.position + transform.up * castHeight, castRadius);
 
         if (!IsBatch) return;
     }

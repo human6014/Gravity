@@ -17,6 +17,8 @@ public class SpecialMonster1 : MonoBehaviour
     [SerializeField] private Transform navObject;
     [SerializeField] private LegController legController;
 
+
+
     private Transform cachedTransform;
     private SpecialMonsterAI specialMonsterAI;
 
@@ -32,6 +34,7 @@ public class SpecialMonster1 : MonoBehaviour
     {
         cachedTransform = GetComponent<Transform>();
         specialMonsterAI = FindObjectOfType<SpecialMonsterAI>();
+        //colliderMesh = new Mesh();
     }
 
     public void Init()
@@ -42,6 +45,7 @@ public class SpecialMonster1 : MonoBehaviour
     private void FixedUpdate()
     {
         specialMonsterAI.OperateAIBehavior(cachedTransform.rotation);
+        //UpdateCollider();
     }
     void Update()
     {
