@@ -16,6 +16,7 @@ public class SpecialMonsterAI : MonoBehaviour
     private LegController legController;
 
     private AnimationController animationController;
+    
 
     #region Adjustment factor
     [Header("Adjustment factor")]
@@ -30,10 +31,9 @@ public class SpecialMonsterAI : MonoBehaviour
 
     [SerializeField]
     [Tooltip("최소 이동 속도")]
-    private readonly float minSpeed = 7f;
+    private readonly float minSpeed = 5f;
 
-    private float currentSpeed = 10;
-
+    private float normalSpeed;
     #endregion
 
     #region Property
@@ -56,7 +56,7 @@ public class SpecialMonsterAI : MonoBehaviour
         animationController = GetComponent<AnimationController>();
         legController = FindObjectOfType<LegController>();
 
-        currentSpeed = navMeshAgent.speed;
+        normalSpeed = navMeshAgent.speed;
 
         navMeshAgent.updatePosition = false;
         navMeshAgent.updateRotation = false;
@@ -88,17 +88,22 @@ public class SpecialMonsterAI : MonoBehaviour
 
             SetDestination();
 
+            
             if (navMeshAgent.isOnOffMeshLink)
             {
-                NavMeshLink link = (NavMeshLink)navMeshAgent.navMeshOwner;
-                Debug.Log(link.name);
-                navMeshAgent.updateUpAxis = false;
+                //navMeshAgent.speed = minSpeed;
+                //NavMeshLink link = (NavMeshLink)navMeshAgent.navMeshOwner;
+                //navMeshAgent.updateUpAxis = false;
                 //여기서 NavMeshLink 감지 가능
             }
             else
             {
-                navMeshAgent.updateUpAxis = true;
+                //navMeshAgent.speed = normalSpeed;
+                //navMeshAgent.updateUpAxis = true;
             }
+            
+
+
 
             Vector3 targetDirection = (navMeshAgent.steeringTarget - cachedTransform.position).normalized;
             //targetForward = IsOnMeshLink == true ? ProceduralForwardAngle : targetDirection;
@@ -115,7 +120,7 @@ public class SpecialMonsterAI : MonoBehaviour
             else
             {
                 animationController.SetWalk();
-                navMeshAgent.nextPosition = ProceduralPosition + Time.deltaTime * currentSpeed * targetDirection;
+                navMeshAgent.nextPosition = ProceduralPosition + Time.deltaTime * navMeshAgent.speed * targetDirection;
                 cachedTransform.position = navMeshAgent.nextPosition;
             }
         }
