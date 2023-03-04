@@ -14,12 +14,17 @@ public class Point
 
     public float distanceFactor = 0.5f;
 
+    List<MovingData> toRemoveIntersections;
+    List<MovingData> toRemoveAvailability;
     public Point(Vector3Int coords, Vector3 worldPosition, bool inValid)
     {
         Neighbours = new List<Vector3Int>();
         Coords = coords;
         WorldPosition = worldPosition;
         InValid = inValid;
+
+        toRemoveIntersections = new List<MovingData>();
+        toRemoveAvailability = new List<MovingData>();
     }
 
     public void AddMovingData(AStarAgent obj, float time, bool stationary = false)
@@ -45,7 +50,7 @@ public class Point
             float ttReach;
             float ttReach2;
             float difference;
-            List<MovingData> toRemove = new List<MovingData>();
+            toRemoveIntersections.Clear();
             for (int i = 0; i < MovingData.Count; i++)
             {
                 MovingData data = MovingData[i];
@@ -56,7 +61,7 @@ public class Point
                         MovingData data2 = MovingData[j];
                         if (data2.Stationary)
                         {
-                            toRemove.Add(data);
+                            toRemoveIntersections.Add(data);
                             break;
                         }
                         if (data.MovingObj.Priority < data2.MovingObj.Priority)
@@ -68,18 +73,18 @@ public class Point
                             difference = Mathf.Abs(ttReach - ttReach2);
                             if (difference < distanceFactor)
                             {
-                                toRemove.Add(data);
+                                toRemoveIntersections.Add(data);
                                 break;
                             }
                         }
                     }
                 }
             }
-            for (int i = 0; i < toRemove.Count; i++)
-                MovingData.Remove(toRemove[i]);
+            for (int i = 0; i < toRemoveIntersections.Count; i++)
+                MovingData.Remove(toRemoveIntersections[i]);
 
-            for (int i = 0; i < toRemove.Count; i++)
-                toRemove[i].MovingObj.RePath();
+            for (int i = 0; i < toRemoveIntersections.Count; i++)
+                toRemoveIntersections[i].MovingObj.RePath();
         }
     }
 
@@ -90,7 +95,7 @@ public class Point
         {
             float ttReach;
             float difference;
-            List<MovingData> toRemove = new List<MovingData>();
+            toRemoveAvailability.Clear();
             for (int i = 0; i < MovingData.Count; i++)
             {
                 if (MovingData[i].Stationary) return false;
@@ -99,7 +104,7 @@ public class Point
                     ttReach = MovingData[i].TrueTimeToReach();
                     if (ttReach <= 0)
                     {
-                        toRemove.Add(MovingData[i]);
+                        toRemoveAvailability.Add(MovingData[i]);
                         continue;
                     }
                     difference = Mathf.Abs(ttReach - timeToReach);
@@ -110,8 +115,8 @@ public class Point
                     }
                 }
             }
-            for (int i = 0; i < toRemove.Count; i++)
-                MovingData.Remove(toRemove[i]);
+            for (int i = 0; i < toRemoveAvailability.Count; i++)
+                MovingData.Remove(toRemoveAvailability[i]);
         }
         return available;
     }
