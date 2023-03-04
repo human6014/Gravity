@@ -33,7 +33,7 @@ namespace Contoller.Player
         private float zMoveInput;
         private float wheelInput;
 
-        private bool isExitInput;
+        private bool isMenuInput;
         private bool isJumpInput;
         private bool isRunInput;
         private bool isTimeControlInput;
@@ -47,6 +47,9 @@ namespace Contoller.Player
         };
         #endregion
 
+
+        //юс╫ц©К
+        [SerializeField] UIManager uiManager;
         private void Awake()
         {
             playerRigid = GetComponent<Rigidbody>();
@@ -75,7 +78,7 @@ namespace Contoller.Player
 
             isRunInput = Input.GetKey(KeyCode.LeftShift);
 
-            isExitInput = Input.GetKeyDown(KeyCode.Escape);
+            isMenuInput = Input.GetKeyDown(KeyCode.Escape);
             isJumpInput = Input.GetKeyDown(KeyCode.Space);
             isTimeControlInput = Input.GetKeyDown(KeyCode.F);
 
@@ -91,7 +94,7 @@ namespace Contoller.Player
         
         private void ProcessInput()
         {
-            if (isExitInput) Application.Quit();
+            if (isMenuInput) uiManager.InputMenuPanelKey();
             if (isJumpInput) Jump();
             if (isRunInput) currentSpeed = runSpeed;
             else            currentSpeed = normalSpeed;

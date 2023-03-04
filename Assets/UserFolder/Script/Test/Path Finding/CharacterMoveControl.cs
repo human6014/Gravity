@@ -2,6 +2,7 @@ using PathCreation;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Manager.AI;
 
 [RequireComponent(typeof(AStarAgent))]
 public class CharacterMoveControl : MonoBehaviour
@@ -9,8 +10,9 @@ public class CharacterMoveControl : MonoBehaviour
     private float timer = 0f;
     private bool isArrive = false;
     private AStarAgent _Agent;
+    private float attackRange = 8;
     [SerializeField] private Transform moveToPoint;
-    Vector3 oldPos;
+
     private void Start()
     {
         _Agent = GetComponent<AStarAgent>();
@@ -36,12 +38,12 @@ public class CharacterMoveControl : MonoBehaviour
     {
         while (true)
         {
-            _Agent.Pathfinding(moveToPoint.position);
+            _Agent.Pathfinding(moveToPoint.position + moveToPoint.up * 5);
             while (_Agent.Status == AStarAgentStatus.Invalid)
             {
                 isArrive = true;
                 yield return new WaitForSeconds(0.5f);
-                _Agent.Pathfinding(moveToPoint.position);
+                _Agent.Pathfinding(moveToPoint.position + moveToPoint.up * 5);
             }
             isArrive = false;
             while (_Agent.Status != AStarAgentStatus.Finished)
@@ -57,7 +59,7 @@ public class CharacterMoveControl : MonoBehaviour
     {
         if (isArrive)
         {
-            Vector3 dir = (Manager.AI.AIManager.PlayerTransfrom.position + Manager.AI.AIManager.PlayerTransfrom.up * 0.5f - transform.position).normalized;
+            Vector3 dir = (AIManager.PlayerTransfrom.position + AIManager.PlayerTransfrom.up * 0.5f - transform.position).normalized;
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir, -Manager.GravitiesManager.GravityVector), 0.1f);
         }
     }

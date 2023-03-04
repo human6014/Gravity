@@ -140,16 +140,17 @@ namespace Manager
             return probs.Length - 1;
         }
 
+        int tempUnitCount;
         private void Update()
         {
             if (!isActiveSpawn) return;
 
             timer += Time.deltaTime;
-            if (timer >= 3)
+            if (timer >= 3 && tempUnitCount <= 30)
             {
                 timer = 0;
                 randomUnitIndex = RandomUnitIndex();
-
+                tempUnitCount++;
                 //프레임 저하 심함 (Garbage Collector)
                 NormalMonster currentUnit = (NormalMonster)poolingObjectArray[randomUnitIndex].GetObject(false);
                 customization.Customize(currentUnit);

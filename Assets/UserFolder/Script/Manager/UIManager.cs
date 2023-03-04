@@ -4,15 +4,32 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private GameObject MenuPanel;
+    private bool isMenuPanelActive;
+    public void InputMenuPanelKey()
     {
-        
+        isMenuPanelActive = !isMenuPanelActive;
+        MenuPanel.SetActive(isMenuPanelActive);
+
+        if (isMenuPanelActive)
+        {
+            Time.timeScale = 0;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            Time.timeScale = 1;
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnClickedExit()
     {
-        
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+        Application.Quit();
     }
 }
