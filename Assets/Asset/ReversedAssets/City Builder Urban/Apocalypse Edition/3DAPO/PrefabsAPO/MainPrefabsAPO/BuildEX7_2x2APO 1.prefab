@@ -129,6 +129,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 96943c55f4ac7a54ea31b8059d950a90,
         type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 96943c55f4ac7a54ea31b8059d950a90,
+        type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 7ba0bdace0b8ab44a96dc9cf29003139, type: 2}
@@ -231,6 +236,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
         type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 4d18e59d23a2165469b57fc0452f91fd, type: 2}
@@ -312,6 +327,16 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
+      propertyPath: m_StaticShadowCaster
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
@@ -401,6 +426,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
         type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 4d18e59d23a2165469b57fc0452f91fd, type: 2}
@@ -482,6 +517,16 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
+      propertyPath: m_StaticShadowCaster
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
@@ -571,6 +616,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
         type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 4d18e59d23a2165469b57fc0452f91fd, type: 2}
@@ -652,6 +707,16 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
+      propertyPath: m_StaticShadowCaster
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
@@ -741,6 +806,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
         type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 4d18e59d23a2165469b57fc0452f91fd, type: 2}
@@ -823,6 +898,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 08008ef1da4de1a4e80e9071ebd9535d,
+        type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 08008ef1da4de1a4e80e9071ebd9535d,
         type: 3}
@@ -943,6 +1023,16 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
+        type: 3}
+      propertyPath: m_StaticShadowCaster
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 1aa9f37aa0e7a4a4b8d8ea6f308ca8e6,
