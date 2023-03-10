@@ -8,7 +8,7 @@ namespace Manager
     [RequireComponent(typeof(UnitManager))]
     public class SpawnManager : MonoBehaviour
     {
-        public bool isActiveSpawn;
+        [SerializeField] private bool isActiveSpawn;
 
         #region SerializeField
         [Header("Spawn Area")]
@@ -20,7 +20,11 @@ namespace Manager
         [SerializeField] private Transform activeUnitPool;
 
         [Tooltip("미리 생성할 유닛 수 urban -> oldman -> women -> big -> giant")]
-        [Range(0, 100)] [SerializeField] private int[] poolingCount;
+        [Range(0, 100)][SerializeField] private int[] poolingCount;
+
+        [Header("Spawn info")]
+        [Tooltip("최대로 생성될 유닛의 총 개수")]
+        [Range(0, 100)][SerializeField] private int maxUnitCount = 30;
         #endregion
 
         #region Object Value
@@ -45,6 +49,7 @@ namespace Manager
 
         private float timer;
         private int randomUnitIndex;
+        private int currentUnitCount;
         #endregion
         private void Awake()
         {
@@ -63,14 +68,13 @@ namespace Manager
 
         private void Start()
         {
-            total = 0;
             foreach (float elem in probs) total += elem;
 
             int unitLength = unitManager.GetNormalMonsterArrayLength();
             if (unitLength != poolingCount.Length)
                 Debug.LogWarning("Polling Count is different from the number of PoolingObject's length");
 
-            //순서대로 넣어야 해~
+            //인덱스 순서
             //urban -> oldman -> women -> big -> giant
             
             poolingObjectArray = new ObjectPoolManager.PoolingObject[unitLength];
@@ -85,10 +89,14 @@ namespace Manager
         /// 현재 중력에 맞는 땅의 BoxCollider 랜덤으로 가져옴
         /// GravityManager의 중력 방향과 반대니 햇깔리지 말도록
         /// </summary>
-        /// <returns></returns>
+        /// <returns>현재 중력에 맞는 땅에서 배열에서 랜덤으로 선정된 BoxCollider</returns>
         private BoxCollider GetClosetArea()
         {
             BoxCollider[] currentArea = null;
+
+            //배열로 바꾸면 코드 깔끔해질 수도?
+            //중력 바꿀때만 설정해줘도 됌
+            //지금은 유닛 소환할 때마다 수행함
             switch (GravitiesManager.currentGravityType)
             {
                 case EnumType.GravitiesType.xUp:
@@ -140,18 +148,18 @@ namespace Manager
             return probs.Length - 1;
         }
 
-        int tempUnitCount;
+        
         private void Update()
         {
             if (!isActiveSpawn) return;
 
             timer += Time.deltaTime;
-            if (timer >= 3 && tempUnitCount <= 30)
+            if (timer >= 3 && currentUnitCount <= maxUnitCount)
             {
                 timer = 0;
                 randomUnitIndex = RandomUnitIndex();
-                tempUnitCount++;
-                //프레임 저하 심함 (Garbage Collector)
+                currentUnitCount++;
+
                 NormalMonster currentUnit = (NormalMonster)poolingObjectArray[randomUnitIndex].GetObject(false);
                 customization.Customize(currentUnit);
                 currentUnit.Init(GetRandomPos(), poolingObjectArray[randomUnitIndex]);

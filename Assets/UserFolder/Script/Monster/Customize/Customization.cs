@@ -8,13 +8,12 @@ public class Customization : MonoBehaviour
 {
     CustomizingAssetList customizingAssetList;
     public void Awake() => customizingAssetList = GetComponent<CustomizingAssetList>();
-    
+
 
     public void Customize(Entity.Unit.Normal.NormalMonster unit)
     {
         NoramlMonsterType monsterType = unit.GetMonsterType();
-        CustomizableScript customizableScript = unit.GetComponent<CustomizableScript>();
 
-        customizableScript.Customizing(customizingAssetList.GetUnitMaterial(monsterType));
+        unit.GetComponent<CustomizableScript>().Customizing(ref customizingAssetList.GetUnitMaterial(monsterType));
     }
 }

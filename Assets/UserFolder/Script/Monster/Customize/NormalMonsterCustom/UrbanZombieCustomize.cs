@@ -47,7 +47,7 @@ namespace Entity.Unit
             headType = Random.Range(0, faceTypeLength);
         }
 
-        public override void Customizing(CustomizingAssetList.MaterialsStruct[] materialsStructs)
+        public override void Customizing(ref CustomizingAssetList.MaterialsStruct[] materialsStructs)
         {
             RandNum();
             Renderer skinRend;
