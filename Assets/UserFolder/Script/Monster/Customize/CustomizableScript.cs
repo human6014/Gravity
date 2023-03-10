@@ -4,6 +4,6 @@ using UnityEngine;
 
 public abstract class CustomizableScript : MonoBehaviour
 {
-    public abstract void Customizing(CustomizingAssetList.MaterialsStruct[] materialsStructs);
+    public abstract void Customizing(ref CustomizingAssetList.MaterialsStruct[] materialsStructs);
     protected abstract void RandNum();
 }

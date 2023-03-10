@@ -22,6 +22,8 @@ public class CustomizingAssetList : MonoBehaviour
     [Header("Normalzombie customizing factor")]
     [SerializeField] private NormalZomibeComponentsStruct[] normalZomibeMaterials;
 
-    public MaterialsStruct[] GetUnitMaterial(EnumType.NoramlMonsterType monsterType) => normalZomibeMaterials[(int)monsterType].materials;
+    public ref MaterialsStruct[] GetUnitMaterial(EnumType.NoramlMonsterType monsterType) 
+        => ref normalZomibeMaterials[(int)monsterType].materials;
+    
 }
 

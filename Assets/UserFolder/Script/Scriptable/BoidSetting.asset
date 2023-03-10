@@ -29,4 +29,4 @@ MonoBehaviour:
     m_Bits: 2048
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 57344
+    m_Bits: 450560

@@ -84,7 +84,7 @@ public class SpecialMonsterAI : MonoBehaviour
         }
         else
         {
-            if (navMeshAgent.pathPending == true) return;
+            //if (navMeshAgent.pathPending == true) return;
 
             SetDestination();
 
@@ -102,9 +102,6 @@ public class SpecialMonsterAI : MonoBehaviour
                 //navMeshAgent.updateUpAxis = true;
             }
             
-
-
-
             Vector3 targetDirection = (navMeshAgent.steeringTarget - cachedTransform.position).normalized;
             //targetForward = IsOnMeshLink == true ? ProceduralForwardAngle : targetDirection;
             Vector3 targetForward = ProceduralForwardAngle + targetDirection;

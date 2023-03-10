@@ -25,7 +25,7 @@ namespace Entity.Unit
             hairType = Random.Range(0, hairTypeLength);
         }
 
-        public override void Customizing(CustomizingAssetList.MaterialsStruct[] materialsStructs)
+        public override void Customizing(ref CustomizingAssetList.MaterialsStruct[] materialsStructs)
         {
             RandNum();
             Material[] mat = new Material[2];
