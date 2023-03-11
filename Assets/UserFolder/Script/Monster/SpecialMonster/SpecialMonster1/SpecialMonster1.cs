@@ -53,27 +53,27 @@ public class SpecialMonster1 : MonoBehaviour
 
         direction = target.position - cachedTransform.position;
         float dir = 0;
-        switch (GravitiesManager.currentGravityType)
+        switch (GravityManager.currentGravityType)
         {
-            case GravitiesType.xUp:
-            case GravitiesType.xDown:
+            case GravityType.xUp:
+            case GravityType.xDown:
                 groundDirection = new(0, direction.y, direction.z);
                 dir = direction.x;
                 break;
 
-            case GravitiesType.yUp: //Init
-            case GravitiesType.yDown:
+            case GravityType.yUp: //Init
+            case GravityType.yDown:
                 groundDirection = new(direction.x, 0, direction.z);
                 dir = direction.y;
                 break;
 
-            case GravitiesType.zUp:
-            case GravitiesType.zDown:
+            case GravityType.zUp:
+            case GravityType.zDown:
                 groundDirection = new(direction.x, direction.y, 0);
                 dir = direction.z;
                 break;
         }
-        targetPos = new(groundDirection.magnitude, dir * -GravitiesManager.GravityDirectionValue, 0);
+        targetPos = new(groundDirection.magnitude, dir * -GravityManager.GravityDirectionValue, 0);
         float height = Mathf.Max(0.01f, targetPos.y + targetPos.magnitude / 2f);
 
         CalculatePathWithHeight(targetPos, height, out float v0, out float angle, out float time);
@@ -104,13 +104,13 @@ public class SpecialMonster1 : MonoBehaviour
         {
             float x = v0 * i * Mathf.Cos(angle);
             float y = v0 * i * Mathf.Sin(angle) - 0.5f * Physics.gravity.magnitude * Mathf.Pow(i, 2);
-            lineRenderer.SetPosition(count, cachedTransform.position + direction * x - GravitiesManager.GravityVector * y);
+            lineRenderer.SetPosition(count, cachedTransform.position + direction * x - GravityManager.GravityVector * y);
 
             count++;
         }
         float xFinal = v0 * time * Mathf.Cos(angle);
         float yFinal = v0 * time * Mathf.Sin(angle) - 0.5f * Physics.gravity.magnitude * Mathf.Pow(time, 2);
-        lineRenderer.SetPosition(count, cachedTransform.position + direction * xFinal - GravitiesManager.GravityVector * yFinal);
+        lineRenderer.SetPosition(count, cachedTransform.position + direction * xFinal - GravityManager.GravityVector * yFinal);
     }
 #endif
 
@@ -162,7 +162,7 @@ public class SpecialMonster1 : MonoBehaviour
         {
             float x = v0 * elapsedTime * Mathf.Cos(angle);
             float y = v0 * elapsedTime * Mathf.Sin(angle) - 0.5f * Physics.gravity.magnitude * Mathf.Pow(elapsedTime, 2);
-            transform.SetPositionAndRotation(startPos + direction * x - GravitiesManager.GravityVector * y, 
+            transform.SetPositionAndRotation(startPos + direction * x - GravityManager.GravityVector * y, 
                              Quaternion.Lerp(startRotation, targetRot, elapsedTime / time));
             //elapsedTime += Time.deltaTime * (time / 1.5f);
             //elapsedTime += Time.deltaTime;

@@ -54,14 +54,14 @@ public class NormalMonsterAI : MonoBehaviour
         IsBatch = true;
         navMeshAgent.enabled = true;
         navMeshAgent.Warp(pos);
-        cachedTransform.rotation = Quaternion.LookRotation(cachedTransform.forward, -GravitiesManager.GravityVector);
+        cachedTransform.rotation = Quaternion.LookRotation(cachedTransform.forward, -GravityManager.GravityVector);
     }
 
     public void Move()
     {
         if (!IsBatch) return;
 
-        if (GravitiesManager.IsGravityChange)
+        if (GravityManager.IsGravityChanging)
         {
             cachedRigidbody.useGravity = true;
             cachedRigidbody.isKinematic = false;
@@ -146,7 +146,7 @@ public class NormalMonsterAI : MonoBehaviour
         if (!navMeshAgent.isOnOffMeshLink && !AIManager.IsSameFloor(navMeshAgent))
         {
             IsClimbing = true;
-            climbingLookRot = Quaternion.LookRotation((navMeshAgent.navMeshOwner as Component).transform.position, -GravitiesManager.GravityVector);
+            climbingLookRot = Quaternion.LookRotation((navMeshAgent.navMeshOwner as Component).transform.position, -GravityManager.GravityVector);
         }
         else IsClimbing = false;
 
@@ -155,7 +155,7 @@ public class NormalMonsterAI : MonoBehaviour
         {
             autoTargetDir = (navMeshAgent.steeringTarget - cachedTransform.position).normalized;
 
-            switch (GravitiesManager.gravityDirection)
+            switch (GravityManager.gravityDirection)
             {
                 case EnumType.GravityDirection.X:
                     autoTargetDir.x = 0;
@@ -168,9 +168,9 @@ public class NormalMonsterAI : MonoBehaviour
                     break;
             }
             if (autoTargetDir == Vector3.zero)
-                autoTargetRot = Quaternion.LookRotation(AIManager.PlayerTransfrom.position, -GravitiesManager.GravityVector);
+                autoTargetRot = Quaternion.LookRotation(AIManager.PlayerTransfrom.position, -GravityManager.GravityVector);
             else
-                autoTargetRot = Quaternion.LookRotation(autoTargetDir, -GravitiesManager.GravityVector);
+                autoTargetRot = Quaternion.LookRotation(autoTargetDir, -GravityManager.GravityVector);
         }
         cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, autoTargetRot, 0.2f);
     }

@@ -47,9 +47,9 @@ public class OldPlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
         if (Input.GetKeyDown(KeyCode.Space)) Jump();
-        if (Input.GetKeyDown(KeyCode.Z)) GravitiesManager.gravityDirection = GravityDirection.X;
-        else if (Input.GetKeyDown(KeyCode.X)) GravitiesManager.gravityDirection = GravityDirection.Y;
-        else if (Input.GetKeyDown(KeyCode.C)) GravitiesManager.gravityDirection = GravityDirection.Z;
+        if (Input.GetKeyDown(KeyCode.Z)) GravityManager.gravityDirection = GravityDirection.X;
+        else if (Input.GetKeyDown(KeyCode.X)) GravityManager.gravityDirection = GravityDirection.Y;
+        else if (Input.GetKeyDown(KeyCode.C)) GravityManager.gravityDirection = GravityDirection.Z;
 
         wheelInput = Input.GetAxis("Mouse ScrollWheel");
 
@@ -57,8 +57,8 @@ public class OldPlayerController : MonoBehaviour
         {
             flipOnce = true;
             isChanging = true;
-            if (wheelInput > 0) GravitiesManager.GravityChange(1);
-            else GravitiesManager.GravityChange(-1);
+            if (wheelInput > 0) GravityManager.GravityChange(1);
+            else GravityManager.GravityChange(-1);
         }
 
         if (Input.GetKeyDown(KeyCode.F))
@@ -97,58 +97,58 @@ public class OldPlayerController : MonoBehaviour
     Vector3 newRotation;
     private void Rotate()
     {
-        if (!isChanging || GravitiesManager.IsGravityDupleicated) //이부분을 없애야 함 (1)
+        if (!isChanging || GravityManager.IsGravityDupleicated) //이부분을 없애야 함 (1)
             _xRotation = Input.GetAxisRaw("Mouse X");
 
         _cameraRotationX = _xRotation * lookSensitivity;
 
 
-        if (flipOnce && (int)GravitiesManager.beforeGravityType % 2 != (int)GravitiesManager.currentGravityType % 2)
+        if (flipOnce && (int)GravityManager.beforeGravityType % 2 != (int)GravityManager.currentGravityType % 2)
             currentCameraRotationX *= -1;
 
-        currentCameraRotationX += (int)GravitiesManager.currentGravityType % 2 == 0 ? _cameraRotationX : -_cameraRotationX;
+        currentCameraRotationX += (int)GravityManager.currentGravityType % 2 == 0 ? _cameraRotationX : -_cameraRotationX;
 
-        switch (GravitiesManager.currentGravityType)
+        switch (GravityManager.currentGravityType)
         {
-            case GravitiesType.xUp:
-                interpolationAngle = (int)GravitiesManager.beforeGravityType >= 4 && !GravitiesManager.IsGravityDupleicated ? -90 : 0;
+            case GravityType.xUp:
+                interpolationAngle = (int)GravityManager.beforeGravityType >= 4 && !GravityManager.IsGravityDupleicated ? -90 : 0;
                 newRotation.x = currentCameraRotationX + interpolationAngle;
                 newRotation.y = 0;
                 newRotation.z = -90;
                 break;
-            case GravitiesType.xDown:
-                interpolationAngle = (int)GravitiesManager.beforeGravityType >= 4 && !GravitiesManager.IsGravityDupleicated ? -90 : 0;
+            case GravityType.xDown:
+                interpolationAngle = (int)GravityManager.beforeGravityType >= 4 && !GravityManager.IsGravityDupleicated ? -90 : 0;
                 newRotation.x = currentCameraRotationX + interpolationAngle;
                 newRotation.y = 0;
                 newRotation.z = 90;
                 break;
-            case GravitiesType.yUp:
+            case GravityType.yUp:
                 interpolationAngle = 0;
                 newRotation.y = currentCameraRotationX + interpolationAngle;
                 newRotation.x = 0;
                 newRotation.z = 0;
                 break;
-            case GravitiesType.yDown:
-                interpolationAngle = (int)GravitiesManager.beforeGravityType >= 3 && !GravitiesManager.IsGravityDupleicated ? -180 : 0;
+            case GravityType.yDown:
+                interpolationAngle = (int)GravityManager.beforeGravityType >= 3 && !GravityManager.IsGravityDupleicated ? -180 : 0;
                 newRotation.y = currentCameraRotationX + interpolationAngle;
                 newRotation.x = 0;
                 newRotation.z = 180;
                 break;
-            case GravitiesType.zUp:
-                interpolationAngle = (int)GravitiesManager.beforeGravityType <= 1 ? -90 : 90;
+            case GravityType.zUp:
+                interpolationAngle = (int)GravityManager.beforeGravityType <= 1 ? -90 : 90;
                 newRotation.x = currentCameraRotationX + interpolationAngle;
                 newRotation.y = -90;
                 newRotation.z = -90;
                 break;
-            case GravitiesType.zDown:
-                interpolationAngle = (int)GravitiesManager.beforeGravityType == 5 && !GravitiesManager.IsGravityDupleicated ? -180 : -90;
+            case GravityType.zDown:
+                interpolationAngle = (int)GravityManager.beforeGravityType == 5 && !GravityManager.IsGravityDupleicated ? -180 : -90;
                 newRotation.x = currentCameraRotationX + interpolationAngle;
                 newRotation.y = -90;
                 newRotation.z = 90;
                 break;
         }
         #region 회전 1방식
-        if (wheelInput == 0 || GravitiesManager.IsGravityDupleicated) transform.rotation = Quaternion.Euler(newRotation);
+        if (wheelInput == 0 || GravityManager.IsGravityDupleicated) transform.rotation = Quaternion.Euler(newRotation);
         else if (flipOnce) StartCoroutine(GravityRotate());
         #endregion
         #region 회전 2방식
@@ -177,7 +177,7 @@ public class OldPlayerController : MonoBehaviour
             yield return null;
         }
         isChanging = false;
-        GravitiesManager.CompleteGravityChange();
+        GravityManager.CompleteGravityChanging();
     }
 }
 
