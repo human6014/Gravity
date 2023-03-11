@@ -16,7 +16,7 @@ namespace Contoller.Floor
         }
         public GameObject GetNowFloor()
         {
-            return floorObject[(int)GravitiesManager.currentGravityType];
+            return floorObject[(int)GravityManager.currentGravityType];
         }
     }
 }

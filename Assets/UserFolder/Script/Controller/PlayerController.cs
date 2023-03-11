@@ -99,12 +99,12 @@ namespace Contoller.Player
             if (isRunInput) currentSpeed = runSpeed;
             else            currentSpeed = normalSpeed;
             
-            if (wheelInput != 0 && !GravitiesManager.IsGravityChange)
+            if (wheelInput != 0 && !GravityManager.IsGravityChanging)
             {
                 flipOnce = true;
                 isChanging = true;
-                GravitiesManager.gravityDirection = (GravityDirection)currentGravityKeyInput;
-                GravitiesManager.GravityChange(Mathf.FloorToInt(wheelInput * 10));
+                GravityManager.gravityDirection = (GravityDirection)currentGravityKeyInput;
+                GravityManager.GravityChange(Mathf.FloorToInt(wheelInput * 10));
             }
             if (isTimeControlInput)
             {
@@ -149,56 +149,56 @@ namespace Contoller.Player
 
         private void Rotate()
         {
-            if (!isChanging || GravitiesManager.IsGravityDupleicated) //이부분을 없애야 함 (1)
+            if (!isChanging || GravityManager.IsGravityDupleicated) //이부분을 없애야 함 (1)
                 _xRotation = Input.GetAxisRaw("Mouse X");
 
             _cameraRotationX = _xRotation * lookSensitivity;
 
-            currentCameraRotationX += (int)GravitiesManager.currentGravityType % 2 == 0 ? _cameraRotationX : -_cameraRotationX;
+            currentCameraRotationX += (int)GravityManager.currentGravityType % 2 == 0 ? _cameraRotationX : -_cameraRotationX;
 
-            switch (GravitiesManager.currentGravityType)
+            switch (GravityManager.currentGravityType)
             {
-                case GravitiesType.xUp:
-                    interpolationAngle = (int)GravitiesManager.beforeGravityType >= 4 && !GravitiesManager.IsGravityDupleicated ? -90 : 0;
+                case GravityType.xUp:
+                    interpolationAngle = (int)GravityManager.beforeGravityType >= 4 && !GravityManager.IsGravityDupleicated ? -90 : 0;
 
                     newRotation.x = currentCameraRotationX + interpolationAngle;
 
                     newRotation.y = 0;
                     newRotation.z = -90;
                     break;
-                case GravitiesType.xDown:
-                    interpolationAngle = (int)GravitiesManager.beforeGravityType >= 4 && !GravitiesManager.IsGravityDupleicated ? -90 : 0;
+                case GravityType.xDown:
+                    interpolationAngle = (int)GravityManager.beforeGravityType >= 4 && !GravityManager.IsGravityDupleicated ? -90 : 0;
 
                     newRotation.x = currentCameraRotationX + interpolationAngle;
 
                     newRotation.y = 0;
                     newRotation.z = 90;
                     break;
-                case GravitiesType.yUp:
+                case GravityType.yUp:
                     interpolationAngle = 0;
                     newRotation.y = currentCameraRotationX + interpolationAngle;
 
                     newRotation.x = 0;
                     newRotation.z = 0;
                     break;
-                case GravitiesType.yDown:
-                    interpolationAngle = (int)GravitiesManager.beforeGravityType >= 3 && !GravitiesManager.IsGravityDupleicated ? -180 : 0;
+                case GravityType.yDown:
+                    interpolationAngle = (int)GravityManager.beforeGravityType >= 3 && !GravityManager.IsGravityDupleicated ? -180 : 0;
 
                     newRotation.y = currentCameraRotationX + interpolationAngle;
 
                     newRotation.x = 0;
                     newRotation.z = 180;
                     break;
-                case GravitiesType.zUp:
-                    interpolationAngle = (int)GravitiesManager.beforeGravityType <= 1 ? -90 : 90;
+                case GravityType.zUp:
+                    interpolationAngle = (int)GravityManager.beforeGravityType <= 1 ? -90 : 90;
 
                     newRotation.x = currentCameraRotationX + interpolationAngle;
 
                     newRotation.y = -90;
                     newRotation.z = -90;
                     break;
-                case GravitiesType.zDown:
-                    interpolationAngle = (int)GravitiesManager.beforeGravityType == 5 && !GravitiesManager.IsGravityDupleicated ? -180 : -90;
+                case GravityType.zDown:
+                    interpolationAngle = (int)GravityManager.beforeGravityType == 5 && !GravityManager.IsGravityDupleicated ? -180 : -90;
 
                     newRotation.x = currentCameraRotationX + interpolationAngle;
 
@@ -207,7 +207,7 @@ namespace Contoller.Player
                     break;
             }
             #region 회전 1방식
-            if (wheelInput == 0 || GravitiesManager.IsGravityDupleicated) transform.rotation = Quaternion.Euler(newRotation);
+            if (wheelInput == 0 || GravityManager.IsGravityDupleicated) transform.rotation = Quaternion.Euler(newRotation);
             else if (flipOnce) StartCoroutine(GravityRotate());
             #endregion
             #region 회전 2방식
@@ -237,7 +237,7 @@ namespace Contoller.Player
                 yield return null;
             }
             isChanging = false;
-            GravitiesManager.CompleteGravityChange();
+            GravityManager.CompleteGravityChanging();
         }
 
         private void PositionRay()

@@ -37,7 +37,7 @@ public class PlayerLookTarget : MonoBehaviour {
 
 			lastDistanceTravelled = distanceTravelled;
 			//Vector3 velocity = Vector3.Normalize(transform.TransformVector(characterController.velocity * randomDir).normalized * velocityDirectionContribution + transform.forward);
-			Vector3 velocity = Vector3.Normalize(transform.TransformVector(GetComponent<Rigidbody>().velocity * randomDir).normalized * velocityDirectionContribution + transform.forward);
+			Vector3 velocity = Vector3.Normalize(transform.TransformVector(characterController.velocity * randomDir).normalized * velocityDirectionContribution + transform.forward);
 			if (Physics.Raycast(transform.position, velocity, out RaycastHit hit, maxPointDistance, pointLayerMask))
                 target.position = hit.point + hit.normal * distnaceFromSurface + transform.up * 3;
             else

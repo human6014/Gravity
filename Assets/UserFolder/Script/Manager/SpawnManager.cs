@@ -97,26 +97,26 @@ namespace Manager
             //배열로 바꾸면 코드 깔끔해질 수도?
             //중력 바꿀때만 설정해줘도 됌
             //지금은 유닛 소환할 때마다 수행함
-            switch (GravitiesManager.currentGravityType)
+            switch (GravityManager.currentGravityType)
             {
-                case EnumType.GravitiesType.xUp:
+                case EnumType.GravityType.xUp:
                     currentArea = spawnAreaXDown;
                     break;
-                case EnumType.GravitiesType.xDown:
+                case EnumType.GravityType.xDown:
                     currentArea = spawnAreaXUp;
                     break;
 
-                case EnumType.GravitiesType.yUp:
+                case EnumType.GravityType.yUp:
                     currentArea = spawnAreaYDown;
                     break;
-                case EnumType.GravitiesType.yDown:
+                case EnumType.GravityType.yDown:
                     currentArea = spawnAreaYUp;
                     break;
 
-                case EnumType.GravitiesType.zUp:
+                case EnumType.GravityType.zUp:
                     currentArea = spawnAreaZDown;
                     break;
-                case EnumType.GravitiesType.zDown:
+                case EnumType.GravityType.zDown:
                     currentArea = spawnAreaZUp;
                     break;
             }

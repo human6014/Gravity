@@ -6,23 +6,40 @@ using UnityEngine.AI;
 
 public class RobotMovementController : MonoBehaviour
 {
+    [Tooltip("타겟과 직선 상 감지 레이어")]
     [SerializeField] private LayerMask playerSeeLayerMask = -1;
+
+    [Tooltip("옥트리 객체")]
     [SerializeField] private Octree octree;
+
+    [Tooltip("타겟 노드 Transform")]
     [SerializeField] private Transform target;
+
+    [Tooltip("실질적인 타겟 오브젝트")]
     [SerializeField] private GameObject playerObject;
+
+    [Tooltip("")]
     [SerializeField] private float maxDistanceRebuildPath = 1;
+
+    [Tooltip("가속도")]
     [SerializeField] private float acceleration = 1;
+
+    [Tooltip("이동 노드 최소 도달 거리")]
     [SerializeField] private float minReachDistance = 2f;
+
+    [Tooltip("최종 노드 도달 거리")]
     [SerializeField] private float minFollowDistance = 4f;
+
+    [Tooltip("")]
     [SerializeField] private float pathPointRadius = 0.2f;
 
     private Octree.PathRequest oldPath;
     private Octree.PathRequest newPath;
-    private Rigidbody rigidbody;
+    private Rigidbody cachedRigidbody;
+    private SphereCollider sphereCollider;
     private Vector3 currentDestination;
     private Vector3 lastDestination;
-    private SphereCollider sphereCollider;
-
+    private Vector3 randomPos;
 
     private bool CanSeePlayer()
     {
@@ -38,6 +55,11 @@ public class RobotMovementController : MonoBehaviour
             if ((newPath == null || newPath.isCalculating) && oldPath != null) return oldPath;
             return newPath;
         }
+    }
+
+    public bool CloseToTarget
+    {
+        get => Path != null && Path.Path.Count > 3;
     }
 
     public bool HasTarget
@@ -57,9 +79,10 @@ public class RobotMovementController : MonoBehaviour
     private void Awake()
     {
         sphereCollider = GetComponent<SphereCollider>();
-        rigidbody = GetComponent<Rigidbody>();
+        cachedRigidbody = GetComponent<Rigidbody>();
+        randomPos = UnityEngine.Random.insideUnitSphere * 3;
     }
-
+    
     private void FixedUpdate()
     {
         if ((newPath == null || !newPath.isCalculating) && Vector3.SqrMagnitude(target.position - lastDestination) > maxDistanceRebuildPath && 
@@ -68,7 +91,7 @@ public class RobotMovementController : MonoBehaviour
             lastDestination = target.position;
 
             oldPath = newPath;
-            newPath = octree.GetPath(transform.position, lastDestination);
+            newPath = octree.GetPath(transform.position, lastDestination + randomPos);
         }
 
         var curPath = Path;
@@ -78,12 +101,12 @@ public class RobotMovementController : MonoBehaviour
             if (Vector3.Distance(transform.position, target.position) < minFollowDistance && CanSeePlayer())
                 curPath.Reset();
 
-            currentDestination = curPath.Path[0] + Vector3.ClampMagnitude(rigidbody.position - curPath.Path[0], pathPointRadius);
+            currentDestination = curPath.Path[0] + Vector3.ClampMagnitude(cachedRigidbody.position - curPath.Path[0], pathPointRadius);
 
-            rigidbody.velocity += acceleration * Time.deltaTime * Vector3.ClampMagnitude(currentDestination - transform.position, 1);
+            cachedRigidbody.velocity += acceleration * Time.deltaTime * Vector3.ClampMagnitude(currentDestination - transform.position, 1);
             float sqrMinReachDistance = minReachDistance * minReachDistance;
 
-            Vector3 predictedPosition = rigidbody.position + rigidbody.velocity * Time.deltaTime;
+            Vector3 predictedPosition = cachedRigidbody.position + cachedRigidbody.velocity * Time.deltaTime;
             float shortestPathDistance = Vector3.SqrMagnitude(predictedPosition - currentDestination);
             int shortestPathPoint = 0;
 
@@ -91,7 +114,7 @@ public class RobotMovementController : MonoBehaviour
             float sqrPredictedDistance;
             for (int i = 0; i < curPath.Path.Count; i++)
             {
-                sqrDistance = Vector3.SqrMagnitude(rigidbody.position - curPath.Path[i]);
+                sqrDistance = Vector3.SqrMagnitude(cachedRigidbody.position - curPath.Path[i]);
                 if (sqrDistance <= sqrMinReachDistance)
                 {
                     if (i < curPath.Path.Count) curPath.Path.RemoveRange(0, i + 1);
@@ -110,15 +133,15 @@ public class RobotMovementController : MonoBehaviour
 
             if (shortestPathPoint > 0) curPath.Path.RemoveRange(0, shortestPathPoint);
         }
-        else rigidbody.velocity -= acceleration * Time.deltaTime * rigidbody.velocity;
+        else cachedRigidbody.velocity -= acceleration * Time.deltaTime * cachedRigidbody.velocity;
     }
 
     private void OnDrawGizmosSelected()
     {
-        if (rigidbody != null)
+        if (cachedRigidbody != null)
         {
             Gizmos.color = Color.blue;
-            Vector3 predictedPosition = rigidbody.position + rigidbody.velocity * Time.deltaTime;
+            Vector3 predictedPosition = cachedRigidbody.position + cachedRigidbody.velocity * Time.deltaTime;
             Gizmos.DrawWireSphere(predictedPosition, sphereCollider.radius);
         }
 
@@ -130,7 +153,7 @@ public class RobotMovementController : MonoBehaviour
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawWireSphere(path.Path[i], minReachDistance);
                 Gizmos.color = Color.red;
-                Gizmos.DrawRay(path.Path[i], Vector3.ClampMagnitude(rigidbody.position - path.Path[i], pathPointRadius));
+                Gizmos.DrawRay(path.Path[i], Vector3.ClampMagnitude(cachedRigidbody.position - path.Path[i], pathPointRadius));
                 Gizmos.DrawWireSphere(path.Path[i], pathPointRadius);
                 Gizmos.DrawLine(path.path[i], path.Path[i + 1]);
             }

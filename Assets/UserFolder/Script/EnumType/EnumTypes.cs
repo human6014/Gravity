@@ -1,7 +1,7 @@
 
 namespace EnumType
 {
-    public enum GravitiesType
+    public enum GravityType
     {
         xUp = 0,
         xDown = 1,
