@@ -14,9 +14,7 @@ namespace Contoller.Floor
         {
             AIManager.FloorDetector = this;
         }
-        public GameObject GetNowFloor()
-        {
-            return floorObject[(int)GravityManager.currentGravityType];
-        }
+        public GameObject GetNowFloor() => floorObject[(int)GravityManager.currentGravityType];
+        
     }
 }
