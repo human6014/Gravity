@@ -17,7 +17,7 @@ namespace Manager
         public static float GravityDirectionValue { get; private set; } = -1;
 
         /// <summary>
-        /// 중력 값 변경시 true, 플레이어 회전 끝나면 false
+        /// 중력 값 변경시 플레이어 회전 중일 때 true, 플레이어 회전 끝나면 false
         /// </summary>
         public static bool IsGravityChanging { get; private set; } = false;
 
@@ -30,7 +30,7 @@ namespace Manager
         /// 중력 백터 일반화
         /// </summary>
         public static Vector3 GravityVector { get; private set; } = Vector3.down;
-        
+
         /// <summary>
         /// 중력 변경, 중력이 향하는 방향이 아니라 반대임
         /// </summary>
@@ -58,13 +58,23 @@ namespace Manager
             else
             {
                 Physics.gravity = GravityVector * Physics.gravity.magnitude;
-                
+
                 IsGravityChanging = true;
                 IsGravityDupleicated = false;
             }
         }
 
         public static void CompleteGravityChanging() => IsGravityChanging = false;
+
+        private static readonly Vector3Int[] gravityRotation = 
+            {
+            new Vector3Int(0, 0, -90)   , new Vector3Int(0, 0, 90),
+            new Vector3Int(0, 0, 0)     , new Vector3Int(180, 0, 0),
+            new Vector3Int(90, 0, 0)   , new Vector3Int(-90, 0, 0),
+        };
+
+        public static Vector3Int GetGravityNoramlDirection() => gravityRotation[(int)currentGravityType];
         
+        public static Quaternion GetGravityNormalRotation() => Quaternion.Euler(gravityRotation[(int)currentGravityType]);
     }
 }

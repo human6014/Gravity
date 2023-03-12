@@ -72,13 +72,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
 
         [Space(15)]
+        [SerializeField] private Transform m_MouseLookTransform;
         [Tooltip("")]
-        [SerializeField] private GravityRotation m_GravityRotation;
+        
         #endregion
 
         private Camera m_Camera;
         private CharacterController m_CharacterController;
         private AudioSource m_AudioSource;
+        private GravityRotation m_GravityRotation;
         private CollisionFlags m_CollisionFlags;
         private Vector3 m_MoveDir = Vector3.zero;
         private Vector3 m_OriginalCameraPosition;
@@ -92,16 +94,26 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_PreviouslyGrounded;  //
         private bool m_Jumping;             //점프하고 있는지
         private bool m_Jump;                //점프키 입력 감지
+        private bool m_isGround;
 
+        private int gravityKeyInput = 1;
+
+        private readonly KeyCode[] gravityChangeInput =
+        {
+            KeyCode.Z,
+            KeyCode.X,
+            KeyCode.C
+        };
         private void Awake()
         {
             m_CharacterController = GetComponent<CharacterController>();
-            m_Camera = GetComponentInChildren<Camera>();
+            m_Camera = m_MouseLookTransform.GetComponentInChildren<Camera>();
             m_AudioSource = GetComponent<AudioSource>();
+            m_GravityRotation = GetComponent<GravityRotation>();
 
             m_FovKick.Setup(m_Camera);
             m_HeadBob.Setup(m_Camera, m_StepInterval);
-            m_MouseLook.Setup(transform, m_Camera.transform);
+            m_MouseLook.Setup(m_MouseLookTransform, m_Camera.transform);
 
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
             m_StepCycle = 0f;
@@ -114,21 +126,122 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             RotateView();
             // the jump state needs to read here to make sure it is not missed
+            float mouseScroll = Input.GetAxis("Mouse ScrollWheel");
+
+            for (int i = 0; i < gravityChangeInput.Length; i++)
+            {
+                if (Input.GetKeyDown(gravityChangeInput[i]))
+                {
+                    gravityKeyInput = i;
+                    break;
+                }
+            }
+            if (mouseScroll != 0 && !GravityManager.IsGravityChanging) m_GravityRotation.GravityChange(gravityKeyInput, mouseScroll);
 
             if (!m_Jump) m_Jump = Input.GetButtonDown("Jump");
-            if (!m_PreviouslyGrounded && m_CharacterController.isGrounded)
+            if (!m_PreviouslyGrounded && m_isGround)
             {
                 StartCoroutine(m_JumpBob.DoBobCycle());
                 PlayLandingSound();
-                m_MoveDir.y = 0f;
+                CustomGravityChange(false,0);
+                //m_MoveDir.y = 0f;
                 m_Jumping = false;
             }
-            if (!m_CharacterController.isGrounded && !m_Jumping && m_PreviouslyGrounded)
-                m_MoveDir.y = 0f;
+            if (!m_isGround && !m_Jumping && m_PreviouslyGrounded)
+            {
+                CustomGravityChange(false,0);
+                //m_MoveDir.y = 0f;
+            }
 
-            m_PreviouslyGrounded = m_CharacterController.isGrounded;
-
+            m_PreviouslyGrounded = m_isGround;
         }
+        private Vector3 desiredMove;
+        private void FixedUpdate()
+        {
+            GetInput(out float speed);
+            // always move along the camera forward as it is the direction that it being aimed at
+            desiredMove = m_MouseLookTransform.forward * m_Input.y + m_MouseLookTransform.right * m_Input.x;
+
+            // get a normal for the surface that is being touched to move along it
+            if (Physics.SphereCast(transform.position, m_CharacterController.radius, -transform.up, out RaycastHit hitInfo,
+                               m_CharacterController.height / 2f, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+            {
+                m_isGround = true;
+            }
+            else m_isGround = false;
+            desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
+
+            CustomGravityChange(true, speed);
+            //m_MoveDir.x = desiredMove.x * speed;
+            //m_MoveDir.z = desiredMove.z * speed;
+
+            if (GravityManager.IsGravityChanging)
+            {
+                //m_MoveDir = Physics.gravity.magnitude * Time.fixedDeltaTime * GravityManager.GravityVector;
+            }
+            if (m_isGround)
+            {
+                if (m_Jump)
+                {
+                    CustomGravityChange(false, m_JumpSpeed);
+                    //m_MoveDir.y = m_JumpSpeed;
+                    PlayJumpSound();
+                    m_Jump = false;
+                    m_Jumping = true;
+                }
+                else
+                {
+                    CustomGravityChange(false, -m_StickToGroundForce);
+                    //m_MoveDir.y = -m_StickToGroundForce;
+                }
+            }
+            else m_MoveDir += Time.fixedDeltaTime * Physics.gravity;
+            
+            m_CollisionFlags = m_CharacterController.Move(m_MoveDir * Time.fixedDeltaTime);
+            Debug.Log(m_CollisionFlags);
+
+            ProgressStepCycle(speed);
+            UpdateCameraPosition(speed);
+
+            m_MouseLook.UpdateCursorLock();
+        }
+
+        private void CustomGravityChange(bool isDuple, float value)
+        {
+            switch (GravityManager.currentGravityType)
+            {
+                case EnumType.GravityType.xUp:
+                case EnumType.GravityType.xDown:
+                    if(!isDuple) m_MoveDir.x = value;
+                    else
+                    {
+                        m_MoveDir.y = desiredMove.y * value;
+                        m_MoveDir.z = desiredMove.z * value;
+                    }
+                    break;
+
+                case EnumType.GravityType.yUp:
+                case EnumType.GravityType.yDown:
+                    if (!isDuple) m_MoveDir.y = value;
+                    else
+                    {
+                        m_MoveDir.x = desiredMove.x * value;
+                        m_MoveDir.z = desiredMove.z * value;
+                    }
+                    break;
+
+                case EnumType.GravityType.zUp:
+                case EnumType.GravityType.zDown:
+                    if (!isDuple) m_MoveDir.z = value;
+                    else
+                    {
+                        m_MoveDir.x = desiredMove.x * value;
+                        m_MoveDir.y = desiredMove.y * value;
+                    }
+                    break;
+            }
+        }
+
 
 
         private void PlayLandingSound()
@@ -137,43 +250,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_AudioSource.Play();
             m_NextStep = m_StepCycle + 0.5f;
         }
-
-
-        private void FixedUpdate()
-        {
-            GetInput(out float speed);
-            // always move along the camera forward as it is the direction that it being aimed at
-            Vector3 desiredMove = transform.forward * m_Input.y + transform.right * m_Input.x;
-
-            // get a normal for the surface that is being touched to move along it
-            Physics.SphereCast(transform.position, m_CharacterController.radius, Vector3.down, out RaycastHit hitInfo,
-                               m_CharacterController.height / 2f, Physics.AllLayers, QueryTriggerInteraction.Ignore);
-            desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
-
-            m_MoveDir.x = desiredMove.x * speed;
-            m_MoveDir.z = desiredMove.z * speed;
-
-            if (m_CharacterController.isGrounded)
-            {
-                if (m_Jump)
-                {
-                    m_MoveDir.y = m_JumpSpeed;
-                    PlayJumpSound();
-                    m_Jump = false;
-                    m_Jumping = true;
-                }
-                else m_MoveDir.y = -m_StickToGroundForce;
-            }
-            else m_MoveDir += m_GravityMultiplier * Time.fixedDeltaTime  * Physics.gravity;
-            
-            m_CollisionFlags = m_CharacterController.Move(m_MoveDir * Time.fixedDeltaTime);
-
-            ProgressStepCycle(speed);
-            UpdateCameraPosition(speed);
-
-            m_MouseLook.UpdateCursorLock();
-        }
-
 
         private void PlayJumpSound()
         {
@@ -197,7 +273,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void PlayFootStepAudio()
         {
-            if (!m_CharacterController.isGrounded) return;
+            if (!m_isGround) return;
             // pick & play a random footstep sound from the array,
             // excluding sound at index 0
 
@@ -216,7 +292,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             Vector3 newCameraPosition;
             if (!m_UseHeadBob) return;
-            if (m_CharacterController.velocity.magnitude > 0 && m_CharacterController.isGrounded)
+            if (m_CharacterController.velocity.magnitude > 0 && m_isGround)
             {
                 m_Camera.transform.localPosition = m_HeadBob.DoHeadBob(m_CharacterController.velocity.magnitude +
                                       (speed * (m_IsWalking ? m_WalkStepLenghten : m_RunStepLenghten)));
@@ -261,18 +337,19 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void RotateView()
         {
-            m_MouseLook.LookRotation(transform, m_Camera.transform);
+            m_MouseLook.LookRotation(m_MouseLookTransform, m_Camera.transform);
         }
 
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
+            if (m_CollisionFlags == CollisionFlags.Below) return;
+
             Rigidbody body = hit.collider.attachedRigidbody;
             //dont move the rigidbody if the character is on top of it
-            if (m_CollisionFlags == CollisionFlags.Below) return;
-            
+
             if (body == null || body.isKinematic) return;
-            
+
             body.AddForceAtPosition(m_CharacterController.velocity * 0.1f, hit.point, ForceMode.Impulse);
         }
     }

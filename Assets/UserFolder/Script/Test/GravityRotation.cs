@@ -6,35 +6,24 @@ using EnumType;
 
 public class GravityRotation : MonoBehaviour
 {
-    public bool IsChanging { get; private set; } = false;
-    private int currentGravityKeyInput = 1;
-    private readonly KeyCode[] gravityChangeInput =
-    {
-            KeyCode.Z,
-            KeyCode.X,
-            KeyCode.C
-    };
+    private const float ROTATETIME = 1;
 
-    private void Update()
+    public void GravityChange(int gravityKeyInput, float mouseScroll)
     {
-        float wheelInput = Input.GetAxis("Mouse ScrollWheel");
-        for (int i = 0; i < gravityChangeInput.Length; i++)
+        GravityManager.gravityDirection = (GravityDirection)gravityKeyInput;
+        GravityManager.GravityChange(Mathf.FloorToInt(mouseScroll * 10));
+        StartCoroutine(GravityRotate());
+    }
+    private IEnumerator GravityRotate()
+    {
+        Quaternion currentRotation = transform.rotation;
+        float t = 0;
+        while (t < 1)
         {
-            if (Input.GetKeyDown(gravityChangeInput[i]))
-            {
-                currentGravityKeyInput = i;
-            }
+            t += Time.deltaTime / ROTATETIME;
+            transform.rotation = Quaternion.Lerp(currentRotation, GravityManager.GetGravityNormalRotation(), t);
+            yield return null;
         }
-
-        if (wheelInput != 0 && !GravityManager.IsGravityChanging)
-        {
-            IsChanging = true;
-            GravityManager.gravityDirection = (GravityDirection)currentGravityKeyInput;
-            GravityManager.GravityChange(Mathf.FloorToInt(wheelInput * 10));
-            transform.Rotate(new Vector3(180,0,0));
-        }
-        Debug.Log(GravityManager.currentGravityType);
         GravityManager.CompleteGravityChanging();
     }
-
 }
