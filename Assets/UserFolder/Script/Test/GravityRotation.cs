@@ -14,6 +14,7 @@ public class GravityRotation : MonoBehaviour
         GravityManager.GravityChange(Mathf.FloorToInt(mouseScroll * 10));
         StartCoroutine(GravityRotate());
     }
+
     private IEnumerator GravityRotate()
     {
         Quaternion currentRotation = transform.rotation;

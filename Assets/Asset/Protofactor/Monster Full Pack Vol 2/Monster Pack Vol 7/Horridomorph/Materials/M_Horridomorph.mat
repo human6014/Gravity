@@ -86,7 +86,7 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _Blend: 0
-    - _BumpScale: 1.5
+    - _BumpScale: 2
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -115,7 +115,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 1.6085695, g: 0.12898909, b: 0.12898909, a: 1}
+    - _EmissionColor: {r: 1.583304, g: 0.12898909, b: 0.12898909, a: 1}
     - _SpecColor: {r: 0.5660378, g: 0.34442863, b: 0.34442863, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &2678164574175634088

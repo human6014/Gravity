@@ -74,7 +74,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [Space(15)]
         [SerializeField] private Transform m_MouseLookTransform;
         [Tooltip("")]
-        
+        [SerializeField] private CapsuleCollider m_CapsuleCollider;
         #endregion
 
         private Camera m_Camera;
@@ -89,7 +89,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_YRotation;
         private float m_StepCycle;
         private float m_NextStep;
-        private readonly float m_InterporationDist = 0.1f;
+        private readonly float m_InterporationDist = -0.1f;
 
         private bool m_IsWalking;           //°È°í ÀÖ´ÂÁö
         private bool m_PreviouslyGrounded;  //
@@ -157,21 +157,32 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_PreviouslyGrounded = m_isGround;
         }
         private Vector3 desiredMove;
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            float maxDistansce = m_CapsuleCollider.height * 0.5f - m_CapsuleCollider.radius + 0.1f;
+            Gizmos.DrawSphere(transform.position -transform.up * (m_CapsuleCollider.height * 0.5f - m_CapsuleCollider.radius) , m_CapsuleCollider.radius + m_InterporationDist);
+        }
         private void FixedUpdate()
         {
-            
             GetInput(out float speed);
             // always move along the camera forward as it is the direction that it being aimed at
             desiredMove = m_MouseLookTransform.forward * m_Input.y + m_MouseLookTransform.right * m_Input.x;
 
-            // get a normal for the surface that is being touched to move along it
-            if (Physics.SphereCast(transform.position, m_CharacterController.radius, -transform.up, out RaycastHit hitInfo,
-                               m_CharacterController.height * 0.5f - m_CharacterController.radius + m_InterporationDist,
-                               Physics.AllLayers, QueryTriggerInteraction.Ignore))
-            {
+            float maxDistansce = m_CapsuleCollider.height * 0.5f - m_CapsuleCollider.radius - 0.1f;
+            float radius = m_CapsuleCollider.radius + m_InterporationDist + 0.1f;
+            if (Physics.SphereCast(transform.position, radius, -transform.up, out RaycastHit hitInfo, maxDistansce, Physics.AllLayers, QueryTriggerInteraction.Ignore))
                 m_isGround = true;
-            }
             else m_isGround = false;
+
+            // get a normal for the surface that is being touched to move along it
+            /*
+            float maxDistansce = m_CapsuleCollider.height * 0.5f - m_CapsuleCollider.radius;
+            if (Physics.SphereCast(transform.position, m_CapsuleCollider.radius + m_InterporationDist, -transform.up, out RaycastHit hitInfo, maxDistansce, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+                m_isGround = true;
+            else m_isGround = false;
+            */
+
             desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
 
             CustomGravityChange(true, speed);
@@ -182,28 +193,16 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 if (m_Jump)
                 {
-                    Debug.Log("Jump");
-
                     CustomGravityChange(false, m_JumpSpeed * -GravityManager.GravityDirectionValue);
-                    //m_MoveDir.y = m_JumpSpeed;
                     PlayJumpSound();
 
                     m_Jump = false;
                     m_Jumping = true;
                 }
-                else
-                {
-                    Debug.Log("Ground && !Jump");
-                    CustomGravityChange(false, m_StickToGroundForce * GravityManager.GravityDirectionValue);
-
-                    //m_MoveDir.y = -m_StickToGroundForce;
-                }
+                else CustomGravityChange(false, m_StickToGroundForce * GravityManager.GravityDirectionValue);
             }
-            else
-            {
-                Debug.Log("Not Ground");
-                m_MoveDir += Time.fixedDeltaTime * Physics.gravity;
-            }
+            else m_MoveDir += Time.fixedDeltaTime * Physics.gravity;
+            
             
             m_CharacterController.Move(m_MoveDir * Time.fixedDeltaTime);
 
