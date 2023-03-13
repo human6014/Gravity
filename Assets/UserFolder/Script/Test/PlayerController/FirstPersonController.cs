@@ -89,6 +89,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_YRotation;
         private float m_StepCycle;
         private float m_NextStep;
+        private readonly float m_InterporationDist = 0.1f;
 
         private bool m_IsWalking;           //°È°í ÀÖ´ÂÁö
         private bool m_PreviouslyGrounded;  //
@@ -158,13 +159,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private Vector3 desiredMove;
         private void FixedUpdate()
         {
+            
             GetInput(out float speed);
             // always move along the camera forward as it is the direction that it being aimed at
             desiredMove = m_MouseLookTransform.forward * m_Input.y + m_MouseLookTransform.right * m_Input.x;
 
             // get a normal for the surface that is being touched to move along it
             if (Physics.SphereCast(transform.position, m_CharacterController.radius, -transform.up, out RaycastHit hitInfo,
-                               m_CharacterController.height / 2f, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+                               m_CharacterController.height * 0.5f - m_CharacterController.radius + m_InterporationDist,
+                               Physics.AllLayers, QueryTriggerInteraction.Ignore))
             {
                 m_isGround = true;
             }
@@ -175,30 +178,34 @@ namespace UnityStandardAssets.Characters.FirstPerson
             //m_MoveDir.x = desiredMove.x * speed;
             //m_MoveDir.z = desiredMove.z * speed;
 
-            if (GravityManager.IsGravityChanging)
-            {
-                //m_MoveDir = Physics.gravity.magnitude * Time.fixedDeltaTime * GravityManager.GravityVector;
-            }
             if (m_isGround)
             {
                 if (m_Jump)
                 {
-                    CustomGravityChange(false, m_JumpSpeed);
+                    Debug.Log("Jump");
+
+                    CustomGravityChange(false, m_JumpSpeed * -GravityManager.GravityDirectionValue);
                     //m_MoveDir.y = m_JumpSpeed;
                     PlayJumpSound();
+
                     m_Jump = false;
                     m_Jumping = true;
                 }
                 else
                 {
-                    CustomGravityChange(false, -m_StickToGroundForce);
+                    Debug.Log("Ground && !Jump");
+                    CustomGravityChange(false, m_StickToGroundForce * GravityManager.GravityDirectionValue);
+
                     //m_MoveDir.y = -m_StickToGroundForce;
                 }
             }
-            else m_MoveDir += Time.fixedDeltaTime * Physics.gravity;
+            else
+            {
+                Debug.Log("Not Ground");
+                m_MoveDir += Time.fixedDeltaTime * Physics.gravity;
+            }
             
-            m_CollisionFlags = m_CharacterController.Move(m_MoveDir * Time.fixedDeltaTime);
-            Debug.Log(m_CollisionFlags);
+            m_CharacterController.Move(m_MoveDir * Time.fixedDeltaTime);
 
             ProgressStepCycle(speed);
             UpdateCameraPosition(speed);
@@ -338,19 +345,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void RotateView()
         {
             m_MouseLook.LookRotation(m_MouseLookTransform, m_Camera.transform);
-        }
-
-
-        private void OnControllerColliderHit(ControllerColliderHit hit)
-        {
-            if (m_CollisionFlags == CollisionFlags.Below) return;
-
-            Rigidbody body = hit.collider.attachedRigidbody;
-            //dont move the rigidbody if the character is on top of it
-
-            if (body == null || body.isKinematic) return;
-
-            body.AddForceAtPosition(m_CharacterController.velocity * 0.1f, hit.point, ForceMode.Impulse);
         }
     }
 }
