@@ -47,13 +47,12 @@ namespace Entity.Unit.Normal
         {
             throw new System.NotImplementedException();
         }
-
-        public void Die()
+        public void Hit(int damage)
         {
             throw new System.NotImplementedException();
         }
 
-        public void Hit(int damage)
+        public void Die()
         {
             throw new System.NotImplementedException();
         }
