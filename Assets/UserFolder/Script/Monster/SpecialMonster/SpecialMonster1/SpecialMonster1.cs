@@ -13,12 +13,11 @@ public class SpecialMonster1 : MonoBehaviour
     //[SerializeField] float height = 10;
 
     [Header("Code")]
-    [SerializeField] private Transform target;
     [SerializeField] private Transform navObject;
     [SerializeField] private LegController legController;
 
 
-
+    private Transform target;
     private Transform cachedTransform;
     private SpecialMonsterAI specialMonsterAI;
 
@@ -39,7 +38,7 @@ public class SpecialMonster1 : MonoBehaviour
 
     public void Init()
     {
-
+        target = Manager.AI.AIManager.PlayerTransfrom;
     }
 
     private void FixedUpdate()

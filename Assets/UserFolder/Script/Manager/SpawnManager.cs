@@ -20,11 +20,23 @@ namespace Manager
         [SerializeField] private Transform activeUnitPool;
 
         [Tooltip("미리 생성할 유닛 수 urban -> oldman -> women -> big -> giant")]
-        [Range(0, 100)][SerializeField] private int[] poolingCount;
+        [Range(0, 100)][SerializeField] private int[] normalMonsterPoolingCount;
+
+        [Tooltip("미리 생성할 FlyingMonstr 수")]
+        [Range(0, 100)] [SerializeField] private int[] flyingMonsterPoolingCount;
 
         [Header("Spawn info")]
-        [Tooltip("최대로 생성될 유닛의 총 개수")]
-        [Range(0, 100)][SerializeField] private int maxUnitCount = 30;
+        [Tooltip("최대로 생성될 일반 몬스터 총 개수")]
+        [Range(0, 100)][SerializeField] private int maxNormalMonsterCount = 30;
+
+        [Tooltip("일반 몬스터 소환 주기")]
+        [SerializeField] private float normalMonsterSpawnTime = 3;
+
+        [Tooltip("최대로 생성될 공중 몬스터 총 개수")]
+        [Range(0, 50)] [SerializeField] private int maxFlyingMonsterCount = 10;
+
+        [Tooltip("공중 몬스터 소환 주기")]
+        [SerializeField] private float flyingMonsterSpawnTime = 5;
         #endregion
 
         #region Object Value
@@ -40,17 +52,26 @@ namespace Manager
         private UnitManager unitManager;
         private Customization customization;
 
-        private ObjectPoolManager.PoolingObject[] poolingObjectArray;
+        private ObjectPoolManager.PoolingObject[] normalMonsterPoolingObjectArray;
+        private ObjectPoolManager.PoolingObject[] flyingMonsterPoolingObjectArray;
         #endregion
 
         #region Normal Value
         private readonly float[] probs = new float[] { 45, 20, 20, 10, 5 };
         private float total = 0;
 
-        private float timer;
-        private int randomUnitIndex;
-        private int currentUnitCount;
+        private float normalMonsterTimer;
+        private float flyingMonsterTimer;
+
+        private int randomNormalMonsterIndex;
+        private int currentNormalMonsterCount;
+
+        private int randomFlyingMonsterIndex;
+        private int currentFlyingMonsterCount;
         #endregion
+
+        //temp
+        [SerializeField] Octree octree;
         private void Awake()
         {
             unitManager = GetComponent<UnitManager>();
@@ -64,24 +85,33 @@ namespace Manager
 
             spawnAreaZDown  = spawnAreaTransform[4].GetComponentsInChildren<BoxCollider>();
             spawnAreaZUp    = spawnAreaTransform[5].GetComponentsInChildren<BoxCollider>();
+
+            foreach (float elem in probs) total += elem;
         }
 
         private void Start()
         {
-            foreach (float elem in probs) total += elem;
-
-            int unitLength = unitManager.GetNormalMonsterArrayLength();
-            if (unitLength != poolingCount.Length)
-                Debug.LogWarning("Polling Count is different from the number of PoolingObject's length");
+            int normalMonsterArrayLength = unitManager.GetNormalMonsterArrayLength();
+            int flyingMonsterArrayLength = unitManager.GetFlyingMonsterArrayLength();
+            if (normalMonsterArrayLength != normalMonsterPoolingCount.Length)
+                Debug.LogError("Normal monster pooling Count is different from the number of PoolingObject's length");
+            if (flyingMonsterArrayLength != flyingMonsterPoolingCount.Length)
+                Debug.LogError("Flying monster pooling Count is different from the number of PoolingObject's length");
 
             //인덱스 순서
             //urban -> oldman -> women -> big -> giant
             
-            poolingObjectArray = new ObjectPoolManager.PoolingObject[unitLength];
-            for (int i = 0; i < unitLength; i++)
+            normalMonsterPoolingObjectArray = new ObjectPoolManager.PoolingObject[normalMonsterArrayLength];
+            flyingMonsterPoolingObjectArray = new ObjectPoolManager.PoolingObject[flyingMonsterArrayLength];
+            for (int i = 0; i < normalMonsterArrayLength; i++)
             {
-                poolingObjectArray[i] = ObjectPoolManager.Register(unitManager.GetNormalMonster(i), activeUnitPool);
-                poolingObjectArray[i].GenerateObj(poolingCount[i]);
+                normalMonsterPoolingObjectArray[i] = ObjectPoolManager.Register(unitManager.GetNormalMonster(i), activeUnitPool);
+                normalMonsterPoolingObjectArray[i].GenerateObj(normalMonsterPoolingCount[i]);
+            }
+            for(int i = 0; i < flyingMonsterArrayLength; i++)
+            {
+                flyingMonsterPoolingObjectArray[i] = ObjectPoolManager.Register(unitManager.GetFlyingMonster(i), activeUnitPool);
+                flyingMonsterPoolingObjectArray[i].GenerateObj(flyingMonsterPoolingCount[i]);
             }
         }
 
@@ -148,22 +178,33 @@ namespace Manager
             return probs.Length - 1;
         }
 
-        
         private void Update()
         {
             if (!isActiveSpawn) return;
 
-            timer += Time.deltaTime;
-            if (timer >= 3 && currentUnitCount <= maxUnitCount)
+            normalMonsterTimer += Time.deltaTime;
+            flyingMonsterTimer += Time.deltaTime;
+            if (normalMonsterTimer >= normalMonsterSpawnTime && currentNormalMonsterCount <= maxNormalMonsterCount)
             {
-                timer = 0;
-                randomUnitIndex = RandomUnitIndex();
-                currentUnitCount++;
+                normalMonsterTimer = 0;
+                randomNormalMonsterIndex = RandomUnitIndex();
+                currentNormalMonsterCount++;
 
-                NormalMonster currentUnit = (NormalMonster)poolingObjectArray[randomUnitIndex].GetObject(false);
-                customization.Customize(currentUnit);
-                currentUnit.Init(GetRandomPos(), poolingObjectArray[randomUnitIndex]);
-                currentUnit.gameObject.SetActive(true);
+                NormalMonster currentNormalMonster = (NormalMonster)normalMonsterPoolingObjectArray[randomNormalMonsterIndex].GetObject(false);
+                customization.Customize(currentNormalMonster);
+                currentNormalMonster.Init(GetRandomPos(), normalMonsterPoolingObjectArray[randomNormalMonsterIndex]);
+                currentNormalMonster.gameObject.SetActive(true);
+            }
+
+            if(flyingMonsterTimer >= flyingMonsterSpawnTime && currentFlyingMonsterCount <= maxFlyingMonsterCount)
+            {
+                flyingMonsterTimer = 0;
+                //index 할당 아직 필요 x
+                currentFlyingMonsterCount++;
+
+                FlyingMonster currentFlyingMonster = (FlyingMonster)flyingMonsterPoolingObjectArray[0].GetObject(false);
+                currentFlyingMonster.Init(octree.GetRandomSpawnableArea(), flyingMonsterPoolingObjectArray[0]);
+                currentFlyingMonster.gameObject.SetActive(true);
             }
         }
     }

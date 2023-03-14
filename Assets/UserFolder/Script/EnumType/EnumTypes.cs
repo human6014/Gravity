@@ -24,6 +24,12 @@ namespace EnumType
         GiantZombie = 4
     }
 
+    public enum FlyingMonsterType
+    {
+        RangedFlyingMonster = 0,
+        MeleeFlyingMonster = 1
+    }
+
     public enum Boss1
     {
         normalAttack = 0,   //가까이서 평타

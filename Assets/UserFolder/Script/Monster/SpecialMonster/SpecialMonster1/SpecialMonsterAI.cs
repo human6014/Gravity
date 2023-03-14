@@ -123,60 +123,6 @@ public class SpecialMonsterAI : MonoBehaviour
         }
         //점프 등 패턴따라 사용될 수도 있음
     }
-    private void FixedUpdate()
-    {
-        /*
-        if (!legController.GetIsNavOn())
-        {
-            animationController.SetIdle();
-            return;
-        }
-
-        if (!navMeshAgent.isActiveAndEnabled) //점프 끝날 때 작동
-        {
-            //navMeshAgent.Warp(aiController.GetPosition());
-            cachedTransform.rotation = specialMonster1.GetRotation();
-        }
-        else
-        {
-            if (navMeshAgent.pathPending == true) return;
-
-            SetDestination();
-
-            if (navMeshAgent.isOnOffMeshLink)
-            {
-                NavMeshLink link = (NavMeshLink)navMeshAgent.navMeshOwner;
-                Debug.Log(link.name);
-                navMeshAgent.updateUpAxis = false;
-                //여기서 NavMeshLink 감지 가능
-            }
-            else
-            {
-                navMeshAgent.updateUpAxis = true;
-            }
-
-            Vector3 targetDirection = (navMeshAgent.steeringTarget - cachedTransform.position).normalized;
-            //targetForward = IsOnMeshLink == true ? ProceduralForwardAngle : targetDirection;
-            Vector3 targetForward = ProceduralForwardAngle + targetDirection;
-
-            Quaternion navRotation = Quaternion.LookRotation(targetForward, ProceduralUpAngle);
-            cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, navRotation, rotAdjustRatio);
-
-            if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
-            {
-                navMeshAgent.nextPosition = transform.position;
-                animationController.SetIdle();
-            }
-            else
-            {
-                animationController.SetWalk();
-                navMeshAgent.nextPosition = ProceduralPosition + Time.deltaTime * currentSpeed * targetDirection;
-                cachedTransform.position = navMeshAgent.nextPosition;
-            }
-        }
-        //점프 등 패턴따라 사용될 수도 있음
-        */
-    }
 
     private void SetDestination()
     {
