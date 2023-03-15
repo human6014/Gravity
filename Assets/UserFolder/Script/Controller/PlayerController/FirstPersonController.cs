@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
-using UnityStandardAssets.Utility;
 using Random = UnityEngine.Random;
 using Manager;
 using Manager.AI;
-namespace UnityStandardAssets.Characters.FirstPerson
+using Contoller.Player.Utility;
+
+namespace Contoller.Player
 {
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(AudioSource))]
@@ -72,9 +73,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
 
         [Space(15)]
+        [Tooltip("")]
         [SerializeField] private Transform m_MouseLookTransform;
+
         [Tooltip("")]
         [SerializeField] private CapsuleCollider m_CapsuleCollider;
+
         [Tooltip("")]
         [SerializeField] private LayerMask reversePosLayer;
         #endregion
@@ -87,16 +91,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private Vector3 m_OriginalCameraPosition;
         private Vector2 m_Input;
 
-        private float m_YRotation;
         private float m_StepCycle;
         private float m_NextStep;
         private readonly float m_InterporationDist = -0.1f;
 
         private bool m_IsWalking;           //걷고 있는지
-        private bool m_PreviouslyGrounded;  //
+        private bool m_PreviouslyGrounded;  //이전 프레임에서 지상이었는지
         private bool m_Jumping;             //점프하고 있는지
         private bool m_Jump;                //점프키 입력 감지
-        private bool m_IsGround;
+        private bool m_IsGround;            //현재 프레임에서 지상인지
 
         private int m_GravityKeyInput = 1;
 
@@ -160,7 +163,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_PreviouslyGrounded = m_IsGround;
         }
 
-        private Vector3 desiredMove;
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
@@ -168,6 +170,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             Gizmos.DrawSphere(transform.position -transform.up * (m_CapsuleCollider.height * 0.5f - m_CapsuleCollider.radius) , m_CapsuleCollider.radius + m_InterporationDist);
         }
 
+        private Vector3 desiredMove;
         private void FixedUpdate()
         {
             GetInput(out float speed);
@@ -266,19 +269,17 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_AudioSource.Play();
         }
 
-
         private void ProgressStepCycle(float speed)
         {
             if (m_CharacterController.velocity.sqrMagnitude > 0 && (m_Input.x != 0 || m_Input.y != 0))
                 m_StepCycle += (m_CharacterController.velocity.magnitude + (speed * (m_IsWalking ? m_WalkStepLenghten : m_RunStepLenghten))) * Time.fixedDeltaTime;
             
-            if (!(m_StepCycle > m_NextStep)) return;
+            if (m_StepCycle <= m_NextStep) return;
             
             m_NextStep = m_StepCycle + m_StepInterval;
 
             PlayFootStepAudio();
         }
-
 
         private void PlayFootStepAudio()
         {
@@ -295,7 +296,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_FootstepSounds[n] = m_FootstepSounds[0];
             m_FootstepSounds[0] = m_AudioSource.clip;
         }
-
 
         private void UpdateCameraPosition(float speed)
         {
@@ -315,7 +315,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
             m_Camera.transform.localPosition = newCameraPosition;
         }
-
 
         private void GetInput(out float speed)
         {
@@ -342,7 +341,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 StartCoroutine(!m_IsWalking ? m_FovKick.FOVKickUp() : m_FovKick.FOVKickDown());
             }
         }
-
 
         private void RotateView()
         {

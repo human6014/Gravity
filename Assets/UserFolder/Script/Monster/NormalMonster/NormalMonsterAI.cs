@@ -172,7 +172,15 @@ public class NormalMonsterAI : MonoBehaviour
             else
                 autoTargetRot = Quaternion.LookRotation(autoTargetDir, -GravityManager.GravityVector);
         }
-        cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, autoTargetRot, 0.2f);
+        //cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, autoTargetRot, 0.2f);
+        //ㄴ 이동중에 뒤집힐듯 말듯 하는 현상 원인
+        cachedTransform.rotation = autoTargetRot;
+    }
+
+    public void Dispose()
+    {
+        IsBatch = false;
+        navMeshAgent.enabled = false;
     }
     /*
     private Coroutine navDetect = null;
@@ -222,11 +230,11 @@ public class NormalMonsterAI : MonoBehaviour
     }
     */
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
-        //Gizmos.color = Color.red;
-        //Gizmos.DrawSphere(transform.position, castRadius);
-        //Gizmos.DrawSphere(transform.position + transform.up * castHeight, castRadius);
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(transform.position, castRadius);
+        Gizmos.DrawSphere(transform.position + transform.up * castHeight, castRadius);
 
         if (!IsBatch) return;
     }

@@ -2,23 +2,20 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace UnityStandardAssets.Utility
+namespace Contoller.Player.Utility
 {
     [Serializable]
     public class LerpControlledBob
     {
-        private WaitForFixedUpdate waitForFixed = new WaitForFixedUpdate();
+        private readonly WaitForFixedUpdate waitForFixed = new();
         public float BobDuration;
         public float BobAmount;
 
         private float m_Offset = 0f;
 
-
         // provides the offset that can be used
         public float Offset() => m_Offset;
         
-
-
         public IEnumerator DoBobCycle()
         {
             // make the camera move down slightly

@@ -2,50 +2,54 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerLookTarget : MonoBehaviour {
-
-	[SerializeField] private Transform supportTarget;
-	[SerializeField] private LayerMask pointLayerMask = -1;
-	[SerializeField] private float maxPointDistance = 8;
-	[SerializeField] private float distnaceFromSurface = 1;
-	[SerializeField] private float velocityDirectionContribution = 0.5f;
-	[SerializeField] private float maxDistanceToTrigger = 4;
-
-	private Vector3 lastPos;
-	private CharacterController characterController;
-	private float lastDistanceTravelled;
-	private float distanceTravelled;
-	private bool isWalking;
-	private int randomDir;
-
-	private void Awake ()
+namespace Contoller.AI
+{
+	public class PlayerLookTarget : MonoBehaviour
 	{
-		characterController = GetComponent<CharacterController>();
-		Manager.AI.AIManager.PlayerSupportTargetTransform = supportTarget;
-	}
 
-	private void Update ()
-	{
-		distanceTravelled += (transform.position - lastPos).magnitude;
+		[SerializeField] private Transform supportTarget;
+		[SerializeField] private LayerMask pointLayerMask = -1;
+		[SerializeField] private float maxPointDistance = 8;
+		[SerializeField] private float distnaceFromSurface = 1;
+		[SerializeField] private float velocityDirectionContribution = 0.5f;
+		[SerializeField] private float maxDistanceToTrigger = 4;
 
-		if (Mathf.Abs(distanceTravelled - lastDistanceTravelled) > maxDistanceToTrigger)
+		private Vector3 lastPos;
+		private CharacterController characterController;
+		private float lastDistanceTravelled;
+		private float distanceTravelled;
+		private bool isWalking;
+		private int randomDir;
+
+		private void Awake()
 		{
-			if (!isWalking)
-			{
-				randomDir = (int)Mathf.Sign(Random.Range(-1f, 1f));
-				isWalking = true;
-			}
-
-			lastDistanceTravelled = distanceTravelled;
-			Vector3 velocity = Vector3.Normalize(transform.TransformVector(characterController.velocity * randomDir).normalized * velocityDirectionContribution + transform.forward);
-			if (Physics.Raycast(transform.position, velocity, out RaycastHit hit, maxPointDistance, pointLayerMask))
-                supportTarget.position = hit.point + hit.normal * distnaceFromSurface + transform.up * 3;
-            else
-                supportTarget.position = transform.position + velocity * maxPointDistance + transform.up * 3;
+			characterController = GetComponent<CharacterController>();
+			Manager.AI.AIManager.PlayerSupportTargetTransform = supportTarget;
 		}
-		else isWalking = false;
-		
 
-		lastPos = transform.position;
+		private void Update()
+		{
+			distanceTravelled += (transform.position - lastPos).magnitude;
+
+			if (Mathf.Abs(distanceTravelled - lastDistanceTravelled) > maxDistanceToTrigger)
+			{
+				if (!isWalking)
+				{
+					randomDir = (int)Mathf.Sign(Random.Range(-1f, 1f));
+					isWalking = true;
+				}
+
+				lastDistanceTravelled = distanceTravelled;
+				Vector3 velocity = Vector3.Normalize(transform.TransformVector(characterController.velocity * randomDir).normalized * velocityDirectionContribution + transform.forward);
+				if (Physics.Raycast(transform.position, velocity, out RaycastHit hit, maxPointDistance, pointLayerMask))
+					supportTarget.position = hit.point + hit.normal * distnaceFromSurface + transform.up * 3;
+				else
+					supportTarget.position = transform.position + velocity * maxPointDistance + transform.up * 3;
+			}
+			else isWalking = false;
+
+
+			lastPos = transform.position;
+		}
 	}
 }

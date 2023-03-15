@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Contoller.Camera
-{
+
     public class CameraController : MonoBehaviour
     {
         [SerializeField]
@@ -71,4 +70,4 @@ namespace Contoller.Camera
             myRigid.MoveRotation(myRigid.rotation * Quaternion.Euler(_characterRotationY)); // 쿼터니언 * 쿼터니언
         }
     }
-}
+
