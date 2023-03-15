@@ -8,14 +8,17 @@ public class BoidsMonster : PoolableScript
     [Header("Info")]
     [SerializeField] private Scriptable.BoidsScriptable settings;
 
-    private List<BoidsMonster> neighbours = new();
+    private WaitForSeconds calcEgoWaitSeconds;
+    private WaitForSeconds findNeighbourSeconds;
+
+    private readonly List<BoidsMonster> neighbours = new();
     private Boids myBoids;
 
     private Transform target;
     private Transform cachedTransform;
 
     private float speed;
-    private float additionalSpeed = 0;
+    private float additionalSpeed;
 
     private Vector3 targetVec;
     private Vector3 egoVector;
@@ -29,13 +32,21 @@ public class BoidsMonster : PoolableScript
     private Vector3 obstacleVec;
     private Vector3 egoVec;
     #endregion
+
+    private void Awake()
+    {
+        cachedTransform = GetComponent<Transform>();
+    }
+
     public void Init(Boids _boids, Transform _target)
     {
         myBoids = _boids;
         speed = Random.Range(settings.speedRange.x, settings.speedRange.y);
         target = _target;
 
-        cachedTransform = GetComponent<Transform>();
+        calcEgoWaitSeconds = new WaitForSeconds(Random.Range(1f, 3f));
+        findNeighbourSeconds = new WaitForSeconds(Random.Range(1f, 2f));
+
         StartCoroutine(FindNeighbourCoroutine());
         StartCoroutine(CalculateEgoVectorCoroutine());
     }
@@ -68,6 +79,7 @@ public class BoidsMonster : PoolableScript
         cachedTransform.SetPositionAndRotation(cachedTransform.position + (speed + additionalSpeed) * Time.deltaTime * targetVec,
                                         Quaternion.LookRotation(targetVec));
     }
+
     #region Calculate Vectors
     IEnumerator CalculateEgoVectorCoroutine()
     {
@@ -75,7 +87,7 @@ public class BoidsMonster : PoolableScript
         {
             speed = Random.Range(settings.speedRange.x, settings.speedRange.y);
             egoVector = Random.insideUnitSphere;
-            yield return new WaitForSeconds(Random.Range(1f, 3f));
+            yield return calcEgoWaitSeconds;
         }
     }
     
@@ -92,7 +104,7 @@ public class BoidsMonster : PoolableScript
                 if (Vector3.Angle(cachedTransform.forward, colls[i].transform.position - cachedTransform.position) <= settings.FOVAngle)
                     neighbours.Add(colls[i].GetComponent<BoidsMonster>());
             }
-            yield return new WaitForSeconds(Random.Range(1f, 2f));
+            yield return findNeighbourSeconds;
         }
     }
 

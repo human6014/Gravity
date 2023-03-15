@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UnityStandardAssets.Characters.FirstPerson
+namespace Contoller.Player.Utility
 {
     [Serializable]
     public class MouseLook
@@ -76,16 +76,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if (Input.GetKeyUp(KeyCode.Escape)) m_cursorIsLocked = false;
             else if (Input.GetMouseButtonUp(0)) m_cursorIsLocked = true;
 
-            if (m_cursorIsLocked)
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }
-            else if (!m_cursorIsLocked)
-            {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            }
+            if (m_cursorIsLocked) Cursor.lockState = CursorLockMode.Locked;
+            else Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = !m_cursorIsLocked;
         }
 
         Quaternion ClampRotationAroundXAxis(Quaternion q)

@@ -1,13 +1,18 @@
-using Entity.Unit.Normal;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Entity.Unit.Flying;
+using Entity.Unit.Normal;
+using Entity.Unit.Special;
 
 namespace Manager
 {
     [RequireComponent(typeof(UnitManager))]
     public class SpawnManager : MonoBehaviour
     {
+        public static int NormalMonsterCount { get; set; }
+        public static int FlyingMonsterCount { get; set; }
+
         [SerializeField] private bool isActiveSpawn;
 
         #region SerializeField
@@ -40,14 +45,14 @@ namespace Manager
         #endregion
 
         #region Object Value
-        private BoxCollider[] spawnAreaXDown;
         private BoxCollider[] spawnAreaXUp;
+        private BoxCollider[] spawnAreaXDown;
 
-        private BoxCollider[] spawnAreaYDown;
         private BoxCollider[] spawnAreaYUp;
+        private BoxCollider[] spawnAreaYDown;
 
-        private BoxCollider[] spawnAreaZDown;
         private BoxCollider[] spawnAreaZUp;
+        private BoxCollider[] spawnAreaZDown;
 
         private UnitManager unitManager;
         private Customization customization;
@@ -57,6 +62,7 @@ namespace Manager
         #endregion
 
         #region Normal Value
+        private EnumType.GravityType currentGravityType = EnumType.GravityType.yUp;
         private readonly float[] probs = new float[] { 45, 20, 20, 10, 5 };
         private float total = 0;
 
@@ -77,14 +83,17 @@ namespace Manager
             unitManager = GetComponent<UnitManager>();
             customization = GetComponent<Customization>();
 
-            spawnAreaXDown  = spawnAreaTransform[0].GetComponentsInChildren<BoxCollider>();
-            spawnAreaXUp    = spawnAreaTransform[1].GetComponentsInChildren<BoxCollider>();
+            spawnAreaXUp = spawnAreaTransform[0].GetComponentsInChildren<BoxCollider>();
+            spawnAreaXDown  = spawnAreaTransform[1].GetComponentsInChildren<BoxCollider>();
 
-            spawnAreaYDown  = spawnAreaTransform[2].GetComponentsInChildren<BoxCollider>();
-            spawnAreaYUp    = spawnAreaTransform[3].GetComponentsInChildren<BoxCollider>();
+            spawnAreaYUp = spawnAreaTransform[2].GetComponentsInChildren<BoxCollider>();
+            spawnAreaYDown  = spawnAreaTransform[3].GetComponentsInChildren<BoxCollider>();
 
-            spawnAreaZDown  = spawnAreaTransform[4].GetComponentsInChildren<BoxCollider>();
-            spawnAreaZUp    = spawnAreaTransform[5].GetComponentsInChildren<BoxCollider>();
+            spawnAreaZUp = spawnAreaTransform[4].GetComponentsInChildren<BoxCollider>();
+            spawnAreaZDown  = spawnAreaTransform[5].GetComponentsInChildren<BoxCollider>();
+            
+            NormalMonsterCount = 0;
+            FlyingMonsterCount = 0;
 
             foreach (float elem in probs) total += elem;
         }
@@ -113,6 +122,13 @@ namespace Manager
                 flyingMonsterPoolingObjectArray[i] = ObjectPoolManager.Register(unitManager.GetFlyingMonster(i), activeUnitPool);
                 flyingMonsterPoolingObjectArray[i].GenerateObj(flyingMonsterPoolingCount[i]);
             }
+            GravityManager.GravityChangeAction += (GravityType) => ChangeCurrentArea(GravityType);
+        }
+
+        public void ChangeCurrentArea(EnumType.GravityType gravityType)
+        {
+            currentGravityType = gravityType;
+            Debug.Log(currentGravityType + "\tcurrentArea : " + (int)currentGravityType);
         }
 
         /// <summary>
@@ -123,34 +139,37 @@ namespace Manager
         private BoxCollider GetClosetArea()
         {
             BoxCollider[] currentArea = null;
-
+            //spawnAreaTransform[(int)currentGravityType].GetComponentsInChildren<BoxCollider>();
             //배열로 바꾸면 코드 깔끔해질 수도?
             //중력 바꿀때만 설정해줘도 됌
             //지금은 유닛 소환할 때마다 수행함
+            
             switch (GravityManager.currentGravityType)
             {
                 case EnumType.GravityType.xUp:
-                    currentArea = spawnAreaXDown;
+                    currentArea = spawnAreaXUp;
                     break;
                 case EnumType.GravityType.xDown:
-                    currentArea = spawnAreaXUp;
+                    currentArea = spawnAreaXDown;
                     break;
 
                 case EnumType.GravityType.yUp:
-                    currentArea = spawnAreaYDown;
+                    currentArea = spawnAreaYUp;
+                    
                     break;
                 case EnumType.GravityType.yDown:
-                    currentArea = spawnAreaYUp;
+                    currentArea = spawnAreaYDown;
                     break;
 
                 case EnumType.GravityType.zUp:
-                    currentArea = spawnAreaZDown;
-                    break;
-                case EnumType.GravityType.zDown:
                     currentArea = spawnAreaZUp;
                     break;
+                case EnumType.GravityType.zDown:
+                    
+                    currentArea = spawnAreaZDown;
+                    break;
             }
-
+            
             int rand = Random.Range(0,currentArea.Length);
             return currentArea[rand];
         }
@@ -184,28 +203,37 @@ namespace Manager
 
             normalMonsterTimer += Time.deltaTime;
             flyingMonsterTimer += Time.deltaTime;
-            if (normalMonsterTimer >= normalMonsterSpawnTime && currentNormalMonsterCount <= maxNormalMonsterCount)
-            {
-                normalMonsterTimer = 0;
-                randomNormalMonsterIndex = RandomUnitIndex();
-                currentNormalMonsterCount++;
 
-                NormalMonster currentNormalMonster = (NormalMonster)normalMonsterPoolingObjectArray[randomNormalMonsterIndex].GetObject(false);
-                customization.Customize(currentNormalMonster);
-                currentNormalMonster.Init(GetRandomPos(), normalMonsterPoolingObjectArray[randomNormalMonsterIndex]);
-                currentNormalMonster.gameObject.SetActive(true);
-            }
+            if (normalMonsterTimer >= normalMonsterSpawnTime && NormalMonsterCount < maxNormalMonsterCount) SpawnNormalMonster();
+            if (flyingMonsterTimer >= flyingMonsterSpawnTime && FlyingMonsterCount < maxFlyingMonsterCount) SpawnFlyingMonster();
+        }
 
-            if(flyingMonsterTimer >= flyingMonsterSpawnTime && currentFlyingMonsterCount <= maxFlyingMonsterCount)
-            {
-                flyingMonsterTimer = 0;
-                //index 할당 아직 필요 x
-                currentFlyingMonsterCount++;
+        private void SpawnNormalMonster()
+        {
+            normalMonsterTimer = 0;
+            randomNormalMonsterIndex = RandomUnitIndex();
+            NormalMonsterCount++;
 
-                FlyingMonster currentFlyingMonster = (FlyingMonster)flyingMonsterPoolingObjectArray[0].GetObject(false);
-                currentFlyingMonster.Init(octree.GetRandomSpawnableArea(), flyingMonsterPoolingObjectArray[0]);
-                currentFlyingMonster.gameObject.SetActive(true);
-            }
+            NormalMonster currentNormalMonster = (NormalMonster)normalMonsterPoolingObjectArray[randomNormalMonsterIndex].GetObject(false);
+            customization.Customize(currentNormalMonster);
+            currentNormalMonster.Init(GetRandomPos(), normalMonsterPoolingObjectArray[randomNormalMonsterIndex]);
+            currentNormalMonster.gameObject.SetActive(true);
+        }
+
+        private void SpawnFlyingMonster()
+        {
+            flyingMonsterTimer = 0;
+            //index 할당 아직 필요 x
+            FlyingMonsterCount++;
+
+            FlyingMonster currentFlyingMonster = (FlyingMonster)flyingMonsterPoolingObjectArray[0].GetObject(false);
+            currentFlyingMonster.Init(octree.GetRandomSpawnableArea(), flyingMonsterPoolingObjectArray[0]);
+            currentFlyingMonster.gameObject.SetActive(true);
+        }
+
+        private void SpawnSpecialMonster()
+        {
+            //
         }
     }
 }

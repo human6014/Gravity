@@ -14,13 +14,21 @@ namespace Scriptable
         [Header("Stat value")]
         [Tooltip("최대 체력")]
         public int maxHp;
+
         [Tooltip("방어력")]
         public int def;
+
         [Tooltip("공격력")]
         public int damage;
+
         [Tooltip("이동속도")]
         public int movementSpeed;
 
+        [Tooltip("공격 속도")]
+        public float attackSpeed;
+
+        [Tooltip("공격 사거리")]
+        public float attackRange;
         //등등...
     }
 }

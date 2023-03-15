@@ -175,12 +175,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b899585cecf9a74f8405f4f8c3c8405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  headingController:
-    pFactor: 9.244681
-    iFactor: 0
-    dFactor: 0.06382979
-  playerHead: {fileID: 0}
-  physicsRotation: 0
   rotationEasing: 5
 --- !u!114 &2185679566568118977
 MonoBehaviour:
@@ -196,10 +190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSeeLayerMask:
     serializedVersion: 2
-    m_Bits: 454281
-  octree: {fileID: 0}
-  target: {fileID: 0}
-  playerObject: {fileID: 0}
+    m_Bits: 451721
   maxDistanceRebuildPath: 1
   acceleration: 7
   minReachDistance: 4

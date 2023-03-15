@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Entity.Unit.Normal;
+using Entity.Unit.Flying;
+using Entity.Unit.Special;
 
 namespace Manager
 {

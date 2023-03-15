@@ -11,6 +11,8 @@ namespace Manager
         public static GravityType beforeGravityType = GravityType.yUp;
         public static GravityDirection gravityDirection = GravityDirection.Y;
 
+        public static Action <GravityType> GravityChangeAction { get; set; }
+
         /// <summary>
         /// 중력 방향 마우스 스크롤 아래  : -1 , 위 : 1
         /// </summary>
@@ -30,6 +32,16 @@ namespace Manager
         /// 중력 백터 일반화
         /// </summary>
         public static Vector3 GravityVector { get; private set; } = Vector3.down;
+
+        /// <summary>
+        /// 현재 중력에 해당하는 Area의 normal 각도
+        /// </summary>
+        private static readonly Vector3Int[] gravityRotation =
+    {
+            new Vector3Int(0, 0, -90)   , new Vector3Int(0, 0, 90),
+            new Vector3Int(0, 0, 0)     , new Vector3Int(180, 0, 0),
+            new Vector3Int(90, 0, 0)   , new Vector3Int(-90, 0, 0),
+        };
 
         /// <summary>
         /// 중력 변경, 중력이 향하는 방향이 아니라 반대임
@@ -57,6 +69,7 @@ namespace Manager
             if (beforeGravityType == currentGravityType) IsGravityDupleicated = true;
             else
             {
+                GravityChangeAction(currentGravityType);
                 Physics.gravity = GravityVector * Physics.gravity.magnitude;
 
                 IsGravityChanging = true;
@@ -65,13 +78,6 @@ namespace Manager
         }
 
         public static void CompleteGravityChanging() => IsGravityChanging = false;
-
-        private static readonly Vector3Int[] gravityRotation = 
-            {
-            new Vector3Int(0, 0, -90)   , new Vector3Int(0, 0, 90),
-            new Vector3Int(0, 0, 0)     , new Vector3Int(180, 0, 0),
-            new Vector3Int(90, 0, 0)   , new Vector3Int(-90, 0, 0),
-        };
 
         public static Vector3Int GetGravityNoramlDirection() => gravityRotation[(int)currentGravityType];
         

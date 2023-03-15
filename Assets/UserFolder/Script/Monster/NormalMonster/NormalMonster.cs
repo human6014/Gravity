@@ -10,10 +10,8 @@ namespace Entity.Unit.Normal
         [SerializeField] private Scriptable.NormalMonsterScriptable settings;
         private Manager.ObjectPoolManager.PoolingObject poolingObject;
 
-
         private Animator animator;
         private NormalMonsterAI normalMonsterAI;
-        
 
         public NoramlMonsterType GetMonsterType() => settings.monsterType;
 
@@ -60,6 +58,8 @@ namespace Entity.Unit.Normal
         [ContextMenu("ReturnObject")]
         public override void ReturnObject()
         {
+            normalMonsterAI.Dispose();
+            Manager.SpawnManager.NormalMonsterCount--;
             poolingObject.ReturnObject(this);
         }
     }

@@ -37,6 +37,7 @@ public class FlyingMovementController : MonoBehaviour
     private Vector3 lastDestination;
     private Vector3 randomPos;
 
+    private bool isRun;
     private bool CanSeePlayer()
     {
         if (Physics.Raycast(transform.position, transform.position - target.position, out RaycastHit hit, Vector3.Distance(transform.position, target.position) + 1, playerSeeLayerMask))
@@ -80,12 +81,22 @@ public class FlyingMovementController : MonoBehaviour
 
         playerObject = Manager.AI.AIManager.PlayerTransfrom.gameObject;
         target = Manager.AI.AIManager.PlayerSupportTargetTransform;
+    }
 
+    public void Init()
+    {
         randomPos = UnityEngine.Random.insideUnitSphere * 3;
+
+        lastDestination = target.position;
+        oldPath = newPath;
+        newPath = octree.GetPath(transform.position, lastDestination + randomPos);
+
+        isRun = true;
     }
 
     public void MoveCurrentTarget()
     {
+        if (!isRun) return;
         if ((newPath == null || !newPath.isCalculating) && Vector3.SqrMagnitude(target.position - lastDestination) > maxDistanceRebuildPath &&
             (!CanSeePlayer() || Vector3.Distance(target.position, transform.position) > minFollowDistance) && !octree.IsBuilding)
         {
@@ -137,6 +148,12 @@ public class FlyingMovementController : MonoBehaviour
         else cachedRigidbody.velocity -= acceleration * Time.deltaTime * cachedRigidbody.velocity;
 
     }
+
+    public void Dispose()
+    {
+        isRun = false;
+    }
+
     private void OnDrawGizmosSelected()
     {
         if (cachedRigidbody != null)
