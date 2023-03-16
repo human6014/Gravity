@@ -4,6 +4,7 @@ using UnityEngine;
 using Entity.Unit.Flying;
 using Entity.Unit.Normal;
 using Entity.Unit.Special;
+using System.Linq;
 
 namespace Manager
 {
@@ -12,6 +13,10 @@ namespace Manager
     {
         public static int NormalMonsterCount { get; set; }
         public static int FlyingMonsterCount { get; set; }
+
+        public bool IsSP1MonsterSpawned { get; private set; }
+        public bool IsSP2MonsterSpawned { get; private set; }
+        public bool IsSP3MonsterSpawned { get; private set; }
 
         [SerializeField] private bool isActiveSpawn;
 
@@ -118,32 +123,35 @@ namespace Manager
         public void ChangeCurrentArea(EnumType.GravityType gravityType)
         {
             currentGravityType = gravityType;
-            Debug.Log(currentGravityType + "\tcurrentArea : " + (int)currentGravityType);
             currentAreaCollider = spawnAreaCollider[(int)gravityType];
         }
 
         /// <summary>
-        /// 현재 중력에 맞는 땅의 BoxCollider 랜덤으로 가져옴
-        /// GravityManager의 중력 방향과 반대니 햇깔리지 말도록
+        /// BoxCollider[] 배열 안의 임의의 BoxCollider 하나를 반환함
         /// </summary>
-        /// <returns>현재 중력에 맞는 땅에서 배열에서 랜덤으로 선정된 BoxCollider</returns>
-        private BoxCollider GetClosetArea()
+        /// <param name="boxColliders">BoxCollider[]</param>
+        /// <returns>BoxCollider</returns>
+        private BoxCollider GetClosetArea(BoxCollider[] boxColliders)
         {
-            int rand = Random.Range(0, currentAreaCollider.Length);
-            return currentAreaCollider[rand];
+            int rand = Random.Range(0, boxColliders.Length);
+            return boxColliders[rand];
         }
 
-        private Vector3 GetRandomPos()
+        /// <summary>
+        /// BoxCollider 안의 임의의 위치를 반환함
+        /// </summary>
+        /// <param name="boxCollider">BoxCollider</param>
+        /// <returns>Vector3</returns>
+        private Vector3 GetRandomPos(BoxCollider boxCollider)
         {
-            BoxCollider currentCol = GetClosetArea();
-
-            float rangeX = Random.Range(-currentCol.bounds.size.x * 0.5f, currentCol.bounds.size.x * 0.5f);
-            float rangeZ = Random.Range(-currentCol.bounds.size.z * 0.5f, currentCol.bounds.size.z * 0.5f);
+            float rangeX = Random.Range(-boxCollider.bounds.size.x * 0.5f, boxCollider.bounds.size.x * 0.5f);
+            float rangeZ = Random.Range(-boxCollider.bounds.size.z * 0.5f, boxCollider.bounds.size.z * 0.5f);
             Vector3 randomPos = new(rangeX, 0, rangeZ);
 
-            return currentCol.transform.position + randomPos;
+            return boxCollider.transform.position + randomPos;
         }
 
+        #region GetRandomIndex
         private int RandomUnitIndex()
         {
             float randomPoint = Random.value * total;
@@ -155,6 +163,17 @@ namespace Manager
             }
             return probs.Length - 1;
         }
+
+        private BoxCollider[] ExcludeRandomIndex(int excludeIndex, out int specificIndex)
+        {
+            HashSet<int> exclude = new() { excludeIndex };
+            IEnumerable<int> range = Enumerable.Range(0, spawnAreaCollider.Length).Where(i => !exclude.Contains(i));
+            
+            int index = Random.Range(0,spawnAreaCollider.Length - exclude.Count);
+            specificIndex = range.ElementAt(index);
+            return spawnAreaCollider[range.ElementAt(index)];
+        }
+        #endregion
 
         private void Update()
         {
@@ -175,7 +194,11 @@ namespace Manager
 
             NormalMonster currentNormalMonster = (NormalMonster)normalMonsterPoolingObjectArray[randomNormalMonsterIndex].GetObject(false);
             customization.Customize(currentNormalMonster);
-            currentNormalMonster.Init(GetRandomPos(), normalMonsterPoolingObjectArray[randomNormalMonsterIndex]);
+
+            BoxCollider boxCollider = GetClosetArea(currentAreaCollider);
+            Vector3 pos = GetRandomPos(boxCollider);
+
+            currentNormalMonster.Init(pos, normalMonsterPoolingObjectArray[randomNormalMonsterIndex]);
             currentNormalMonster.gameObject.SetActive(true);
         }
 
@@ -190,9 +213,20 @@ namespace Manager
             currentFlyingMonster.gameObject.SetActive(true);
         }
 
+        [ContextMenu("SpawnSpecialMonster")]
         private void SpawnSpecialMonster()
         {
-            //
+            BoxCollider[] initColliders = ExcludeRandomIndex((int)currentGravityType,out int specificIndex);
+            BoxCollider initCollider = GetClosetArea(initColliders);
+            Vector3 initPosition = GetRandomPos(initCollider);
+            Quaternion initRotation = Quaternion.LookRotation(transform.forward, GravityManager.GetSpecificGravityNormalDirection(specificIndex));
+
+            /* //여기 처리해야함
+            SpecialMonster1 specialMonster1 = Instantiate(unitManager.SpecialMonster1, initPosition, initRotation).GetComponent<SpecialMonster1>();
+            specialMonster1.Init();
+
+            IsSP1MonsterSpawned = true;
+            */
         }
     }
 }

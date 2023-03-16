@@ -21,7 +21,7 @@ namespace Entity.Unit.Special
 
 
         private Transform target;
-        private Transform cachedTransform;
+        [SerializeField] private Transform aiTransform;
         private SpecialMonsterAI specialMonsterAI;
 
         private Vector3 groundDirection = Vector3.zero;
@@ -29,31 +29,35 @@ namespace Entity.Unit.Special
         private Vector3 direction;
 
         bool isPreJump = false;
-        public Quaternion GetRotation() => cachedTransform.rotation;
-        public Vector3 GetPosition() => cachedTransform.position;
+        public Quaternion GetRotation() => transform.rotation;
+        public Vector3 GetPosition() => transform.position;
 
         private void Awake()
         {
-            cachedTransform = GetComponent<Transform>();
-            specialMonsterAI = FindObjectOfType<SpecialMonsterAI>();
-            //colliderMesh = new Mesh();
+            Debug.Log("Awake");
+            //aiTransform = GetComponent<Transform>();
+            Debug.Log(aiTransform.name);
+            specialMonsterAI = aiTransform.GetComponent<SpecialMonsterAI>();
+            Debug.Log(specialMonsterAI.name);
         }
 
         public void Init()
         {
+            Debug.Log("Init");
             target = Manager.AI.AIManager.PlayerTransfrom;
+            specialMonsterAI.Init();
         }
 
         private void FixedUpdate()
         {
-            specialMonsterAI.OperateAIBehavior(cachedTransform.rotation);
+            specialMonsterAI.OperateAIBehavior();
             //UpdateCollider();
         }
         void Update()
         {
             if (!target) return;
 
-            direction = target.position - cachedTransform.position;
+            direction = target.position - aiTransform.position;
             float dir = 0;
             switch (GravityManager.currentGravityType)
             {
@@ -79,11 +83,26 @@ namespace Entity.Unit.Special
             float height = Mathf.Max(0.01f, targetPos.y + targetPos.magnitude / 2f);
 
             CalculatePathWithHeight(targetPos, height, out float v0, out float angle, out float time);
-
+            t_v0 = v0;
+            t_angle = angle;
+            t_time = time;
             //DrawPath(groundDirection.normalized, v0, angle, time, _step); //경로 그리기
 
             if (Input.GetKeyDown(KeyCode.Backspace) && !isPreJump && !specialMonsterAI.GetIsOnOffMeshLink())
                 StartCoroutine(Coroutine_Movement(groundDirection.normalized, v0, angle, time));
+        }
+
+
+        float t_v0;
+        float t_angle;
+        float t_time;
+        [ContextMenu("ExcuteJump")]
+        public void ExcuteJump()
+        {
+            if (!isPreJump && !specialMonsterAI.GetIsOnOffMeshLink())
+            {
+                StartCoroutine(Coroutine_Movement(groundDirection.normalized, t_v0, t_angle, t_time));
+            }
         }
 
         public void StartJumpCoroutine()
@@ -106,13 +125,13 @@ namespace Entity.Unit.Special
             {
                 float x = v0 * i * Mathf.Cos(angle);
                 float y = v0 * i * Mathf.Sin(angle) - 0.5f * Physics.gravity.magnitude * Mathf.Pow(i, 2);
-                lineRenderer.SetPosition(count, cachedTransform.position + direction * x - GravityManager.GravityVector * y);
+                lineRenderer.SetPosition(count, aiTransform.position + direction * x - GravityManager.GravityVector * y);
 
                 count++;
             }
             float xFinal = v0 * time * Mathf.Cos(angle);
             float yFinal = v0 * time * Mathf.Sin(angle) - 0.5f * Physics.gravity.magnitude * Mathf.Pow(time, 2);
-            lineRenderer.SetPosition(count, cachedTransform.position + direction * xFinal - GravityManager.GravityVector * yFinal);
+            lineRenderer.SetPosition(count, aiTransform.position + direction * xFinal - GravityManager.GravityVector * yFinal);
         }
 #endif
 
@@ -144,27 +163,27 @@ namespace Entity.Unit.Special
 
             float beforeJumpingTime = 1f;
             float elapsedTime = 0;
-            Vector3 startPos = cachedTransform.position;
+            Vector3 startPos = aiTransform.position;
             while (elapsedTime < beforeJumpingTime)
             {
-                cachedTransform.position = Vector3.Lerp(startPos, startPos - transform.up, elapsedTime / beforeJumpingTime);
+                aiTransform.position = Vector3.Lerp(startPos, startPos - aiTransform.up, elapsedTime / beforeJumpingTime);
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
 
             legController.SetPreJump(false);
             legController.Jump(true);
-
+            Debug.Log("Coroutine target : " + target);
             elapsedTime = 0;
-            startPos = cachedTransform.position;
-            Quaternion startRotation = cachedTransform.rotation;
+            startPos = aiTransform.position;
+            Quaternion startRotation = aiTransform.rotation;
             Quaternion targetRot = Quaternion.LookRotation(groundDirection, target.up);
             Debug.Log("time : " + time);
             while (elapsedTime < time)
             {
                 float x = v0 * elapsedTime * Mathf.Cos(angle);
                 float y = v0 * elapsedTime * Mathf.Sin(angle) - 0.5f * Physics.gravity.magnitude * Mathf.Pow(elapsedTime, 2);
-                transform.SetPositionAndRotation(startPos + direction * x - GravityManager.GravityVector * y,
+                aiTransform.SetPositionAndRotation(startPos + direction * x - GravityManager.GravityVector * y,
                                  Quaternion.Lerp(startRotation, targetRot, elapsedTime / time));
                 //elapsedTime += Time.deltaTime * (time / 1.5f);
                 //elapsedTime += Time.deltaTime;
@@ -174,7 +193,7 @@ namespace Entity.Unit.Special
             legController.Jump(false);
             isPreJump = false;
             specialMonsterAI.SetNavMeshEnable(true);
-            specialMonsterAI.SetNavMeshPos(transform.position);
+            //specialMonsterAI.SetNavMeshPos(transform.position);
         }
         #endregion
     }

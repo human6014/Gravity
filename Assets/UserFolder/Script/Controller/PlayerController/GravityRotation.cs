@@ -24,7 +24,7 @@ namespace Contoller.Player.Utility
             while (t < 1)
             {
                 t += Time.deltaTime / ROTATETIME;
-                transform.rotation = Quaternion.Lerp(currentRotation, GravityManager.GetGravityNormalRotation(), t);
+                transform.rotation = Quaternion.Lerp(currentRotation, GravityManager.GetCurrentGravityNormalRotation(), t);
                 yield return null;
             }
             GravityManager.CompleteGravityChanging();
