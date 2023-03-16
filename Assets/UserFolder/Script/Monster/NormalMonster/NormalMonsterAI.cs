@@ -63,11 +63,7 @@ public class NormalMonsterAI : MonoBehaviour
 
         if (GravityManager.IsGravityChanging)
         {
-            cachedRigidbody.useGravity = true;
-            cachedRigidbody.isKinematic = false;
-            navMeshAgent.enabled = false;
-            //DetectCol() 연결
-            IsFolling = true;
+            SetMode(false);
             return;
         }
         if (IsFolling)
@@ -102,38 +98,22 @@ public class NormalMonsterAI : MonoBehaviour
 
         // 대부분 정상 작동
         if (Physics.SphereCast(new Ray(transform.position, transform.up), castRadius, castHeight, climbingDetectLayer))
-        {
-            IsFolling = false;
-            cachedRigidbody.useGravity = false;
-            cachedRigidbody.isKinematic = true;
-            navMeshAgent.enabled = true;
-            IsAutoMode = true;
-        }
+            SetMode(true);
+    }
 
+    private void SetMode(bool isAutoMode)
+    {
+        IsFolling = !isAutoMode;
+        cachedRigidbody.useGravity = !isAutoMode;
+        cachedRigidbody.isKinematic = isAutoMode;
+        navMeshAgent.enabled = isAutoMode;
+        IsAutoMode = isAutoMode;
     }
 
     private void DetectMalfunction()
     {
         fallingTimer += Time.deltaTime;
         if (fallingTimer >= maximumFallingTime) IsMalfunction = true;
-    }
-    private void ExistDetectCol()
-    {
-        Collider[] colliders = Physics.OverlapCapsule(
-            cachedTransform.position + cachedTransform.up * 0.2f,
-            cachedTransform.position + cachedTransform.up * castHeight,
-            castRadius,
-            climbingDetectLayer);
-
-        if (colliders.Length > 0)
-        {
-            IsFolling = false;
-            cachedRigidbody.useGravity = false;
-            cachedRigidbody.isKinematic = true;
-            navMeshAgent.enabled = true;
-            IsAutoMode = true;
-        }
-
     }
 
     private void AutoMode()

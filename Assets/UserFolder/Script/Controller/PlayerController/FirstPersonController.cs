@@ -167,7 +167,7 @@ namespace Contoller.Player
         {
             Gizmos.color = Color.red;
             float maxDistansce = m_CapsuleCollider.height * 0.5f - m_CapsuleCollider.radius + 0.1f;
-            Gizmos.DrawSphere(transform.position -transform.up * (m_CapsuleCollider.height * 0.5f - m_CapsuleCollider.radius) , m_CapsuleCollider.radius + m_InterporationDist);
+            Gizmos.DrawSphere(transform.position - transform.up * (m_CapsuleCollider.height * 0.5f - m_CapsuleCollider.radius) , m_CapsuleCollider.radius + m_InterporationDist);
         }
 
         private Vector3 desiredMove;
@@ -180,6 +180,7 @@ namespace Contoller.Player
 
             float maxDistansce = m_CapsuleCollider.height * 0.5f - m_CapsuleCollider.radius - 0.1f;
             float radius = m_CapsuleCollider.radius + m_InterporationDist + 0.1f;
+
             if (Physics.SphereCast(transform.position, radius, -transform.up, out RaycastHit hitInfo, maxDistansce, Physics.AllLayers, QueryTriggerInteraction.Ignore))
                 m_IsGround = true;
             else m_IsGround = false;

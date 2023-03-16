@@ -14,40 +14,38 @@ public class SpecialMonsterAI : MonoBehaviour
     private Transform cachedTransform;
     private NavMeshAgent navMeshAgent;
     private LegController legController;
-
     private AnimationController animationController;
-    
 
+    private bool isInit;
     #region Adjustment factor
-    [Header("Adjustment factor")]
-
-    [SerializeField]
     [Tooltip("회전 강도")]
     private readonly float rotAdjustRatio = 0.3f;
 
-    [SerializeField]
     [Tooltip("최대 이동 속도")]
     private readonly float maxSpeed = 15f;
 
-    [SerializeField]
     [Tooltip("최소 이동 속도")]
     private readonly float minSpeed = 5f;
-
-    private float normalSpeed;
     #endregion
 
     #region Property
     public bool IsOnMeshLink { get; private set; } = false;
+
     public bool IsClimbing { get; private set; } = false;
+
     public Vector3 ProceduralForwardAngle { get; set; }
+
     public Vector3 ProceduralUpAngle { get; set; }
+
     public Vector3 ProceduralPosition { get; set; }
     #endregion
 
     public bool GetIsOnOffMeshLink() => navMeshAgent.isOnOffMeshLink;
-    public void SetNavMeshEnable(bool isOn) => navMeshAgent.enabled = isOn;
-    public void SetNavMeshPos(Vector3 pos) => navMeshAgent.Warp(pos);
 
+    public void SetNavMeshEnable(bool isOn) => navMeshAgent.enabled = isOn;
+
+    public void SetNavMeshPos(Vector3 pos) => navMeshAgent.Warp(pos);
+    
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -56,8 +54,6 @@ public class SpecialMonsterAI : MonoBehaviour
         animationController = GetComponent<AnimationController>();
         legController = FindObjectOfType<LegController>();
 
-        normalSpeed = navMeshAgent.speed;
-
         navMeshAgent.updatePosition = false;
         navMeshAgent.updateRotation = false;
         navMeshAgent.updateUpAxis = false;
@@ -65,12 +61,19 @@ public class SpecialMonsterAI : MonoBehaviour
         waitUntil = new WaitUntil(() => !navMeshAgent.isOnOffMeshLink);
     }
 
+    public void Init()
+    {
+        isInit = true;
+
+        navMeshAgent.enabled = true;
+    }
+
     /// <summary>
     /// AI 행동 실시 (Recommended calling from FixedUpdate())
     /// </summary>
-    /// <param name="rot"></param>
-    public void OperateAIBehavior(Quaternion rot)
+    public void OperateAIBehavior()
     {
+        //if (!isInit) return;
         if (!legController.GetIsNavOn())
         {
             animationController.SetIdle();
@@ -80,48 +83,44 @@ public class SpecialMonsterAI : MonoBehaviour
         if (!navMeshAgent.isActiveAndEnabled) //점프 끝날 때 작동
         {
             //navMeshAgent.Warp(aiController.GetPosition());
-            cachedTransform.rotation = rot;
+            return;
+        }
+
+        //if (navMeshAgent.pathPending == true) return;
+
+        SetDestination();
+
+        if (navMeshAgent.isOnOffMeshLink)
+        {
+            //navMeshAgent.speed = minSpeed;
+            //NavMeshLink link = (NavMeshLink)navMeshAgent.navMeshOwner;
+            //navMeshAgent.updateUpAxis = false;
+            //여기서 NavMeshLink 감지 가능
         }
         else
         {
-            //if (navMeshAgent.pathPending == true) return;
-
-            SetDestination();
-
-            
-            if (navMeshAgent.isOnOffMeshLink)
-            {
-                //navMeshAgent.speed = minSpeed;
-                //NavMeshLink link = (NavMeshLink)navMeshAgent.navMeshOwner;
-                //navMeshAgent.updateUpAxis = false;
-                //여기서 NavMeshLink 감지 가능
-            }
-            else
-            {
-                //navMeshAgent.speed = normalSpeed;
-                //navMeshAgent.updateUpAxis = true;
-            }
-            
-            Vector3 targetDirection = (navMeshAgent.steeringTarget - cachedTransform.position).normalized;
-            //targetForward = IsOnMeshLink == true ? ProceduralForwardAngle : targetDirection;
-            Vector3 targetForward = ProceduralForwardAngle + targetDirection;
-
-            Quaternion navRotation = Quaternion.LookRotation(targetForward, ProceduralUpAngle);
-            cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, navRotation, rotAdjustRatio);
-
-            if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
-            {
-                navMeshAgent.nextPosition = transform.position;
-                animationController.SetIdle();
-            }
-            else
-            {
-                animationController.SetWalk();
-                navMeshAgent.nextPosition = ProceduralPosition + Time.deltaTime * navMeshAgent.speed * targetDirection;
-                cachedTransform.position = navMeshAgent.nextPosition;
-            }
+            //navMeshAgent.speed = normalSpeed;
+            //navMeshAgent.updateUpAxis = true;
         }
-        //점프 등 패턴따라 사용될 수도 있음
+        Vector3 targetDirection = (navMeshAgent.steeringTarget - cachedTransform.position).normalized;
+        //targetForward = IsOnMeshLink == true ? ProceduralForwardAngle : targetDirection;
+        Vector3 targetForward = ProceduralForwardAngle + targetDirection;
+
+        Quaternion navRotation = Quaternion.LookRotation(targetForward, ProceduralUpAngle);
+        cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, navRotation, rotAdjustRatio);
+
+        if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+        {
+            navMeshAgent.nextPosition = transform.position;
+            animationController.SetIdle();
+        }
+        else
+        {
+            animationController.SetWalk();
+            navMeshAgent.nextPosition = ProceduralPosition + Time.deltaTime * navMeshAgent.speed * targetDirection;
+            cachedTransform.position = navMeshAgent.nextPosition;
+        }
+
     }
 
     private void SetDestination()

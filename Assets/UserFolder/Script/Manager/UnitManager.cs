@@ -18,7 +18,7 @@ namespace Manager
         [SerializeField] private FlyingMonster[] flyingMonsters;
 
         [Space(15)]
-        [SerializeField] private SpecialMonster1 specialMonster1;
+        [SerializeField] private GameObject specialMonster1;
         [SerializeField] private SpecialMonster2 specialMonster2;
         [SerializeField] private SpecialMonster3 specialMonster3;
 
@@ -29,7 +29,7 @@ namespace Manager
         public FlyingMonster GetFlyingMonster(int i) => flyingMonsters[i];
         public int GetFlyingMonsterArrayLength() => flyingMonsters.Length;
 
-        public SpecialMonster1 SpecialMonster1 { get => specialMonster1; private set => specialMonster1 = value; }
+        public GameObject SpecialMonster1 { get => specialMonster1; private set => specialMonster1 = value; }
         public SpecialMonster2 SpecialMonster2 { get => specialMonster2; private set => specialMonster2 = value; }
         public SpecialMonster3 SpecialMonster3 { get => specialMonster3; private set => specialMonster3 = value; }
         #endregion

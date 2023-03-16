@@ -7,8 +7,8 @@ namespace Manager
 {
     public class GravityManager
     {
-        public static GravityType currentGravityType = GravityType.yUp;
-        public static GravityType beforeGravityType = GravityType.yUp;
+        public static GravityType currentGravityType = GravityType.yDown;
+        public static GravityType beforeGravityType = GravityType.yDown;
         public static GravityDirection gravityDirection = GravityDirection.Y;
 
         public static Action <GravityType> GravityChangeAction { get; set; }
@@ -44,7 +44,7 @@ namespace Manager
         };
 
         /// <summary>
-        /// 중력 변경, 중력이 향하는 방향이 아니라 반대임
+        /// 중력 변경, 중력이 향하는 방향을 기록함
         /// </summary>
         /// <param name="direct"></param>
         public static void GravityChange(int direct)
@@ -54,15 +54,15 @@ namespace Manager
             switch (gravityDirection)
             {
                 case GravityDirection.X:
-                    currentGravityType = direct < 0 ? GravityType.xUp : GravityType.xDown;
+                    currentGravityType = direct < 0 ? GravityType.xDown : GravityType.xUp;
                     GravityVector = new Vector3(direct, 0, 0);
                     break;
                 case GravityDirection.Y:
-                    currentGravityType = direct < 0 ? GravityType.yUp : GravityType.yDown;
+                    currentGravityType = direct < 0 ? GravityType.yDown : GravityType.yUp;
                     GravityVector = new Vector3(0, direct, 0);
                     break;
                 case GravityDirection.Z:
-                    currentGravityType = direct < 0 ? GravityType.zUp : GravityType.zDown;
+                    currentGravityType = direct < 0 ? GravityType.zDown : GravityType.zUp;
                     GravityVector = new Vector3(0, 0, direct);
                     break;
             }
@@ -79,8 +79,10 @@ namespace Manager
 
         public static void CompleteGravityChanging() => IsGravityChanging = false;
 
-        public static Vector3Int GetGravityNoramlDirection() => gravityRotation[(int)currentGravityType];
+        public static Vector3Int GetCurrentGravityNoramlDirection() => gravityRotation[(int)currentGravityType];
+
+        public static Vector3Int GetSpecificGravityNormalDirection(int index) => gravityRotation[index];
         
-        public static Quaternion GetGravityNormalRotation() => Quaternion.Euler(gravityRotation[(int)currentGravityType]);
+        public static Quaternion GetCurrentGravityNormalRotation() => Quaternion.Euler(gravityRotation[(int)currentGravityType]);
     }
 }

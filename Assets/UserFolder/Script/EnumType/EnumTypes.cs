@@ -3,12 +3,12 @@ namespace EnumType
 {
     public enum GravityType
     {
-        xUp = 0,
-        xDown = 1,
-        yUp = 2,
-        yDown = 3,
-        zUp = 4,
-        zDown = 5
+        xDown = 0,
+        xUp = 1,
+        yDown = 2,
+        yUp = 3,
+        zDown = 4,
+        zUp = 5
     }
     public enum GravityDirection
     {
