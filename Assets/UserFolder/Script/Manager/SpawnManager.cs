@@ -45,14 +45,8 @@ namespace Manager
         #endregion
 
         #region Object Value
-        private BoxCollider[] spawnAreaXUp;
-        private BoxCollider[] spawnAreaXDown;
-
-        private BoxCollider[] spawnAreaYUp;
-        private BoxCollider[] spawnAreaYDown;
-
-        private BoxCollider[] spawnAreaZUp;
-        private BoxCollider[] spawnAreaZDown;
+        private BoxCollider[][] spawnAreaCollider = new BoxCollider[6][];
+        private BoxCollider[] currentAreaCollider;
 
         private UnitManager unitManager;
         private Customization customization;
@@ -83,15 +77,11 @@ namespace Manager
             unitManager = GetComponent<UnitManager>();
             customization = GetComponent<Customization>();
 
-            spawnAreaXUp = spawnAreaTransform[0].GetComponentsInChildren<BoxCollider>();
-            spawnAreaXDown  = spawnAreaTransform[1].GetComponentsInChildren<BoxCollider>();
-
-            spawnAreaYUp = spawnAreaTransform[2].GetComponentsInChildren<BoxCollider>();
-            spawnAreaYDown  = spawnAreaTransform[3].GetComponentsInChildren<BoxCollider>();
-
-            spawnAreaZUp = spawnAreaTransform[4].GetComponentsInChildren<BoxCollider>();
-            spawnAreaZDown  = spawnAreaTransform[5].GetComponentsInChildren<BoxCollider>();
+            for(int i = 0; i < spawnAreaTransform.Length; i++)
+                spawnAreaCollider[i] = spawnAreaTransform[i].GetComponentsInChildren<BoxCollider>();
             
+            currentAreaCollider = spawnAreaCollider[2]; // YDown
+
             NormalMonsterCount = 0;
             FlyingMonsterCount = 0;
 
@@ -129,6 +119,7 @@ namespace Manager
         {
             currentGravityType = gravityType;
             Debug.Log(currentGravityType + "\tcurrentArea : " + (int)currentGravityType);
+            currentAreaCollider = spawnAreaCollider[(int)gravityType];
         }
 
         /// <summary>
@@ -138,40 +129,8 @@ namespace Manager
         /// <returns>현재 중력에 맞는 땅에서 배열에서 랜덤으로 선정된 BoxCollider</returns>
         private BoxCollider GetClosetArea()
         {
-            BoxCollider[] currentArea = null;
-            //spawnAreaTransform[(int)currentGravityType].GetComponentsInChildren<BoxCollider>();
-            //배열로 바꾸면 코드 깔끔해질 수도?
-            //중력 바꿀때만 설정해줘도 됌
-            //지금은 유닛 소환할 때마다 수행함
-            
-            switch (GravityManager.currentGravityType)
-            {
-                case EnumType.GravityType.xUp:
-                    currentArea = spawnAreaXUp;
-                    break;
-                case EnumType.GravityType.xDown:
-                    currentArea = spawnAreaXDown;
-                    break;
-
-                case EnumType.GravityType.yUp:
-                    currentArea = spawnAreaYUp;
-                    
-                    break;
-                case EnumType.GravityType.yDown:
-                    currentArea = spawnAreaYDown;
-                    break;
-
-                case EnumType.GravityType.zUp:
-                    currentArea = spawnAreaZUp;
-                    break;
-                case EnumType.GravityType.zDown:
-                    
-                    currentArea = spawnAreaZDown;
-                    break;
-            }
-            
-            int rand = Random.Range(0,currentArea.Length);
-            return currentArea[rand];
+            int rand = Random.Range(0, currentAreaCollider.Length);
+            return currentAreaCollider[rand];
         }
 
         private Vector3 GetRandomPos()

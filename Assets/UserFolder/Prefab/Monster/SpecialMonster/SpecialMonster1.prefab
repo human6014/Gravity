@@ -2845,18 +2845,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigAnimators: []
   rigBuilders: []
---- !u!114 &130940772857521265
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1237084708034214827}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f136781bac86c88429d014441e36d5d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &130940772857521266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2886,7 +2874,6 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 0
-  target: {fileID: 0}
   navObject: {fileID: 1900749185515397393}
   legController: {fileID: 130940771077909579}
 --- !u!114 &130940772857521268
@@ -2901,10 +2888,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03bc8063c9e95401f9a8a38bc716750d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Method: 1
+  m_Method: 3
   m_Curve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.6006012
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -2918,9 +2923,9 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: -1372625422
   m_Radius: 1
-  m_Speed: 12.5
+  m_Speed: 10
   m_Acceleration: 10
-  avoidancePriority: 40
+  avoidancePriority: 90
   m_AngularSpeed: 180
   m_StoppingDistance: 8
   m_AutoTraverseOffMeshLink: 1
@@ -2928,8 +2933,8 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 1
   m_BaseOffset: 0.1
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_WalkableMask: 29
+  m_ObstacleAvoidanceType: 0
 --- !u!4 &1900749185515397393 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1995623087750956237, guid: f16ce536157c8b244a716fb05ea3fb87,
