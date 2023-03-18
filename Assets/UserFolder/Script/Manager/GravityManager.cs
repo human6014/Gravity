@@ -81,7 +81,7 @@ namespace Manager
 
         public static Vector3Int GetCurrentGravityNoramlDirection() => gravityRotation[(int)currentGravityType];
 
-        public static Vector3Int GetSpecificGravityNormalDirection(int index) => gravityRotation[index];
+        public static Quaternion GetSpecificGravityNormalRotation(int index) => Quaternion.Euler(gravityRotation[index]);
         
         public static Quaternion GetCurrentGravityNormalRotation() => Quaternion.Euler(gravityRotation[(int)currentGravityType]);
     }

@@ -69,10 +69,8 @@ namespace Manager
         private float flyingMonsterTimer;
 
         private int randomNormalMonsterIndex;
-        private int currentNormalMonsterCount;
 
         private int randomFlyingMonsterIndex;
-        private int currentFlyingMonsterCount;
         #endregion
 
         //temp
@@ -142,16 +140,25 @@ namespace Manager
         /// </summary>
         /// <param name="boxCollider">BoxCollider</param>
         /// <returns>Vector3</returns>
-        private Vector3 GetRandomPos(BoxCollider boxCollider)
+        private Vector3 GetRandomPos(BoxCollider boxCollider, float interporateRadius)
         {
-            float rangeX = Random.Range(-boxCollider.bounds.size.x * 0.5f, boxCollider.bounds.size.x * 0.5f);
-            float rangeZ = Random.Range(-boxCollider.bounds.size.z * 0.5f, boxCollider.bounds.size.z * 0.5f);
-            Vector3 randomPos = new(rangeX, 0, rangeZ);
+            interporateRadius *= 0.5f;
 
-            return boxCollider.transform.position + randomPos;
+            float rangeX = Random.Range(
+                -boxCollider.bounds.size.x * 0.5f + interporateRadius,
+                boxCollider.bounds.size.x * 0.5f - interporateRadius);
+            float rangeZ = Random.Range(
+                -boxCollider.bounds.size.z * 0.5f + interporateRadius, 
+                boxCollider.bounds.size.z * 0.5f - interporateRadius);
+
+            return boxCollider.transform.position + new Vector3(rangeX, 0, rangeZ);
         }
 
         #region GetRandomIndex
+        /// <summary>
+        /// 서로 다른 확률에서 무작위 index 산출
+        /// </summary>
+        /// <returns>무작위 int index</returns>
         private int RandomUnitIndex()
         {
             float randomPoint = Random.value * total;
@@ -164,6 +171,12 @@ namespace Manager
             return probs.Length - 1;
         }
 
+        /// <summary>
+        /// spawnAreaCollider 배열에서 특정 값을 제외하고 무작위 index 산출
+        /// </summary>
+        /// <param name="excludeIndex">제외할 index</param>
+        /// <param name="specificIndex">excludeIndex를 제외하고 랜덤으로 나온 index</param>
+        /// <returns>excludeIndex를 제외하고 랜덤으로 나온 BoxCollider[]</returns>
         private BoxCollider[] ExcludeRandomIndex(int excludeIndex, out int specificIndex)
         {
             HashSet<int> exclude = new() { excludeIndex };
@@ -196,7 +209,7 @@ namespace Manager
             customization.Customize(currentNormalMonster);
 
             BoxCollider boxCollider = GetClosetArea(currentAreaCollider);
-            Vector3 pos = GetRandomPos(boxCollider);
+            Vector3 pos = GetRandomPos(boxCollider, 1);
 
             currentNormalMonster.Init(pos, normalMonsterPoolingObjectArray[randomNormalMonsterIndex]);
             currentNormalMonster.gameObject.SetActive(true);
@@ -218,15 +231,13 @@ namespace Manager
         {
             BoxCollider[] initColliders = ExcludeRandomIndex((int)currentGravityType,out int specificIndex);
             BoxCollider initCollider = GetClosetArea(initColliders);
-            Vector3 initPosition = GetRandomPos(initCollider);
-            Quaternion initRotation = Quaternion.LookRotation(transform.forward, GravityManager.GetSpecificGravityNormalDirection(specificIndex));
+            Vector3 initPosition = GetRandomPos(initCollider, 4);
+            Quaternion initRotation = GravityManager.GetSpecificGravityNormalRotation(specificIndex);
 
-            /* //여기 처리해야함
-            SpecialMonster1 specialMonster1 = Instantiate(unitManager.SpecialMonster1, initPosition, initRotation).GetComponent<SpecialMonster1>();
-            specialMonster1.Init();
+            SpecialMonster1 specialMonster1 = Instantiate(unitManager.SpecialMonster1, initPosition, Quaternion.identity).GetComponent<SpecialMonster1>();
+            specialMonster1.Init(initRotation);
 
             IsSP1MonsterSpawned = true;
-            */
         }
     }
 }
