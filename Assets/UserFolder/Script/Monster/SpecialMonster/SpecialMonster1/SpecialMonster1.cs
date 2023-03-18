@@ -41,11 +41,11 @@ namespace Entity.Unit.Special
             Debug.Log(specialMonsterAI.name);
         }
 
-        public void Init()
+        public void Init(Quaternion rotation)
         {
             Debug.Log("Init");
             target = Manager.AI.AIManager.PlayerTransfrom;
-            specialMonsterAI.Init();
+            specialMonsterAI.Init(rotation);
         }
 
         private void FixedUpdate()

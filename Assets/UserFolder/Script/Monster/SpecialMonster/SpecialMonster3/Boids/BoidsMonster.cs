@@ -38,11 +38,11 @@ public class BoidsMonster : PoolableScript
         cachedTransform = GetComponent<Transform>();
     }
 
-    public void Init(Boids _boids, Transform _target)
+    public void Init(Boids _boids)
     {
         myBoids = _boids;
         speed = Random.Range(settings.speedRange.x, settings.speedRange.y);
-        target = _target;
+        target = Manager.AI.AIManager.PlayerTransfrom;
 
         calcEgoWaitSeconds = new WaitForSeconds(Random.Range(1f, 3f));
         findNeighbourSeconds = new WaitForSeconds(Random.Range(1f, 2f));

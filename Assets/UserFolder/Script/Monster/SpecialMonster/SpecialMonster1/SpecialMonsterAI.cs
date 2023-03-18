@@ -61,11 +61,12 @@ public class SpecialMonsterAI : MonoBehaviour
         waitUntil = new WaitUntil(() => !navMeshAgent.isOnOffMeshLink);
     }
 
-    public void Init()
+    public void Init(Quaternion roatation)
     {
         isInit = true;
-
+        transform.rotation = roatation;
         navMeshAgent.enabled = true;
+        Debug.Log("rotation : " + transform.rotation.eulerAngles);
     }
 
     /// <summary>
@@ -73,7 +74,7 @@ public class SpecialMonsterAI : MonoBehaviour
     /// </summary>
     public void OperateAIBehavior()
     {
-        //if (!isInit) return;
+        if (!isInit) return;
         if (!legController.GetIsNavOn())
         {
             animationController.SetIdle();
