@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6219553594974850767}
   - component: {fileID: 7061521755595456874}
   - component: {fileID: 5051745577690543520}
-  - component: {fileID: 6436556232307052910}
+  - component: {fileID: 7491184069587253509}
   m_Layer: 0
   m_Name: BillboardTallAPO 1
   m_TagString: Untagged
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &6436556232307052910
-MeshCollider:
+--- !u!65 &7491184069587253509
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -94,7 +94,6 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4493585093827132993, guid: 52a06252de56e794e976d4a64ee60b85, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.42477688, y: 14.364369, z: 7.5273013}
+  m_Center: {x: -0.13195255, y: 3.0881267, z: -0.063982725}

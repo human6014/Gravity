@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5332639722324834703}
   - component: {fileID: 9056329865237640746}
   - component: {fileID: 6506148187706802912}
-  - component: {fileID: 6451282872557384317}
+  - component: {fileID: 4568131345483540137}
   m_Layer: 0
   m_Name: BillboardTallOLDAPO 1
   m_TagString: Untagged
@@ -85,8 +85,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &6451282872557384317
-MeshCollider:
+--- !u!65 &4568131345483540137
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -95,10 +95,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4493585093827132993, guid: 52a06252de56e794e976d4a64ee60b85, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.33952066, y: 14.415419, z: 7.5568533}
+  m_Center: {x: -0.120315224, y: 3.0955992, z: -0.084603906}
 --- !u!1 &6727699875886681098
 GameObject:
   m_ObjectHideFlags: 0

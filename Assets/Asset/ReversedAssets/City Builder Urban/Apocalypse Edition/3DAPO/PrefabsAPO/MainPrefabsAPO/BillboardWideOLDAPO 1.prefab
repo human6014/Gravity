@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5180985933812902669}
   - component: {fileID: 8091091479306020008}
   - component: {fileID: 6317885747364450402}
-  - component: {fileID: 4493151224198697838}
+  - component: {fileID: 7329091798461625021}
   m_Layer: 0
   m_Name: BillboardWideOLDAPO 1
   m_TagString: Untagged
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &4493151224198697838
-MeshCollider:
+--- !u!65 &7329091798461625021
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -94,7 +94,6 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -1550514412580984892, guid: db7c8c8bd0601ba4aa23ae87eeb2ed3e, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.2859773, y: 8.877813, z: 14.12328}
+  m_Center: {x: -0.2785694, y: 2.6573381, z: 0.021757126}
