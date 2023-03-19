@@ -110,11 +110,13 @@ namespace Manager
                 normalMonsterPoolingObjectArray[i] = ObjectPoolManager.Register(unitManager.GetNormalMonster(i), activeUnitPool);
                 normalMonsterPoolingObjectArray[i].GenerateObj(normalMonsterPoolingCount[i]);
             }
-            for(int i = 0; i < flyingMonsterArrayLength; i++)
+
+            for (int i = 0; i < flyingMonsterArrayLength; i++)
             {
                 flyingMonsterPoolingObjectArray[i] = ObjectPoolManager.Register(unitManager.GetFlyingMonster(i), activeUnitPool);
                 flyingMonsterPoolingObjectArray[i].GenerateObj(flyingMonsterPoolingCount[i]);
             }
+
             GravityManager.GravityChangeAction += (GravityType) => ChangeCurrentArea(GravityType);
         }
 

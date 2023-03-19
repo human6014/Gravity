@@ -2,34 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIManager : MonoBehaviour
+namespace Manager
 {
-    [SerializeField] private GameObject MenuPanel;
-    private bool isMenuPanelActive;
-    public void InputMenuPanelKey()
+    public class UIManager : MonoBehaviour
     {
-        isMenuPanelActive = !isMenuPanelActive;
-        MenuPanel.SetActive(isMenuPanelActive);
-
-        if (isMenuPanelActive)
+        [SerializeField] private GameObject MenuPanel;
+        private bool isMenuPanelActive;
+        public void InputMenuPanelKey()
         {
-            Time.timeScale = 0;
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-        }
-        else
-        {
-            Time.timeScale = 1;
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-    }
+            isMenuPanelActive = !isMenuPanelActive;
+            MenuPanel.SetActive(isMenuPanelActive);
 
-    public void OnClickedExit()
-    {
+            if (isMenuPanelActive)
+            {
+                Time.timeScale = 0;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else
+            {
+                Time.timeScale = 1;
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+        }
+
+        public void OnClickedExit()
+        {
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
+            UnityEditor.EditorApplication.isPlaying = false;
 #endif
-        Application.Quit();
+            Application.Quit();
+        }
     }
 }
