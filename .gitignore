@@ -75,3 +75,4 @@ crashlytics-build.properties
 Assets/Asset/AutoLOD.meta
 Assets/Asset/AutoLOD/*
 Assets/Asset/**/*.png
+Assets/Asset/HQFPSTemplate/FiringRange/*
