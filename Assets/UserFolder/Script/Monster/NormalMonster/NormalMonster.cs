@@ -38,7 +38,7 @@ namespace Entity.Unit.Normal
         public void Move()
         {
             normalMonsterAI.Move();
-            animator.SetBool("isMove", true);
+            //animator.SetBool("isMove", true);
         }
 
         public void Attack()
