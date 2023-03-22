@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01a041be8cb3c214dab10b5c778a0954, type: 3}
+  m_Name: ConcreteSetting
+  m_EditorClassIdentifier: 
+  surfaceType: 0
+  surfaceTextures:
+  - {fileID: 2800000, guid: d4aedca76bb7a3441ba24482ce660f8d, type: 3}
+  - {fileID: 2800000, guid: 95c1fbab3a32a614f8a1c896c9b020e0, type: 3}
+  - {fileID: 2800000, guid: 7ad73b306d99451469e8c99690a11908, type: 3}
+  - {fileID: 2800000, guid: 939091a8195d97d4bb7ddaafa5ea6eb5, type: 3}
+  - {fileID: 2800000, guid: d2b0e90a6384eea4cb54c3e131cf0a56, type: 3}
+  - {fileID: 2800000, guid: b927749ed0f1a87418b7939964ec433d, type: 3}
+  - {fileID: 2800000, guid: f10c8289ae7a8e14fb19c5891d521bea, type: 3}
+  - {fileID: 2800000, guid: 34c678490aade674b9cdfab0fc8959fd, type: 3}
+  - {fileID: 2800000, guid: e6edb86c2cf3a594a8d3ae5a24685a77, type: 3}
+  - {fileID: 2800000, guid: 755586b21936e1b4da14e08fc117254c, type: 3}
+  - {fileID: 2800000, guid: 98cf65005a6147945afec4998ddd6ac2, type: 3}
+  - {fileID: 2800000, guid: f37ac10d1a37d344fb5c5003e7a3747c, type: 3}
+  - {fileID: 2800000, guid: 2ec543921ef399e4c9060fd03ef1a331, type: 3}
+  - {fileID: 2800000, guid: 0606ae90f6e34a04c80f3365c93d68e9, type: 3}
+  - {fileID: 2800000, guid: a86f9c2bcbe43bb4f96e2bf1c03b35d6, type: 3}
+  - {fileID: 2800000, guid: c121d11e0cec07149adfc46e0a485377, type: 3}
+  - {fileID: 2800000, guid: b3fa7cfa9feca2149895d4ceaf771819, type: 3}
+  - {fileID: 2800000, guid: 75910c907c10e854a9a45ca036baf91c, type: 3}
+  - {fileID: 2800000, guid: 6adeab27f52b3094db212aa3ecf7b01f, type: 3}
+  softFootStepEffect:
+    audioClips:
+    - {fileID: 8300000, guid: 2d84e68a178e9a04f8dd0f4d7e03fc5a, type: 3}
+    - {fileID: 8300000, guid: 2006c9bdc030dbe4aa687a03c701583d, type: 3}
+    - {fileID: 8300000, guid: 5df18e464f20ffc4b872b69f8354fcbe, type: 3}
+    - {fileID: 8300000, guid: b81ddd67c4e7ab740b081b27eb36309d, type: 3}
+    - {fileID: 8300000, guid: c1a25a3bee96fe94189f7faad13e8164, type: 3}
+    - {fileID: 8300000, guid: aa1e6fb0be59f694193d6538158b962a, type: 3}
+    - {fileID: 8300000, guid: 8aed68a2248662c4f990bb103d6c5662, type: 3}
+    - {fileID: 8300000, guid: 9d6698803997ed94299c17a08e3ee786, type: 3}
+    effectObject: {fileID: 0}
+  hardFootStepEffect:
+    audioClips:
+    - {fileID: 8300000, guid: 3955e801bf2e87445bc5ce95a551c41f, type: 3}
+    - {fileID: 8300000, guid: de04e526ace7f5d40b6e2da310adfdea, type: 3}
+    - {fileID: 8300000, guid: 9dac2a222a5873e46abbc1e802120d23, type: 3}
+    - {fileID: 8300000, guid: b1c1302a5745a2344a681cb541a95192, type: 3}
+    - {fileID: 8300000, guid: 433b0aac50ddc35449df01ae32188c30, type: 3}
+    - {fileID: 8300000, guid: bfe1c39f82f77a441b8753f07f87c528, type: 3}
+    - {fileID: 8300000, guid: d8b8631ea04b0c64cb734cb75f8f9cd7, type: 3}
+    - {fileID: 8300000, guid: fa33c7624e839444b8bdcceab53f33df, type: 3}
+    effectObject: {fileID: 0}
+  bulletHitEffect:
+    audioClips:
+    - {fileID: 8300000, guid: 20aa996b2e2710040aa01a5fd421c93e, type: 3}
+    - {fileID: 8300000, guid: 7ffe87a839c48e84a815d178035868c7, type: 3}
+    - {fileID: 8300000, guid: 74b5f9e4802f9994eb464033fb2ca593, type: 3}
+    - {fileID: 8300000, guid: 6d0a525b17b1e9343901df81ce47aab6, type: 3}
+    effectObject: {fileID: 1400400831016474, guid: 4b43faee4c9adae4c8b6c834fc7e100e,
+      type: 3}
+  SlashEffect:
+    audioClips:
+    - {fileID: 8300000, guid: 0a97f934f24e8324788f8159de3f0dda, type: 3}
+    - {fileID: 8300000, guid: dc4adcb4c257a6442bec50ddeb9aaddf, type: 3}
+    - {fileID: 8300000, guid: ab5991b243ab1804eaec5d269b3d0df3, type: 3}
+    - {fileID: 8300000, guid: f03edc95d6178354bbe38ffcc77c5ff2, type: 3}
+    effectObject: {fileID: 1400400831016474, guid: 54cbef720580f7c4e894f91d12dc6137,
+      type: 3}

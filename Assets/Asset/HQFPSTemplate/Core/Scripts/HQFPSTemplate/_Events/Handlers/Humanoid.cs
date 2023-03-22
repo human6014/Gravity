@@ -28,7 +28,7 @@ namespace HQFPSTemplate
 		/// <para>bool - continuosly.</para>
 		/// int - use type
 		/// </summary>
-		public readonly Attempt<bool, int> UseItem = new Attempt<bool, int>();
+		public Attempt<bool, int> UseItem { get; } = new Attempt<bool, int>();
 
 		public readonly Activity Walk = new Activity();
 		public readonly Activity Run = new Activity();

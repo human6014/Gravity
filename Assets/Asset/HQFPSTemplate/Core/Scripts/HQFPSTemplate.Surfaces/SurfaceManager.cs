@@ -80,8 +80,7 @@ namespace HQFPSTemplate.Surfaces
 
 				if(effect != null)
 				{
-					effect.transform.position = position;
-					effect.transform.rotation = rotation;
+					effect.transform.SetPositionAndRotation(position, rotation);
 					effect.GetComponent<SurfaceEffect>().Play(audioVolume);
 				}
 			}

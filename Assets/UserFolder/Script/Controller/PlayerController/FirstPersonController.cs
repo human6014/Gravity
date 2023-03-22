@@ -77,6 +77,9 @@ namespace Contoller.Player
         [SerializeField] private Transform m_MouseLookTransform;
 
         [Tooltip("")]
+        [SerializeField] private Transform m_UpAxisTransfrom;
+
+        [Tooltip("")]
         [SerializeField] private CapsuleCollider m_CapsuleCollider;
 
         [Tooltip("")]
@@ -119,8 +122,8 @@ namespace Contoller.Player
             AIManager.PlayerTransfrom = transform;
 
             m_FovKick.Setup(m_Camera);
-            m_HeadBob.Setup(m_Camera, m_StepInterval);
-            m_MouseLook.Setup(m_MouseLookTransform, m_Camera.transform);
+            m_HeadBob.Setup(m_UpAxisTransfrom, m_StepInterval);
+            m_MouseLook.Setup(m_MouseLookTransform, m_UpAxisTransfrom);
 
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
             m_StepCycle = 0f;
@@ -304,17 +307,17 @@ namespace Contoller.Player
             if (!m_UseHeadBob) return;
             if (m_CharacterController.velocity.magnitude > 0 && m_IsGround)
             {
-                m_Camera.transform.localPosition = m_HeadBob.DoHeadBob(m_CharacterController.velocity.magnitude +
+                m_UpAxisTransfrom.localPosition = m_HeadBob.DoHeadBob(m_CharacterController.velocity.magnitude +
                                       (speed * (m_IsWalking ? m_WalkStepLenghten : m_RunStepLenghten)));
-                newCameraPosition = m_Camera.transform.localPosition;
-                newCameraPosition.y = m_Camera.transform.localPosition.y - m_JumpBob.Offset();
+                newCameraPosition = m_UpAxisTransfrom.localPosition;
+                newCameraPosition.y = m_UpAxisTransfrom.localPosition.y - m_JumpBob.Offset();
             }
             else
             {
-                newCameraPosition = m_Camera.transform.localPosition;
+                newCameraPosition = m_UpAxisTransfrom.localPosition;
                 newCameraPosition.y = m_OriginalCameraPosition.y - m_JumpBob.Offset();
             }
-            m_Camera.transform.localPosition = newCameraPosition;
+            m_UpAxisTransfrom.localPosition = newCameraPosition;
         }
 
         private void GetInput(out float speed)
@@ -345,7 +348,7 @@ namespace Contoller.Player
 
         private void RotateView()
         {
-            m_MouseLook.LookRotation(m_MouseLookTransform, m_Camera.transform);
+            m_MouseLook.LookRotation(m_MouseLookTransform, m_UpAxisTransfrom);
         }
 
         private void PositionRay()

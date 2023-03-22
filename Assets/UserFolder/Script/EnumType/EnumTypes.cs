@@ -60,4 +60,11 @@ namespace EnumType
         Idle = 1,
         WalkForward = 2
     }
+
+    public enum SurfaceType
+    {
+        Concrete = 0,
+        Metal = 1,
+        Wood = 2
+    }
 }

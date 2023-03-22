@@ -7,14 +7,14 @@ namespace HQFPSTemplate
 	/// </summary>
 	public class PivotDisplayer : MonoBehaviour
 	{
-		[SerializeField] 
-		private Color m_Color = Color.red;
+		[SerializeField]
+		private Color m_Color { get; set; } = Color.red;
 
 		[SerializeField] 
-		private float m_Radius = 0.06f;
+		private float m_Radius { get; set; } = 0.06f;
 
 		[SerializeField]
-		private bool m_AlwaysDraw = true;
+		private bool m_AlwaysDraw { get; set; } = true;
 
 
         private void Start()
