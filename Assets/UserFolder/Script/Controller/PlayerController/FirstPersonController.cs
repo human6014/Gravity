@@ -11,6 +11,8 @@ namespace Contoller.Player
     [RequireComponent(typeof(AudioSource))]
     public class FirstPersonController : MonoBehaviour
     {
+        public MouseLook M_MouseLook { get => m_MouseLook; private set => m_MouseLook = value; }
+
         #region SerializeField
         [Tooltip("°È±â ¼Óµµ")]
         [SerializeField] private float m_WalkSpeed;
@@ -125,6 +127,7 @@ namespace Contoller.Player
             m_HeadBob.Setup(m_UpAxisTransfrom, m_StepInterval);
             m_MouseLook.Setup(m_MouseLookTransform, m_UpAxisTransfrom);
 
+            M_MouseLook = m_MouseLook;
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
             m_StepCycle = 0f;
             m_NextStep = m_StepCycle / 2f;

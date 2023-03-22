@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Contoller.Player;
 
 namespace Test
 {
@@ -34,6 +35,14 @@ namespace Test
         [SerializeField] private Transform casingSpawnPos;
         [SerializeField] private GameObject casingObj;
         [SerializeField] private float spinValue = 17;
+
+        //ÃÑ ¹Ýµ¿
+        [SerializeField] private FirstPersonController firstPersonController;
+        [SerializeField] private Transform upAxisTransform;
+        [SerializeField] private Transform rightAxisTransform;
+        [SerializeField] private float upAxisRecoil;
+        [SerializeField] private float rightAxisRecoil;
+
         private bool isAiming;
 
         private float currentFireRatio;
@@ -103,8 +112,9 @@ namespace Test
             armAnimator.SetBool("Fire", true);
 
             FireRay();
-
+            FireRecoil();
             fireLight.Play(true);
+            InstanceBullet();
             Invoke(nameof(EndFire), 0.1f);
         }
 
@@ -116,9 +126,11 @@ namespace Test
 
             Rigidbody cassingRB = cassing.GetComponent<Rigidbody>();
 
-            cassingRB.maxAngularVelocity = 1000f;
-            cassingRB.velocity = transform.TransformVector(new Vector3(Random.Range(0.75f, 1.15f), Random.Range(0.9f, 1.1f), Random.Range(0.85f, 1.15f)));
-            cassingRB.angularVelocity = new Vector3( Random.Range(-spinValue, spinValue), Random.Range(-spinValue, spinValue), Random.Range(-spinValue, spinValue));
+            Vector3 randomForce = new Vector3(Random.Range(0.75f,1.25f), Random.Range(0.75f,1.25f),Random.Range(0.75f,1.25f));
+            Vector3 randomTorque = new Vector3(Random.Range(-spinValue, spinValue), Random.Range(-spinValue, spinValue), Random.Range(-spinValue, spinValue));
+            
+            cassingRB.velocity = casingSpawnPos.right + randomForce * 0.5f;
+            cassingRB.angularVelocity = randomTorque;
         }
 
         private void FireRay()
@@ -127,6 +139,16 @@ namespace Test
             {
                 Debug.Log(hit.transform.name);
             }
+        }
+
+        private void FireRecoil()
+        {
+            float upRandom = Random.Range(-0.2f, 0.4f);
+            float rightRandom = Random.Range(-0.15f, 0.2f);
+
+            upRandom += upAxisRecoil;
+            rightRandom += rightAxisRecoil;
+            firstPersonController.M_MouseLook.AddRecoil(upRandom * 0.2f, rightRandom * 0.2f);
         }
 
         private void OnDrawGizmos()
@@ -138,7 +160,7 @@ namespace Test
         private void EndFire()
         {
             fireLight.Stop(true);
-            InstanceBullet();
         }
+
     }
 }
