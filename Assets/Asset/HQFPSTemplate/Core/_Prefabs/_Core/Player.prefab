@@ -847,7 +847,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_LookRoot: {fileID: 1752045307414125563}
-  m_PlayerRoot: {fileID: 4618884511683284}
+  m_PlayerRoot: {fileID: 4971930871791926}
   m_WorldCamera: {fileID: 4794818524231556894}
   m_CameraPhysicsHandler: {fileID: 6548301780290506658}
   m_Invert: 0

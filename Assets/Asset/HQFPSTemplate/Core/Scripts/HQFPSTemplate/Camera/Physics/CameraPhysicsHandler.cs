@@ -159,12 +159,14 @@ namespace HQFPSTemplate
 			m_RotationSpring_Force = new Spring(Spring.Type.AddToLocalRotation, transform, Vector3.zero);
 			m_RotationSpring_Force.Adjust(defaultSpringData);
 
+			//반동
 			// Recoil Springs
 			m_PositionSpring_Recoil = new Spring(Spring.Type.AddToLocalPosition, transform, Vector3.zero, m_SpringController.SpringLerpSpeed);
 			m_PositionSpring_Recoil.Adjust(defaultSpringData);
 			m_RotationSpring_Recoil = new Spring(Spring.Type.AddToLocalRotation, transform, Vector3.zero, m_SpringController.SpringLerpSpeed);
 			m_RotationSpring_Recoil.Adjust(defaultSpringData);
 
+			//떨림
 			// Shake Springs
 			m_PositionShakeSpring = new Spring(Spring.Type.AddToLocalPosition, transform, Vector3.zero);
 			m_PositionShakeSpring.Adjust(m_CameraPhysicsPreset.CameraShakes.ShakeSpringSettings.Position);
@@ -263,18 +265,8 @@ namespace HQFPSTemplate
 			if (m_StateToVisualize != null)
 				TrySetState(m_StateToVisualize);
 			else
-			{
-				if (Player.Run.Active && Player.Velocity.Val.sqrMagnitude > 0.2f)
-					TrySetState(m_CameraPhysicsPreset.RunState);
-				else if (Player.Crouch.Active)
-					TrySetState(m_CameraPhysicsPreset.CrouchState);
-				else if (Player.Prone.Active)
-					TrySetState(m_CameraPhysicsPreset.ProneState);
-				else if (Player.Walk.Active && Player.Velocity.Val.sqrMagnitude > 0.2f)
-					TrySetState(m_CameraPhysicsPreset.WalkState);
-				else
-					TrySetState(m_CameraPhysicsPreset.IdleState);
-			}
+				TrySetState(m_CameraPhysicsPreset.IdleState);
+            
 		}
 
 		private void TrySetState(CameraMotionState state)

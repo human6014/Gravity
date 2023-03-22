@@ -26,7 +26,7 @@ namespace HQFPSTemplate
 		public readonly Value<float> Stamina = new Value<float>(100f);
 
 		public readonly Value<Vector2> MoveInput = new Value<Vector2>(Vector2.zero);
-		public readonly Value<Vector2> LookInput	= new Value<Vector2>(Vector2.zero);
+		public readonly Value<Vector2> LookInput = new Value<Vector2>(Vector2.zero);
 		public readonly Value<float> ScrollValue = new Value<float>(0f);
 
 		public readonly Attempt DestroyEquippedItem = new Attempt();

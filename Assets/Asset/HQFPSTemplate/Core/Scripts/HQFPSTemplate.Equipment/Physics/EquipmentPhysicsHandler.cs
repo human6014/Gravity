@@ -179,8 +179,7 @@ namespace HQFPSTemplate.Equipment
 			m_Pivot.position = m_FPHandler.EquipmentItem.PhysicsPivot != null ? m_FPHandler.EquipmentItem.PhysicsPivot.position : m_Pivot.position;
 			m_Pivot.localRotation = Quaternion.identity;
 
-			transform.position = m_Pivot.position;
-			transform.rotation = m_Pivot.rotation;
+			transform.SetPositionAndRotation(m_Pivot.position, m_Pivot.rotation);
 
 			m_OriginalRootPosition = transform.localPosition;
 			m_OriginalRootRotation = transform.localRotation;
@@ -199,18 +198,18 @@ namespace HQFPSTemplate.Equipment
 				TrySetState(m_StateToVisualize);
 			else
 			{
-				if (Player.Run.Active && Player.Velocity.Val.sqrMagnitude > 0.2f && Player.UseItem.LastExecutionTime + 0.3f < Time.time)
-					TrySetState(m_Physics.RunState);
-				else if (Player.Aim.Active)
-					TrySetState(m_Physics.AimState);
-				else if (Player.Crouch.Active)
-					TrySetState(m_Physics.CrouchState);
-				else if (Player.Prone.Active)
-					TrySetState(m_Physics.ProneState);
-				else if (Player.Walk.Active && Player.Velocity.Val.sqrMagnitude > 0.2f)
-					TrySetState(m_Physics.WalkState);
-				else
-					TrySetState(m_Physics.IdleState);
+                if (Player.Run.Active && Player.Velocity.Val.sqrMagnitude > 0.2f && Player.UseItem.LastExecutionTime + 0.3f < Time.time)
+                    TrySetState(m_Physics.RunState);
+                else if (Player.Aim.Active)
+                    TrySetState(m_Physics.AimState);
+                else if (Player.Crouch.Active)
+                    TrySetState(m_Physics.CrouchState);
+                else if (Player.Prone.Active)
+                    TrySetState(m_Physics.ProneState);
+                else if (Player.Walk.Active && Player.Velocity.Val.sqrMagnitude > 0.2f)
+                    TrySetState(m_Physics.WalkState);
+                else
+                    TrySetState(m_Physics.IdleState);
 			}
 		}
 

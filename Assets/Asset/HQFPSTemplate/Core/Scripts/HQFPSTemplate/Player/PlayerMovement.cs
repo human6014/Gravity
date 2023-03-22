@@ -259,7 +259,7 @@ namespace HQFPSTemplate
                 if (surfaceAngle > m_SlidingState.SlideTreeshold && Player.MoveInput.Get().sqrMagnitude == 0f)
                 {
                     Vector3 slideDirection = (SurfaceNormal + Vector3.down);
-                    m_SlideVelocity += slideDirection * m_SlidingState.SlideSpeed * deltaTime;
+                    m_SlideVelocity += deltaTime * m_SlidingState.SlideSpeed * slideDirection;
                 }
                 else
                     m_SlideVelocity = Vector3.Lerp(m_SlideVelocity, Vector3.zero, deltaTime * 10f);
@@ -294,7 +294,7 @@ namespace HQFPSTemplate
                 velocity.y = 0f;
 
             // Modify the current velocity by taking into account how well we can change direction when not grounded (see "m_AirControl" tooltip).
-            velocity += targetVelocity * m_CoreMovement.Acceleration * m_CoreMovement.AirborneControl * deltaTime;
+            velocity += deltaTime * m_CoreMovement.Acceleration * m_CoreMovement.AirborneControl * targetVelocity;
 
             // Apply gravity.
             velocity.y -= m_Gravity * deltaTime;

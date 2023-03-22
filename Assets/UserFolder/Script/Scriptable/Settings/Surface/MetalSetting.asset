@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01a041be8cb3c214dab10b5c778a0954, type: 3}
+  m_Name: MetalSetting
+  m_EditorClassIdentifier: 
+  surfaceType: 1
+  surfaceTextures:
+  - {fileID: 2800000, guid: 1b3b533b9cf561c4ba11897cff74a816, type: 3}
+  - {fileID: 2800000, guid: b5d1f8b72fe688f4c9da23f90c9232ef, type: 3}
+  - {fileID: 2800000, guid: 71506c648da73df4894810bce7b0af9a, type: 3}
+  - {fileID: 2800000, guid: f3460cd2eb7fc9649afb6d6b12a9a561, type: 3}
+  - {fileID: 2800000, guid: 914623ab69a3a8946b469aba6d651bba, type: 3}
+  - {fileID: 2800000, guid: 1a60675c2a1f1f74ebf4139b815510fb, type: 3}
+  - {fileID: 2800000, guid: b5cb8a0face3ea048b9bedb476397842, type: 3}
+  - {fileID: 2800000, guid: 8c42050528d03fb44a629292f4a31003, type: 3}
+  - {fileID: 2800000, guid: 6ba2de6f6b90a45478c9ca1b32803b22, type: 3}
+  - {fileID: 2800000, guid: 9d8cc4c2469c89c4da74998d9c9d6fd4, type: 3}
+  softFootStepEffect:
+    audioClips:
+    - {fileID: 8300000, guid: a39c5741fa8ad5b438204dacbd530328, type: 3}
+    - {fileID: 8300000, guid: 195a5dcd2c7efbc41b8a1d996cbbdccd, type: 3}
+    - {fileID: 8300000, guid: b331ac1ebd9e65f49befa0fd52ecd373, type: 3}
+    - {fileID: 8300000, guid: 3f744aab2ff46fc4690eb1b5f6a64134, type: 3}
+    - {fileID: 8300000, guid: b16b24383465c614e861176b05f2c5ed, type: 3}
+    effectObject: {fileID: 0}
+  hardFootStepEffect:
+    audioClips:
+    - {fileID: 8300000, guid: a39c5741fa8ad5b438204dacbd530328, type: 3}
+    - {fileID: 8300000, guid: 195a5dcd2c7efbc41b8a1d996cbbdccd, type: 3}
+    - {fileID: 8300000, guid: b331ac1ebd9e65f49befa0fd52ecd373, type: 3}
+    - {fileID: 8300000, guid: 3f744aab2ff46fc4690eb1b5f6a64134, type: 3}
+    - {fileID: 8300000, guid: b16b24383465c614e861176b05f2c5ed, type: 3}
+    effectObject: {fileID: 0}
+  bulletHitEffect:
+    audioClips:
+    - {fileID: 8300000, guid: 8d6bf0a5cec1ad94a9febbb9815a663d, type: 3}
+    - {fileID: 8300000, guid: 469b65d5f826a1f4aa2ec7b5db5f1ae0, type: 3}
+    effectObject: {fileID: 1400400831016474, guid: f35c53b65b128c64e9eb1e059b95cd8b,
+      type: 3}
+  SlashEffect:
+    audioClips:
+    - {fileID: 8300000, guid: 5011cf025399ca341a7d8b42f42059c2, type: 3}
+    - {fileID: 8300000, guid: 7b719669c086b0248b8c95f302fba92b, type: 3}
+    - {fileID: 8300000, guid: f5eb38bf5ff7298498ecd00cde021d6d, type: 3}
+    effectObject: {fileID: 1927458547345702, guid: 5a7529d00e1918e4dab1dc05b50a16da,
+      type: 3}
