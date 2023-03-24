@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 370236961163355702}
   - component: {fileID: 1515297309485860220}
   - component: {fileID: -5898309080003733242}
-  m_Layer: 10
+  m_Layer: 23
   m_Name: "Casing_5.56\xD745mm"
   m_TagString: Untagged
   m_Icon: {fileID: 0}

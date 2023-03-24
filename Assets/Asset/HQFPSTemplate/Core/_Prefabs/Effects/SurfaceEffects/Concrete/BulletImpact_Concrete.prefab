@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4767479139746990}
   - component: {fileID: 198195493263207730}
   - component: {fileID: 199405100905017164}
-  m_Layer: 0
+  m_Layer: 26
   m_Name: Dust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4665,7 +4665,7 @@ GameObject:
   - component: {fileID: 4233019483613802}
   - component: {fileID: 198510784393261386}
   - component: {fileID: 199899309603002762}
-  m_Layer: 0
+  m_Layer: 26
   m_Name: Decal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9555,7 +9555,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4604030165143522}
-  m_Layer: 0
+  m_Layer: 26
   m_Name: BulletImpact_Concrete
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9591,7 +9591,7 @@ GameObject:
   - component: {fileID: 230593092642091913}
   - component: {fileID: 230593092642091915}
   - component: {fileID: 230593092642091912}
-  m_Layer: 0
+  m_Layer: 26
   m_Name: ImpactDebris
   m_TagString: Untagged
   m_Icon: {fileID: 0}

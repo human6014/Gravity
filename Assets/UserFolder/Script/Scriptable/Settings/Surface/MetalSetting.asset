@@ -13,17 +13,14 @@ MonoBehaviour:
   m_Name: MetalSetting
   m_EditorClassIdentifier: 
   surfaceType: 1
-  surfaceTextures:
-  - {fileID: 2800000, guid: 1b3b533b9cf561c4ba11897cff74a816, type: 3}
-  - {fileID: 2800000, guid: b5d1f8b72fe688f4c9da23f90c9232ef, type: 3}
-  - {fileID: 2800000, guid: 71506c648da73df4894810bce7b0af9a, type: 3}
-  - {fileID: 2800000, guid: f3460cd2eb7fc9649afb6d6b12a9a561, type: 3}
-  - {fileID: 2800000, guid: 914623ab69a3a8946b469aba6d651bba, type: 3}
-  - {fileID: 2800000, guid: 1a60675c2a1f1f74ebf4139b815510fb, type: 3}
-  - {fileID: 2800000, guid: b5cb8a0face3ea048b9bedb476397842, type: 3}
-  - {fileID: 2800000, guid: 8c42050528d03fb44a629292f4a31003, type: 3}
-  - {fileID: 2800000, guid: 6ba2de6f6b90a45478c9ca1b32803b22, type: 3}
-  - {fileID: 2800000, guid: 9d8cc4c2469c89c4da74998d9c9d6fd4, type: 3}
+  surfaceMaterials:
+  - {fileID: 2100000, guid: 00520ddba31e50549aa706582643a1fd, type: 2}
+  - {fileID: 2100000, guid: 6246fae3a0a685d4885da39a18c81745, type: 2}
+  - {fileID: 2100000, guid: 00e88856552857643a6197aa3d0fbd5b, type: 2}
+  - {fileID: 2100000, guid: d3486fa2e3350e54aaa2b9014869b1dc, type: 2}
+  - {fileID: 2100000, guid: be704f81e98a70f4fa3ea3f492cafeac, type: 2}
+  - {fileID: 2100000, guid: 69fbdc8fd39053f4fa8befd0fc4d9de4, type: 2}
+  - {fileID: 2100000, guid: ac198fc9e5a28d1499139a8562e98652, type: 2}
   softFootStepEffect:
     audioClips:
     - {fileID: 8300000, guid: a39c5741fa8ad5b438204dacbd530328, type: 3}
@@ -46,7 +43,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 469b65d5f826a1f4aa2ec7b5db5f1ae0, type: 3}
     effectObject: {fileID: 1400400831016474, guid: f35c53b65b128c64e9eb1e059b95cd8b,
       type: 3}
-  SlashEffect:
+  SlashHitEffect:
     audioClips:
     - {fileID: 8300000, guid: 5011cf025399ca341a7d8b42f42059c2, type: 3}
     - {fileID: 8300000, guid: 7b719669c086b0248b8c95f302fba92b, type: 3}

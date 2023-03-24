@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: WoodSetting
   m_EditorClassIdentifier: 
   surfaceType: 2
-  surfaceTextures:
-  - {fileID: 2800000, guid: eee3619b3e6f4df4396ea5942315451e, type: 3}
-  - {fileID: 2800000, guid: f07b3e628809141449d2c5bf328c8b6f, type: 3}
-  - {fileID: 2800000, guid: b46f92f555fdc98469aa1376e4320aeb, type: 3}
-  - {fileID: 2800000, guid: 5085f13d4d12695458ada4193888ae82, type: 3}
-  - {fileID: 2800000, guid: 2e06fb962ea3c9b42adddec85050eeef, type: 3}
-  - {fileID: 2800000, guid: a84edfa6c35b50d449e1b407cde3e79e, type: 3}
-  - {fileID: 2800000, guid: ffddc2acd1e477742bf801c817d8aa86, type: 3}
+  surfaceMaterials:
+  - {fileID: 2100000, guid: cb33da5bc42cf3d43998eca2bfba76ee, type: 2}
+  - {fileID: 2100000, guid: ea33d4b621219654ea7b9de024e9a0ca, type: 2}
+  - {fileID: 2100000, guid: f44e1abe5c61d934384647e51cb85801, type: 2}
+  - {fileID: 2100000, guid: da6cf64d86c69fe438d157b1d55fdcb0, type: 2}
+  - {fileID: 2100000, guid: d56863fcfe2b82746abfa7418c3bf4e8, type: 2}
+  - {fileID: 2100000, guid: 00ae118b228d10f43afacc1b5a50e0ce, type: 2}
+  - {fileID: 2100000, guid: c3bd5c3a46a42454d842d1cff4b94180, type: 2}
   softFootStepEffect:
     audioClips:
     - {fileID: 8300000, guid: c22e4ce38e4006a4ea0a10152772911b, type: 3}
@@ -46,7 +46,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 74127a67d82a8164d80b9e506e742633, type: 3}
     effectObject: {fileID: 1400400831016474, guid: ed73b04b299849840aa8e5dd1dcd2987,
       type: 3}
-  SlashEffect:
+  SlashHitEffect:
     audioClips:
     - {fileID: 8300000, guid: 266b1c96b5b39de479fbcee38f8eabf9, type: 3}
     - {fileID: 8300000, guid: 8603db9f5ccb5bf4c8bf77323354dc5c, type: 3}

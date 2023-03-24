@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4604030165143522}
-  m_Layer: 0
+  m_Layer: 26
   m_Name: HitImpact_Concrete
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 4385522155550822}
   - component: {fileID: 198980615080401060}
   - component: {fileID: 199063338050697158}
-  m_Layer: 0
+  m_Layer: 26
   m_Name: Dust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4699,7 +4699,7 @@ GameObject:
   - component: {fileID: 7423104535620918281}
   - component: {fileID: 7334879340351295011}
   - component: {fileID: 7334343296180966189}
-  m_Layer: 0
+  m_Layer: 26
   m_Name: Decal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9591,7 +9591,7 @@ GameObject:
   - component: {fileID: 7429812520561842621}
   - component: {fileID: 7335121497360935773}
   - component: {fileID: 7334208748401098737}
-  m_Layer: 0
+  m_Layer: 26
   m_Name: ImpactDebris
   m_TagString: Untagged
   m_Icon: {fileID: 0}

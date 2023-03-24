@@ -31,10 +31,12 @@ namespace Test
         [SerializeField] private LayerMask bulletLayer;
         [SerializeField] private float bulletMaxRange = 100;
 
+
         //발사 시 탄피 나가는거
         [SerializeField] private Transform casingSpawnPos;
         [SerializeField] private GameObject casingObj;
         [SerializeField] private float spinValue = 17;
+
 
         //총 반동
         [SerializeField] private FirstPersonController firstPersonController;
@@ -42,6 +44,12 @@ namespace Test
         [SerializeField] private Transform rightAxisTransform;
         [SerializeField] private float upAxisRecoil;
         [SerializeField] private float rightAxisRecoil;
+
+
+        //피격시 자국
+        
+        [SerializeField] private GameObject hitImpact;
+        private Manager.SurfaceManager surfaceManager;
 
         private bool isAiming;
 
@@ -53,6 +61,7 @@ namespace Test
         {
             mainCamera = Camera.main;
             equipmentAnimator = GetComponent<Animator>();
+            surfaceManager = FindObjectOfType<Manager.SurfaceManager>();
             originalPivotPosition = pivot.localPosition;
             originalPivotRotation = pivot.localEulerAngles;
         }
@@ -137,7 +146,22 @@ namespace Test
         {
             if (Physics.Raycast(muzzle.position, mainCamera.transform.forward, out RaycastHit hit, bulletMaxRange, bulletLayer, QueryTriggerInteraction.Ignore))
             {
-                Debug.Log(hit.transform.name);
+                GameObject effectObject;
+                int hitLayer = hit.transform.gameObject.layer;
+                if (hitLayer == 14)effectObject = surfaceManager.GetBulletHitEffectPair(0).effectObject;
+                else if (hitLayer == 17) effectObject = surfaceManager.GetBulletHitEffectPair(1).effectObject;
+                else
+                {
+                    if (!hit.transform.TryGetComponent(out MeshRenderer meshRenderer)) return;
+                    if (meshRenderer.sharedMaterial == null) return;
+                    //Debug.Log(meshRenderer.sharedMaterial);
+                    effectObject = surfaceManager.GetSurfaceBulletEffectObject(meshRenderer.sharedMaterial);
+                    if (effectObject == null) return;
+                }
+                
+                
+                Instantiate(effectObject, hit.point, Quaternion.LookRotation(hit.normal));
+
             }
         }
 
