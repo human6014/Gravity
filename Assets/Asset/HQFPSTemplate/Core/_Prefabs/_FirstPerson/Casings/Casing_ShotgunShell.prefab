@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2076597268}
   - component: {fileID: 2076597270}
   - component: {fileID: 2076597269}
-  m_Layer: 10
+  m_Layer: 23
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4904,7 +4904,7 @@ GameObject:
   - component: {fileID: 4101286824290720953}
   - component: {fileID: 8212814203445318504}
   - component: {fileID: 2470467891761936102}
-  m_Layer: 10
+  m_Layer: 23
   m_Name: Casing_ShotgunShell
   m_TagString: Untagged
   m_Icon: {fileID: 0}

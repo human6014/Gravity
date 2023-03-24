@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7163729751038231031}
   - component: {fileID: 5286013096758561187}
   - component: {fileID: -702124083539657584}
-  m_Layer: 10
+  m_Layer: 23
   m_Name: Casing_FlareGun_Flare
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3117185300920178797}
   - component: {fileID: 3117185300920178799}
   - component: {fileID: 3117185300920178796}
-  m_Layer: 10
+  m_Layer: 26
   m_Name: DebrisSmoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4748,7 +4748,7 @@ GameObject:
   - component: {fileID: 3117185301073819210}
   - component: {fileID: 3117185301073819211}
   - component: {fileID: 3117185301073819208}
-  m_Layer: 10
+  m_Layer: 26
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9601,7 +9601,7 @@ GameObject:
   - component: {fileID: 3117185301738310023}
   - component: {fileID: 3117185301738310073}
   - component: {fileID: 3117185301738310022}
-  m_Layer: 10
+  m_Layer: 26
   m_Name: ShockWave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14639,7 +14639,7 @@ GameObject:
   - component: {fileID: 3117185301815315642}
   - component: {fileID: 3117185301815315644}
   - component: {fileID: 3117185301815315645}
-  m_Layer: 10
+  m_Layer: 26
   m_Name: DerisFire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19355,7 +19355,7 @@ GameObject:
   - component: {fileID: 3117185301982063845}
   - component: {fileID: 3117185301982063847}
   - component: {fileID: 3117185301982063844}
-  m_Layer: 10
+  m_Layer: 26
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24102,7 +24102,7 @@ GameObject:
   - component: {fileID: 3117185302338715021}
   - component: {fileID: 3117185302338715023}
   - component: {fileID: 3117185302338715020}
-  m_Layer: 10
+  m_Layer: 26
   m_Name: Debris
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28810,7 +28810,7 @@ GameObject:
   - component: {fileID: 3117185302626721557}
   - component: {fileID: 3117185302626721559}
   - component: {fileID: 3117185302626721556}
-  m_Layer: 10
+  m_Layer: 26
   m_Name: Embers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33566,7 +33566,7 @@ GameObject:
   - component: {fileID: 3117185302799446145}
   - component: {fileID: 3117185302799446147}
   - component: {fileID: 3117185302799446144}
-  m_Layer: 10
+  m_Layer: 26
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}

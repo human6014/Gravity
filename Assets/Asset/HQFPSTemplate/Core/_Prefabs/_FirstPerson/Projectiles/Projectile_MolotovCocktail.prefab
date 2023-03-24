@@ -5198,6 +5198,7 @@ GameObject:
   - component: {fileID: 4390351110393035038}
   - component: {fileID: 6954998859346151026}
   - component: {fileID: 4677709211396812381}
+  - component: {fileID: 5340662331457910580}
   m_Layer: 10
   m_Name: LingeringFire
   m_TagString: Untagged
@@ -10244,6 +10245,26 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1.7
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5340662331457910580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4389716880930541455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 1
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
 --- !u!1 &4390351108999256091
 GameObject:
   m_ObjectHideFlags: 0
@@ -10255,7 +10276,7 @@ GameObject:
   - component: {fileID: 4390351108999256090}
   - component: {fileID: 4390351108999256084}
   - component: {fileID: 4390351108999256085}
-  m_Layer: 10
+  m_Layer: 26
   m_Name: DebrisSmoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14990,7 +15011,7 @@ GameObject:
   - component: {fileID: 4390351109176747238}
   - component: {fileID: 4390351109176747232}
   - component: {fileID: 4390351109176747233}
-  m_Layer: 10
+  m_Layer: 26
   m_Name: Debris
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19698,7 +19719,7 @@ GameObject:
   - component: {fileID: 4390351109475967808}
   - component: {fileID: 4390351109475967810}
   - component: {fileID: 4390351109475967811}
-  m_Layer: 10
+  m_Layer: 26
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24580,7 +24601,7 @@ GameObject:
   - component: {fileID: 4390351109490048019}
   - component: {fileID: 4390351109490048045}
   - component: {fileID: 4390351109490048018}
-  m_Layer: 10
+  m_Layer: 26
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29327,7 +29348,7 @@ GameObject:
   - component: {fileID: 4390351109817616216}
   - component: {fileID: 4390351109817616218}
   - component: {fileID: 4390351109817616219}
-  m_Layer: 10
+  m_Layer: 26
   m_Name: DerisFire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34043,7 +34064,7 @@ GameObject:
   - component: {fileID: 4390351110322054334}
   - component: {fileID: 4390351110322054328}
   - component: {fileID: 4390351110322054329}
-  m_Layer: 10
+  m_Layer: 26
   m_Name: Embers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38801,7 +38822,7 @@ GameObject:
   - component: {fileID: 4390351110720477239}
   - component: {fileID: 4390351110720477237}
   - component: {fileID: 4390351109637440848}
-  m_Layer: 10
+  m_Layer: 26
   m_Name: ImpactExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}

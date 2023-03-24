@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1275762584690890674}
   - component: {fileID: 338493423202965313}
   - component: {fileID: 1272988669053006031}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Pickup_FragGrenade_Pin_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: -4953765060084642107}
   - component: {fileID: 2450587873524535709}
   - component: {fileID: 171461882525224026}
-  m_Layer: 10
+  m_Layer: 23
   m_Name: FragGrenade_Pin
   m_TagString: Untagged
   m_Icon: {fileID: 0}

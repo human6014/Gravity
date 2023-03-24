@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6402821090065942993}
   - component: {fileID: 4984340598819202541}
   - component: {fileID: -3547659261378324585}
-  m_Layer: 10
+  m_Layer: 23
   m_Name: Casing_45ACP
   m_TagString: Untagged
   m_Icon: {fileID: 0}

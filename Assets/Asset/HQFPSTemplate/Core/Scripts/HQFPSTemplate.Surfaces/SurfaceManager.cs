@@ -62,7 +62,7 @@ namespace HQFPSTemplate.Surfaces
 		private string m_SurfacesPath = "Surfaces/";
 
 		private SurfaceInfo[] m_Surfaces;
-		private Dictionary<Collider, TerrainInfo> m_SceneTerrains;
+		private Dictionary<Collider, TerrainInfo> m_SceneTerrains { get; set; }
 
 
 		public static void SpawnEffect(RaycastHit hitInfo, SurfaceEffects effectType, float audioVolume)

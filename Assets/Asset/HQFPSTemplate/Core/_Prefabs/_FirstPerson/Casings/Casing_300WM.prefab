@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7205382469422671968}
   - component: {fileID: 1866527559420537053}
   - component: {fileID: -2817805176672233034}
-  m_Layer: 10
+  m_Layer: 23
   m_Name: Casing_300WM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
