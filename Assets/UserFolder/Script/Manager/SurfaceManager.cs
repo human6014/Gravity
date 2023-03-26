@@ -25,6 +25,7 @@ namespace Manager
 
         public EffectPair GetSlashHitEffectPair(int index) => surfaceInfo[index].SlashHitEffect;
 
+
         private void Awake()
         {
             HasingSurfaceMaterials();

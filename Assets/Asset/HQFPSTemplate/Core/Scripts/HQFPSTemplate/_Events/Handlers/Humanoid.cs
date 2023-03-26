@@ -31,7 +31,7 @@ namespace HQFPSTemplate
 		public Attempt<bool, int> UseItem { get; } = new Attempt<bool, int>();
 
 		public readonly Activity Walk = new Activity();
-		public readonly Activity Run = new Activity();
+		public Activity Run { get; set; } = new Activity();
 		public readonly Activity Crouch = new Activity();
 		public readonly Activity Prone = new Activity();
 

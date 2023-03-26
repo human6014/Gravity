@@ -27,31 +27,44 @@ namespace Test
 
         
         //발사 시 총 나가는거
-        [SerializeField] private Camera mainCamera;
-        [SerializeField] private LayerMask bulletLayer;
-        [SerializeField] private float bulletMaxRange = 100;
+        [SerializeField] private Camera mainCamera;         //총 발사 위치용 메인카메라
+        [SerializeField] private LayerMask bulletLayer;     //총 피격 레이어
+        [SerializeField] private float bulletMaxRange = 100;    //총 사거리
 
 
         //발사 시 탄피 나가는거
-        [SerializeField] private Transform casingSpawnPos;
-        [SerializeField] private GameObject casingObj;
-        [SerializeField] private float spinValue = 17;
+        [SerializeField] private Transform casingSpawnPos;  //탄피 생성 위치
+        [SerializeField] private GameObject casingObj;      //탄피 오브젝트
+        [SerializeField] private float spinValue = 17;      //탄피 회전값
 
 
         //총 반동
-        [SerializeField] private FirstPersonController firstPersonController;
-        [SerializeField] private Transform upAxisTransform;
-        [SerializeField] private Transform rightAxisTransform;
-        [SerializeField] private float upAxisRecoil;
-        [SerializeField] private float rightAxisRecoil;
+        [SerializeField] private FirstPersonController firstPersonController;   //반동시 카메라 각도 변경용 MouseLook 참조값 얻기
+        [SerializeField] private Transform upAxisTransform;         //상하 반동 오브젝트
+        [SerializeField] private Transform rightAxisTransform;      //좌우 반동 오브젝트
+        [SerializeField] private float upAxisRecoil;            //상하 반동 값
+        [SerializeField] private float rightAxisRecoil;         //좌우 반동 값
 
 
         //피격시 자국
-        
-        [SerializeField] private GameObject hitImpact;
         private Manager.SurfaceManager surfaceManager;
 
+        //크로스 헤어 총기별로 설정
+        [SerializeField] private CrossHairController crossHairController;   //총기별 크로스 헤어 설정을 위한 UI관리 스크립트
+
+        //발사 + 피격 소리
+        [SerializeField] private AudioSource audioSource;           //소리 내기 위한 AudioSource 
+        [SerializeField] private Scriptable.GunInfoScriptable gunInfo;  //각종 소리를 담은 스크립터블
+
+
+        //달릴때 총(pivot) 위치
+        [SerializeField] private Vector3 runningPivotPosition;  
+        [SerializeField] private Vector3 runningPivotRotation;
+        private Quaternion lookRotation;
+
+        private bool isRunning;
         private bool isAiming;
+        private bool canFire;
 
         private float currentFireRatio;
         private float fireRatio = 0.15f;
@@ -64,6 +77,8 @@ namespace Test
             surfaceManager = FindObjectOfType<Manager.SurfaceManager>();
             originalPivotPosition = pivot.localPosition;
             originalPivotRotation = pivot.localEulerAngles;
+
+            //crossHairController = FindObjectOfType<CrossHairController>();
         }
 
         private void Start()
@@ -72,6 +87,10 @@ namespace Test
 
             equipmentAnimator.SetBool("Equip", true);
             armAnimator.SetBool("Equip", true);
+
+            crossHairController.SetCrossHair(1);
+
+            lookRotation = Quaternion.Euler(runningPivotRotation);
         }
 
         //Arm 애니메이터 덮어씌우기
@@ -79,7 +98,7 @@ namespace Test
         {
             armAnimator.runtimeAnimatorController = armOverrideController;
         }
-
+        
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.R))
@@ -88,29 +107,74 @@ namespace Test
                 armAnimator.SetTrigger("Reload");
             }
 
-            if(Input.GetKey(KeyCode.Mouse1))
-            {
-                isAiming = true;
-                equipmentAnimator.SetInteger("Idle Index", 0);
-                armAnimator.SetInteger("Idle Index", 0);
 
-                pivot.localPosition = Vector3.Lerp(pivot.localPosition, aimingPivotPosition, 0.07f);
-                pivot.localEulerAngles = Vector3.Lerp(pivot.localEulerAngles, aimingPivotRotation, 0.07f);
+            if (!firstPersonController.m_IsWalking)
+            {
+                Debug.Log("Running");
+
+                //pivot.localPosition = Vector3.Lerp(pivot.localPosition, runningPivotPosition, 0.08f);
+                //pivot.localRotation = Quaternion.Lerp(pivot.rotation, Quaternion.Euler(runningPivotRotation), 0.08f);
+
+                canFire = false;
+                if (!isRunning)
+                {
+                    isRunning = true;
+                    StopAllCoroutines();
+                    StartCoroutine(RunningPos());
+                }
             }
             else
             {
-                isAiming = false;
-                equipmentAnimator.SetInteger("Idle Index", 1);
-                armAnimator.SetInteger("Idle Index", 1);
+                if (isRunning) StopAllCoroutines();
+                isRunning = false;
+                canFire = true;
+                if (Input.GetKey(KeyCode.Mouse1))
+                {
+                    isAiming = true;
+                    equipmentAnimator.SetInteger("Idle Index", 0);
+                    armAnimator.SetInteger("Idle Index", 0);
 
-                pivot.localPosition = Vector3.Lerp(pivot.localPosition,originalPivotPosition, 0.07f);
-                pivot.localEulerAngles = Vector3.Lerp(pivot.localEulerAngles,originalPivotRotation, 0.07f);
+                    pivot.localPosition = Vector3.Lerp(pivot.localPosition, aimingPivotPosition, 0.07f);
+                    pivot.localRotation = Quaternion.Lerp(pivot.localRotation, Quaternion.Euler(aimingPivotRotation), 0.07f);
+                }
+                else
+                {
+                    isAiming = false;
+                    equipmentAnimator.SetInteger("Idle Index", 1);
+                    armAnimator.SetInteger("Idle Index", 1);
+
+                    pivot.localPosition = Vector3.Lerp(pivot.localPosition, originalPivotPosition, 0.07f);
+                    pivot.localRotation = Quaternion.Lerp(pivot.localRotation, Quaternion.Euler(originalPivotRotation), 0.07f);
+                }
             }
 
             currentFireRatio += Time.deltaTime;
-            if (Input.GetKey(KeyCode.Mouse0) && currentFireRatio > fireRatio)
+            if (Input.GetKey(KeyCode.Mouse0) && currentFireRatio > fireRatio && canFire)
             {
                 Fire();
+            }
+        }
+
+        private void Reload()
+        {
+
+        }
+
+        private IEnumerator RunningPos()
+        {
+            float currentTime = 0;
+            float t;
+            Vector3 currentLocalPosition = pivot.localPosition;
+            Quaternion currentLocalRotation = pivot.localRotation;
+            while (currentTime < 1)
+            {
+                currentTime += Time.deltaTime;
+
+                t = currentTime / 1;
+                pivot.localPosition = Vector3.Lerp(currentLocalPosition, runningPivotPosition, t);
+                pivot.localRotation = Quaternion.Lerp(currentLocalRotation, Quaternion.Euler(runningPivotRotation),t);
+
+                yield return t;
             }
         }
 
@@ -144,24 +208,43 @@ namespace Test
 
         private void FireRay()
         {
+            AudioClip audioClip = gunInfo.fireSound[Random.Range(0, gunInfo.fireSound.Length)];
+
+            audioSource.PlayOneShot(audioClip);
             if (Physics.Raycast(muzzle.position, mainCamera.transform.forward, out RaycastHit hit, bulletMaxRange, bulletLayer, QueryTriggerInteraction.Ignore))
             {
                 GameObject effectObject;
+                Scriptable.EffectPair effectPair;
+
                 int hitLayer = hit.transform.gameObject.layer;
-                if (hitLayer == 14)effectObject = surfaceManager.GetBulletHitEffectPair(0).effectObject;
-                else if (hitLayer == 17) effectObject = surfaceManager.GetBulletHitEffectPair(1).effectObject;
+                if (hitLayer == 14)
+                {
+                    effectPair = surfaceManager.GetBulletHitEffectPair(0);
+                    effectObject = effectPair.effectObject;
+                    audioClip = effectPair.audioClips[Random.Range(0, effectPair.audioClips.Length)];
+                }
+                else if (hitLayer == 17)
+                {
+                    effectPair = surfaceManager.GetBulletHitEffectPair(1);
+                    effectObject = effectPair.effectObject;
+                    audioClip = effectPair.audioClips[Random.Range(0, effectPair.audioClips.Length)];
+                }
                 else
                 {
                     if (!hit.transform.TryGetComponent(out MeshRenderer meshRenderer)) return;
                     if (meshRenderer.sharedMaterial == null) return;
                     //Debug.Log(meshRenderer.sharedMaterial);
-                    effectObject = surfaceManager.GetSurfaceBulletEffectObject(meshRenderer.sharedMaterial);
-                    if (effectObject == null) return;
-                }
-                
-                
-                Instantiate(effectObject, hit.point, Quaternion.LookRotation(hit.normal));
+                    int surfaceIndex = surfaceManager.IsInMaterial(meshRenderer.sharedMaterial);
+                    if (surfaceIndex == -1) return;
+                    effectPair = surfaceManager.GetBulletHitEffectPair(surfaceIndex);
 
+                    effectObject = effectPair.effectObject;
+                    audioClip = effectPair.audioClips[Random.Range(0, effectPair.audioClips.Length)];
+                }
+
+                AudioSource.PlayClipAtPoint(audioClip, hit.point);
+
+                Instantiate(effectObject, hit.point, Quaternion.LookRotation(hit.normal));
             }
         }
 
@@ -172,7 +255,7 @@ namespace Test
 
             upRandom += upAxisRecoil;
             rightRandom += rightAxisRecoil;
-            firstPersonController.M_MouseLook.AddRecoil(upRandom * 0.2f, rightRandom * 0.2f);
+            firstPersonController.MouseLook.AddRecoil(upRandom * 0.2f, rightRandom * 0.2f);
         }
 
         private void OnDrawGizmos()

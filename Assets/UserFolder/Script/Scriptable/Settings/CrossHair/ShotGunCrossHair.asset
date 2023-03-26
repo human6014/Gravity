@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3edd2e8b3bf2503448ae5ecda8a8f6b9, type: 3}
+  m_Name: ShotGunCrossHair
+  m_EditorClassIdentifier: 
+  centerSprite: {fileID: 0}
+  leftSprit: {fileID: 21300000, guid: 67467fe8cc67b7348b41949cfab7f3ef, type: 3}
+  rightSprite: {fileID: 21300000, guid: e438d0b41e22d244eb22a61259b6143a, type: 3}
+  topSprite: {fileID: 21300000, guid: 09016fb39f7a32143becbcead1012542, type: 3}
+  bottomSprite: {fileID: 21300000, guid: b1dea41ba25d4fd459a5763d4d9ec567, type: 3}
+  crossHairSprite:
+  - {fileID: 0}
+  - {fileID: 21300000, guid: 67467fe8cc67b7348b41949cfab7f3ef, type: 3}
+  - {fileID: 21300000, guid: e438d0b41e22d244eb22a61259b6143a, type: 3}
+  - {fileID: 21300000, guid: 09016fb39f7a32143becbcead1012542, type: 3}
+  - {fileID: 21300000, guid: b1dea41ba25d4fd459a5763d4d9ec567, type: 3}

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7546128650555029345}
   - component: {fileID: 5515345530112586277}
-  - component: {fileID: 3370352200075880577}
   m_Layer: 0
   m_Name: BusStopSignAPO 1
   m_TagString: Untagged
@@ -63,20 +62,6 @@ LODGroup:
     renderers:
     - renderer: {fileID: 8619446137998572692}
   m_Enabled: 1
---- !u!64 &3370352200075880577
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1477926633992132072}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -6453615262258438565, guid: 4c3653c6a350e8f4fba4c9f2871401f1, type: 3}
 --- !u!1001 &382927204357683321
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -167,6 +152,26 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 382927204357683321}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &689340544070944040 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 92d109a7a9ad245469800fa8a72e4e7f,
+    type: 3}
+  m_PrefabInstance: {fileID: 382927204357683321}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &975197192266768334
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689340544070944040}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -6453615262258438565, guid: 92d109a7a9ad245469800fa8a72e4e7f, type: 3}
 --- !u!23 &1338127515141547261 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 92d109a7a9ad245469800fa8a72e4e7f,
@@ -358,6 +363,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6ff11068528e45448131e3c21144e1b, type: 3}
+--- !u!1 &7187267093030753277 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e6ff11068528e45448131e3c21144e1b,
+    type: 3}
+  m_PrefabInstance: {fileID: 8034180420444548780}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &2350204463564253623
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7187267093030753277}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -6453615262258438565, guid: e6ff11068528e45448131e3c21144e1b, type: 3}
 --- !u!4 &7563124854816475463 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e6ff11068528e45448131e3c21144e1b,

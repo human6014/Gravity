@@ -11,7 +11,7 @@ namespace Contoller.Player
     [RequireComponent(typeof(AudioSource))]
     public class FirstPersonController : MonoBehaviour
     {
-        public MouseLook M_MouseLook { get => m_MouseLook; private set => m_MouseLook = value; }
+        public MouseLook MouseLook { get => m_MouseLook; private set => m_MouseLook = value; }
 
         #region SerializeField
         [Tooltip("걷기 속도")]
@@ -100,7 +100,7 @@ namespace Contoller.Player
         private float m_NextStep;
         private readonly float m_InterporationDist = -0.1f;
 
-        private bool m_IsWalking;           //걷고 있는지
+        public bool m_IsWalking { get; private set; }           //걷고 있는지
         private bool m_PreviouslyGrounded;  //이전 프레임에서 지상이었는지
         private bool m_Jumping;             //점프하고 있는지
         private bool m_Jump;                //점프키 입력 감지
@@ -127,7 +127,7 @@ namespace Contoller.Player
             m_HeadBob.Setup(m_UpAxisTransfrom, m_StepInterval);
             m_MouseLook.Setup(m_MouseLookTransform, m_UpAxisTransfrom);
 
-            M_MouseLook = m_MouseLook;
+            MouseLook = m_MouseLook;
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
             m_StepCycle = 0f;
             m_NextStep = m_StepCycle / 2f;

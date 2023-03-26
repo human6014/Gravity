@@ -254,6 +254,7 @@ GameObject:
   - component: {fileID: 8084020763478152124}
   - component: {fileID: 5511343958190213828}
   - component: {fileID: 6853793955179285414}
+  - component: {fileID: 4137019973917042061}
   m_Layer: 15
   m_Name: TrafficLight1LAAPO 1_LOD1
   m_TagString: Untagged
@@ -326,3 +327,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &4137019973917042061
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6748442258395730801}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 58f4fa706d0ac92428d6d71f506c5ce1, type: 2}
