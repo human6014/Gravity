@@ -21,6 +21,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: be704f81e98a70f4fa3ea3f492cafeac, type: 2}
   - {fileID: 2100000, guid: 69fbdc8fd39053f4fa8befd0fc4d9de4, type: 2}
   - {fileID: 2100000, guid: ac198fc9e5a28d1499139a8562e98652, type: 2}
+  - {fileID: 2100000, guid: d56863fcfe2b82746abfa7418c3bf4e8, type: 2}
   softFootStepEffect:
     audioClips:
     - {fileID: 8300000, guid: a39c5741fa8ad5b438204dacbd530328, type: 3}

@@ -18,7 +18,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: ea33d4b621219654ea7b9de024e9a0ca, type: 2}
   - {fileID: 2100000, guid: f44e1abe5c61d934384647e51cb85801, type: 2}
   - {fileID: 2100000, guid: da6cf64d86c69fe438d157b1d55fdcb0, type: 2}
-  - {fileID: 2100000, guid: d56863fcfe2b82746abfa7418c3bf4e8, type: 2}
   - {fileID: 2100000, guid: 00ae118b228d10f43afacc1b5a50e0ce, type: 2}
   - {fileID: 2100000, guid: c3bd5c3a46a42454d842d1cff4b94180, type: 2}
   softFootStepEffect:
