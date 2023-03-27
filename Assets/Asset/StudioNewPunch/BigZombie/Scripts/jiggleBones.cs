@@ -19,7 +19,7 @@ public class jiggleBones : MonoBehaviour {
 	public Transform targetBone;
 	
 	// Target and dynamic positions
-	Vector3 targetPos = new Vector3();
+	//Vector3 targetPos = new Vector3();
 	Vector3 dynamicPos = new Vector3();
 
 	// Bone settings

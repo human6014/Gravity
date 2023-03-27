@@ -11,6 +11,7 @@ namespace Contoller.Player
     [RequireComponent(typeof(AudioSource))]
     public class FirstPersonController : MonoBehaviour
     {
+        private PlayerInputController m_PlayerInputController;
         public MouseLook MouseLook { get => m_MouseLook; private set => m_MouseLook = value; }
 
         #region SerializeField
@@ -114,8 +115,10 @@ namespace Contoller.Player
             KeyCode.X,
             KeyCode.C
         };
+
         private void Awake()
         {
+            m_PlayerInputController = GetComponent<PlayerInputController>();
             m_CharacterController = GetComponent<CharacterController>();
             m_Camera = m_MouseLookTransform.GetComponentInChildren<Camera>();
             m_AudioSource = GetComponent<AudioSource>();
@@ -132,11 +135,12 @@ namespace Contoller.Player
             m_StepCycle = 0f;
             m_NextStep = m_StepCycle / 2f;
             m_Jumping = false;
+
+            m_PlayerInputController.MouseInput += TryRotateView;
         }
 
         private void Update()
         {
-            RotateView();
             // the jump state needs to read here to make sure it is not missed
             float mouseScroll = Input.GetAxis("Mouse ScrollWheel");
 
@@ -346,9 +350,9 @@ namespace Contoller.Player
             }
         }
 
-        private void RotateView()
+        private void TryRotateView(float mouseHorizontal, float mouseVertical)
         {
-            m_MouseLook.LookRotation(m_MouseLookTransform, m_UpAxisTransfrom);
+            m_MouseLook.LookRotation(m_MouseLookTransform, m_UpAxisTransfrom, mouseHorizontal, mouseVertical);
         }
 
         private void PositionRay()

@@ -67,8 +67,8 @@ namespace Manager
                 if (poolableQueue.Count > 0) obj = poolableQueue.Dequeue();
                 else                         obj = CreateNewObject();
 
-                obj.gameObject.SetActive(preActive);
                 obj.transform.SetParent(parent);
+                obj.gameObject.SetActive(preActive);
 
                 return obj;
             }

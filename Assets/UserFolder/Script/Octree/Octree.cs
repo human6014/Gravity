@@ -9,7 +9,6 @@ using UnityEngine;
 public class Octree : MonoBehaviour
 {
     [SerializeField] private Transform destination;
-    [SerializeField] private PathfindingAlgorith algorithm = PathfindingAlgorith.AStar;
     [SerializeField] private LayerMask mask = -1;
     [SerializeField] private float minCellSize = 4;
     [SerializeField] private float maxMilisecondsPerFrame = 10;
@@ -25,8 +24,7 @@ public class Octree : MonoBehaviour
     private Vector3[] spawnableArea = new Vector3[5000];
     private int currentIndex;
 
-    //임시용
-    private List<OctreeElement> gizmoMap = new();
+
 
     public Vector3 GetRandomSpawnableArea() => spawnableArea[UnityEngine.Random.Range(0, currentIndex)];
     private void Awake()
@@ -59,6 +57,10 @@ public class Octree : MonoBehaviour
         CalculateNeighborsRecursive(root);
     }
 
+    #region Only unity editor
+#if UNITY_EDITOR
+    //임시용
+    private List<OctreeElement> gizmoMap = new();
     private void OnDrawGizmosSelected()
     {
         if (cellCount == 0) return;
@@ -72,6 +74,8 @@ public class Octree : MonoBehaviour
             Gizmos.DrawWireCube(gizmoMap[i].Bounds.center, gizmoMap[i].Bounds.extents);
         }
     }
+#endif
+    #endregion
 
     private void Update()
     {

@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class SettingUIManager : MonoBehaviour
 {
+    [SerializeField] private SettingPanel m_SettingPanel;
+
     private GameObject m_GameUI;
     private GameObject m_SettingUI;
 
-    private bool m_IsActiveSettingUI;
+    public bool m_IsActiveSettingUI { get; private set; }
     private void Awake()
     {
         m_GameUI = transform.GetChild(0).gameObject;
         m_SettingUI = transform.GetChild(1).gameObject;
 
-        MouseCursorSetting(false);
+        MouseModeSetting(false);
     }
 
     private void Update()
@@ -21,16 +23,25 @@ public class SettingUIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             m_IsActiveSettingUI = !m_IsActiveSettingUI;
-            m_SettingUI.SetActive(m_IsActiveSettingUI);
-            MouseCursorSetting(m_IsActiveSettingUI);
-            Time.timeScale = m_IsActiveSettingUI ? 0 : 1;
+            m_SettingPanel.TryActive(m_IsActiveSettingUI);
+            MouseModeSetting(m_IsActiveSettingUI);
         }
     }
 
-    private void MouseCursorSetting(bool isActiveSettingUI)
+    private void MouseModeSetting(bool isActiveSettingUI)
     {
         Cursor.visible = isActiveSettingUI;
-        if (isActiveSettingUI) Cursor.lockState = CursorLockMode.None;
-        else Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = isActiveSettingUI ? CursorLockMode.None : CursorLockMode.Locked;
+        Time.timeScale = isActiveSettingUI ? 0 : 1;
+    }
+
+    public void Resume()
+    {
+        Debug.Log("Resume");
+    }
+
+    public void ReturnLobby()
+    {
+        Debug.Log("ReturnLobby");
     }
 }
