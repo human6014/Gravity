@@ -8,6 +8,8 @@ namespace Test
 {
     public class AnimationGun_Test : MonoBehaviour
     {
+        [SerializeField] private PlayerInputController m_PlayerInputController;
+
         //애니메이션
         private Animator equipmentAnimator; //현재 자신의 무기 에니메이터
         [SerializeField] private Animator armAnimator; //팔 애니메이터
@@ -78,18 +80,18 @@ namespace Test
         private bool isEquip;
         private bool isRunning;
         private bool isAiming;
-        private bool canFire;
+        private bool canFirePosture;
         private bool isCrouch;
 
         private float currentFireRatio;
 
         private enum FireMode
         {
-            fullAuto = 0,
-            semiAuto,
-            burst
+            Auto = 0,
+            Semi,
+            Burst
         }
-        FireMode fireMode = FireMode.fullAuto;
+        FireMode fireMode = FireMode.Auto;
         private int fireModeIndex = 0;
         private void Awake()
         {
@@ -101,6 +103,13 @@ namespace Test
 
             idlePos = rightAxisTransform.localPosition;
             crouchPos = rightAxisTransform.localPosition - crouchInterporatePos;
+
+            m_PlayerInputController.Reload += TryReload;
+            m_PlayerInputController.Crouch += TryCrouch;
+            m_PlayerInputController.ChangeFireMode += TryChangeFireMode;
+            m_PlayerInputController.AutoFire += TryAutoFire;
+            m_PlayerInputController.SemiFire += TrySemiFire;
+            m_PlayerInputController.Aiming += TryAiming;
         }
 
         private void Start()
@@ -121,19 +130,10 @@ namespace Test
         
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                canFire = false;
-                
-                if (false) //총알이 있을 때
-                    StartCoroutine(Reload(false, gunInfo.reloadSoundClips));
-                else //총알이 없을 때
-                    StartCoroutine(Reload(true, gunInfo.emptyReloadSoundClips));
-            }
-
+            currentFireRatio += Time.deltaTime;
             if (!firstPersonController.m_IsWalking)
             {
-                canFire = false;
+                canFirePosture = false;
                 if (!isRunning)
                 {
                     isRunning = true;
@@ -144,69 +144,63 @@ namespace Test
             else
             {
                 if (isRunning) StopAllCoroutines();
-                isRunning = false;
-                canFire = true;
-                if (Input.GetKeyDown(KeyCode.LeftControl))
-                {
-                    isCrouch = !isCrouch;
-                    StopAllCoroutines();
-                    if (isCrouch)
-                        StartCoroutine(CrouchPos(crouchTime, rightAxisTransform, crouchPos));
-                    else
-                        StartCoroutine(CrouchPos(crouchTime, rightAxisTransform, idlePos));
-                }
-
-                if (Input.GetKey(KeyCode.Mouse1))
-                {
-                    isAiming = true;
-
-                    pivot.localPosition = Vector3.Lerp(pivot.localPosition, aimingPivotPosition, 0.07f);
-                    pivot.localRotation = Quaternion.Lerp(pivot.localRotation, Quaternion.Euler(aimingPivotRotation), 0.07f);
-                }
-                else
-                {
-                    isAiming = false;
-
-                    pivot.localPosition = Vector3.Lerp(pivot.localPosition, originalPivotPosition, 0.07f);
-                    pivot.localRotation = Quaternion.Lerp(pivot.localRotation, Quaternion.Euler(originalPivotRotation), 0.07f);
-                }
             }
+        }
 
+        private void TryAiming(bool isAiming)
+        {
+            this.isAiming = isAiming;
+
+            if (isAiming) AimingPosRot(aimingPivotPosition, Quaternion.Euler(aimingPivotRotation));
+            else AimingPosRot(originalPivotPosition, Quaternion.Euler(originalPivotRotation));
+            isRunning = false;
+            canFirePosture = true;
             SetCurrentFireIndex();
-            if (Input.GetKeyDown(KeyCode.N))
-            {
-                equipmentAnimator.SetTrigger("ChangeFireMode");
-                armAnimator.SetTrigger("ChangeFireMode");
+        }
 
-                audioSource.PlayOneShot(gunInfo.changeModeSound[0]);
-                
-                fireModeIndex = (fireModeIndex + 1) % 3;
-                fireMode = (FireMode)fireModeIndex;
-            }
+        private void AimingPosRot(Vector3 EndPosition, Quaternion EndRotation)
+        {
+            pivot.localPosition = Vector3.Lerp(pivot.localPosition, EndPosition, 0.07f);
+            pivot.localRotation = Quaternion.Lerp(pivot.localRotation, EndRotation, 0.07f);
+        }
 
-            currentFireRatio += Time.deltaTime;
-            if(currentFireRatio > fireRatio && canFire)
+        private void TryChangeFireMode()
+        {
+            equipmentAnimator.SetTrigger("ChangeFireMode");
+            armAnimator.SetTrigger("ChangeFireMode");
+
+            audioSource.PlayOneShot(gunInfo.changeModeSound[0]);
+
+            fireModeIndex = (fireModeIndex + 1) % 3;
+            fireMode = (FireMode)fireModeIndex;
+        }
+
+        private bool CanFire() => currentFireRatio > fireRatio && canFirePosture;
+
+        private void TryAutoFire()
+        {
+            if (fireMode != FireMode.Auto) return;
+            if(CanFire()) Fire();
+        }
+
+        private void TrySemiFire()
+        {
+            if (fireMode == FireMode.Auto) return;
+            if (CanFire())
             {
-                switch (fireMode)
-                {
-                    case FireMode.fullAuto:
-                        if (Input.GetKey(KeyCode.Mouse0))
-                            Fire();
-                        break;
-                    case FireMode.semiAuto:
-                        if (Input.GetKeyDown(KeyCode.Mouse0))
-                            Fire();
-                        break;
-                    case FireMode.burst:
-                        if (Input.GetKeyDown(KeyCode.Mouse0))
-                            StartCoroutine(BurstFire());
-                        break;
-                }
+                if (fireMode == FireMode.Semi) Fire();
+                else if (fireMode == FireMode.Burst) StartCoroutine(BurstFire());
             }
-            //if (Input.GetKey(KeyCode.Mouse0) && currentFireRatio > fireRatio && canFire)
-            //{
-            //    Fire();
-            //}
+        }
+
+        private void TryCrouch(bool isCrouch)
+        {
+            this.isCrouch = isCrouch;
+            StopAllCoroutines();
+            if (isCrouch)
+                StartCoroutine(CrouchPos(crouchTime, rightAxisTransform, crouchPos));
+            else
+                StartCoroutine(CrouchPos(crouchTime, rightAxisTransform, idlePos));
         }
 
         private void SetCurrentFireIndex()
@@ -229,6 +223,13 @@ namespace Test
             }
         }
 
+        private void TryReload()
+        {
+            canFirePosture = false;
+            StartCoroutine(Reload(true, gunInfo.emptyReloadSoundClips));
+            //StartCoroutine(Reload(false, gunInfo.emptyReloadSoundClips));
+        }
+
         private IEnumerator Reload(bool isEmpty, GunInfoScriptable.DelaySoundClip[] ReloadSoundClip)
         {
             string animParamName = isEmpty == true ? "Empty Reload" : "Reload";
@@ -247,7 +248,7 @@ namespace Test
                 audioSource.PlayOneShot(ReloadSoundClip[i].audioClip);
                 if (i == magazineSpawnTiming) InstanceMagazine();
             }
-            canFire = true;
+            canFirePosture = true;
         }
 
         private IEnumerator CrouchPos(float runTotalTime, Transform target, Vector3 endLocalPosition)

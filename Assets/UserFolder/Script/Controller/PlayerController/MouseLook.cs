@@ -21,8 +21,6 @@ namespace Contoller.Player.Utility
 
         private Quaternion m_CharacterTargetRot;
         private Quaternion m_CameraTargetRot;
-        private bool m_cursorIsLocked = true;
-
 
         public void Setup(Transform character, Transform camera)
         {
@@ -30,10 +28,10 @@ namespace Contoller.Player.Utility
             m_CameraTargetRot = camera.localRotation;
         }
 
-        public void LookRotation(Transform character, Transform camera)
+        public void LookRotation(Transform character, Transform camera, float mouseHorizontal, float mouseVertical)
         {
-            float yRot = rightAxisRecoil + Input.GetAxis("Mouse X") * XSensitivity;
-            float xRot = upAxisRecoil + Input.GetAxis("Mouse Y") * YSensitivity;
+            float yRot = rightAxisRecoil + mouseHorizontal * XSensitivity;
+            float xRot = upAxisRecoil + mouseVertical * YSensitivity;
 
             rightAxisRecoil -= recoilSpeed * Time.deltaTime;
             upAxisRecoil -= recoilSpeed * Time.deltaTime;
@@ -59,36 +57,6 @@ namespace Contoller.Player.Utility
                 character.localRotation = m_CharacterTargetRot;
                 camera.localRotation = m_CameraTargetRot;
             }
-
-            //UpdateCursorLock();
-        }
-
-
-        public void SetCursorLock(bool value)
-        {
-            lockCursor = value;
-            if (!lockCursor)
-            {
-                //we force unlock the cursor if the user disable the cursor locking helper
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            }
-        }
-
-        public void UpdateCursorLock()
-        {
-            //if the user set "lockCursor" we check & properly lock the cursos
-            if (lockCursor) InternalLockUpdate();
-        }
-
-        private void InternalLockUpdate()
-        {
-            if (Input.GetKeyUp(KeyCode.Escape)) m_cursorIsLocked = false;
-            else if (Input.GetMouseButtonUp(0)) m_cursorIsLocked = true;
-
-            if (m_cursorIsLocked) Cursor.lockState = CursorLockMode.Locked;
-            else Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = !m_cursorIsLocked;
         }
 
         private Quaternion ClampRotationAroundXAxis(Quaternion q)

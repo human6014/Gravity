@@ -292,7 +292,7 @@ Material:
     - _EnableFogOnTransparent: 1
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
-    - _FOV: 49
+    - _FOV: 43
     - _GlossMapScale: 0.9
     - _Glossiness: 0.5
     - _GlossyReflections: 1
