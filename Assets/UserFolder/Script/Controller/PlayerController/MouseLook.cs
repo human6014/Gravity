@@ -60,7 +60,7 @@ namespace Contoller.Player.Utility
                 camera.localRotation = m_CameraTargetRot;
             }
 
-            UpdateCursorLock();
+            //UpdateCursorLock();
         }
 
 
