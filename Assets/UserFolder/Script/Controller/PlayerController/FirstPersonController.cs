@@ -134,7 +134,6 @@ namespace Contoller.Player
             m_Jumping = false;
         }
 
-
         private void Update()
         {
             RotateView();
@@ -157,13 +156,11 @@ namespace Contoller.Player
                 StartCoroutine(m_JumpBob.DoBobCycle());
                 PlayLandingSound();
                 CustomGravityChange(false,0);
-                //m_MoveDir.y = 0f;
                 m_Jumping = false;
             }
             if (!m_IsGround && !m_Jumping && m_PreviouslyGrounded)
             {
                 CustomGravityChange(false,0);
-                //m_MoveDir.y = 0f;
             }
 
             m_PreviouslyGrounded = m_IsGround;
@@ -224,7 +221,7 @@ namespace Contoller.Player
             ProgressStepCycle(speed);
             UpdateCameraPosition(speed);
 
-            m_MouseLook.UpdateCursorLock();
+            //m_MouseLook.UpdateCursorLock();
         }
 
         private void CustomGravityChange(bool isDuple, float value)

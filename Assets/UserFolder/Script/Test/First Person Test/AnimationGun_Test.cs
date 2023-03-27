@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Contoller.Player;
+using Scriptable;
 
 namespace Test
 {
@@ -30,7 +31,7 @@ namespace Test
         [SerializeField] private Camera mainCamera;         //총 발사 위치용 메인카메라
         [SerializeField] private LayerMask bulletLayer;     //총 피격 레이어
         [SerializeField] private float bulletMaxRange = 100;    //총 사거리
-
+        [SerializeField] private float fireRatio = 0.15f;       //총 발사 속도
 
         //발사 시 탄피 나가는거
         [SerializeField] private Transform casingSpawnPos;  //탄피 생성 위치
@@ -53,23 +54,43 @@ namespace Test
         [SerializeField] private CrossHairController crossHairController;   //총기별 크로스 헤어 설정을 위한 UI관리 스크립트
 
         //발사 + 피격 소리
-        [SerializeField] private AudioSource audioSource;           //소리 내기 위한 AudioSource 
+        [SerializeField] private AudioSource audioSource;               //소리 내기 위한 AudioSource 
         [SerializeField] private Scriptable.GunInfoScriptable gunInfo;  //각종 소리를 담은 스크립터블
 
 
         //달릴때 총(pivot) 위치
-        [SerializeField] private Vector3 runningPivotPosition;  
-        [SerializeField] private Vector3 runningPivotRotation;
-        private Quaternion lookRotation;
+        [SerializeField] private Vector3 runningPivotPosition;      //달릴 때 pivot 위치
+        [SerializeField] private Vector3 runningPivotRotation;      //달릴 때 pivot 각도
+        [SerializeField] private float runPosTime = 1;              //달리는 자세로 전환 시간
 
+
+        //재장전시 탄알집 떨어뜨리기
+        [SerializeField] private GameObject magazine;           //탄알집 오브젝트
+        [SerializeField] private Transform magazineSpawnPos;    //탄알집 생성 위치
+
+        //앉기랑 다시 일어나기
+        [SerializeField] Vector3 crouchInterporatePos;          //앉기, 일어나기 증감값
+        [SerializeField] float crouchTime = 0.3f;               //앉기, 일어나기 자세 전환 시간
+        private Vector3 idlePos;                                //일어난 상태 원래 위치
+        private Vector3 crouchPos;                              //앉은 상태 위치
+
+
+        private bool isEquip;
         private bool isRunning;
         private bool isAiming;
         private bool canFire;
+        private bool isCrouch;
 
         private float currentFireRatio;
-        private float fireRatio = 0.15f;
-        private bool isAimingIn;
-        private bool isAimingOut;
+
+        private enum FireMode
+        {
+            fullAuto = 0,
+            semiAuto,
+            burst
+        }
+        FireMode fireMode = FireMode.fullAuto;
+        private int fireModeIndex = 0;
         private void Awake()
         {
             mainCamera = Camera.main;
@@ -78,7 +99,8 @@ namespace Test
             originalPivotPosition = pivot.localPosition;
             originalPivotRotation = pivot.localEulerAngles;
 
-            //crossHairController = FindObjectOfType<CrossHairController>();
+            idlePos = rightAxisTransform.localPosition;
+            crouchPos = rightAxisTransform.localPosition - crouchInterporatePos;
         }
 
         private void Start()
@@ -89,8 +111,6 @@ namespace Test
             armAnimator.SetBool("Equip", true);
 
             crossHairController.SetCrossHair(1);
-
-            lookRotation = Quaternion.Euler(runningPivotRotation);
         }
 
         //Arm 애니메이터 덮어씌우기
@@ -103,18 +123,16 @@ namespace Test
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
-                equipmentAnimator.SetTrigger("Reload");
-                armAnimator.SetTrigger("Reload");
+                canFire = false;
+                
+                if (false) //총알이 있을 때
+                    StartCoroutine(Reload(false, gunInfo.reloadSoundClips));
+                else //총알이 없을 때
+                    StartCoroutine(Reload(true, gunInfo.emptyReloadSoundClips));
             }
-
 
             if (!firstPersonController.m_IsWalking)
             {
-                Debug.Log("Running");
-
-                //pivot.localPosition = Vector3.Lerp(pivot.localPosition, runningPivotPosition, 0.08f);
-                //pivot.localRotation = Quaternion.Lerp(pivot.rotation, Quaternion.Euler(runningPivotRotation), 0.08f);
-
                 canFire = false;
                 if (!isRunning)
                 {
@@ -128,11 +146,19 @@ namespace Test
                 if (isRunning) StopAllCoroutines();
                 isRunning = false;
                 canFire = true;
+                if (Input.GetKeyDown(KeyCode.LeftControl))
+                {
+                    isCrouch = !isCrouch;
+                    StopAllCoroutines();
+                    if (isCrouch)
+                        StartCoroutine(CrouchPos(crouchTime, rightAxisTransform, crouchPos));
+                    else
+                        StartCoroutine(CrouchPos(crouchTime, rightAxisTransform, idlePos));
+                }
+
                 if (Input.GetKey(KeyCode.Mouse1))
                 {
                     isAiming = true;
-                    equipmentAnimator.SetInteger("Idle Index", 0);
-                    armAnimator.SetInteger("Idle Index", 0);
 
                     pivot.localPosition = Vector3.Lerp(pivot.localPosition, aimingPivotPosition, 0.07f);
                     pivot.localRotation = Quaternion.Lerp(pivot.localRotation, Quaternion.Euler(aimingPivotRotation), 0.07f);
@@ -140,47 +166,133 @@ namespace Test
                 else
                 {
                     isAiming = false;
-                    equipmentAnimator.SetInteger("Idle Index", 1);
-                    armAnimator.SetInteger("Idle Index", 1);
 
                     pivot.localPosition = Vector3.Lerp(pivot.localPosition, originalPivotPosition, 0.07f);
                     pivot.localRotation = Quaternion.Lerp(pivot.localRotation, Quaternion.Euler(originalPivotRotation), 0.07f);
                 }
             }
 
-            currentFireRatio += Time.deltaTime;
-            if (Input.GetKey(KeyCode.Mouse0) && currentFireRatio > fireRatio && canFire)
+            SetCurrentFireIndex();
+            if (Input.GetKeyDown(KeyCode.N))
             {
-                Fire();
+                equipmentAnimator.SetTrigger("ChangeFireMode");
+                armAnimator.SetTrigger("ChangeFireMode");
+
+                audioSource.PlayOneShot(gunInfo.changeModeSound[0]);
+                
+                fireModeIndex = (fireModeIndex + 1) % 3;
+                fireMode = (FireMode)fireModeIndex;
+            }
+
+            currentFireRatio += Time.deltaTime;
+            if(currentFireRatio > fireRatio && canFire)
+            {
+                switch (fireMode)
+                {
+                    case FireMode.fullAuto:
+                        if (Input.GetKey(KeyCode.Mouse0))
+                            Fire();
+                        break;
+                    case FireMode.semiAuto:
+                        if (Input.GetKeyDown(KeyCode.Mouse0))
+                            Fire();
+                        break;
+                    case FireMode.burst:
+                        if (Input.GetKeyDown(KeyCode.Mouse0))
+                            StartCoroutine(BurstFire());
+                        break;
+                }
+            }
+            //if (Input.GetKey(KeyCode.Mouse0) && currentFireRatio > fireRatio && canFire)
+            //{
+            //    Fire();
+            //}
+        }
+
+        private void SetCurrentFireIndex()
+        {
+            if(isAiming)
+            {
+                equipmentAnimator.SetFloat("Fire Index", 1);
+                armAnimator.SetFloat("Fire Index", 1); 
+                
+                equipmentAnimator.SetInteger("Idle Index", 0);
+                armAnimator.SetInteger("Idle Index", 0);
+            }
+            else
+            {
+                equipmentAnimator.SetFloat("Fire Index", 0);
+                armAnimator.SetFloat("Fire Index", 0);
+
+                equipmentAnimator.SetInteger("Idle Index", 1);
+                armAnimator.SetInteger("Idle Index", 1);
             }
         }
 
-        private void Reload()
+        private IEnumerator Reload(bool isEmpty, GunInfoScriptable.DelaySoundClip[] ReloadSoundClip)
         {
+            string animParamName = isEmpty == true ? "Empty Reload" : "Reload";
+            int magazineSpawnTiming = ReloadSoundClip.Length / 2;
+            float elapsedTime = 0;
+            float delayTime;
 
+            equipmentAnimator.SetTrigger(animParamName);
+            armAnimator.SetTrigger(animParamName);
+
+            for(int i = 0; i < ReloadSoundClip.Length; i++)
+            {
+                delayTime = ReloadSoundClip[i].delayTime;
+                yield return new WaitForSeconds(delayTime);
+                elapsedTime += delayTime;
+                audioSource.PlayOneShot(ReloadSoundClip[i].audioClip);
+                if (i == magazineSpawnTiming) InstanceMagazine();
+            }
+            canFire = true;
+        }
+
+        private IEnumerator CrouchPos(float runTotalTime, Transform target, Vector3 endLocalPosition)
+        {
+            float currentTime = 0;
+            float elapsedTime;
+            Vector3 startLocalPosition = target.localPosition;
+            while (currentTime < runTotalTime)
+            {
+                currentTime += Time.deltaTime;
+
+                elapsedTime = currentTime / runTotalTime;
+                target.localPosition = Vector3.Lerp(startLocalPosition, endLocalPosition, elapsedTime);
+                yield return elapsedTime;
+            }
+        }
+
+        private void InstanceMagazine()
+        {
+            Quaternion magazineSpawnRotation = Quaternion.Euler(Random.Range(-30, 30), Random.Range(-30, 30), Random.Range(-30, 30));
+            Instantiate(magazine, magazineSpawnPos.position, magazineSpawnRotation);
         }
 
         private IEnumerator RunningPos()
         {
             float currentTime = 0;
-            float t;
-            Vector3 currentLocalPosition = pivot.localPosition;
-            Quaternion currentLocalRotation = pivot.localRotation;
-            while (currentTime < 1)
+            float elapsedTime;
+            Vector3 startLocalPosition = pivot.localPosition;
+            Quaternion startLocalRotation = pivot.localRotation;
+            while (currentTime < runPosTime)
             {
                 currentTime += Time.deltaTime;
 
-                t = currentTime / 1;
-                pivot.localPosition = Vector3.Lerp(currentLocalPosition, runningPivotPosition, t);
-                pivot.localRotation = Quaternion.Lerp(currentLocalRotation, Quaternion.Euler(runningPivotRotation),t);
+                elapsedTime = currentTime / runPosTime;
+                pivot.localPosition = Vector3.Lerp(startLocalPosition, runningPivotPosition, elapsedTime);
+                pivot.localRotation = Quaternion.Lerp(startLocalRotation, Quaternion.Euler(runningPivotRotation),elapsedTime);
 
-                yield return t;
+                yield return elapsedTime;
             }
         }
 
         private void Fire()
         {
             currentFireRatio = 0;
+
             equipmentAnimator.SetBool("Fire", true);
             armAnimator.SetBool("Fire", true);
 
@@ -189,6 +301,15 @@ namespace Test
             fireLight.Play(true);
             InstanceBullet();
             Invoke(nameof(EndFire), 0.1f);
+        }
+
+        private IEnumerator BurstFire()
+        {
+            for(int i = 0; i < 3; i++)
+            {
+                Fire();
+                yield return new WaitForSeconds(0.1f);
+            }
         }
 
         private void InstanceBullet()
@@ -258,16 +379,9 @@ namespace Test
             firstPersonController.MouseLook.AddRecoil(upRandom * 0.2f, rightRandom * 0.2f);
         }
 
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawLine(muzzle.position, muzzle.position + mainCamera.transform.forward * bulletMaxRange);
-        }
-
         private void EndFire()
         {
             fireLight.Stop(true);
         }
-
     }
 }

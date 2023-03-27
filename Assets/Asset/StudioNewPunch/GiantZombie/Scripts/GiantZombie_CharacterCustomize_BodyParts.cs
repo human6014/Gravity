@@ -132,8 +132,8 @@ public class GiantZombie_CharacterCustomize_BodyParts : MonoBehaviour
 	public void charCustomize(int body, int trousers, int tanktop, int tshirt, int head, bool trousersV, int sneakers, int legs)
 	{
 		materialsList = gameObject.GetComponent<GiantZombie_AssetsList>();
-		Material[] mat;
-		GameObject obj;
+		//Material[] mat;
+		//GameObject obj;
 		tshirtT = transform.Find("Giant_GRP/BODYPARTS/Neck/Tshirt");
 		tanktopT = transform.Find("Giant_GRP/BODYPARTS/Neck/TankTop");
 
