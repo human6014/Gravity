@@ -4,6 +4,7 @@ using Random = UnityEngine.Random;
 using Manager;
 using Manager.AI;
 using Contoller.Player.Utility;
+using System.Collections;
 
 namespace Contoller.Player
 {
@@ -77,7 +78,7 @@ namespace Contoller.Player
 
         [Space(15)]
         [Tooltip("")]
-        [SerializeField] private Transform m_MouseLookTransform;
+        [SerializeField] private Transform m_RightAxisTransform;
 
         [Tooltip("")]
         [SerializeField] private Transform m_UpAxisTransfrom;
@@ -87,48 +88,47 @@ namespace Contoller.Player
 
         [Tooltip("")]
         [SerializeField] private LayerMask reversePosLayer;
+
+        //앉기랑 다시 일어나기
+        [SerializeField] Vector3 crouchInterporatePos;          //앉기, 일어나기 증감값
+        [SerializeField] float crouchTime = 0.3f;               //앉기, 일어나기 자세 전환 시간
+        private Vector3 m_IdlePos;                                //일어난 상태 원래 위치
+        private Vector3 m_CrouchPos;                              //앉은 상태 위치
+        private bool m_IsCrouch;
         #endregion
 
         private Camera m_Camera;
         private CharacterController m_CharacterController;
         private AudioSource m_AudioSource;
-        private GravityRotation m_GravityRotation;
         private Vector3 m_MoveDir = Vector3.zero;
         private Vector3 m_OriginalCameraPosition;
+        private Vector3 m_DesiredMove;
         private Vector2 m_Input;
 
+        private float m_MovementSpeed;
         private float m_StepCycle;
         private float m_NextStep;
         private readonly float m_InterporationDist = -0.1f;
 
-        public bool m_IsWalking { get; private set; }           //걷고 있는지
+        public bool m_IsWalking { get; private set; }            //걷고 있는지
         private bool m_PreviouslyGrounded;  //이전 프레임에서 지상이었는지
         private bool m_Jumping;             //점프하고 있는지
         private bool m_Jump;                //점프키 입력 감지
         private bool m_IsGround;            //현재 프레임에서 지상인지
-
-        private int m_GravityKeyInput = 1;
-
-        private readonly KeyCode[] m_GravityChangeInput =
-        {
-            KeyCode.Z,
-            KeyCode.X,
-            KeyCode.C
-        };
+        private bool m_WasWalking;
 
         private void Awake()
         {
             m_PlayerInputController = GetComponent<PlayerInputController>();
             m_CharacterController = GetComponent<CharacterController>();
-            m_Camera = m_MouseLookTransform.GetComponentInChildren<Camera>();
+            m_Camera = m_RightAxisTransform.GetComponentInChildren<Camera>();
             m_AudioSource = GetComponent<AudioSource>();
-            m_GravityRotation = GetComponent<GravityRotation>();
 
             AIManager.PlayerTransfrom = transform;
 
             m_FovKick.Setup(m_Camera);
             m_HeadBob.Setup(m_UpAxisTransfrom, m_StepInterval);
-            m_MouseLook.Setup(m_MouseLookTransform, m_UpAxisTransfrom);
+            m_MouseLook.Setup(m_RightAxisTransform, m_UpAxisTransfrom);
 
             MouseLook = m_MouseLook;
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
@@ -136,24 +136,17 @@ namespace Contoller.Player
             m_NextStep = m_StepCycle / 2f;
             m_Jumping = false;
 
-            m_PlayerInputController.MouseInput += TryRotateView;
+            m_PlayerInputController.MouseMovement += TryRotateView;
+            m_PlayerInputController.PlayerMovement += TryMovement;
+            m_PlayerInputController.Run += TryRun;
+            m_PlayerInputController.Crouch += TryCrouch;
+
+            m_IdlePos = m_RightAxisTransform.localPosition;
+            m_CrouchPos = m_RightAxisTransform.localPosition - crouchInterporatePos;
         }
 
         private void Update()
         {
-            // the jump state needs to read here to make sure it is not missed
-            float mouseScroll = Input.GetAxis("Mouse ScrollWheel");
-
-            for (int i = 0; i < m_GravityChangeInput.Length; i++)
-            {
-                if (Input.GetKeyDown(m_GravityChangeInput[i]))
-                {
-                    m_GravityKeyInput = i;
-                    break;
-                }
-            }
-            if (mouseScroll != 0 && !GravityManager.IsGravityChanging) m_GravityRotation.GravityChange(m_GravityKeyInput, mouseScroll);
-
             if (!m_Jump) m_Jump = Input.GetButtonDown("Jump");
             if (!m_PreviouslyGrounded && m_IsGround)
             {
@@ -177,13 +170,12 @@ namespace Contoller.Player
             Gizmos.DrawSphere(transform.position - transform.up * (m_CapsuleCollider.height * 0.5f - m_CapsuleCollider.radius) , m_CapsuleCollider.radius + m_InterporationDist);
         }
 
-        private Vector3 desiredMove;
+        
         private void FixedUpdate()
         {
-            GetInput(out float speed);
             PositionRay();
             // always move along the camera forward as it is the direction that it being aimed at
-            desiredMove = m_MouseLookTransform.forward * m_Input.y + m_MouseLookTransform.right * m_Input.x;
+            m_DesiredMove = m_RightAxisTransform.forward * m_Input.y + m_RightAxisTransform.right * m_Input.x;
 
             float maxDistansce = m_CapsuleCollider.height * 0.5f - m_CapsuleCollider.radius - 0.1f;
             float radius = m_CapsuleCollider.radius + m_InterporationDist + 0.1f;
@@ -192,18 +184,9 @@ namespace Contoller.Player
                 m_IsGround = true;
             else m_IsGround = false;
 
-            /*
-            float maxDistansce = m_CapsuleCollider.height * 0.5f - m_CapsuleCollider.radius;
-            if (Physics.SphereCast(transform.position, m_CapsuleCollider.radius + m_InterporationDist, -transform.up, out RaycastHit hitInfo, maxDistansce, Physics.AllLayers, QueryTriggerInteraction.Ignore))
-                m_isGround = true;
-            else m_isGround = false;
-            */
+            m_DesiredMove = Vector3.ProjectOnPlane(m_DesiredMove, hitInfo.normal).normalized;
 
-            desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
-
-            CustomGravityChange(true, speed);
-            //m_MoveDir.x = desiredMove.x * speed;
-            //m_MoveDir.z = desiredMove.z * speed;
+            CustomGravityChange(true, m_MovementSpeed);
 
             if (m_IsGround)
             {
@@ -222,10 +205,8 @@ namespace Contoller.Player
             
             m_CharacterController.Move(m_MoveDir * Time.fixedDeltaTime);
 
-            ProgressStepCycle(speed);
-            UpdateCameraPosition(speed);
-
-            //m_MouseLook.UpdateCursorLock();
+            ProgressStepCycle(m_MovementSpeed);
+            UpdateCameraPosition(m_MovementSpeed);
         }
 
         private void CustomGravityChange(bool isDuple, float value)
@@ -237,8 +218,8 @@ namespace Contoller.Player
                     if(!isDuple) m_MoveDir.x = value;
                     else
                     {
-                        m_MoveDir.y = desiredMove.y * value;
-                        m_MoveDir.z = desiredMove.z * value;
+                        m_MoveDir.y = m_DesiredMove.y * value;
+                        m_MoveDir.z = m_DesiredMove.z * value;
                     }
                     break;
 
@@ -247,8 +228,8 @@ namespace Contoller.Player
                     if (!isDuple) m_MoveDir.y = value;
                     else
                     {
-                        m_MoveDir.x = desiredMove.x * value;
-                        m_MoveDir.z = desiredMove.z * value;
+                        m_MoveDir.x = m_DesiredMove.x * value;
+                        m_MoveDir.z = m_DesiredMove.z * value;
                     }
                     break;
 
@@ -257,8 +238,8 @@ namespace Contoller.Player
                     if (!isDuple) m_MoveDir.z = value;
                     else
                     {
-                        m_MoveDir.x = desiredMove.x * value;
-                        m_MoveDir.y = desiredMove.y * value;
+                        m_MoveDir.x = m_DesiredMove.x * value;
+                        m_MoveDir.y = m_DesiredMove.y * value;
                     }
                     break;
             }
@@ -323,36 +304,30 @@ namespace Contoller.Player
             }
             m_UpAxisTransfrom.localPosition = newCameraPosition;
         }
-
-        private void GetInput(out float speed)
+        
+        private void TryMovement(float horizontal, float vertical)
         {
-            // Read input
-            float horizontal = Input.GetAxis("Horizontal");
-            float vertical = Input.GetAxis("Vertical");
-
-            bool wasWalking = m_IsWalking;
-
-            m_IsWalking = !(Input.GetKey(KeyCode.LeftShift) && vertical > 0);
-
-            // set the desired speed to be walking or running
-            speed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;
+            m_MovementSpeed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;
             m_Input = new Vector2(horizontal, vertical);
 
-            // normalize input if it exceeds 1 in combined length:
-            if (m_Input.sqrMagnitude > 1)  m_Input.Normalize();
-            
-            // handle speed change to give an fov kick
-            // only if the player is going to a run, is running and the fovkick is to be used
-            if (m_IsWalking != wasWalking && m_UseFovKick && m_CharacterController.velocity.sqrMagnitude > 0)
+            if (m_Input.sqrMagnitude > 1) m_Input.Normalize();
+
+            if (m_IsWalking != m_WasWalking && m_UseFovKick && m_CharacterController.velocity.sqrMagnitude > 0)
             {
                 StopAllCoroutines();
                 StartCoroutine(!m_IsWalking ? m_FovKick.FOVKickUp() : m_FovKick.FOVKickDown());
             }
         }
 
+        private void TryRun(bool isRunning)
+        {
+            m_WasWalking = m_IsWalking;
+            m_IsWalking = !isRunning;
+        }
+
         private void TryRotateView(float mouseHorizontal, float mouseVertical)
         {
-            m_MouseLook.LookRotation(m_MouseLookTransform, m_UpAxisTransfrom, mouseHorizontal, mouseVertical);
+            m_MouseLook.LookRotation(m_RightAxisTransform, m_UpAxisTransfrom, mouseHorizontal, mouseVertical);
         }
 
         private void PositionRay()
@@ -361,6 +336,29 @@ namespace Contoller.Player
                 AIManager.PlayerRerversePosition = hit.point;
             else
                 AIManager.PlayerRerversePosition = Vector3.zero;
+        }
+
+        private void TryCrouch(bool isCrouch)
+        {
+            StopAllCoroutines();
+            if (isCrouch)
+                StartCoroutine(CrouchPos(crouchTime, m_RightAxisTransform, m_CrouchPos));
+            else
+                StartCoroutine(CrouchPos(crouchTime, m_RightAxisTransform, m_IdlePos));
+        }
+        private IEnumerator CrouchPos(float runTotalTime, Transform target, Vector3 endLocalPosition)
+        {
+            float currentTime = 0;
+            float elapsedTime;
+            Vector3 startLocalPosition = target.localPosition;
+            while (currentTime < runTotalTime)
+            {
+                currentTime += Time.deltaTime;
+
+                elapsedTime = currentTime / runTotalTime;
+                target.localPosition = Vector3.Lerp(startLocalPosition, endLocalPosition, elapsedTime);
+                yield return elapsedTime;
+            }
         }
     }
 }

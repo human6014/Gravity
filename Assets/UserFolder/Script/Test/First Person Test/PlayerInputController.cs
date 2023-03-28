@@ -46,11 +46,9 @@ public class PlayerInputController : MonoBehaviour
     private bool m_WasCrouch;
     private bool m_WasTimeSlow;
     //keyDown Movement
-    public Action<float,float> MouseInput { get; set; }
+    public Action<float,float> MouseMovement { get; set; }
 
-
-    public Action<float> PlayerHorizontal { get; set; }
-    public Action<float> PlayerVertical { get; set; }
+    public Action<float, float> PlayerMovement { get; set; }
 
 
     //Scroll
@@ -73,7 +71,7 @@ public class PlayerInputController : MonoBehaviour
     public Action<bool> Aiming { get; set; }          //Down
     public Action AutoFire { get; set; }        //Down, + @
     public Action SemiFire { get; set; }
-    public Action Run { get; set; }             //Down
+    public Action<bool> Run { get; set; }             //Down
 
     public Action ChangeFireMode { get; set; }
 
@@ -86,7 +84,7 @@ public class PlayerInputController : MonoBehaviour
         m_MouseX = Input.GetAxis("Mouse X");
         m_MouseY = Input.GetAxis("Mouse Y");
 
-        MouseInput?.Invoke(m_MouseX, m_MouseY);
+        MouseMovement?.Invoke(m_MouseX, m_MouseY);
 
         GravityChangInput();
         EquipmentChangeInput();
@@ -123,16 +121,17 @@ public class PlayerInputController : MonoBehaviour
             TimeSlow?.Invoke(m_WasTimeSlow);
         }
 
+
         // FixedUpdate ¿¡¼­ ³Ñ¾î¿È
-        m_Horizontal = Input.GetAxis("Horizontal");
-        if(m_Horizontal != 0) PlayerHorizontal?.Invoke(m_Horizontal);
-        
-        m_Vertical = Input.GetAxis("Vertical");
-        if(m_Vertical != 0) PlayerVertical?.Invoke(m_Vertical);
-        
+
         m_IsRunning = Input.GetKey(KeyCode.LeftShift) && m_Vertical > 0;
-        if (m_IsRunning) Run?.Invoke();
-        
+        Run?.Invoke(m_IsRunning);
+
+        m_Horizontal = Input.GetAxis("Horizontal");
+        m_Vertical = Input.GetAxis("Vertical");
+        PlayerMovement?.Invoke(m_Horizontal, m_Vertical);
+
+
         m_IsAutoFiring = Input.GetKey(KeyCode.Mouse0);
         if (m_IsAutoFiring) AutoFire?.Invoke();
 
@@ -144,7 +143,7 @@ public class PlayerInputController : MonoBehaviour
         //
     }
 
-    public void GravityChangInput()
+    private void GravityChangInput()
     {
         for (int i = 0; i < m_GravityChangeInput.Length; i++)
         {
@@ -156,7 +155,7 @@ public class PlayerInputController : MonoBehaviour
         }
     }
 
-    public void EquipmentChangeInput()
+    private void EquipmentChangeInput()
     {
         for (int i = 0; i < m_EquipmentChangeInput.Length; i++)
         {

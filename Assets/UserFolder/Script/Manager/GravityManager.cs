@@ -2,14 +2,19 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using EnumType;
+using System.Collections;
 
 namespace Manager
 {
-    public class GravityManager
+    public class GravityManager : MonoBehaviour
     {
+        [SerializeField] private PlayerInputController m_PlayerInputController;
+
         public static GravityType currentGravityType = GravityType.yDown;
         public static GravityType beforeGravityType = GravityType.yDown;
         public static GravityDirection gravityDirection = GravityDirection.Y;
+
+        private const float ROTATETIME = 1;
 
         public static Action <GravityType> GravityChangeAction { get; set; }
 
@@ -37,17 +42,22 @@ namespace Manager
         /// 현재 중력에 해당하는 Area의 normal 각도
         /// </summary>
         private static readonly Vector3Int[] gravityRotation =
-    {
+        {
             new Vector3Int(0, 0, -90)   , new Vector3Int(0, 0, 90),
             new Vector3Int(0, 0, 0)     , new Vector3Int(180, 0, 0),
             new Vector3Int(90, 0, 0)   , new Vector3Int(-90, 0, 0),
         };
 
+        private void Awake()
+        {
+            m_PlayerInputController.DoGravityChange += GravityChange;
+        }
+
         /// <summary>
         /// 중력 변경, 중력이 향하는 방향을 기록함
         /// </summary>
         /// <param name="direct"></param>
-        public static void GravityChange(int direct)
+        private void GravityChange(int direct)
         {
             beforeGravityType = currentGravityType;
             GravityDirectionValue = direct;
@@ -84,5 +94,27 @@ namespace Manager
         public static Quaternion GetSpecificGravityNormalRotation(int index) => Quaternion.Euler(gravityRotation[index]);
         
         public static Quaternion GetCurrentGravityNormalRotation() => Quaternion.Euler(gravityRotation[(int)currentGravityType]);
+
+        public void GravityChange(int gravityKeyInput, float mouseScroll)
+        {
+            if (IsGravityChanging) return;
+
+            gravityDirection = (GravityDirection)gravityKeyInput;
+            GravityChange(Mathf.FloorToInt(mouseScroll * 10));
+            StartCoroutine(GravityRotate());
+        }
+
+        private IEnumerator GravityRotate()
+        {
+            Quaternion currentRotation = transform.rotation;
+            float t = 0;
+            while (t < 1)
+            {
+                t += Time.deltaTime / ROTATETIME;
+                transform.rotation = Quaternion.Lerp(currentRotation, GravityManager.GetCurrentGravityNormalRotation(), t);
+                yield return null;
+            }
+            CompleteGravityChanging();
+        }
     }
 }
