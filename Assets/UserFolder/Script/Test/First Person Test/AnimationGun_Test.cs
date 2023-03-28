@@ -80,7 +80,7 @@ namespace Test
         private bool isEquip;
         private bool isRunning;
         private bool isAiming;
-        private bool canFirePosture;
+        private bool canFirePosture = true;
         private bool isCrouch;
 
         private float currentFireRatio;
@@ -105,7 +105,6 @@ namespace Test
             crouchPos = rightAxisTransform.localPosition - crouchInterporatePos;
 
             m_PlayerInputController.Reload += TryReload;
-            m_PlayerInputController.Crouch += TryCrouch;
             m_PlayerInputController.ChangeFireMode += TryChangeFireMode;
             m_PlayerInputController.AutoFire += TryAutoFire;
             m_PlayerInputController.SemiFire += TrySemiFire;
@@ -154,7 +153,6 @@ namespace Test
             if (isAiming) AimingPosRot(aimingPivotPosition, Quaternion.Euler(aimingPivotRotation));
             else AimingPosRot(originalPivotPosition, Quaternion.Euler(originalPivotRotation));
             isRunning = false;
-            canFirePosture = true;
             SetCurrentFireIndex();
         }
 
@@ -191,16 +189,6 @@ namespace Test
                 if (fireMode == FireMode.Semi) Fire();
                 else if (fireMode == FireMode.Burst) StartCoroutine(BurstFire());
             }
-        }
-
-        private void TryCrouch(bool isCrouch)
-        {
-            this.isCrouch = isCrouch;
-            StopAllCoroutines();
-            if (isCrouch)
-                StartCoroutine(CrouchPos(crouchTime, rightAxisTransform, crouchPos));
-            else
-                StartCoroutine(CrouchPos(crouchTime, rightAxisTransform, idlePos));
         }
 
         private void SetCurrentFireIndex()
@@ -249,21 +237,6 @@ namespace Test
                 if (i == magazineSpawnTiming) InstanceMagazine();
             }
             canFirePosture = true;
-        }
-
-        private IEnumerator CrouchPos(float runTotalTime, Transform target, Vector3 endLocalPosition)
-        {
-            float currentTime = 0;
-            float elapsedTime;
-            Vector3 startLocalPosition = target.localPosition;
-            while (currentTime < runTotalTime)
-            {
-                currentTime += Time.deltaTime;
-
-                elapsedTime = currentTime / runTotalTime;
-                target.localPosition = Vector3.Lerp(startLocalPosition, endLocalPosition, elapsedTime);
-                yield return elapsedTime;
-            }
         }
 
         private void InstanceMagazine()
