@@ -15,7 +15,7 @@ namespace Manager
         /// </summary>
         /// <param name="_poolableScript"> PoolableScript를 상속받는 객체 </param>
         /// <param name="_parent"> Hierarchy 오브젝트 위치 </param>
-        /// <returns></returns>
+        /// <returns>PoolingObject</returns>
         public static PoolingObject Register(PoolableScript _poolableScript, Transform _parent) => new(_poolableScript, _parent);
 
         /// <summary>
@@ -49,6 +49,7 @@ namespace Manager
             /// <returns></returns>
             private PoolableScript CreateNewObject()
             {
+                //Flying Monster 에러 뜨면 플레이어 오브젝트 활성화 해보도록
                 var newObj = Instantiate(script);
                 newObj.gameObject.SetActive(false);
                 newObj.transform.SetParent(cachedTransform);
@@ -66,8 +67,8 @@ namespace Manager
                 if (poolableQueue.Count > 0) obj = poolableQueue.Dequeue();
                 else                         obj = CreateNewObject();
 
-                obj.gameObject.SetActive(preActive);
                 obj.transform.SetParent(parent);
+                obj.gameObject.SetActive(preActive);
 
                 return obj;
             }

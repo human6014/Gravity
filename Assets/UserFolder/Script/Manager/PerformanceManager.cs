@@ -6,11 +6,14 @@ namespace Manager
 {
     public class PerformanceManager : MonoBehaviour {
 
-        [SerializeField] private Text text;
+        private Text text;
 
         private float frame;
         private float timeElapsed;
         private float frameTime;
+
+        private void Awake() => text = GetComponent<Text>();
+        
 
         private void Update()
         {

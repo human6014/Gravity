@@ -2,17 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIManager : MonoBehaviour
+namespace Manager
 {
-    // Start is called before the first frame update
-    void Start()
+    public class UIManager : MonoBehaviour
     {
-        
-    }
+        [SerializeField] private GameObject MenuPanel;
+        private bool isMenuPanelActive;
+        public void InputMenuPanelKey()
+        {
+            isMenuPanelActive = !isMenuPanelActive;
+            MenuPanel.SetActive(isMenuPanelActive);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+            if (isMenuPanelActive)
+            {
+                Time.timeScale = 0;
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else
+            {
+                Time.timeScale = 1;
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+        }
+
+        public void OnClickedExit()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#endif
+            Application.Quit();
+        }
     }
 }

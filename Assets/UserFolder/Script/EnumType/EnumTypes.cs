@@ -1,14 +1,14 @@
 
 namespace EnumType
 {
-    public enum GravitiesType
+    public enum GravityType
     {
-        xUp = 0,
-        xDown = 1,
-        yUp = 2,
-        yDown = 3,
-        zUp = 4,
-        zDown = 5
+        xDown = 0,
+        xUp = 1,
+        yDown = 2,
+        yUp = 3,
+        zDown = 4,
+        zUp = 5
     }
     public enum GravityDirection
     {
@@ -22,6 +22,12 @@ namespace EnumType
         WomenZombie = 2,
         BigZombie = 3,
         GiantZombie = 4
+    }
+
+    public enum FlyingMonsterType
+    {
+        RangedFlyingMonster = 0,
+        MeleeFlyingMonster = 1
     }
 
     public enum Boss1
@@ -53,5 +59,12 @@ namespace EnumType
         None = 0,
         Idle = 1,
         WalkForward = 2
+    }
+
+    public enum SurfaceType
+    {
+        Concrete = 0,
+        Metal = 1,
+        Wood = 2
     }
 }

@@ -24,7 +24,7 @@ namespace Entity.Unit
             trouserType = Random.Range(0, trouserTypeLength);
         }
 
-        public override void Customizing(CustomizingAssetList.MaterialsStruct[] materialsStructs)
+        public override void Customizing(ref CustomizingAssetList.MaterialsStruct[] materialsStructs)
         {
             RandNum();
             Renderer skinnedRenderer;

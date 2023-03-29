@@ -83,9 +83,5 @@ public class UrbanZombie_Custom_Instantiate : MonoBehaviour
 		hoodieTyp = (int)hoodieType;
 		pref.gameObject.GetComponent<UrbanZombie_CharacterCustomize>().charCustomize(bodyTyp, trousersTyp, tanktopTyp, hoodieTyp, headTyp);
 		// Update is called once per frame
-		void Update()
-		{
-
-		}
 	}
 }

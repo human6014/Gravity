@@ -23,8 +23,10 @@ namespace Entity.Unit.Normal
 
         private void Update()
         {
-            Move();
             //¼º´É issue
+            Move();
+            if (normalMonsterAI.IsMalfunction) ReturnObject();
+            
         }
 
         public void Init(Vector3 pos, Manager.ObjectPoolManager.PoolingObject poolingObject)
@@ -36,10 +38,14 @@ namespace Entity.Unit.Normal
         public void Move()
         {
             normalMonsterAI.Move();
-            animator.SetBool("isMove", true);
+            //animator.SetBool("isMove", true);
         }
 
         public void Attack()
+        {
+            throw new System.NotImplementedException();
+        }
+        public void Hit(int damage)
         {
             throw new System.NotImplementedException();
         }
@@ -49,14 +55,11 @@ namespace Entity.Unit.Normal
             throw new System.NotImplementedException();
         }
 
-        public void Hit(int damage)
-        {
-            throw new System.NotImplementedException();
-        }
-
         [ContextMenu("ReturnObject")]
         public override void ReturnObject()
         {
+            normalMonsterAI.Dispose();
+            Manager.SpawnManager.NormalMonsterCount--;
             poolingObject.ReturnObject(this);
         }
     }

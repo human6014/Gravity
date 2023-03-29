@@ -12,7 +12,6 @@ public class Boids : MonoBehaviour
     [Header("Boid Options")]
     [SerializeField] private BoidsMonster boidUnitPrefab;
     [SerializeField] private Transform boidsPool;
-    [SerializeField] private Transform target;
 
     [Tooltip("미리 생성할 유닛 수")]
     [Range(5, 5000)] [SerializeField] private int boidCount;
@@ -40,7 +39,7 @@ public class Boids : MonoBehaviour
 
             currUnit = (BoidsMonster)poolingObj.GetObject(true);
             currUnit.transform.SetPositionAndRotation(transform.position + randomVec, randomRot);
-            currUnit.Init(this, target);
+            currUnit.Init(this);
         }
     }
 

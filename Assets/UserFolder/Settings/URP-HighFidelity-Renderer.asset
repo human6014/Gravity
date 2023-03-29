@@ -22,7 +22,7 @@ MonoBehaviour:
     Intensity: 0.5
     DirectLightingStrength: 0.25
     Radius: 0.25
-    SampleCount: 12
+    SampleCount: 10
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,10 +62,10 @@ MonoBehaviour:
   m_AssetVersion: 1
   m_OpaqueLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 77066145
   m_TransparentLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 67108896
   m_DefaultStencilState:
     overrideStencilState: 0
     stencilReference: 0
@@ -74,7 +74,7 @@ MonoBehaviour:
     failOperation: 0
     zFailOperation: 0
   m_ShadowTransparentReceive: 0
-  m_RenderingMode: 0
+  m_RenderingMode: 1
   m_DepthPrimingMode: 0
   m_AccurateGbufferNormals: 0
   m_ClusteredRendering: 0

@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Contoller.Camera
-{
+
     public class CameraController : MonoBehaviour
     {
         [SerializeField]
@@ -46,30 +45,20 @@ namespace Contoller.Camera
             float _moveDirZ = Input.GetAxisRaw("Vertical");
             Vector3 _moveHorizontal = transform.right * _moveDirX;
             Vector3 _moveVertical = transform.forward * _moveDirZ;
-
-            //Vector3 _velocity = (_moveHorizontal + _moveVertical).normalized * walkSpeed;
-
-            //myRigid.MovePosition(transform.position + _velocity * Time.deltaTime);
         }
 
         public void SetRotation(Quaternion newRotation)
         {
             transform.rotation = newRotation;
-            //currentCameraRotationX = 
         }
 
         private void CameraRotation()
         {
-            //float _xRotation = Input.GetAxisRaw("Mouse X");
             float _yRotation = Input.GetAxisRaw("Mouse Y");
-            //float _cameraRotationX = _xRotation * lookSensitivity;
             float _cameraRotationY = _yRotation * lookSensitivity;
 
-            //currentCameraRotationX += _cameraRotationX;
             currentCameraRotationY -= _cameraRotationY;
-
             currentCameraRotationY = Mathf.Clamp(currentCameraRotationY, -cameraXRotationLimit, cameraXRotationLimit);
-            //currentCameraRotationX = Mathf.Clamp(currentCameraRotationX, -cameraYRotationLimit, cameraYRotationLimit);
 
             mainCamera.transform.localEulerAngles = new Vector3(currentCameraRotationY, 0, 0f);
         }
@@ -79,8 +68,6 @@ namespace Contoller.Camera
             float _yRotation = Input.GetAxisRaw("Mouse X");
             Vector3 _characterRotationY = new Vector3(0f, _yRotation, 0f) * lookSensitivity;
             myRigid.MoveRotation(myRigid.rotation * Quaternion.Euler(_characterRotationY)); // 쿼터니언 * 쿼터니언
-            //Debug.Log(myRigid.rotation);             // Debug.Log(myRigid.rotation);  // 쿼터니언
-            //Debug.Log(myRigid.rotation.eulerAngles); // Debug.Log(myRigid.rotation.eulerAngles); // 벡터
         }
     }
-}
+

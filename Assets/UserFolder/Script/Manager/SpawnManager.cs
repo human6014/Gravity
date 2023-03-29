@@ -1,14 +1,24 @@
-using Entity.Unit.Normal;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Entity.Unit.Flying;
+using Entity.Unit.Normal;
+using Entity.Unit.Special;
+using System.Linq;
 
 namespace Manager
 {
     [RequireComponent(typeof(UnitManager))]
     public class SpawnManager : MonoBehaviour
     {
-        public bool isActiveSpawn;
+        public static int NormalMonsterCount { get; set; }
+        public static int FlyingMonsterCount { get; set; }
+
+        public bool IsSP1MonsterSpawned { get; private set; }
+        public bool IsSP2MonsterSpawned { get; private set; }
+        public bool IsSP3MonsterSpawned { get; private set; }
+
+        [SerializeField] private bool isActiveSpawn;
 
         #region SerializeField
         [Header("Spawn Area")]
@@ -20,115 +30,138 @@ namespace Manager
         [SerializeField] private Transform activeUnitPool;
 
         [Tooltip("미리 생성할 유닛 수 urban -> oldman -> women -> big -> giant")]
-        [Range(0, 100)] [SerializeField] private int[] poolingCount;
+        [Range(0, 100)][SerializeField] private int[] normalMonsterPoolingCount;
+
+        [Tooltip("미리 생성할 FlyingMonstr 수")]
+        [Range(0, 100)] [SerializeField] private int[] flyingMonsterPoolingCount;
+
+        [Header("Spawn info")]
+        [Tooltip("최대로 생성될 일반 몬스터 총 개수")]
+        [Range(0, 100)][SerializeField] private int maxNormalMonsterCount = 30;
+
+        [Tooltip("일반 몬스터 소환 주기")]
+        [SerializeField] private float normalMonsterSpawnTime = 3;
+
+        [Tooltip("최대로 생성될 공중 몬스터 총 개수")]
+        [Range(0, 50)] [SerializeField] private int maxFlyingMonsterCount = 10;
+
+        [Tooltip("공중 몬스터 소환 주기")]
+        [SerializeField] private float flyingMonsterSpawnTime = 5;
         #endregion
 
         #region Object Value
-        private BoxCollider[] spawnAreaXDown;
-        private BoxCollider[] spawnAreaXUp;
-
-        private BoxCollider[] spawnAreaYDown;
-        private BoxCollider[] spawnAreaYUp;
-
-        private BoxCollider[] spawnAreaZDown;
-        private BoxCollider[] spawnAreaZUp;
+        private BoxCollider[][] spawnAreaCollider = new BoxCollider[6][];
+        private BoxCollider[] currentAreaCollider;
 
         private UnitManager unitManager;
         private Customization customization;
 
-        private ObjectPoolManager.PoolingObject[] poolingObjectArray;
+        private ObjectPoolManager.PoolingObject[] normalMonsterPoolingObjectArray;
+        private ObjectPoolManager.PoolingObject[] flyingMonsterPoolingObjectArray;
         #endregion
 
         #region Normal Value
+        private EnumType.GravityType currentGravityType = EnumType.GravityType.yUp;
         private readonly float[] probs = new float[] { 45, 20, 20, 10, 5 };
         private float total = 0;
 
-        private float timer;
-        private int randomUnitIndex;
+        private float normalMonsterTimer;
+        private float flyingMonsterTimer;
+
+        private int randomNormalMonsterIndex;
+
+        private int randomFlyingMonsterIndex;
         #endregion
+
+        //temp
+        [SerializeField] Octree octree;
         private void Awake()
         {
             unitManager = GetComponent<UnitManager>();
             customization = GetComponent<Customization>();
 
-            spawnAreaXDown  = spawnAreaTransform[0].GetComponentsInChildren<BoxCollider>();
-            spawnAreaXUp    = spawnAreaTransform[1].GetComponentsInChildren<BoxCollider>();
+            for(int i = 0; i < spawnAreaTransform.Length; i++)
+                spawnAreaCollider[i] = spawnAreaTransform[i].GetComponentsInChildren<BoxCollider>();
+            
+            currentAreaCollider = spawnAreaCollider[2]; // YDown
 
-            spawnAreaYDown  = spawnAreaTransform[2].GetComponentsInChildren<BoxCollider>();
-            spawnAreaYUp    = spawnAreaTransform[3].GetComponentsInChildren<BoxCollider>();
+            NormalMonsterCount = 0;
+            FlyingMonsterCount = 0;
 
-            spawnAreaZDown  = spawnAreaTransform[4].GetComponentsInChildren<BoxCollider>();
-            spawnAreaZUp    = spawnAreaTransform[5].GetComponentsInChildren<BoxCollider>();
+            foreach (float elem in probs) total += elem;
         }
 
         private void Start()
         {
-            total = 0;
-            foreach (float elem in probs) total += elem;
+            int normalMonsterArrayLength = unitManager.GetNormalMonsterArrayLength();
+            int flyingMonsterArrayLength = unitManager.GetFlyingMonsterArrayLength();
+            if (normalMonsterArrayLength != normalMonsterPoolingCount.Length)
+                Debug.LogError("Normal monster pooling Count is different from the number of PoolingObject's length");
+            if (flyingMonsterArrayLength != flyingMonsterPoolingCount.Length)
+                Debug.LogError("Flying monster pooling Count is different from the number of PoolingObject's length");
 
-            int unitLength = unitManager.GetNormalMonsterArrayLength();
-            if (unitLength != poolingCount.Length)
-                Debug.LogWarning("Polling Count is different from the number of PoolingObject's length");
-
-            //순서대로 넣어야 해~
+            //인덱스 순서
             //urban -> oldman -> women -> big -> giant
             
-            poolingObjectArray = new ObjectPoolManager.PoolingObject[unitLength];
-            for (int i = 0; i < unitLength; i++)
+            normalMonsterPoolingObjectArray = new ObjectPoolManager.PoolingObject[normalMonsterArrayLength];
+            flyingMonsterPoolingObjectArray = new ObjectPoolManager.PoolingObject[flyingMonsterArrayLength];
+            for (int i = 0; i < normalMonsterArrayLength; i++)
             {
-                poolingObjectArray[i] = ObjectPoolManager.Register(unitManager.GetNormalMonster(i), activeUnitPool);
-                poolingObjectArray[i].GenerateObj(poolingCount[i]);
+                normalMonsterPoolingObjectArray[i] = ObjectPoolManager.Register(unitManager.GetNormalMonster(i), activeUnitPool);
+                normalMonsterPoolingObjectArray[i].GenerateObj(normalMonsterPoolingCount[i]);
             }
+
+            for (int i = 0; i < flyingMonsterArrayLength; i++)
+            {
+                flyingMonsterPoolingObjectArray[i] = ObjectPoolManager.Register(unitManager.GetFlyingMonster(i), activeUnitPool);
+                flyingMonsterPoolingObjectArray[i].GenerateObj(flyingMonsterPoolingCount[i]);
+            }
+
+            GravityManager.GravityChangeAction += (GravityType) => ChangeCurrentArea(GravityType);
+        }
+
+        public void ChangeCurrentArea(EnumType.GravityType gravityType)
+        {
+            currentGravityType = gravityType;
+            currentAreaCollider = spawnAreaCollider[(int)gravityType];
         }
 
         /// <summary>
-        /// 현재 중력에 맞는 땅의 BoxCollider 랜덤으로 가져옴
-        /// GravityManager의 중력 방향과 반대니 햇깔리지 말도록
+        /// BoxCollider[] 배열 안의 임의의 BoxCollider 하나를 반환함
         /// </summary>
-        /// <returns></returns>
-        private BoxCollider GetClosetArea()
+        /// <param name="boxColliders">BoxCollider[]</param>
+        /// <returns>BoxCollider</returns>
+        private BoxCollider GetClosetArea(BoxCollider[] boxColliders)
         {
-            BoxCollider[] currentArea = null;
-            switch (GravitiesManager.currentGravityType)
-            {
-                case EnumType.GravitiesType.xUp:
-                    currentArea = spawnAreaXDown;
-                    break;
-                case EnumType.GravitiesType.xDown:
-                    currentArea = spawnAreaXUp;
-                    break;
-
-                case EnumType.GravitiesType.yUp:
-                    currentArea = spawnAreaYDown;
-                    break;
-                case EnumType.GravitiesType.yDown:
-                    currentArea = spawnAreaYUp;
-                    break;
-
-                case EnumType.GravitiesType.zUp:
-                    currentArea = spawnAreaZDown;
-                    break;
-                case EnumType.GravitiesType.zDown:
-                    currentArea = spawnAreaZUp;
-                    break;
-            }
-
-            int rand = Random.Range(0,currentArea.Length);
-            return currentArea[rand];
+            int rand = Random.Range(0, boxColliders.Length);
+            return boxColliders[rand];
         }
 
-        private Vector3 GetRandomPos()
+        /// <summary>
+        /// BoxCollider 안의 임의의 위치를 반환함
+        /// </summary>
+        /// <param name="boxCollider">BoxCollider</param>
+        /// <returns>Vector3</returns>
+        private Vector3 GetRandomPos(BoxCollider boxCollider, float interporateRadius)
         {
-            BoxCollider currentCol = GetClosetArea();
+            interporateRadius *= 0.5f;
 
-            float rangeX = Random.Range(-currentCol.bounds.size.x * 0.5f, currentCol.bounds.size.x * 0.5f);
-            float rangeZ = Random.Range(-currentCol.bounds.size.z * 0.5f, currentCol.bounds.size.z * 0.5f);
-            Vector3 randomPos = new(rangeX, 0, rangeZ);
+            float rangeX = Random.Range(
+                -boxCollider.bounds.size.x * 0.5f + interporateRadius,
+                boxCollider.bounds.size.x * 0.5f - interporateRadius);
+            float rangeZ = Random.Range(
+                -boxCollider.bounds.size.z * 0.5f + interporateRadius, 
+                boxCollider.bounds.size.z * 0.5f - interporateRadius);
 
-            return currentCol.transform.position + randomPos;
+            return boxCollider.transform.position + new Vector3(rangeX, 0, rangeZ);
         }
 
-        private int RandomUnit()
+        #region GetRandomIndex
+        /// <summary>
+        /// 서로 다른 확률에서 무작위 index 산출
+        /// </summary>
+        /// <returns>무작위 int index</returns>
+        private int RandomUnitIndex()
         {
             float randomPoint = Random.value * total;
 
@@ -140,21 +173,73 @@ namespace Manager
             return probs.Length - 1;
         }
 
+        /// <summary>
+        /// spawnAreaCollider 배열에서 특정 값을 제외하고 무작위 index 산출
+        /// </summary>
+        /// <param name="excludeIndex">제외할 index</param>
+        /// <param name="specificIndex">excludeIndex를 제외하고 랜덤으로 나온 index</param>
+        /// <returns>excludeIndex를 제외하고 랜덤으로 나온 BoxCollider[]</returns>
+        private BoxCollider[] ExcludeRandomIndex(int excludeIndex, out int specificIndex)
+        {
+            HashSet<int> exclude = new() { excludeIndex };
+            IEnumerable<int> range = Enumerable.Range(0, spawnAreaCollider.Length).Where(i => !exclude.Contains(i));
+            
+            int index = Random.Range(0,spawnAreaCollider.Length - exclude.Count);
+            specificIndex = range.ElementAt(index);
+            return spawnAreaCollider[range.ElementAt(index)];
+        }
+        #endregion
+
         private void Update()
         {
             if (!isActiveSpawn) return;
 
-            timer += Time.deltaTime;
-            if (timer >= 3)
-            {
-                timer = 0;
-                randomUnitIndex = RandomUnit();
+            normalMonsterTimer += Time.deltaTime;
+            flyingMonsterTimer += Time.deltaTime;
 
-                NormalMonster currentUnit = (NormalMonster)poolingObjectArray[randomUnitIndex].GetObject(false);
-                customization.Customize(currentUnit);
-                currentUnit.Init(GetRandomPos(), poolingObjectArray[randomUnitIndex]);
-                currentUnit.gameObject.SetActive(true);
-            }
+            if (normalMonsterTimer >= normalMonsterSpawnTime && NormalMonsterCount < maxNormalMonsterCount) SpawnNormalMonster();
+            if (flyingMonsterTimer >= flyingMonsterSpawnTime && FlyingMonsterCount < maxFlyingMonsterCount) SpawnFlyingMonster();
+        }
+
+        private void SpawnNormalMonster()
+        {
+            normalMonsterTimer = 0;
+            randomNormalMonsterIndex = RandomUnitIndex();
+            NormalMonsterCount++;
+
+            NormalMonster currentNormalMonster = (NormalMonster)normalMonsterPoolingObjectArray[randomNormalMonsterIndex].GetObject(false);
+            customization.Customize(currentNormalMonster);
+
+            BoxCollider boxCollider = GetClosetArea(currentAreaCollider);
+            Vector3 pos = GetRandomPos(boxCollider, 1);
+
+            currentNormalMonster.Init(pos, normalMonsterPoolingObjectArray[randomNormalMonsterIndex]);
+            currentNormalMonster.gameObject.SetActive(true);
+        }
+
+        private void SpawnFlyingMonster()
+        {
+            flyingMonsterTimer = 0;
+            //index 할당 아직 필요 x
+            FlyingMonsterCount++;
+
+            FlyingMonster currentFlyingMonster = (FlyingMonster)flyingMonsterPoolingObjectArray[0].GetObject(false);
+            currentFlyingMonster.Init(octree.GetRandomSpawnableArea(), flyingMonsterPoolingObjectArray[0]);
+            currentFlyingMonster.gameObject.SetActive(true);
+        }
+
+        [ContextMenu("SpawnSpecialMonster")]
+        private void SpawnSpecialMonster()
+        {
+            BoxCollider[] initColliders = ExcludeRandomIndex((int)currentGravityType,out int specificIndex);
+            BoxCollider initCollider = GetClosetArea(initColliders);
+            Vector3 initPosition = GetRandomPos(initCollider, 4);
+            Quaternion initRotation = GravityManager.GetSpecificGravityNormalRotation(specificIndex);
+
+            SpecialMonster1 specialMonster1 = Instantiate(unitManager.SpecialMonster1, initPosition, Quaternion.identity).GetComponent<SpecialMonster1>();
+            specialMonster1.Init(initRotation);
+
+            IsSP1MonsterSpawned = true;
         }
     }
 }
