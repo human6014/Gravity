@@ -23,30 +23,31 @@ public class PlayerInputController : MonoBehaviour
         KeyCode.Alpha5
     };
 
-    private int m_GravityKeyInput = 1;  //중력 조절       Z,X,C             입력
-    private int m_EquipmentKeyInput = 1;//아이템 선택     1,2,3,4,5         입력
+    private int m_GravityKeyInput = 1;  //중력 조절       Z,X,C             누르기
+    private int m_EquipmentKeyInput = 1;//아이템 선택     1,2,3,4,5         누르기
 
-    private float m_MouseScroll;        //중력 조절       마우스 스크롤     입력
-    private float m_Horizontal;         //좌우            A,D               입력
-    private float m_Vertical;           //상하            W,S               입력
-    private float m_MouseX;             //화면 전환       마우스 좌,우      입력
-    private float m_MouseY;             //화면 전환       마우스 위,아래    입력
+    private float m_MouseScroll;        //중력 조절       마우스 스크롤     누르기
+    private float m_Horizontal;         //좌우            A,D               꾹 누르기
+    private float m_Vertical;           //상하            W,S               꾹 누르기
+    private float m_MouseX;             //화면 전환       마우스 좌,우      꾹 누르기
+    private float m_MouseY;             //화면 전환       마우스 위,아래    꾹 누르기
 
-    private bool m_Jump;                //점프            SpaceBar          입력
-    private bool m_Reload;              //재장전          R                 입력
-    private bool m_IsRunning;           //뛰기            LeftShift         입력
-    private bool m_IsCrouch;            //앉기            LeftCtrl          입력
-    private bool m_IsAiming;            //조준            마우스 우클릭     입력
-    private bool m_IsAutoFiring;            //사격            마우스 좌클릭     입력
-    private bool m_IsSemiFiring;        //사격(단발, 점사)마우스 좌클릭     입력
-    private bool m_Heal;                //회복            E                 입력
-    private bool m_TimeSlow;            //시간 슬로우     F                 입력
-    private bool m_ChangeFireMode;  //사격 방식 변경  N                입력
+    private bool m_Jump;                //점프            SpaceBar          누르기
+    private bool m_Reload;              //재장전          R                 누르기          원거리 무기 전용
+    private bool m_IsCrouch;            //앉기            LeftCtrl          누르기
+    private bool m_IsRunning;           //뛰기            LeftShift         꾹 누르기
+    private bool m_IsAiming;            //조준            마우스 우클릭     꾹 누르기       원거리 무기 전용
+    private bool m_IsAutoFiring;        //공격            마우스 좌클릭     꾹 누르기       원거리 무기 전용
+    private bool m_IsSemiFiring;        //사격(단발, 점사)마우스 좌클릭     누르기
+    private bool m_Heal;                //회복            E                 누르기
+    private bool m_TimeSlow;            //시간 슬로우     F                 누르기
+    private bool m_ChangeFireMode;      //사격 방식 변경  N                 누르기
+    private bool m_IsHeavyFiring;       //강공격          마우스 우클릭     누르기          근접 무기 전용
 
     private bool m_WasCrouch;
     private bool m_WasTimeSlow;
     //keyDown Movement
-    public Action<float,float> MouseMovement { get; set; }
+    public Action<float, float> MouseMovement { get; set; }
 
     public Action<float, float> PlayerMovement { get; set; }
 
@@ -55,7 +56,7 @@ public class PlayerInputController : MonoBehaviour
     public Action<int, float> DoGravityChange { get; set; } //
 
     public Action<int> ChangeEquipment { get; set; }
-    
+
 
     public Action<bool> Crouch { get; set; }          //Toggle
     public Action<bool> TimeSlow { get; set; }        //Toggle
@@ -66,15 +67,14 @@ public class PlayerInputController : MonoBehaviour
     public Action Jump { get; set; }            //Trigger
     public Action Heal { get; set; }            //Trigger
 
-
     //key
     public Action<bool> Aiming { get; set; }          //Down
     public Action AutoFire { get; set; }        //Down, + @
     public Action SemiFire { get; set; }
+    public Action HeavyFire { get; set; }
     public Action<bool> Run { get; set; }             //Down
 
     public Action ChangeFireMode { get; set; }
-
 
     private void Update()
     {
@@ -92,12 +92,9 @@ public class PlayerInputController : MonoBehaviour
         m_MouseScroll = Input.GetAxis("Mouse ScrollWheel");
         if (m_MouseScroll != 0) DoGravityChange?.Invoke(m_GravityKeyInput, m_MouseScroll);
 
-        if (!m_Jump)
-        {
-            m_Jump = Input.GetKeyDown(KeyCode.Space);
-            if (m_Jump) Jump?.Invoke();
-        }
-
+        m_Jump = Input.GetKeyDown(KeyCode.Space);
+        if (m_Jump) Jump?.Invoke();
+        
         m_Reload = Input.GetKeyDown(KeyCode.R);
         if (m_Reload) Reload?.Invoke();
 
@@ -140,6 +137,9 @@ public class PlayerInputController : MonoBehaviour
 
         m_IsAiming = Input.GetKey(KeyCode.Mouse1);
         Aiming?.Invoke(m_IsAiming);
+
+        m_IsHeavyFiring = Input.GetKeyDown(KeyCode.Mouse1);
+        if(m_IsHeavyFiring) HeavyFire?.Invoke();
         //
     }
 

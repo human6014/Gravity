@@ -9,7 +9,7 @@ public class CrossHairController : MonoBehaviour
     [SerializeField] private CrossHairScripatble[] crossHairInfo;
 
     private Image [] crossHairImage = new Image[5];
-
+    private Color color;
     public CrossHairScripatble GetCrossHairInfo(int index) => crossHairInfo[index];
 
     private void Awake()
@@ -26,7 +26,13 @@ public class CrossHairController : MonoBehaviour
     {
         for(int i = 0; i < crossHairImage.Length; i++)
         {
+            if (crossHairInfo[index].crossHairSprite[i] == null)
+            {
+                crossHairImage[i].enabled = false;
+                continue;
+            }
             crossHairImage[i].sprite = crossHairInfo[index].crossHairSprite[i];
+            crossHairImage[i].enabled = true;
         }
     }
 }
