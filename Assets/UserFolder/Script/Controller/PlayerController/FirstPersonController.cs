@@ -77,16 +77,16 @@ namespace Contoller.Player
         [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
 
         [Space(15)]
-        [Tooltip("")]
+        [Tooltip("좌우 담당 Transform(몸체)")]
         [SerializeField] private Transform m_RightAxisTransform;
 
-        [Tooltip("")]
+        [Tooltip("위아래 담당 Transform(카메라)")]
         [SerializeField] private Transform m_UpAxisTransfrom;
 
-        [Tooltip("")]
+        [Tooltip("플레이어 콜라이더")]
         [SerializeField] private CapsuleCollider m_CapsuleCollider;
 
-        [Tooltip("")]
+        [Tooltip("플레이어 위쪽 위치")]
         [SerializeField] private LayerMask reversePosLayer;
 
         //앉기랑 다시 일어나기
@@ -110,7 +110,7 @@ namespace Contoller.Player
         private float m_NextStep;
         private readonly float m_InterporationDist = -0.1f;
 
-        public bool m_IsWalking { get; private set; }            //걷고 있는지
+        public bool m_IsWalking { get; private set; } = true;           //걷고 있는지
         private bool m_PreviouslyGrounded;  //이전 프레임에서 지상이었는지
         private bool m_Jumping;             //점프하고 있는지
         private bool m_Jump;                //점프키 입력 감지
@@ -130,24 +130,29 @@ namespace Contoller.Player
             m_HeadBob.Setup(m_UpAxisTransfrom, m_StepInterval);
             m_MouseLook.Setup(m_RightAxisTransform, m_UpAxisTransfrom);
 
-            MouseLook = m_MouseLook;
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
             m_StepCycle = 0f;
             m_NextStep = m_StepCycle / 2f;
             m_Jumping = false;
 
-            m_PlayerInputController.MouseMovement += TryRotateView;
-            m_PlayerInputController.PlayerMovement += TryMovement;
-            m_PlayerInputController.Run += TryRun;
-            m_PlayerInputController.Crouch += TryCrouch;
+            AssignKeyAction();
 
             m_IdlePos = m_RightAxisTransform.localPosition;
             m_CrouchPos = m_RightAxisTransform.localPosition - crouchInterporatePos;
         }
 
+        private void AssignKeyAction()
+        {
+            m_PlayerInputController.MouseMovement += TryRotateView;
+            m_PlayerInputController.PlayerMovement += TryMovement;
+            m_PlayerInputController.Run += TryRun;
+            m_PlayerInputController.Crouch += TryCrouch;
+            m_PlayerInputController.Jump += TryJump;
+        }
+
         private void Update()
         {
-            if (!m_Jump) m_Jump = Input.GetButtonDown("Jump");
+            //if (!m_Jump) m_Jump = Input.GetButtonDown("Jump");
             if (!m_PreviouslyGrounded && m_IsGround)
             {
                 StartCoroutine(m_JumpBob.DoBobCycle());
@@ -194,7 +199,6 @@ namespace Contoller.Player
                 {
                     CustomGravityChange(false, m_JumpSpeed * -GravityManager.GravityDirectionValue);
                     PlayJumpSound();
-
                     m_Jump = false;
                     m_Jumping = true;
                 }
@@ -245,6 +249,11 @@ namespace Contoller.Player
             }
         }
 
+        private void TryJump()
+        {
+            m_Jump = true;
+        }
+
         private void PlayLandingSound()
         {
             m_AudioSource.clip = m_LandSound;
@@ -288,8 +297,8 @@ namespace Contoller.Player
 
         private void UpdateCameraPosition(float speed)
         {
-            Vector3 newCameraPosition;
             if (!m_UseHeadBob) return;
+            Vector3 newCameraPosition;
             if (m_CharacterController.velocity.magnitude > 0 && m_IsGround)
             {
                 m_UpAxisTransfrom.localPosition = m_HeadBob.DoHeadBob(m_CharacterController.velocity.magnitude +
@@ -327,7 +336,7 @@ namespace Contoller.Player
 
         private void TryRotateView(float mouseHorizontal, float mouseVertical)
         {
-            m_MouseLook.LookRotation(m_RightAxisTransform, m_UpAxisTransfrom, mouseHorizontal, mouseVertical);
+            m_MouseLook.LookRotation(mouseHorizontal, mouseVertical);
         }
 
         private void PositionRay()

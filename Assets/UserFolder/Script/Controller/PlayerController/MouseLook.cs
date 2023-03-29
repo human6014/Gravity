@@ -9,8 +9,8 @@ namespace Contoller.Player.Utility
         public float XSensitivity = 2f;
         public float YSensitivity = 2f;
         public bool clampVerticalRotation = true;
-        public float MinimumX = -90F;
-        public float MaximumX = 90F;
+        public float MinimumX = -90f;
+        public float MaximumX = 90f;
         public bool smooth;
         public float smoothTime = 5f;
         public bool lockCursor = true;
@@ -22,13 +22,19 @@ namespace Contoller.Player.Utility
         private Quaternion m_CharacterTargetRot;
         private Quaternion m_CameraTargetRot;
 
+        private Transform m_TargetCharacter;
+        private Transform m_TargetCamera;
+
         public void Setup(Transform character, Transform camera)
         {
+            m_TargetCharacter = character;
+            m_TargetCamera = camera;
+
             m_CharacterTargetRot = character.localRotation;
             m_CameraTargetRot = camera.localRotation;
         }
 
-        public void LookRotation(Transform character, Transform camera, float mouseHorizontal, float mouseVertical)
+        public void LookRotation(float mouseHorizontal, float mouseVertical)
         {
             float yRot = rightAxisRecoil + mouseHorizontal * XSensitivity;
             float xRot = upAxisRecoil + mouseVertical * YSensitivity;
@@ -47,15 +53,13 @@ namespace Contoller.Player.Utility
 
             if (smooth)
             {
-                character.localRotation = Quaternion.Lerp
-                    (character.localRotation, m_CharacterTargetRot, smoothTime * Time.deltaTime);
-                camera.localRotation = Quaternion.Lerp
-                    (camera.localRotation, m_CameraTargetRot, smoothTime * Time.deltaTime);
+                m_TargetCharacter.localRotation = Quaternion.Lerp(m_TargetCharacter.localRotation, m_CharacterTargetRot, smoothTime * Time.deltaTime);
+                m_TargetCamera.localRotation = Quaternion.Lerp(m_TargetCamera.localRotation, m_CameraTargetRot, smoothTime * Time.deltaTime);
             }
             else
             {
-                character.localRotation = m_CharacterTargetRot;
-                camera.localRotation = m_CameraTargetRot;
+                m_TargetCharacter.localRotation = m_CharacterTargetRot;
+                m_TargetCamera.localRotation = m_CameraTargetRot;
             }
         }
 
