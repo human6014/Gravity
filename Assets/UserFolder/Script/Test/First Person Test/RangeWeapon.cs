@@ -1,104 +1,107 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Contoller.Player;
 using Scriptable;
 
 namespace Test
 {
-    public class RangeWeapon : MonoBehaviour
+    public class RangeWeapon : Weapon
     {
-        [SerializeField] private PlayerInputController m_PlayerInputController;
-
-        //애니메이션
-        private Animator m_EquipmentAnimator; //현재 자신의 무기 에니메이터
-        [SerializeField] private Animator armAnimator; //팔 애니메이터
-        [SerializeField] private AnimatorOverrideController equipmentOverrideController = null; // 덮어씌울 무기 애니메이션들
-        [SerializeField] private AnimatorOverrideController armOverrideController = null;   // 덮어씌울 팔 애니메이션들
-
+        [Space(15)]
+        [Header("Child")]
+        [Header("Aiming adjustment factor")]
         //조준시 에임 위치
-        [SerializeField] private Transform pivot; //위치 조정용 부모 오브젝트
-        [SerializeField] private Vector3 aimingPivotPosition;   //위치 조정용 옮길 위치
-        [SerializeField] private Vector3 aimingPivotRotation;   //위치 조정용 옮길 각도
-        private Vector3 m_OriginalPivotPosition;  //위치 조정용 부모 오브젝트 원래 위치
-        private Vector3 m_OriginalPivotRotation;  //위치 조정용 부모 오브젝트 원래 각도
+        [SerializeField] private Transform m_Pivot; //위치 조정용 부모 오브젝트
+        [SerializeField] private Vector3 m_AimingPivotPosition;   //위치 조정용 옮길 위치
+        [SerializeField] private Vector3 m_AimingPivotDirection;   //위치 조정용 옮길 각도(Vector3)
 
+        [Header("Running adjustment factor")]
+        //달릴때 총(pivot) 위치
+        [SerializeField] private Vector3 runningPivotPosition;      //달릴 때 pivot 위치
+        [SerializeField] private Vector3 runningPivotRotation;      //달릴 때 pivot 각도
+        [SerializeField] private float m_RunPosTime = 0.5f;              //달리는 자세로 전환 시간
 
+        [Header("Fire light")]
         //발사 시 총구 빛
         [SerializeField] private TestFireLight fireLight;       //총구 화염 제어 스크립트
         [SerializeField] private Transform muzzle;      //총구 위치
 
-        
+        [Header("Fire ray")]
         //발사 시 총 나가는거
         [SerializeField] private Camera mainCamera;         //총 발사 위치용 메인카메라
-        [SerializeField] private LayerMask bulletLayer;     //총 피격 레이어
-        [SerializeField] private float bulletMaxRange = 100;    //총 사거리
+        [SerializeField] private float bulletMaxRange = 100f;    //총 사거리
         [SerializeField] private float fireRatio = 0.15f;       //총 발사 속도
 
-        //발사 시 탄피 나가는거
-        [SerializeField] private Transform casingSpawnPos;  //탄피 생성 위치
-        [SerializeField] private GameObject casingObj;      //탄피 오브젝트
-        [SerializeField] private float spinValue = 17;      //탄피 회전값
-
-
+        [Header("Fire recoil")]
         //총 반동
-        [SerializeField] private FirstPersonController firstPersonController;   //반동시 카메라 각도 변경용 MouseLook 참조값 얻기
         [SerializeField] private Transform upAxisTransform;         //상하 반동 오브젝트
         [SerializeField] private Transform rightAxisTransform;      //좌우 반동 오브젝트
-        [SerializeField] private float upAxisRecoil;            //상하 반동 값
-        [SerializeField] private float rightAxisRecoil;         //좌우 반동 값
+        [SerializeField] private float m_UpAxisRecoil = 1.7f;            //상하 반동 값
+        [SerializeField] private float m_RightAxisRecoil = 0.9f;         //좌우 반동 값
 
+        [Header("Fire casing")]
+        //발사 시 탄피 나가는거
+        [SerializeField] private GameObject m_CasingObj;      //탄피 오브젝트
+        [SerializeField] private Transform m_CasingSpawnPos;  //탄피 생성 위치
+        [SerializeField] private float m_SpinValue = 17;      //탄피 회전값
 
-        //피격시 자국
-        private Manager.SurfaceManager surfaceManager;
-
-        //크로스 헤어 총기별로 설정
-        [SerializeField] private CrossHairController crossHairController;   //총기별 크로스 헤어 설정을 위한 UI관리 스크립트
-
-        //발사 + 피격 소리
-        [SerializeField] private AudioSource audioSource;               //소리 내기 위한 AudioSource 
-        [SerializeField] private Scriptable.RangeWeaponSoundScriptable m_WeaponSound;  //각종 소리를 담은 스크립터블
-
-
-        //달릴때 총(pivot) 위치
-        [SerializeField] private Vector3 runningPivotPosition;      //달릴 때 pivot 위치
-        [SerializeField] private Vector3 runningPivotRotation;      //달릴 때 pivot 각도
-        [SerializeField] private float runPosTime = 1;              //달리는 자세로 전환 시간
-
-
+        [Header("Reload magazine")]
         //재장전시 탄알집 떨어뜨리기
-        [SerializeField] private GameObject magazine;           //탄알집 오브젝트
-        [SerializeField] private Transform magazineSpawnPos;    //탄알집 생성 위치
+        [SerializeField] private GameObject m_MagazineObj;           //탄알집 오브젝트
+        [SerializeField] private Transform m_MagazineSpawnPos;    //탄알집 생성 위치
 
-        private bool isEquip;
-        private bool isRunning;
-        private bool isReloading;
-        private bool isAiming;
-        private bool canFirePosture = true;
+        [Header("Fire mode")]
+        [MultiEnum] [SerializeField] private FireMode m_FireMode;
 
-        private float currentFireRatio;
+        private Vector3 m_OriginalPivotPosition;  //위치 조정용 부모 오브젝트 원래 위치
+        private Quaternion m_OriginalPivotRotation;  //위치 조정용 부모 오브젝트 원래 각도
+        private Quaternion m_AimingPivotRotation;   //위치 조정용 옮길 각도(Quaternion)
+
+        private bool m_IsRunning;
+        private bool m_IsReloading;
+        private bool m_IsAiming;
+        private bool m_CanFirePosture = true;
+
+        private float m_CurrentFireRatio;
 
         private readonly WaitForSeconds m_BurstRatioTime = new WaitForSeconds(0.1f);
-        private Coroutine runningCoroutine;
+        private Coroutine m_RunningCoroutine;
 
+        [System.Flags]
         private enum FireMode
         {
-            Auto = 0,
-            Semi,
-            Burst
+            Auto = 1,
+            Semi = 2,
+            Burst= 4,
         }
-        FireMode fireMode = FireMode.Auto;
-        private int fireModeIndex = 0;
+        
+        private FireMode m_CurrentFireMode = FireMode.Auto;
+        private int m_FireModeLength;
+        private int m_FireModeIndex = 1;
 
-        private void Awake()
+        protected override void Awake()
         {
-            m_EquipmentAnimator = GetComponent<Animator>();
-            surfaceManager = FindObjectOfType<Manager.SurfaceManager>();
-            m_OriginalPivotPosition = pivot.localPosition;
-            m_OriginalPivotRotation = pivot.localEulerAngles;
+            base.Awake();
+            m_OriginalPivotPosition = m_Pivot.localPosition;
+            m_OriginalPivotRotation = m_Pivot.localRotation;
+            m_AimingPivotRotation = Quaternion.Euler(m_AimingPivotDirection);
 
+            AssignFireMode();
             AssignKeyAction();
             //Awake자리 아님
+        }
+
+        private void AssignFireMode()
+        {
+            if (m_FireMode == 0)
+            {
+                Debug.LogError("FireMode must not be Nothing");
+                return;
+            }
+            
+            int length = System.Enum.GetValues(typeof(FireMode)).Length;
+            m_FireModeLength = (int)Mathf.Pow(2, length);
+            if (!m_FireMode.HasFlag((FireMode)m_FireModeIndex)) ChangeFlag();
         }
 
         private void AssignKeyAction()
@@ -112,118 +115,132 @@ namespace Test
 
         private void Start()
         {
-            armAnimator.runtimeAnimatorController = armOverrideController;
+            m_ArmAnimator.runtimeAnimatorController = m_ArmOverrideController;
 
             m_EquipmentAnimator.SetTrigger("Equip");
-            armAnimator.SetTrigger("Equip");
+            m_ArmAnimator.SetTrigger("Equip");
 
-            crossHairController.SetCrossHair(1);
+            m_CrossHairController.SetCrossHair(1);
         }
 
         //Arm 애니메이터 덮어씌우기
-        public void Init()
+        public override void Init()
         {
-            armAnimator.runtimeAnimatorController = armOverrideController;
+            base.Init();
 
-            m_EquipmentAnimator.SetTrigger("Equip");
-            armAnimator.SetTrigger("Equip");
+            m_CrossHairController.SetCrossHair(1);
 
-            crossHairController.SetCrossHair(1);
+            AssignKeyAction();
         }        
         
         private void Update()
         {
-            currentFireRatio += Time.deltaTime;
+            m_CurrentFireRatio += Time.deltaTime;
 
             //isRunning = !firstPersonController.m_IsWalking;
-            if (!firstPersonController.m_IsWalking)
+            if (!m_FirstPersonController.m_IsWalking)
             {
-                if (!isRunning)
+                if (!m_IsRunning)
                 {
-                    isRunning = true;
-                    if (runningCoroutine != null) StopCoroutine(runningCoroutine);
-                    runningCoroutine = StartCoroutine(RunningPos());
+                    m_IsRunning = true;
+                    if (m_RunningCoroutine != null) StopCoroutine(m_RunningCoroutine);
+                    m_RunningCoroutine = StartCoroutine(RunningPos());
                 }
             }
-            else if (isRunning)
+            else if (m_IsRunning)
             {
-                isRunning = false;
-                if (runningCoroutine != null) StopCoroutine(runningCoroutine);
+                m_IsRunning = false;
+                if (m_RunningCoroutine != null) StopCoroutine(m_RunningCoroutine);
             }
         }
 
 
         private void TryAiming(bool isAiming)
         {
-            if (isRunning) return;
-            this.isAiming = isAiming;
+            if (m_IsRunning) return;
+            m_IsAiming = isAiming;
 
-            if (isAiming) AimingPosRot(aimingPivotPosition, Quaternion.Euler(aimingPivotRotation));
-            else AimingPosRot(m_OriginalPivotPosition, Quaternion.Euler(m_OriginalPivotRotation));
-            isRunning = false;
+            if (isAiming) AimingPosRot(m_AimingPivotPosition, m_AimingPivotRotation);
+            else AimingPosRot(m_OriginalPivotPosition, m_OriginalPivotRotation);
+            m_IsRunning = false;
             SetCurrentFireIndex();
         }
 
         private void AimingPosRot(Vector3 EndPosition, Quaternion EndRotation)
         {
-            pivot.localPosition = Vector3.Lerp(pivot.localPosition, EndPosition, 0.07f);
-            pivot.localRotation = Quaternion.Lerp(pivot.localRotation, EndRotation, 0.07f);
+            m_Pivot.localPosition = Vector3.Lerp(m_Pivot.localPosition, EndPosition, 0.07f);
+            m_Pivot.localRotation = Quaternion.Lerp(m_Pivot.localRotation, EndRotation, 0.07f);
         }
 
         private void TryChangeFireMode()
         {
+            if (!ChangeFlag()) return;
+
             m_EquipmentAnimator.SetTrigger("ChangeFireMode");
-            armAnimator.SetTrigger("ChangeFireMode");
+            m_ArmAnimator.SetTrigger("ChangeFireMode");
 
-            audioSource.PlayOneShot(m_WeaponSound.changeModeSound[0]);
-
-            fireModeIndex = (fireModeIndex + 1) % 3;
-            fireMode = (FireMode)fireModeIndex;
+            m_AudioSource.PlayOneShot(m_WeaponSound.changeModeSound[0]);
         }
 
-        private bool CanFire() => currentFireRatio > fireRatio && !isRunning && canFirePosture;
+        private bool ChangeFlag()
+        {
+            int beforeChangeIndex = m_FireModeIndex;
+            do
+            {
+                m_FireModeIndex <<= 1;
+                if (m_FireModeIndex > m_FireModeLength) m_FireModeIndex = 1;
+            }
+            while (!m_FireMode.HasFlag((FireMode)m_FireModeIndex));
+            int afterChangeIndex = m_FireModeIndex;
+
+            if (beforeChangeIndex == afterChangeIndex) return false;
+            m_CurrentFireMode = (FireMode)m_FireModeIndex;
+            return true;
+        }
+
+        private bool CanFire() => m_CurrentFireRatio > fireRatio && !m_IsRunning && m_CanFirePosture;
 
         private void TryAutoFire()
         {
-            if (fireMode != FireMode.Auto) return;
+            if (m_CurrentFireMode != FireMode.Auto) return;
             if (CanFire()) Fire();
         }
 
         private void TrySemiFire()
         {
-            if (fireMode == FireMode.Auto) return;
+            if (m_CurrentFireMode == FireMode.Auto) return;
             if (CanFire())
             {
-                if (fireMode == FireMode.Semi) Fire();
-                else if (fireMode == FireMode.Burst) StartCoroutine(BurstFire());
+                if (m_CurrentFireMode == FireMode.Semi) Fire();
+                else if (m_CurrentFireMode == FireMode.Burst) StartCoroutine(BurstFire());
             }
         }
 
         private void SetCurrentFireIndex()
         {
-            if(isAiming)
+            if(m_IsAiming)
             {
                 m_EquipmentAnimator.SetFloat("Fire Index", 1);
-                armAnimator.SetFloat("Fire Index", 1); 
+                m_ArmAnimator.SetFloat("Fire Index", 1); 
                 
                 m_EquipmentAnimator.SetInteger("Idle Index", 0);
-                armAnimator.SetInteger("Idle Index", 0);
+                m_ArmAnimator.SetInteger("Idle Index", 0);
             }
             else
             {
                 m_EquipmentAnimator.SetFloat("Fire Index", 0);
-                armAnimator.SetFloat("Fire Index", 0);
+                m_ArmAnimator.SetFloat("Fire Index", 0);
 
                 m_EquipmentAnimator.SetInteger("Idle Index", 1);
-                armAnimator.SetInteger("Idle Index", 1);
+                m_ArmAnimator.SetInteger("Idle Index", 1);
             }
         }
 
         private void TryReload()
         {
-            canFirePosture = false;
-            StartCoroutine(Reload(true, m_WeaponSound.emptyReloadSoundClips));
-            //StartCoroutine(Reload(false, gunInfo.emptyReloadSoundClips));
+            m_CanFirePosture = false;
+            //StartCoroutine(Reload(true, m_WeaponSound.emptyReloadSoundClips));
+            StartCoroutine(Reload(false, m_WeaponSound.reloadSoundClips));
         }
 
         private IEnumerator Reload(bool isEmpty, RangeWeaponSoundScriptable.DelaySoundClip[] ReloadSoundClip)
@@ -233,38 +250,38 @@ namespace Test
             float delayTime = 0;
 
             m_EquipmentAnimator.SetTrigger(animParamName);
-            armAnimator.SetTrigger(animParamName);
+            m_ArmAnimator.SetTrigger(animParamName);
 
             for(int i = 0; i < ReloadSoundClip.Length; i++)
             {
                 delayTime = ReloadSoundClip[i].delayTime;
                 yield return new WaitForSeconds(delayTime);
-                audioSource.PlayOneShot(ReloadSoundClip[i].audioClip);
+                m_AudioSource.PlayOneShot(ReloadSoundClip[i].audioClip);
                 if (i == magazineSpawnTiming) InstanceMagazine();
             }
             yield return new WaitForSeconds(delayTime);
-            canFirePosture = true;
+            m_CanFirePosture = true;
         }
 
         private void InstanceMagazine()
         {
             Quaternion magazineSpawnRotation = Quaternion.Euler(Random.Range(-30, 30), Random.Range(-30, 30), Random.Range(-30, 30));
-            Instantiate(magazine, magazineSpawnPos.position, magazineSpawnRotation);
+            Instantiate(m_MagazineObj, m_MagazineSpawnPos.position, magazineSpawnRotation);
         }
 
         private IEnumerator RunningPos()
         {
             float currentTime = 0;
             float elapsedTime;
-            Vector3 startLocalPosition = pivot.localPosition;
-            Quaternion startLocalRotation = pivot.localRotation;
-            while (currentTime < runPosTime)
+            Vector3 startLocalPosition = m_Pivot.localPosition;
+            Quaternion startLocalRotation = m_Pivot.localRotation;
+            while (currentTime < m_RunPosTime)
             {
                 currentTime += Time.deltaTime;
 
-                elapsedTime = currentTime / runPosTime;
-                pivot.localPosition = Vector3.Lerp(startLocalPosition, runningPivotPosition, elapsedTime);
-                pivot.localRotation = Quaternion.Lerp(startLocalRotation, Quaternion.Euler(runningPivotRotation),elapsedTime);
+                elapsedTime = currentTime / m_RunPosTime;
+                m_Pivot.localPosition = Vector3.Lerp(startLocalPosition, runningPivotPosition, elapsedTime);
+                m_Pivot.localRotation = Quaternion.Lerp(startLocalRotation, Quaternion.Euler(runningPivotRotation),elapsedTime);
 
                 yield return elapsedTime;
             }
@@ -272,10 +289,10 @@ namespace Test
 
         private void Fire()
         {
-            currentFireRatio = 0;
+            m_CurrentFireRatio = 0;
 
             m_EquipmentAnimator.SetBool("Fire", true);
-            armAnimator.SetBool("Fire", true);
+            m_ArmAnimator.SetBool("Fire", true);
 
             FireRay();
             FireRecoil();
@@ -297,14 +314,14 @@ namespace Test
         {
             Quaternion cassingSpawnRotation = Quaternion.Euler(Random.Range(-30, 30), Random.Range(-30, 30), Random.Range(-30, 30));
 
-            GameObject cassing = Instantiate(casingObj, casingSpawnPos.position, cassingSpawnRotation);
+            GameObject cassing = Instantiate(m_CasingObj, m_CasingSpawnPos.position, cassingSpawnRotation);
 
             Rigidbody cassingRB = cassing.GetComponent<Rigidbody>();
 
             Vector3 randomForce = new Vector3(Random.Range(0.75f,1.25f), Random.Range(0.75f,1.25f),Random.Range(0.75f,1.25f));
-            Vector3 randomTorque = new Vector3(Random.Range(-spinValue, spinValue), Random.Range(-spinValue, spinValue), Random.Range(-spinValue, spinValue));
+            Vector3 randomTorque = new Vector3(Random.Range(-m_SpinValue, m_SpinValue), Random.Range(-m_SpinValue, m_SpinValue), Random.Range(-m_SpinValue, m_SpinValue));
             
-            cassingRB.velocity = casingSpawnPos.right + randomForce * 0.5f;
+            cassingRB.velocity = m_CasingSpawnPos.right + randomForce * 0.5f;
             cassingRB.angularVelocity = randomTorque;
         }
 
@@ -312,8 +329,8 @@ namespace Test
         {
             AudioClip audioClip = m_WeaponSound.fireSound[Random.Range(0, m_WeaponSound.fireSound.Length)];
 
-            audioSource.PlayOneShot(audioClip);
-            if (Physics.Raycast(muzzle.position, mainCamera.transform.forward, out RaycastHit hit, bulletMaxRange, bulletLayer, QueryTriggerInteraction.Ignore))
+            m_AudioSource.PlayOneShot(audioClip);
+            if (Physics.Raycast(muzzle.position, mainCamera.transform.forward, out RaycastHit hit, bulletMaxRange, m_AttackableLayer, QueryTriggerInteraction.Ignore))
             {
                 GameObject effectObject; //풀링 예정
                 Scriptable.EffectPair effectPair;
@@ -321,13 +338,13 @@ namespace Test
                 int hitLayer = hit.transform.gameObject.layer;
                 if (hitLayer == 14)
                 {
-                    effectPair = surfaceManager.GetBulletHitEffectPair(0);
+                    effectPair = m_SurfaceManager.GetBulletHitEffectPair(0);
                     effectObject = effectPair.effectObject;
                     audioClip = effectPair.audioClips[Random.Range(0, effectPair.audioClips.Length)];
                 }
                 else if (hitLayer == 17)
                 {
-                    effectPair = surfaceManager.GetBulletHitEffectPair(1);
+                    effectPair = m_SurfaceManager.GetBulletHitEffectPair(1);
                     effectObject = effectPair.effectObject;
                     audioClip = effectPair.audioClips[Random.Range(0, effectPair.audioClips.Length)];
                 }
@@ -336,9 +353,9 @@ namespace Test
                     if (!hit.transform.TryGetComponent(out MeshRenderer meshRenderer)) return;
                     if (meshRenderer.sharedMaterial == null) return;
                     //Debug.Log(meshRenderer.sharedMaterial);
-                    int surfaceIndex = surfaceManager.IsInMaterial(meshRenderer.sharedMaterial);
+                    int surfaceIndex = m_SurfaceManager.IsInMaterial(meshRenderer.sharedMaterial);
                     if (surfaceIndex == -1) return;
-                    effectPair = surfaceManager.GetBulletHitEffectPair(surfaceIndex);
+                    effectPair = m_SurfaceManager.GetBulletHitEffectPair(surfaceIndex);
 
                     effectObject = effectPair.effectObject;
                     audioClip = effectPair.audioClips[Random.Range(0, effectPair.audioClips.Length)];
@@ -348,6 +365,8 @@ namespace Test
 
                 Instantiate(effectObject, hit.point, Quaternion.LookRotation(hit.normal));
             }
+            audioClip = m_WeaponSound.fireTailSound[Random.Range(0, m_WeaponSound.fireTailSound.Length)];
+            m_AudioSource.PlayOneShot(audioClip);
         }
 
         private void FireRecoil()
@@ -355,20 +374,31 @@ namespace Test
             float upRandom = Random.Range(-0.2f, 0.4f);
             float rightRandom = Random.Range(-0.15f, 0.2f);
 
-            upRandom += upAxisRecoil;
-            rightRandom += rightAxisRecoil;
-            firstPersonController.MouseLook.AddRecoil(upRandom * 0.2f, rightRandom * 0.2f);
+            upRandom += m_UpAxisRecoil;
+            rightRandom += m_RightAxisRecoil;
+            m_FirstPersonController.MouseLook.AddRecoil(upRandom * 0.2f, rightRandom * 0.2f);
         }
 
         private void EndFire()
         {
             fireLight.Stop(true);
+
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
-            armAnimator.SetTrigger("Unequip");
-            m_EquipmentAnimator.SetTrigger("Unequip");
+            base.Dispose();
+
+            DischargeKeyAction();
+        }
+
+        private void DischargeKeyAction()
+        {
+            m_PlayerInputController.Reload -= TryReload;
+            m_PlayerInputController.ChangeFireMode -= TryChangeFireMode;
+            m_PlayerInputController.AutoFire -= TryAutoFire;
+            m_PlayerInputController.SemiFire -= TrySemiFire;
+            m_PlayerInputController.Aiming -= TryAiming;
         }
     }
 }
