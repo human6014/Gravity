@@ -7,19 +7,20 @@ namespace Test
 {
     public class MeleeWeapon : Weapon
     {
+        [Space(15)]
+        [Header("Child")]
+        [Header("Attack Ratio")]
         [SerializeField] private float m_LightFireRatio = 1f;        //약공격 속도
         [SerializeField] private float m_HeavyFireRatio = 1.5f;         //강공격 속도
         //피격시 자국
-        private Manager.SurfaceManager surfaceManager;
-
-        private bool isEquip;
+        
+        
         private bool isRunning;
         private float currentFireRatio;
 
-        private void Awake()
+        protected override void Awake()
         {
-            m_EquipmentAnimator = GetComponent<Animator>();
-            surfaceManager = FindObjectOfType<Manager.SurfaceManager>();
+            base.Awake();
             AssignKeyAction(); //Awake자리 아님
         }
 
@@ -38,7 +39,7 @@ namespace Test
 
             m_CrossHairController.SetCrossHair(0);
 
-            isEquip = true;
+            m_IsEquip = true;
         }
 
         public override void Init()
@@ -46,8 +47,8 @@ namespace Test
             base.Init();
 
             m_CrossHairController.SetCrossHair(0);
-
-            isEquip = true;
+            AssignKeyAction();
+            m_IsEquip = true;
         }
 
         private void Update()
@@ -76,12 +77,7 @@ namespace Test
             {
                 currentFireRatio = 0;
 
-                m_ArmAnimator.SetFloat("Swing Index",0);
-                m_EquipmentAnimator.SetFloat("Swing Index", 0);
-
-                m_ArmAnimator.SetTrigger("Swing");
-                m_EquipmentAnimator.SetTrigger("Swing");
-                Attack();
+                Attack(0);
             }
         }
 
@@ -91,23 +87,29 @@ namespace Test
             {
                 currentFireRatio = 0;
 
-                m_ArmAnimator.SetFloat("Swing Index", 1);
-                m_EquipmentAnimator.SetFloat("Swing Index", 1);
-
-                m_ArmAnimator.SetTrigger("Swing");
-                m_EquipmentAnimator.SetTrigger("Swing");
-                Attack();
+                Attack(1);
             }
         }
 
-        private void Attack()
+        private void Attack(int swingIndex)
         {
+            m_ArmAnimator.SetFloat("Swing Index", swingIndex);
+            m_EquipmentAnimator.SetFloat("Swing Index", swingIndex);
 
+            m_ArmAnimator.SetTrigger("Swing");
+            m_EquipmentAnimator.SetTrigger("Swing");
         }
 
         public override void Dispose()
         {
             base.Dispose();
+            DischargeKeyAction();
+        }
+
+        private void DischargeKeyAction()
+        {
+            m_PlayerInputController.SemiFire -= TryLightAttack;
+            m_PlayerInputController.HeavyFire -= TryHeavyAttack;
         }
     }
 }
