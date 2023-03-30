@@ -2,15 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponSoundScriptable : ScriptableObject
+namespace Scriptable
 {
-    [System.Serializable]
-    public class DelaySoundClip
+    public class WeaponSoundScriptable : ScriptableObject
     {
-        public AudioClip audioClip;
-        public float delayTime;
-    }
+        [System.Serializable]
+        public class DelaySoundClip
+        {
+            public AudioClip audioClip;
+            public float delayTime;
+        }
 
-    public AudioClip[] equipSound;
-    public AudioClip[] unequipSound;
+        public AudioClip[] equipSound;
+        public AudioClip[] unequipSound;
+    }
 }
