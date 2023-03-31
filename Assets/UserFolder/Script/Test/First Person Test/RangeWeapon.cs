@@ -23,8 +23,8 @@ namespace Test
 
         [Header("Fire light")]
         //발사 시 총구 빛
-        [SerializeField] private TestFireLight fireLight;       //총구 화염 제어 스크립트
-        [SerializeField] private Transform muzzle;      //총구 위치
+        [SerializeField] private TestFireLight m_FireLight;       //총구 화염 제어 스크립트
+        [SerializeField] private Transform m_MuzzlePos;      //총구 위치
 
         [Header("Fire ray")]
         //발사 시 총 나가는거
@@ -34,8 +34,8 @@ namespace Test
 
         [Header("Fire recoil")]
         //총 반동
-        [SerializeField] private Transform upAxisTransform;         //상하 반동 오브젝트
-        [SerializeField] private Transform rightAxisTransform;      //좌우 반동 오브젝트
+        [SerializeField] private Transform m_UpAxisTransform;         //상하 반동 오브젝트
+        [SerializeField] private Transform m_RightAxisTransform;      //좌우 반동 오브젝트
         [SerializeField] private float m_UpAxisRecoil = 1.7f;            //상하 반동 값
         [SerializeField] private float m_RightAxisRecoil = 0.9f;         //좌우 반동 값
 
@@ -154,7 +154,6 @@ namespace Test
             }
         }
 
-
         private void TryAiming(bool isAiming)
         {
             if (m_IsRunning) return;
@@ -187,8 +186,8 @@ namespace Test
             int beforeChangeIndex = m_FireModeIndex;
             do
             {
-                m_FireModeIndex <<= 1;
-                if (m_FireModeIndex > m_FireModeLength) m_FireModeIndex = 1;
+                //m_FireModeIndex <<= 1;
+                if ((m_FireModeIndex <<= 1) >= m_FireModeLength) m_FireModeIndex = 1;
             }
             while (!m_FireMode.HasFlag((FireMode)m_FireModeIndex));
             int afterChangeIndex = m_FireModeIndex;
@@ -296,7 +295,7 @@ namespace Test
 
             FireRay();
             FireRecoil();
-            fireLight.Play(true);
+            m_FireLight.Play(true);
             InstanceBullet();
             Invoke(nameof(EndFire), 0.1f);
         }
@@ -330,7 +329,7 @@ namespace Test
             AudioClip audioClip = m_WeaponSound.fireSound[Random.Range(0, m_WeaponSound.fireSound.Length)];
 
             m_AudioSource.PlayOneShot(audioClip);
-            if (Physics.Raycast(muzzle.position, mainCamera.transform.forward, out RaycastHit hit, bulletMaxRange, m_AttackableLayer, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(m_MuzzlePos.position, mainCamera.transform.forward, out RaycastHit hit, bulletMaxRange, m_AttackableLayer, QueryTriggerInteraction.Ignore))
             {
                 GameObject effectObject; //풀링 예정
                 Scriptable.EffectPair effectPair;
@@ -381,7 +380,7 @@ namespace Test
 
         private void EndFire()
         {
-            fireLight.Stop(true);
+            m_FireLight.Stop(true);
 
         }
 

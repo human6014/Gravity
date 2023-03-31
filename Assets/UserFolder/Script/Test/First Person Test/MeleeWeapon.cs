@@ -98,6 +98,17 @@ namespace Test
 
             m_ArmAnimator.SetTrigger("Swing");
             m_EquipmentAnimator.SetTrigger("Swing");
+
+            if (Physics.CapsuleCast(transform.position + transform.up, transform.position - transform.up,3, Vector3.zero,5,m_AttackableLayer))
+            {
+
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.white;
+            
         }
 
         public override void Dispose()

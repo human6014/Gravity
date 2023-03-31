@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53de1f3085ab9384c9a61ec6c6835814, type: 3}
+  m_Name: M1911_Sound Setting
+  m_EditorClassIdentifier: 
+  equipSound:
+  - {fileID: 8300000, guid: 9271f804281c17847824a66eecfe71af, type: 3}
+  unequipSound:
+  - {fileID: 8300000, guid: 0449fbe5d1232f8488e573b5e380189f, type: 3}
+  fireSound:
+  - {fileID: 8300000, guid: dab070fbbf24e9e4fa4ce0902ffb0950, type: 3}
+  fireTailSound:
+  - {fileID: 8300000, guid: 67c317b8f15584947a321738335b4631, type: 3}
+  emptySound:
+  - {fileID: 8300000, guid: 81fd9e79b0c4de8429890ca05996ac9f, type: 3}
+  changeModeSound:
+  - {fileID: 8300000, guid: 72971118ec16e97428f1ab90674b2e5f, type: 3}
+  reloadSoundClips:
+  - audioClip: {fileID: 8300000, guid: 221d7ce680c25724196309b81e4fc1a5, type: 3}
+    delayTime: 0
+  - audioClip: {fileID: 8300000, guid: 2276f66a7f686844a950b8ee64234741, type: 3}
+    delayTime: 0.6
+  - audioClip: {fileID: 8300000, guid: e24b02f3f6c51ec469b9bef4d58c4847, type: 3}
+    delayTime: 0.4
+  - audioClip: {fileID: 8300000, guid: 90f69d72569048f4ab10dc64d399c6e4, type: 3}
+    delayTime: 0.4
+  - audioClip: {fileID: 8300000, guid: 90f69d72569048f4ab10dc64d399c6e4, type: 3}
+    delayTime: 0.7
+  - audioClip: {fileID: 8300000, guid: 13341dfb4d900c04291b669d6e3dc25e, type: 3}
+    delayTime: 0.08
+  - audioClip: {fileID: 8300000, guid: 70632496e65804440bfa21d3ff8f11a9, type: 3}
+    delayTime: 0.3
+  emptyReloadSoundClips:
+  - audioClip: {fileID: 8300000, guid: 221d7ce680c25724196309b81e4fc1a5, type: 3}
+    delayTime: 0
+  - audioClip: {fileID: 8300000, guid: 2276f66a7f686844a950b8ee64234741, type: 3}
+    delayTime: 1.3
+  - audioClip: {fileID: 8300000, guid: e24b02f3f6c51ec469b9bef4d58c4847, type: 3}
+    delayTime: 0.5
+  - audioClip: {fileID: 8300000, guid: 90f69d72569048f4ab10dc64d399c6e4, type: 3}
+    delayTime: 0.2
+  - audioClip: {fileID: 8300000, guid: 90f69d72569048f4ab10dc64d399c6e4, type: 3}
+    delayTime: 0.7
+  - audioClip: {fileID: 8300000, guid: 13341dfb4d900c04291b669d6e3dc25e, type: 3}
+    delayTime: 0.08
+  - audioClip: {fileID: 8300000, guid: 70632496e65804440bfa21d3ff8f11a9, type: 3}
+    delayTime: 0.3
+  - audioClip: {fileID: 8300000, guid: d0deda4bdfb2f7348b551d9123404673, type: 3}
+    delayTime: 1
+  - audioClip: {fileID: 8300000, guid: b9578afcb3e05064397e31b1e9af7f99, type: 3}
+    delayTime: 0.6
