@@ -13,7 +13,7 @@ namespace Entity.Unit.Normal
         private Animator animator;
         private NormalMonsterAI normalMonsterAI;
 
-        public NoramlMonsterType GetMonsterType() => settings.monsterType;
+        public NoramlMonsterType GetMonsterType() => settings.m_MonsterType;
 
         private void Awake()
         {

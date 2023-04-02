@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Scriptable;
 
+
 namespace Test
 {
     public class RangeWeapon : Weapon
@@ -11,60 +12,56 @@ namespace Test
         [Header("Child")]
         [Header("Aiming adjustment factor")]
         //조준시 에임 위치
-        [SerializeField] private Transform m_Pivot; //위치 조정용 부모 오브젝트
-        [SerializeField] private Vector3 m_AimingPivotPosition;   //위치 조정용 옮길 위치
-        [SerializeField] private Vector3 m_AimingPivotDirection;   //위치 조정용 옮길 각도(Vector3)
+        [SerializeField] private Transform m_Pivot;                 //위치 조정용 부모 오브젝트
+        [SerializeField] private Vector3 m_AimingPivotPosition;     //위치 조정용 옮길 위치
+        [SerializeField] private Vector3 m_AimingPivotDirection;    //위치 조정용 옮길 각도(Vector3)
 
         [Header("Running adjustment factor")]
         //달릴때 총(pivot) 위치
         [SerializeField] private Vector3 runningPivotPosition;      //달릴 때 pivot 위치
         [SerializeField] private Vector3 runningPivotRotation;      //달릴 때 pivot 각도
-        [SerializeField] private float m_RunPosTime = 0.5f;              //달리는 자세로 전환 시간
 
         [Header("Fire light")]
         //발사 시 총구 빛
-        [SerializeField] private TestFireLight m_FireLight;       //총구 화염 제어 스크립트
-        [SerializeField] private Transform m_MuzzlePos;      //총구 위치
+        [SerializeField] private TestFireLight m_FireLight;         //총구 화염 제어 스크립트
+        [SerializeField] private Transform m_MuzzlePos;             //총구 위치
 
         [Header("Fire ray")]
         //발사 시 총 나가는거
-        [SerializeField] private Camera mainCamera;         //총 발사 위치용 메인카메라
-        [SerializeField] private float bulletMaxRange = 100f;    //총 사거리
-        [SerializeField] private float fireRatio = 0.15f;       //총 발사 속도
+        [SerializeField] private Camera mainCamera;                 //총 발사 위치용 메인카메라
 
         [Header("Fire recoil")]
         //총 반동
         [SerializeField] private Transform m_UpAxisTransform;         //상하 반동 오브젝트
         [SerializeField] private Transform m_RightAxisTransform;      //좌우 반동 오브젝트
-        [SerializeField] private float m_UpAxisRecoil = 1.7f;            //상하 반동 값
-        [SerializeField] private float m_RightAxisRecoil = 0.9f;         //좌우 반동 값
 
         [Header("Fire casing")]
         //발사 시 탄피 나가는거
-        [SerializeField] private GameObject m_CasingObj;      //탄피 오브젝트
-        [SerializeField] private Transform m_CasingSpawnPos;  //탄피 생성 위치
-        [SerializeField] private float m_SpinValue = 17;      //탄피 회전값
+        [SerializeField] private GameObject m_CasingObj;            //탄피 오브젝트
+        [SerializeField] private Transform m_CasingSpawnPos;        //탄피 생성 위치
 
         [Header("Reload magazine")]
         //재장전시 탄알집 떨어뜨리기
-        [SerializeField] private GameObject m_MagazineObj;           //탄알집 오브젝트
-        [SerializeField] private Transform m_MagazineSpawnPos;    //탄알집 생성 위치
+        [SerializeField] private GameObject m_MagazineObj;          //탄알집 오브젝트
+        [SerializeField] private Transform m_MagazineSpawnPos;      //탄알집 생성 위치
 
         [Header("Fire mode")]
         [MultiEnum] [SerializeField] private FireMode m_FireMode;
 
-        private Vector3 m_OriginalPivotPosition;  //위치 조정용 부모 오브젝트 원래 위치
-        private Quaternion m_OriginalPivotRotation;  //위치 조정용 부모 오브젝트 원래 각도
-        private Quaternion m_AimingPivotRotation;   //위치 조정용 옮길 각도(Quaternion)
+        [SerializeField] private RangeWeaponStatScriptable m_RangeWeaponStat;
+
+        private Vector3 m_OriginalPivotPosition;            //위치 조정용 부모 오브젝트 원래 위치
+        private Quaternion m_OriginalPivotRotation;         //위치 조정용 부모 오브젝트 원래 각도
+        private Quaternion m_AimingPivotRotation;           //위치 조정용 옮길 각도(Quaternion)
 
         private bool m_IsRunning;
         private bool m_IsReloading;
         private bool m_IsAiming;
         private bool m_CanFirePosture = true;
 
-        private float m_CurrentFireRatio;
+        private float m_CurrentFireTime;
 
-        private readonly WaitForSeconds m_BurstRatioTime = new WaitForSeconds(0.1f);
+        private WaitForSeconds m_BurstFireTime;
         private Coroutine m_RunningCoroutine;
 
         [System.Flags]
@@ -85,6 +82,7 @@ namespace Test
             m_OriginalPivotPosition = m_Pivot.localPosition;
             m_OriginalPivotRotation = m_Pivot.localRotation;
             m_AimingPivotRotation = Quaternion.Euler(m_AimingPivotDirection);
+            m_BurstFireTime = new WaitForSeconds(m_RangeWeaponStat.m_BurstAttackTime);
 
             AssignFireMode();
             AssignKeyAction();
@@ -135,7 +133,7 @@ namespace Test
         
         private void Update()
         {
-            m_CurrentFireRatio += Time.deltaTime;
+            m_CurrentFireTime += Time.deltaTime;
 
             //isRunning = !firstPersonController.m_IsWalking;
             if (!m_FirstPersonController.m_IsWalking)
@@ -167,8 +165,8 @@ namespace Test
 
         private void AimingPosRot(Vector3 EndPosition, Quaternion EndRotation)
         {
-            m_Pivot.localPosition = Vector3.Lerp(m_Pivot.localPosition, EndPosition, 0.07f);
-            m_Pivot.localRotation = Quaternion.Lerp(m_Pivot.localRotation, EndRotation, 0.07f);
+            m_Pivot.localPosition = Vector3.Lerp(m_Pivot.localPosition, EndPosition, m_RangeWeaponStat.m_AimingPosTimeRatio);
+            m_Pivot.localRotation = Quaternion.Lerp(m_Pivot.localRotation, EndRotation, m_RangeWeaponStat.m_AimingPosTimeRatio);
         }
 
         private void TryChangeFireMode()
@@ -197,7 +195,12 @@ namespace Test
             return true;
         }
 
-        private bool CanFire() => m_CurrentFireRatio > fireRatio && !m_IsRunning && m_CanFirePosture;
+        private void ChangeCrossHair()
+        {
+
+        }
+
+        private bool CanFire() => m_CurrentFireTime > m_RangeWeaponStat.m_AttackTime && !m_IsRunning && m_CanFirePosture;
 
         private void TryAutoFire()
         {
@@ -265,7 +268,7 @@ namespace Test
         private void InstanceMagazine()
         {
             Quaternion magazineSpawnRotation = Quaternion.Euler(Random.Range(-30, 30), Random.Range(-30, 30), Random.Range(-30, 30));
-            Instantiate(m_MagazineObj, m_MagazineSpawnPos.position, magazineSpawnRotation);
+            Instantiate(m_MagazineObj, m_MagazineSpawnPos.position, magazineSpawnRotation);//.GetComponent<Entity.Object.DefaultPoolingScript>().Init();
         }
 
         private IEnumerator RunningPos()
@@ -274,11 +277,11 @@ namespace Test
             float elapsedTime;
             Vector3 startLocalPosition = m_Pivot.localPosition;
             Quaternion startLocalRotation = m_Pivot.localRotation;
-            while (currentTime < m_RunPosTime)
+            while (currentTime < m_RangeWeaponStat.m_RunningPosTime)
             {
                 currentTime += Time.deltaTime;
 
-                elapsedTime = currentTime / m_RunPosTime;
+                elapsedTime = currentTime / m_RangeWeaponStat.m_RunningPosTime;
                 m_Pivot.localPosition = Vector3.Lerp(startLocalPosition, runningPivotPosition, elapsedTime);
                 m_Pivot.localRotation = Quaternion.Lerp(startLocalRotation, Quaternion.Euler(runningPivotRotation),elapsedTime);
 
@@ -288,7 +291,7 @@ namespace Test
 
         private void Fire()
         {
-            m_CurrentFireRatio = 0;
+            m_CurrentFireTime = 0;
 
             m_EquipmentAnimator.SetBool("Fire", true);
             m_ArmAnimator.SetBool("Fire", true);
@@ -305,7 +308,7 @@ namespace Test
             for(int i = 0; i < 3; i++)
             {
                 Fire();
-                yield return m_BurstRatioTime;
+                yield return m_BurstFireTime;
             }
         }
 
@@ -317,8 +320,9 @@ namespace Test
 
             Rigidbody cassingRB = cassing.GetComponent<Rigidbody>();
 
+            float spinValue = m_RangeWeaponStat.m_SpinValue;
             Vector3 randomForce = new Vector3(Random.Range(0.75f,1.25f), Random.Range(0.75f,1.25f),Random.Range(0.75f,1.25f));
-            Vector3 randomTorque = new Vector3(Random.Range(-m_SpinValue, m_SpinValue), Random.Range(-m_SpinValue, m_SpinValue), Random.Range(-m_SpinValue, m_SpinValue));
+            Vector3 randomTorque = new Vector3(Random.Range(-spinValue, spinValue), Random.Range(-spinValue, spinValue), Random.Range(-spinValue, spinValue));
             
             cassingRB.velocity = m_CasingSpawnPos.right + randomForce * 0.5f;
             cassingRB.angularVelocity = randomTorque;
@@ -329,7 +333,8 @@ namespace Test
             AudioClip audioClip = m_WeaponSound.fireSound[Random.Range(0, m_WeaponSound.fireSound.Length)];
 
             m_AudioSource.PlayOneShot(audioClip);
-            if (Physics.Raycast(m_MuzzlePos.position, mainCamera.transform.forward, out RaycastHit hit, bulletMaxRange, m_AttackableLayer, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(m_MuzzlePos.position, mainCamera.transform.forward, out RaycastHit hit,
+                m_RangeWeaponStat.m_MaxRange, m_RangeWeaponStat.m_AttackableLayer, QueryTriggerInteraction.Ignore))
             {
                 GameObject effectObject; //풀링 예정
                 Scriptable.EffectPair effectPair;
@@ -370,11 +375,11 @@ namespace Test
 
         private void FireRecoil()
         {
-            float upRandom = Random.Range(-0.2f, 0.4f);
-            float rightRandom = Random.Range(-0.15f, 0.2f);
+            float upRandom = Random.Range(m_RangeWeaponStat.m_UpRandomRecoil.x, m_RangeWeaponStat.m_UpRandomRecoil.y);
+            float rightRandom = Random.Range(m_RangeWeaponStat.m_RightRandomRecoil.x, m_RangeWeaponStat.m_RightRandomRecoil.y);
 
-            upRandom += m_UpAxisRecoil;
-            rightRandom += m_RightAxisRecoil;
+            upRandom += m_RangeWeaponStat.m_UpAxisRecoil;
+            rightRandom += m_RangeWeaponStat.m_RightAxisRecoil;
             m_FirstPersonController.MouseLook.AddRecoil(upRandom * 0.2f, rightRandom * 0.2f);
         }
 

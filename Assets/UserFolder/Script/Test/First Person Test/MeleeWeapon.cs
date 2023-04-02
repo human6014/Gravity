@@ -9,11 +9,8 @@ namespace Test
     {
         [Space(15)]
         [Header("Child")]
-        [Header("Attack Ratio")]
-        [SerializeField] private float m_LightFireRatio = 1f;        //약공격 속도
-        [SerializeField] private float m_HeavyFireRatio = 1.5f;         //강공격 속도
-        //피격시 자국
-        
+
+        [SerializeField] private Scriptable.MeleeWeaponStatScriptable m_MeleeWeaponStat;
         
         private bool isRunning;
         private float currentFireRatio;
@@ -73,7 +70,7 @@ namespace Test
 
         private void TryLightAttack()
         {
-            if (currentFireRatio > m_LightFireRatio)
+            if (currentFireRatio > m_MeleeWeaponStat.m_LightFireTime)
             {
                 currentFireRatio = 0;
 
@@ -83,7 +80,7 @@ namespace Test
 
         private void TryHeavyAttack()
         {
-            if (currentFireRatio > m_HeavyFireRatio)
+            if (currentFireRatio > m_MeleeWeaponStat.m_HeavyFireTime)
             {
                 currentFireRatio = 0;
 
@@ -99,7 +96,7 @@ namespace Test
             m_ArmAnimator.SetTrigger("Swing");
             m_EquipmentAnimator.SetTrigger("Swing");
 
-            if (Physics.CapsuleCast(transform.position + transform.up, transform.position - transform.up,3, Vector3.zero,5,m_AttackableLayer))
+            if (Physics.CapsuleCast(transform.position + transform.up, transform.position - transform.up,3, Vector3.zero,5, m_MeleeWeaponStat.m_AttackableLayer))
             {
 
             }

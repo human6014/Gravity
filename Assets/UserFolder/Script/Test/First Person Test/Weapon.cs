@@ -38,6 +38,14 @@ namespace Test
         /// </summary>
         protected AudioSource m_AudioSource { get; private set; }
 
+        /// <summary>
+        /// Weapon들을 관리하는 매니저 클래스
+        /// </summary>
+        protected WeaponManager m_WeaponManager { get; private set; }
+
+        protected ObjectPoolManager.PoolingObject m_EffectPoolingObject;
+        protected ObjectPoolManager.PoolingObject m_CasingPoolingObject;
+        protected ObjectPoolManager.PoolingObject m_MagazinePoolingObject;
 
         [Header("Parent")]
         [Header("Weapon Animation")]
@@ -49,7 +57,6 @@ namespace Test
 
         [Header("Weapon Sound")]
         [SerializeField] protected Scriptable.RangeWeaponSoundScriptable m_WeaponSound;  //각종 소리를 담은 스크립터블
-        
         protected bool m_IsEquip;
 
         protected virtual void Awake()
@@ -59,11 +66,19 @@ namespace Test
             Transform rootTransform = transform.root;
             m_PlayerInputController = rootTransform.GetComponent<PlayerInputController>();
             m_FirstPersonController = rootTransform.GetComponent<FirstPersonController>();
-
+ 
             m_AudioSource = transform.parent.GetComponent<AudioSource>();
+            m_WeaponManager = transform.parent.GetComponent<WeaponManager>();
 
             m_SurfaceManager = FindObjectOfType<SurfaceManager>();
             m_CrossHairController = FindObjectOfType<CrossHairController>();
+        }
+
+        public void RegisterPooling(ObjectPoolManager.PoolingObject effectPooling, 
+                                    ObjectPoolManager.PoolingObject casingPooling, 
+                                    ObjectPoolManager.PoolingObject magazinePooling)
+        {
+
         }
 
         public virtual void Init()
