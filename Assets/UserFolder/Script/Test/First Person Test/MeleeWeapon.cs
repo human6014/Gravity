@@ -1,4 +1,5 @@
 using Contoller.Player;
+using Manager;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,19 +10,24 @@ namespace Test
     {
         [Space(15)]
         [Header("Child")]
-        [Header("Attack Ratio")]
-        [SerializeField] private float m_LightFireRatio = 1f;        //약공격 속도
-        [SerializeField] private float m_HeavyFireRatio = 1.5f;         //강공격 속도
-        //피격시 자국
-        
+        [SerializeField] private Scriptable.MeleeWeaponSoundScripatble m_MeleeWeaponSound;
+        [SerializeField] private Scriptable.MeleeWeaponStatScriptable m_MeleeWeaponStat;
         
         private bool isRunning;
         private float currentFireRatio;
+
+        private ObjectPoolManager.PoolingObject m_EffectPoolingObject;
 
         protected override void Awake()
         {
             base.Awake();
             AssignKeyAction(); //Awake자리 아님
+            AssignPoolingObject();
+        }
+
+        private void AssignPoolingObject()
+        {
+            m_EffectPoolingObject = m_WeaponManager.GetEffectPoolingObject(0);
         }
 
         private void AssignKeyAction()
@@ -46,7 +52,7 @@ namespace Test
         {
             base.Init();
 
-            m_CrossHairController.SetCrossHair(0);
+            m_CrossHairController.SetCrossHair((int)m_MeleeWeaponStat.m_DefaultCrossHair);
             AssignKeyAction();
             m_IsEquip = true;
         }
@@ -73,7 +79,7 @@ namespace Test
 
         private void TryLightAttack()
         {
-            if (currentFireRatio > m_LightFireRatio)
+            if (currentFireRatio > m_MeleeWeaponStat.m_LightFireTime)
             {
                 currentFireRatio = 0;
 
@@ -83,7 +89,7 @@ namespace Test
 
         private void TryHeavyAttack()
         {
-            if (currentFireRatio > m_HeavyFireRatio)
+            if (currentFireRatio > m_MeleeWeaponStat.m_HeavyFireTime)
             {
                 currentFireRatio = 0;
 
@@ -98,6 +104,17 @@ namespace Test
 
             m_ArmAnimator.SetTrigger("Swing");
             m_EquipmentAnimator.SetTrigger("Swing");
+
+            if (Physics.CapsuleCast(transform.position + transform.up, transform.position - transform.up,3, Vector3.zero,5, m_MeleeWeaponStat.m_AttackableLayer))
+            {
+
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.white;
+            
         }
 
         public override void Dispose()

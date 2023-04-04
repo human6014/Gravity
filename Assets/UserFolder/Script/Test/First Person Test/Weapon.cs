@@ -38,8 +38,17 @@ namespace Test
         /// </summary>
         protected AudioSource m_AudioSource { get; private set; }
 
+        /// <summary>
+        /// Weapon들을 관리하는 매니저 클래스
+        /// </summary>
+        protected WeaponManager m_WeaponManager { get; private set; }
+
+        public int GetItemIndex() => ItemIndex;
 
         [Header("Parent")]
+        [Header("Index")]
+        [SerializeField] protected int ItemIndex;   //아이템 고유번호
+
         [Header("Weapon Animation")]
         [SerializeField] protected Animator m_ArmAnimator; //팔 애니메이터
         [SerializeField] protected AnimatorOverrideController m_ArmOverrideController = null;   // 덮어씌울 팔 애니메이션들
@@ -48,8 +57,8 @@ namespace Test
         [SerializeField] protected LayerMask m_AttackableLayer;     //총 피격 레이어
 
         [Header("Weapon Sound")]
-        [SerializeField] protected Scriptable.RangeWeaponSoundScriptable m_WeaponSound;  //각종 소리를 담은 스크립터블
         
+
         protected bool m_IsEquip;
 
         protected virtual void Awake()
@@ -59,8 +68,9 @@ namespace Test
             Transform rootTransform = transform.root;
             m_PlayerInputController = rootTransform.GetComponent<PlayerInputController>();
             m_FirstPersonController = rootTransform.GetComponent<FirstPersonController>();
-
+ 
             m_AudioSource = transform.parent.GetComponent<AudioSource>();
+            m_WeaponManager = transform.parent.GetComponent<WeaponManager>();
 
             m_SurfaceManager = FindObjectOfType<SurfaceManager>();
             m_CrossHairController = FindObjectOfType<CrossHairController>();
@@ -68,6 +78,8 @@ namespace Test
 
         public virtual void Init()
         {
+            gameObject.SetActive(true);
+
             m_ArmAnimator.runtimeAnimatorController = m_ArmOverrideController;
 
             m_EquipmentAnimator.SetTrigger("Equip");
@@ -82,6 +94,8 @@ namespace Test
 
             m_ArmAnimator.SetTrigger("Unequip");
             m_EquipmentAnimator.SetTrigger("Unequip");
+
+            gameObject.SetActive(false);
         }
     }
 }

@@ -4904,6 +4904,7 @@ GameObject:
   - component: {fileID: 4101286824290720953}
   - component: {fileID: 8212814203445318504}
   - component: {fileID: 2470467891761936102}
+  - component: {fileID: 386347182194882490}
   m_Layer: 23
   m_Name: Casing_ShotgunShell
   m_TagString: Untagged
@@ -5006,3 +5007,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.0450373, y: 0.091812015, z: 0.046153527}
   m_Center: {x: 0.00042237993, y: 0.045978174, z: -0.00010967627}
+--- !u!114 &386347182194882490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8212814203445318502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d07c9e4cd2a8a9143930481d644cc49d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

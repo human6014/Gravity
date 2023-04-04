@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7205382469422671968}
   - component: {fileID: 1866527559420537053}
   - component: {fileID: -2817805176672233034}
+  - component: {fileID: -2501672094988109884}
   m_Layer: 23
   m_Name: Casing_300WM
   m_TagString: Untagged
@@ -114,3 +115,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.019229913, y: 0.07658381, z: 0.019229924}
   m_Center: {x: 0.000000015832484, y: 0.038291905, z: -0.000000004656613}
+--- !u!114 &-2501672094988109884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866527559420537051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d07c9e4cd2a8a9143930481d644cc49d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

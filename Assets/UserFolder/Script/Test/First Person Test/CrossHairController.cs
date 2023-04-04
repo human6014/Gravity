@@ -21,7 +21,7 @@ public class CrossHairController : MonoBehaviour
     /// <summary>
     /// 총기 종류에 따라 크로스 해어 설정
     /// </summary>
-    /// <param name="index">0 : 근접 무기, 1: 일반적인 총, 2: 샷건류 총, 3 : 석궁</param>
+    /// <param name="index">0 : 없음, 1: 점, 2: 십자선, 3 : 원형</param>
     public void SetCrossHair(int index)
     {
         for(int i = 0; i < crossHairImage.Length; i++)

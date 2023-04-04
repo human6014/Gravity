@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7163729751038231031}
   - component: {fileID: 5286013096758561187}
   - component: {fileID: -702124083539657584}
+  - component: {fileID: -7017260748359491424}
   m_Layer: 23
   m_Name: Casing_FlareGun_Flare
   m_TagString: Untagged
@@ -114,3 +115,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.03994251, y: 0.1139391, z: 0.039942488}
   m_Center: {x: -0.000000008381903, y: 0.056969535, z: 0}
+--- !u!114 &-7017260748359491424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5286013096758561213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d07c9e4cd2a8a9143930481d644cc49d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

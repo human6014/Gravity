@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3edd2e8b3bf2503448ae5ecda8a8f6b9, type: 3}
-  m_Name: ShotGunCrossHair
+  m_Name: CircleCrossHair
   m_EditorClassIdentifier: 
   centerSprite: {fileID: 0}
   leftSprit: {fileID: 21300000, guid: 67467fe8cc67b7348b41949cfab7f3ef, type: 3}

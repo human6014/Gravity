@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6291849499501703072}
   - component: {fileID: 3594899394593689796}
   - component: {fileID: 1745632476878421907}
+  - component: {fileID: -5956556250159958641}
   m_Layer: 23
   m_Name: "F1_Magazine_5.56\xD745mm_Empty"
   m_TagString: Untagged
@@ -134,3 +135,15 @@ LODGroup:
     renderers:
     - renderer: {fileID: 3375368932556523873}
   m_Enabled: 1
+--- !u!114 &-5956556250159958641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6291849499501703079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d07c9e4cd2a8a9143930481d644cc49d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

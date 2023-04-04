@@ -44,6 +44,7 @@ public class PlayerInputController : MonoBehaviour
     private bool m_ChangeFireMode;      //사격 방식 변경  N                 누르기
     private bool m_IsHeavyFiring;       //강공격          마우스 우클릭     누르기          근접 무기 전용
 
+
     private bool m_WasCrouch;
     private bool m_WasTimeSlow;
     //keyDown Movement
@@ -76,9 +77,9 @@ public class PlayerInputController : MonoBehaviour
 
     public Action ChangeFireMode { get; set; }
 
+
     private void Update()
     {
-        //if (!Input.anyKey) return;
         if (m_SettingUIManager.m_IsActiveSettingUI) return;
 
         m_MouseX = Input.GetAxis("Mouse X");
