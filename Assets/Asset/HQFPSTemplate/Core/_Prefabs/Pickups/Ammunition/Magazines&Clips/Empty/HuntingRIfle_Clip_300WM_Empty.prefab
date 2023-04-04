@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6127521804287668430}
   - component: {fileID: 9180156133339617083}
   - component: {fileID: 4961306051345847224}
+  - component: {fileID: -8090381396173268126}
   m_Layer: 23
   m_Name: HuntingRIfle_Clip_300WM_Empty
   m_TagString: Untagged
@@ -134,3 +135,15 @@ LODGroup:
     renderers:
     - renderer: {fileID: 2609012201549834754}
   m_Enabled: 1
+--- !u!114 &-8090381396173268126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6127521804287668431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d07c9e4cd2a8a9143930481d644cc49d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

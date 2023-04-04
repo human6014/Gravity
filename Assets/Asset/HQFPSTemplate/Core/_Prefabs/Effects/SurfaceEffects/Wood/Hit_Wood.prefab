@@ -4582,6 +4582,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4047398696726536}
+  - component: {fileID: -6068025244836918995}
   m_Layer: 26
   m_Name: Hit_Wood
   m_TagString: Untagged
@@ -4606,6 +4607,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-6068025244836918995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1851303431895908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d07c9e4cd2a8a9143930481d644cc49d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1919174373202926
 GameObject:
   m_ObjectHideFlags: 0

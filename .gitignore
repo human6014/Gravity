@@ -72,6 +72,7 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 #Custom
+!*.meta
 Assets/Asset/AutoLOD.meta
 Assets/Asset/AutoLOD/*
 Assets/Asset/**/*.png

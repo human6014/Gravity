@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2759451243512560303}
   - component: {fileID: 900568381973753720}
   - component: {fileID: 4931988894303609450}
+  - component: {fileID: 1300695200877477357}
   m_Layer: 23
   m_Name: Revolver_Speedloader_.357M_Empty
   m_TagString: Untagged
@@ -134,3 +135,15 @@ LODGroup:
     renderers:
     - renderer: {fileID: 4410303095840312395}
   m_Enabled: 1
+--- !u!114 &1300695200877477357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2759451243512560300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d07c9e4cd2a8a9143930481d644cc49d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

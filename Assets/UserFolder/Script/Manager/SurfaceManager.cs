@@ -49,23 +49,5 @@ namespace Manager
             }
             return -1;
         }
-
-        public GameObject GetSurfaceBulletEffectObject(Material material)
-        {
-            for(int i = 0; i < surfaceMaterialHashSet.Length; i++)
-            {
-                if (surfaceMaterialHashSet[i].Contains(material)) return surfaceInfo[i].bulletHitEffect.effectObject;
-            }
-            return null;
-        }
-
-        public GameObject GetSurfaceSlashEffectObject(Material material)
-        {
-            for (int i = 0; i < surfaceMaterialHashSet.Length; i++)
-            {
-                if (surfaceMaterialHashSet[i].Contains(material)) return surfaceInfo[i].SlashHitEffect.effectObject;
-            }
-            return null;
-        }
     }
 }

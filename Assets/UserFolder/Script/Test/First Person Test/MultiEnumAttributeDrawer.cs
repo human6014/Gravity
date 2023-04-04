@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using CustomAttribute;
 
 [CustomPropertyDrawer(typeof(MultiEnumAttribute))]
 public class MultiEnumAttributeDrawer : PropertyDrawer

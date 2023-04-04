@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MultiEnumAttribute : PropertyAttribute
+namespace CustomAttribute
 {
-    public MultiEnumAttribute() { }
+    public class MultiEnumAttribute : PropertyAttribute
+    {
+        public MultiEnumAttribute() { }
+    }
 }

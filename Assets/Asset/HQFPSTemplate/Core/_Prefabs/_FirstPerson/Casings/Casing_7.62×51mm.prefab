@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3435561332837958371}
   - component: {fileID: 8710760743117249723}
   - component: {fileID: 1390544975109050965}
+  - component: {fileID: -5475438426847817246}
   m_Layer: 23
   m_Name: "Casing_7.62\xD751mm"
   m_TagString: Untagged
@@ -114,3 +115,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.018389985, y: 0.060665037, z: 0.018389992}
   m_Center: {x: 0.0000000060535967, y: 0.030332519, z: -0.0000000041909516}
+--- !u!114 &-5475438426847817246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8710760743117249725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d07c9e4cd2a8a9143930481d644cc49d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
