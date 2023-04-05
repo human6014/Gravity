@@ -17,13 +17,13 @@ namespace Manager
 
         public EnumType.SurfaceType GetSurfaceType(int index) => surfaceInfo[index].surfaceType;
 
-        public EffectPair GetSoftFootEffectPair(int index) => surfaceInfo[index].softFootStepEffect;
+        public AudioClip[] GetSoftFootEffectSounds(int index) => surfaceInfo[index].m_SoftFootStepSounds;
 
-        public EffectPair GetHardFootEffectPair(int index) => surfaceInfo[index].hardFootStepEffect;
+        public AudioClip[] GetHardFootEffectSounds(int index) => surfaceInfo[index].m_HardFootStepSounds;
 
-        public EffectPair GetBulletHitEffectPair(int index) => surfaceInfo[index].bulletHitEffect;
+        public AudioClip[] GetBulletHitEffectSounds(int index) => surfaceInfo[index].m_BulletHitSounds;
 
-        public EffectPair GetSlashHitEffectPair(int index) => surfaceInfo[index].SlashHitEffect;
+        public AudioClip[] GetSlashHitEffectSounds(int index) => surfaceInfo[index].m_SlashHitSounds;
 
 
         private void Awake()
