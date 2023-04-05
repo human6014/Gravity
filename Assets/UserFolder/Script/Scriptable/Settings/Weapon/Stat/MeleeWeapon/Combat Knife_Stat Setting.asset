@@ -18,5 +18,5 @@ MonoBehaviour:
     m_Bits: 454401
   m_RunningPosTime: 0.5
   m_DefaultCrossHair: 1
-  m_LightFireTime: 1
-  m_HeavyFireTime: 1.5
+  m_LightFireTime: 0.5
+  m_HeavyFireTime: 0.75
