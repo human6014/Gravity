@@ -7,84 +7,52 @@ using Contoller.Player;
 using Manager;
 
 [RequireComponent(typeof(Test.RangeWeapon))]
-[System.Serializable]
 public class NormalFire : MonoBehaviour, IFireable
-{ 
+{
+    [Header("Fire light")]
+    [Tooltip("ÃÑ±¸ È­¿° Á¦¾î ½ºÅ©¸³Æ®")]
+    [SerializeField] private TestFireLight m_FireLight;
+
+    [Header("Casing")]
+    [Tooltip("ÃÑ¾Ë »ý¼º À§Ä¡")]
     [SerializeField] private Transform m_CasingSpawnPos;
-    private Transform m_MuzzlePos;
+
+    private Transform m_MuzzlePos;             //ÃÑ±¸ À§Ä¡
     private Camera mainCamera;
 
-    private int m_CasingIndex = -1;
-
-    private RangeWeaponSoundScriptable m_RangeWeaponSound;
     private RangeWeaponStatScriptable m_RangeWeaponStat;
-
-    private FirstPersonController m_FirstPersonController;
-    private AudioSource m_AudioSource;
-    private SurfaceManager m_SurfaceManager;
-
     private ObjectPoolManager.PoolingObject[] m_BulletEffectPoolingObjects; //0 : Concrete, 1 : Metal, 2 : Wood
     private ObjectPoolManager.PoolingObject m_CasingPoolingObject;
 
-    private float m_CurrentFireTime;
+    private SurfaceManager m_SurfaceManager;
+    private FirstPersonController m_FirstPersonController;
 
-    private WaitForSeconds m_BurstFireTime;
+    private bool m_HasBullet;
 
-    [SerializeField] private TestFireLight m_FireLight;         //ÃÑ±¸ È­¿° Á¦¾î ½ºÅ©¸³Æ®
 
-    [System.Flags]
-    private enum FireMode
+    private void Awake()
     {
-        Auto = 1,
-        Semi = 2,
-        Burst = 4,
+        m_MuzzlePos = m_FireLight.transform;
+        mainCamera = Camera.main;
     }
 
-    private FireMode m_CurrentFireMode = FireMode.Auto;
-    private int m_FireModeLength;
-    private int m_FireModeIndex = 1;
-    public void Setup()
+    public void Setup(RangeWeaponStatScriptable m_RangeWeaponStat,ObjectPoolManager.PoolingObject[] m_BulletEffectPoolingObjects,
+                    SurfaceManager m_SurfaceManager, FirstPersonController m_FirstPersonController)
     {
+        this.m_RangeWeaponStat = m_RangeWeaponStat;
+        this.m_BulletEffectPoolingObjects = m_BulletEffectPoolingObjects;
+        this.m_SurfaceManager = m_SurfaceManager;
+        this.m_FirstPersonController = m_FirstPersonController;
+    }
 
+    public void SetupCasingPooling(ObjectPoolManager.PoolingObject m_CasingPoolingObject)
+    {
+        this.m_CasingPoolingObject = m_CasingPoolingObject;
+        m_HasBullet = m_CasingPoolingObject != null;
     }
 
     public void DoFire()
     {
-        Debug.Log("DoFire");
-    }
-
-    
-
-    private void TryAutoFire()
-    {
-        if (m_CurrentFireMode != FireMode.Auto) return;
-        Fire();
-    }
-
-    private void TrySemiFire()
-    {
-        if (m_CurrentFireMode == FireMode.Auto) return;
-
-        if (m_CurrentFireMode == FireMode.Semi) Fire();
-        else if (m_CurrentFireMode == FireMode.Burst) StartCoroutine(BurstFire());
-
-    }
-    private IEnumerator BurstFire()
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            Fire();
-            yield return m_BurstFireTime;
-        }
-    }
-
-    private void Fire()
-    {
-        m_CurrentFireTime = 0;
-
-        //m_EquipmentAnimator.SetBool("Fire", true);
-        //m_ArmAnimator.SetBool("Fire", true);
-
         FireRay();
         FireRecoil();
         m_FireLight.Play(false);
@@ -94,12 +62,11 @@ public class NormalFire : MonoBehaviour, IFireable
 
     private void InstanceBullet()
     {
-        if (m_CasingIndex == -1) return;
+        if (!m_HasBullet) return;
         Quaternion cassingSpawnRotation = Quaternion.Euler(Random.Range(-30, 30), Random.Range(-30, 30), Random.Range(-30, 30));
 
         DefaultPoolingScript casingPoolingObject = (DefaultPoolingScript)m_CasingPoolingObject.GetObject(false);
 
-        //GameObject cassing = Instantiate(m_CasingObj, m_CasingSpawnPos.position, cassingSpawnRotation);
         casingPoolingObject.Init(m_CasingSpawnPos.position, cassingSpawnRotation, m_CasingPoolingObject);
         casingPoolingObject.gameObject.SetActive(true);
         Rigidbody cassingRB = casingPoolingObject.GetComponent<Rigidbody>();
@@ -114,18 +81,6 @@ public class NormalFire : MonoBehaviour, IFireable
 
     private void FireRay()
     {
-        AudioClip audioClip = m_RangeWeaponSound.fireSound[Random.Range(0, m_RangeWeaponSound.fireSound.Length)];
-        m_AudioSource.PlayOneShot(audioClip);
-
-        ProcessingRaycast();
-
-        audioClip = m_RangeWeaponSound.fireTailSound[Random.Range(0, m_RangeWeaponSound.fireTailSound.Length)];
-        m_AudioSource.PlayOneShot(audioClip);
-    }
-
-
-    private void ProcessingRaycast()
-    {
         if (Physics.Raycast(m_MuzzlePos.position, mainCamera.transform.forward, out RaycastHit hit, m_RangeWeaponStat.m_MaxRange, m_RangeWeaponStat.m_AttackableLayer, QueryTriggerInteraction.Ignore))
         {
             int fireEffectNumber;
@@ -138,7 +93,9 @@ public class NormalFire : MonoBehaviour, IFireable
                 if ((fireEffectNumber = m_SurfaceManager.IsInMaterial(meshRenderer.sharedMaterial)) == -1) return;
             }
             EffectSet(out AudioClip audioClip, out DefaultPoolingScript effectObj, fireEffectNumber);
+
             AudioSource.PlayClipAtPoint(audioClip, hit.point);
+
             effectObj.Init(hit.point, Quaternion.LookRotation(hit.normal), m_BulletEffectPoolingObjects[fireEffectNumber]);
             effectObj.gameObject.SetActive(true);
         }
@@ -167,4 +124,6 @@ public class NormalFire : MonoBehaviour, IFireable
     {
         m_FireLight.Stop(false);
     }
+
+
 }

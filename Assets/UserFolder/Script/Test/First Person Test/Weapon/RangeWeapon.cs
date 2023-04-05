@@ -33,12 +33,6 @@ namespace Test
         [SerializeField] private Vector3 runningPivotPosition;      //달릴 때 pivot 위치
         [SerializeField] private Vector3 runningPivotRotation;      //달릴 때 pivot 각도
 
-        [Header("Fire light")]
-        //발사 시 총구 빛
-        [SerializeField] private TestFireLight m_FireLight;         //총구 화염 제어 스크립트
-        //[SerializeField] 
-        private Transform m_MuzzlePos;             //총구 위치
-
         [Header("Fire ray")]
         //발사 시 총 나가는거
         [SerializeField] private Camera mainCamera;                 //총 발사 위치용 메인카메라
@@ -48,31 +42,15 @@ namespace Test
         [SerializeField] private Transform m_UpAxisTransform;         //상하 반동 오브젝트
         [SerializeField] private Transform m_RightAxisTransform;      //좌우 반동 오브젝트
 
-        [Header("Fire casing")]
-        //발사 시 탄피 나가는거
-        [SerializeField] private Transform m_CasingSpawnPos;        //탄피 생성 위치
-
-        [Header("Reload magazine")]
-        //재장전시 탄알집 떨어뜨리기
-        [SerializeField] private Transform m_MagazineSpawnPos;      //탄알집 생성 위치
-
         [Header("Fire mode")]
         [CustomAttribute.MultiEnum] [SerializeField] private FireMode m_FireMode;
-
-        [Header("Weapon Fire")]
-        [SerializeField] private NormalFire weaponFire;
-
 
         private Vector3 m_OriginalPivotPosition;            //위치 조정용 부모 오브젝트 원래 위치
         private Quaternion m_OriginalPivotRotation;         //위치 조정용 부모 오브젝트 원래 각도
         private Quaternion m_AimingPivotRotation;           //위치 조정용 옮길 각도(Quaternion)
 
         private bool m_IsRunning;
-        private bool m_IsReloading;
         private bool m_IsAiming;
-        private bool m_CanFirePosture = true;
-
-        private float m_CurrentFireTime;
 
         private WaitForSeconds m_BurstFireTime;
         private Coroutine m_RunningCoroutine;
@@ -89,17 +67,12 @@ namespace Test
         private int m_FireModeLength;
         private int m_FireModeIndex = 1;
 
-        private ObjectPoolManager.PoolingObject[] m_BulletEffectPoolingObjects; //0 : Concrete, 1 : Metal, 2 : Wood
-        private ObjectPoolManager.PoolingObject m_CasingPoolingObject;
-        private ObjectPoolManager.PoolingObject m_MagazinePoolingObject;
-
-
         [SerializeField] private bool m_IsInstanceReload;
         [SerializeField] private bool m_IsShotgun;
-
         private IFireable m_Fireable;
         private IReloadable m_Reloadable;
 
+        private float m_CurrentFireTime;
         protected override void Awake()
         {
             base.Awake();
@@ -108,13 +81,19 @@ namespace Test
             m_AimingPivotRotation = Quaternion.Euler(m_AimingPivotDirection);
             m_BurstFireTime = new WaitForSeconds(m_RangeWeaponStat.m_BurstAttackTime);
 
-            m_MuzzlePos = m_FireLight.GetComponent<Transform>();
-
             m_Fireable = GetComponent<IFireable>();
             m_Reloadable = GetComponent<IReloadable>();
 
             AssignFireMode();
-            //Awake자리 아님
+        }
+
+        private void Start()
+        {
+            if (m_CasingIndex != -1) m_Fireable.SetupCasingPooling(m_WeaponManager.GetCasingPoolingObject(m_CasingIndex));
+            if (m_MagazineIndex != -1) m_Reloadable.SetupMagazinePooling(m_WeaponManager.GetMagazinePoolingObject(m_MagazineIndex));
+
+            m_Fireable.Setup(m_RangeWeaponStat, m_WeaponManager.GetEffectPoolingObjects(), m_SurfaceManager, m_FirstPersonController);
+            m_Reloadable.Setup(m_RangeWeaponSound);
         }
 
         #region Assign
@@ -139,13 +118,6 @@ namespace Test
             m_PlayerInputController.SemiFire += TrySemiFire;
             m_PlayerInputController.Aiming += TryAiming;
         }
-
-        private void AssignPoolingObject()
-        {
-            m_BulletEffectPoolingObjects = m_WeaponManager.GetEffectPoolingObjects();
-            if(m_CasingIndex != -1) m_CasingPoolingObject = m_WeaponManager.GetCasingPoolingObject(m_CasingIndex);
-            if(m_MagazineIndex != -1) m_MagazinePoolingObject = m_WeaponManager.GetMagazinePoolingObject(m_MagazineIndex);
-        }
         #endregion
 
         //Arm 애니메이터 덮어씌우기
@@ -156,13 +128,11 @@ namespace Test
             m_CrossHairController.SetCrossHair((int)m_RangeWeaponStat.m_DefaultCrossHair);
 
             AssignKeyAction();
-            AssignPoolingObject();
         }        
         
         private void Update()
         {
             m_CurrentFireTime += Time.deltaTime;
-
             //isRunning = !firstPersonController.m_IsWalking;
             if (!m_FirstPersonController.m_IsWalking)
             {
@@ -226,6 +196,12 @@ namespace Test
             return true;
         }
 
+        private void ChangeCrossHair()
+        {
+            //Do
+        }
+
+
 
         private void SetCurrentFireIndex()
         {
@@ -249,39 +225,12 @@ namespace Test
 
         private void TryReload()
         {
-            m_CanFirePosture = false;
-            //StartCoroutine(Reload(true, m_WeaponSound.emptyReloadSoundClips)); //빈 탄알집 장전시
-            StartCoroutine(Reload(false, m_RangeWeaponSound.reloadSoundClips));
-        }
+            bool isEmpty = false;
+            m_Reloadable.DoReload(isEmpty); //변경해야함
 
-        private IEnumerator Reload(bool isEmpty, RangeWeaponSoundScriptable.DelaySoundClip[] ReloadSoundClip)
-        {
             string animParamName = isEmpty == true ? "Empty Reload" : "Reload";
-            int magazineSpawnTiming = (int)(ReloadSoundClip.Length * 0.5f);
-            float delayTime = 0;
-
             m_EquipmentAnimator.SetTrigger(animParamName);
             m_ArmAnimator.SetTrigger(animParamName);
-
-            for(int i = 0; i < ReloadSoundClip.Length; i++)
-            {
-                delayTime = ReloadSoundClip[i].delayTime;
-                yield return new WaitForSeconds(delayTime);
-                m_AudioSource.PlayOneShot(ReloadSoundClip[i].audioClip);
-                if (i == magazineSpawnTiming) InstanceMagazine();
-            }
-            yield return new WaitForSeconds(delayTime);
-            m_CanFirePosture = true;
-        }
-
-        private void InstanceMagazine()
-        {
-            if (m_MagazineIndex == -1) return;
-            Quaternion magazineSpawnRotation = Quaternion.Euler(Random.Range(-30, 30), Random.Range(-30, 30), Random.Range(-30, 30));
-            //Instantiate(m_MagazineObj, m_MagazineSpawnPos.position, magazineSpawnRotation);//.GetComponent<Entity.Object.DefaultPoolingScript>().Init();
-            DefaultPoolingScript magazinePoolingObject = (DefaultPoolingScript)m_MagazinePoolingObject.GetObject(false);
-            magazinePoolingObject.Init(m_MagazineSpawnPos.position, magazineSpawnRotation, m_MagazinePoolingObject);
-            magazinePoolingObject.gameObject.SetActive(true);
         }
 
         private IEnumerator RunningPos()
@@ -303,12 +252,12 @@ namespace Test
         }
 
         #region Fire
-        public bool CanFire() => m_CurrentFireTime > m_RangeWeaponStat.m_AttackTime && !m_IsRunning && m_CanFirePosture;
+        private bool CanFire() => m_CurrentFireTime >= m_RangeWeaponStat.m_AttackTime && !m_IsRunning && !m_Reloadable.GetIsReloading();
 
         private void TryAutoFire()
         {
             if (m_CurrentFireMode != FireMode.Auto) return;
-            if (CanFire()) Fire();
+            if (CanFire()) DoFire();
         }
 
         private void TrySemiFire()
@@ -316,7 +265,7 @@ namespace Test
             if (m_CurrentFireMode == FireMode.Auto) return;
             if (CanFire())
             {
-                if (m_CurrentFireMode == FireMode.Semi) Fire();
+                if (m_CurrentFireMode == FireMode.Semi) DoFire();
                 else if (m_CurrentFireMode == FireMode.Burst) StartCoroutine(BurstFire());
             }
         }
@@ -324,103 +273,26 @@ namespace Test
         {
             for (int i = 0; i < 3; i++)
             {
-                Fire();
+                DoFire();
                 yield return m_BurstFireTime;
             }
         }
 
-        private void Fire()
+        private void DoFire()
         {
-            m_Fireable.DoFire();
-
             m_CurrentFireTime = 0;
+            AudioClip audioClip = m_RangeWeaponSound.fireSound[Random.Range(0, m_RangeWeaponSound.fireSound.Length)];
+            m_AudioSource.PlayOneShot(audioClip);
 
             m_EquipmentAnimator.SetBool("Fire", true);
             m_ArmAnimator.SetBool("Fire", true);
 
-            FireRay();
-            FireRecoil();
-            m_FireLight.Play(false);
-            InstanceBullet();
-            Invoke(nameof(EndFire), 0.1f);
-        }
-
-
-        private void InstanceBullet()
-        {
-            if (m_CasingIndex == -1) return;
-            Quaternion cassingSpawnRotation = Quaternion.Euler(Random.Range(-30, 30), Random.Range(-30, 30), Random.Range(-30, 30));
-
-            DefaultPoolingScript casingPoolingObject = (DefaultPoolingScript)m_CasingPoolingObject.GetObject(false);
-
-            //GameObject cassing = Instantiate(m_CasingObj, m_CasingSpawnPos.position, cassingSpawnRotation);
-            casingPoolingObject.Init(m_CasingSpawnPos.position,cassingSpawnRotation,m_CasingPoolingObject);
-            casingPoolingObject.gameObject.SetActive(true);
-            Rigidbody cassingRB = casingPoolingObject.GetComponent<Rigidbody>();
-
-            float spinValue = m_RangeWeaponStat.m_SpinValue;
-            Vector3 randomForce = new Vector3(Random.Range(0.75f,1.25f), Random.Range(0.75f,1.25f),Random.Range(0.75f,1.25f));
-            Vector3 randomTorque = new Vector3(Random.Range(-spinValue, spinValue), Random.Range(-spinValue, spinValue), Random.Range(-spinValue, spinValue));
-            
-            cassingRB.velocity = m_CasingSpawnPos.right + randomForce * 0.5f;
-            cassingRB.angularVelocity = randomTorque;
-        }
-
-        private void FireRay()
-        {
-            AudioClip audioClip = m_RangeWeaponSound.fireSound[Random.Range(0, m_RangeWeaponSound.fireSound.Length)];
-            m_AudioSource.PlayOneShot(audioClip);
-
-            ProcessingRaycast();
+            m_Fireable.DoFire();
 
             audioClip = m_RangeWeaponSound.fireTailSound[Random.Range(0, m_RangeWeaponSound.fireTailSound.Length)];
             m_AudioSource.PlayOneShot(audioClip);
         }
 
-
-        private void ProcessingRaycast()
-        {
-            if (Physics.Raycast(m_MuzzlePos.position, mainCamera.transform.forward, out RaycastHit hit, m_RangeWeaponStat.m_MaxRange, m_RangeWeaponStat.m_AttackableLayer, QueryTriggerInteraction.Ignore))
-            {
-                int fireEffectNumber;
-                int hitLayer = hit.transform.gameObject.layer;
-                if (hitLayer == 14) fireEffectNumber = 0;
-                else if (hitLayer == 17) fireEffectNumber = 1;
-                else
-                {
-                    if (!hit.transform.TryGetComponent(out MeshRenderer meshRenderer)) return;
-                    if ((fireEffectNumber = m_SurfaceManager.IsInMaterial(meshRenderer.sharedMaterial)) == -1) return;
-                }
-                EffectSet(out AudioClip audioClip, out DefaultPoolingScript effectObj, fireEffectNumber);
-                AudioSource.PlayClipAtPoint(audioClip, hit.point);
-                effectObj.Init(hit.point, Quaternion.LookRotation(hit.normal), m_BulletEffectPoolingObjects[fireEffectNumber]);
-                effectObj.gameObject.SetActive(true);
-            }
-        }
-
-        private void EffectSet(out AudioClip audioClip, out DefaultPoolingScript effectObj, int fireEffectNumber)
-        {
-            AudioClip[] audioClips;
-
-            effectObj = (DefaultPoolingScript)m_BulletEffectPoolingObjects[fireEffectNumber].GetObject(false);
-            audioClips = m_SurfaceManager.GetBulletHitEffectSounds(fireEffectNumber);
-            audioClip = audioClips[Random.Range(0, audioClips.Length)];
-        }
-
-        private void FireRecoil()
-        {
-            float upRandom = Random.Range(m_RangeWeaponStat.m_UpRandomRecoil.x, m_RangeWeaponStat.m_UpRandomRecoil.y);
-            float rightRandom = Random.Range(m_RangeWeaponStat.m_RightRandomRecoil.x, m_RangeWeaponStat.m_RightRandomRecoil.y);
-
-            upRandom += m_RangeWeaponStat.m_UpAxisRecoil;
-            rightRandom += m_RangeWeaponStat.m_RightAxisRecoil;
-            m_FirstPersonController.MouseLook.AddRecoil(upRandom * 0.2f, rightRandom * 0.2f);
-        }
-
-        private void EndFire()
-        {
-            m_FireLight.Stop(false);
-        }
         #endregion
 
         public override void Dispose()
