@@ -14,5 +14,6 @@ namespace Scriptable
 
         public DelaySoundClip[] reloadSoundClips;
         public DelaySoundClip[] emptyReloadSoundClips;
+        public DelaySoundClip[] instantReloadSoundClips;
     }
 }

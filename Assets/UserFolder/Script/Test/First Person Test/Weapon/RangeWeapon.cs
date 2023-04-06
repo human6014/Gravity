@@ -42,6 +42,12 @@ namespace Test
         [SerializeField] private Transform m_UpAxisTransform;         //상하 반동 오브젝트
         [SerializeField] private Transform m_RightAxisTransform;      //좌우 반동 오브젝트
 
+        [Header("Reload")]
+        [Tooltip("쏘고 바로 장전인지")]
+        [SerializeField] private bool m_IsInstantReload;
+        [Tooltip("재장전 중에 사격이 가능한지")]
+        [SerializeField] private bool m_IsInteractableReload;
+
         [Header("Fire mode")]
         [CustomAttribute.MultiEnum] [SerializeField] private FireMode m_FireMode;
 
@@ -49,6 +55,7 @@ namespace Test
         private Quaternion m_OriginalPivotRotation;         //위치 조정용 부모 오브젝트 원래 각도
         private Quaternion m_AimingPivotRotation;           //위치 조정용 옮길 각도(Quaternion)
 
+        private bool m_IsFiring;
         private bool m_IsRunning;
         private bool m_IsAiming;
 
@@ -67,8 +74,7 @@ namespace Test
         private int m_FireModeLength;
         private int m_FireModeIndex = 1;
 
-        [SerializeField] private bool m_IsInstanceReload;
-        [SerializeField] private bool m_IsShotgun;
+
         private IFireable m_Fireable;
         private IReloadable m_Reloadable;
 
@@ -93,7 +99,7 @@ namespace Test
             if (m_MagazineIndex != -1) m_Reloadable.SetupMagazinePooling(m_WeaponManager.GetMagazinePoolingObject(m_MagazineIndex));
 
             m_Fireable.Setup(m_RangeWeaponStat, m_WeaponManager.GetEffectPoolingObjects(), m_SurfaceManager, m_FirstPersonController);
-            m_Reloadable.Setup(m_RangeWeaponSound);
+            m_Reloadable.Setup(m_RangeWeaponSound, m_ArmAnimator);
         }
 
         #region Assign
@@ -201,26 +207,16 @@ namespace Test
             //Do
         }
 
-
-
         private void SetCurrentFireIndex()
         {
-            if(m_IsAiming)
-            {
-                m_EquipmentAnimator.SetFloat("Fire Index", 1);
-                m_ArmAnimator.SetFloat("Fire Index", 1); 
-                
-                m_EquipmentAnimator.SetInteger("Idle Index", 0);
-                m_ArmAnimator.SetInteger("Idle Index", 0);
-            }
-            else
-            {
-                m_EquipmentAnimator.SetFloat("Fire Index", 0);
-                m_ArmAnimator.SetFloat("Fire Index", 0);
+            float fireIndex = m_IsAiming ? 1 : 0;
+            int idleIndex = m_IsAiming ? 0 : 1;
 
-                m_EquipmentAnimator.SetInteger("Idle Index", 1);
-                m_ArmAnimator.SetInteger("Idle Index", 1);
-            }
+            m_EquipmentAnimator.SetFloat("Fire Index", fireIndex);
+            m_ArmAnimator.SetFloat("Fire Index", fireIndex);
+
+            m_EquipmentAnimator.SetInteger("Idle Index", idleIndex);
+            m_ArmAnimator.SetInteger("Idle Index", idleIndex);
         }
 
         private void TryReload()
@@ -252,7 +248,7 @@ namespace Test
         }
 
         #region Fire
-        private bool CanFire() => m_CurrentFireTime >= m_RangeWeaponStat.m_AttackTime && !m_IsRunning && !m_Reloadable.GetIsReloading();
+        private bool CanFire() => m_CurrentFireTime >= m_RangeWeaponStat.m_AttackTime && !m_IsRunning && (m_IsInteractableReload || !m_Reloadable.GetIsNonEmptyReloading()) && !m_IsFiring;
 
         private void TryAutoFire()
         {
@@ -269,6 +265,7 @@ namespace Test
                 else if (m_CurrentFireMode == FireMode.Burst) StartCoroutine(BurstFire());
             }
         }
+
         private IEnumerator BurstFire()
         {
             for (int i = 0; i < 3; i++)
@@ -280,7 +277,10 @@ namespace Test
 
         private void DoFire()
         {
+            m_IsFiring = true;
             m_CurrentFireTime = 0;
+            //if(m_IsInteractableReload) m_Reloadable.
+
             AudioClip audioClip = m_RangeWeaponSound.fireSound[Random.Range(0, m_RangeWeaponSound.fireSound.Length)];
             m_AudioSource.PlayOneShot(audioClip);
 
@@ -291,6 +291,20 @@ namespace Test
 
             audioClip = m_RangeWeaponSound.fireTailSound[Random.Range(0, m_RangeWeaponSound.fireTailSound.Length)];
             m_AudioSource.PlayOneShot(audioClip);
+
+            if (m_IsInstantReload) StartCoroutine(InstantReload());
+            else m_IsFiring = false;
+        }
+
+        private IEnumerator InstantReload()
+        {
+            WeaponSoundScriptable.DelaySoundClip[] sounds = m_RangeWeaponSound.instantReloadSoundClips;
+            for (int i=0; i< sounds.Length; i++)
+            {
+                yield return new WaitForSeconds(sounds[i].delayTime);
+                m_AudioSource.PlayOneShot(sounds[i].audioClip);
+            }
+            m_IsFiring = false;
         }
 
         #endregion
