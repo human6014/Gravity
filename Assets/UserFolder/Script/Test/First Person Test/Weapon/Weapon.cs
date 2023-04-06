@@ -11,7 +11,7 @@ namespace Test
         /// <summary>
         /// 사용자의 입력을 받는 스크립트
         /// </summary>
-        protected PlayerInputController m_PlayerInputController { get; private set; }
+        public PlayerInputController m_PlayerInputController { get; private set; }
 
         /// <summary>
         /// 플레이어 몸의 행동을 조작하는 스크립트

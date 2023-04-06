@@ -18,7 +18,7 @@ public class NormalFire : MonoBehaviour, IFireable
     [SerializeField] private Transform m_CasingSpawnPos;
 
     private Transform m_MuzzlePos;             //ÃÑ±¸ À§Ä¡
-    private Camera mainCamera;
+    private Transform mainCamera;
 
     private RangeWeaponStatScriptable m_RangeWeaponStat;
     private ObjectPoolManager.PoolingObject[] m_BulletEffectPoolingObjects; //0 : Concrete, 1 : Metal, 2 : Wood
@@ -29,11 +29,10 @@ public class NormalFire : MonoBehaviour, IFireable
 
     private bool m_HasBullet;
 
-
     private void Awake()
     {
         m_MuzzlePos = m_FireLight.transform;
-        mainCamera = Camera.main;
+        mainCamera = Camera.main.transform;
     }
 
     public void Setup(RangeWeaponStatScriptable m_RangeWeaponStat,ObjectPoolManager.PoolingObject[] m_BulletEffectPoolingObjects,
@@ -81,7 +80,7 @@ public class NormalFire : MonoBehaviour, IFireable
 
     private void FireRay()
     {
-        if (Physics.Raycast(m_MuzzlePos.position, mainCamera.transform.forward, out RaycastHit hit, m_RangeWeaponStat.m_MaxRange, m_RangeWeaponStat.m_AttackableLayer, QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(m_MuzzlePos.position, mainCamera.forward, out RaycastHit hit, m_RangeWeaponStat.m_MaxRange, m_RangeWeaponStat.m_AttackableLayer, QueryTriggerInteraction.Ignore))
         {
             int fireEffectNumber;
             int hitLayer = hit.transform.gameObject.layer;
