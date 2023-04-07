@@ -75,9 +75,9 @@ namespace Test
 
         public virtual void Init()
         {
-            gameObject.SetActive(true);
-
             m_ArmAnimator.runtimeAnimatorController = m_ArmOverrideController;
+            
+            gameObject.SetActive(true);
 
             m_ArmAnimator.SetTrigger("Equip");
             m_EquipmentAnimator.SetTrigger("Equip");

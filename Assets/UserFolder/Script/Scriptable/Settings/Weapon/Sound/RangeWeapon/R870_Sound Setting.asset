@@ -31,26 +31,16 @@ MonoBehaviour:
   - audioClip: {fileID: 8300000, guid: 5607d14f80dd5354995a2b9a75e23dd0, type: 3}
     delayTime: 0.35
   emptyReloadSoundClips:
-  - audioClip: {fileID: 8300000, guid: 5935f21e564c6984485383b5ff10402f, type: 3}
-    delayTime: 0
-  - audioClip: {fileID: 8300000, guid: 0449fbe5d1232f8488e573b5e380189f, type: 3}
-    delayTime: 0.1
-  - audioClip: {fileID: 8300000, guid: 5935f21e564c6984485383b5ff10402f, type: 3}
-    delayTime: 0.2
-  - audioClip: {fileID: 8300000, guid: 9271f804281c17847824a66eecfe71af, type: 3}
-    delayTime: 0.1
-  - audioClip: {fileID: 8300000, guid: df0438b999affa8439b2e40113775c4c, type: 3}
-    delayTime: 0.5
-  - audioClip: {fileID: 8300000, guid: 5607d14f80dd5354995a2b9a75e23dd0, type: 3}
-    delayTime: 0.5
   - audioClip: {fileID: 8300000, guid: d7414ef64a96abf498bf4c3afe2e7d9c, type: 3}
     delayTime: 0.1
+  - audioClip: {fileID: 8300000, guid: f0f2a49ff350de84b89f9e7326936815, type: 3}
+    delayTime: 0.5
   - audioClip: {fileID: 8300000, guid: c6086c399047f994cb715e415a30e077, type: 3}
-    delayTime: 0.2
-  - audioClip: {fileID: 8300000, guid: 9271f804281c17847824a66eecfe71af, type: 3}
-    delayTime: 0.25
+    delayTime: 0.65
   instantReloadSoundClips:
   - audioClip: {fileID: 8300000, guid: d7414ef64a96abf498bf4c3afe2e7d9c, type: 3}
     delayTime: 0.42
   - audioClip: {fileID: 8300000, guid: c6086c399047f994cb715e415a30e077, type: 3}
     delayTime: 0.18
+  reloadStartSoundClips: []
+  reloadEndSoundClips: []
