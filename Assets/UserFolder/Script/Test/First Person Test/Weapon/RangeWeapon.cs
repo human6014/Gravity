@@ -45,8 +45,6 @@ namespace Test
         [Header("Reload")]
         [Tooltip("쏘고 바로 장전인지")]
         [SerializeField] private bool m_IsInstantReload;
-        [Tooltip("재장전 중에 사격이 가능한지")]
-        [SerializeField] private bool m_IsInteractableReload;
 
         [Header("Fire mode")]
         [CustomAttribute.MultiEnum] [SerializeField] private FireMode m_FireMode;
@@ -66,19 +64,20 @@ namespace Test
         private enum FireMode
         {
             Auto = 1,
-            Semi = 2,
-            Burst= 4,
+            Burst = 2,
+            Semi= 4,
         }
         
         private FireMode m_CurrentFireMode = FireMode.Auto;
         private int m_FireModeLength;
         private int m_FireModeIndex = 1;
 
-
-        private IFireable m_Fireable;
-        private IReloadable m_Reloadable;
+        private Fireable m_Fireable;
+        private Reloadable m_Reloadable;
 
         private float m_CurrentFireTime;
+
+        [SerializeField] private bool m_IsEmpty;
         protected override void Awake()
         {
             base.Awake();
@@ -87,8 +86,8 @@ namespace Test
             m_AimingPivotRotation = Quaternion.Euler(m_AimingPivotDirection);
             m_BurstFireTime = new WaitForSeconds(m_RangeWeaponStat.m_BurstAttackTime);
 
-            m_Fireable = GetComponent<IFireable>();
-            m_Reloadable = GetComponent<IReloadable>();
+            m_Fireable = GetComponent<Fireable>();
+            m_Reloadable = GetComponent<Reloadable>();
 
             AssignFireMode();
         }
@@ -221,12 +220,9 @@ namespace Test
 
         private void TryReload()
         {
-            bool isEmpty = false;
-            m_Reloadable.DoReload(isEmpty); //변경해야함
+            if (m_Reloadable.m_IsReloading || m_IsFiring) return;
 
-            string animParamName = isEmpty == true ? "Empty Reload" : "Reload";
-            m_EquipmentAnimator.SetTrigger(animParamName);
-            m_ArmAnimator.SetTrigger(animParamName);
+            m_Reloadable.DoReload(m_IsEmpty); //변경해야함
         }
 
         private IEnumerator RunningPos()
@@ -248,7 +244,9 @@ namespace Test
         }
 
         #region Fire
-        private bool CanFire() => m_CurrentFireTime >= m_RangeWeaponStat.m_AttackTime && !m_IsRunning && (m_IsInteractableReload || !m_Reloadable.GetIsNonEmptyReloading()) && !m_IsFiring;
+        private bool CanFire() => m_CurrentFireTime >= m_RangeWeaponStat.m_AttackTime && !m_IsRunning && 
+                m_Reloadable.CanFire() && !m_IsFiring;
+        
 
         private void TryAutoFire()
         {
@@ -279,7 +277,9 @@ namespace Test
         {
             m_IsFiring = true;
             m_CurrentFireTime = 0;
-            //if(m_IsInteractableReload) m_Reloadable.
+
+            m_Reloadable.StopReload();
+
 
             AudioClip audioClip = m_RangeWeaponSound.fireSound[Random.Range(0, m_RangeWeaponSound.fireSound.Length)];
             m_AudioSource.PlayOneShot(audioClip);
