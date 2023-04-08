@@ -49,7 +49,7 @@ public class ShotFire : Fireable
         for (int i = 0; i < m_RayNum; i++)
         {
             if (Physics.Raycast(m_MuzzlePos.position, GetFireDirection(), out RaycastHit hit, m_RangeWeaponStat.m_MaxRange, m_RangeWeaponStat.m_AttackableLayer, QueryTriggerInteraction.Ignore))
-                base.ProcessingRay(hit,i);
+                base.ProcessingRay(hit, i);
         }
     }
 

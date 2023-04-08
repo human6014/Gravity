@@ -33,10 +33,6 @@ namespace Test
         [SerializeField] private Vector3 runningPivotPosition;      //달릴 때 pivot 위치
         [SerializeField] private Vector3 runningPivotRotation;      //달릴 때 pivot 각도
 
-        [Header("Fire ray")]
-        //발사 시 총 나가는거
-        [SerializeField] private Camera mainCamera;                 //총 발사 위치용 메인카메라
-
         [Header("Fire recoil")]
         //총 반동
         [SerializeField] private Transform m_UpAxisTransform;         //상하 반동 오브젝트
@@ -60,6 +56,9 @@ namespace Test
         private WaitForSeconds m_BurstFireTime;
         private Coroutine m_RunningCoroutine;
 
+        private Fireable m_Fireable;
+        private Reloadable m_Reloadable;
+
         [System.Flags]
         private enum FireMode
         {
@@ -72,8 +71,7 @@ namespace Test
         private int m_FireModeLength;
         private int m_FireModeIndex = 1;
 
-        private Fireable m_Fireable;
-        private Reloadable m_Reloadable;
+
 
         private float m_CurrentFireTime;
 
