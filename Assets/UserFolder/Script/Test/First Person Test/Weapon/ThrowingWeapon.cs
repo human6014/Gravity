@@ -15,20 +15,24 @@ namespace Test
         [SerializeField] private ThrowingWeaponStatScriptable m_ThrowingWeaponStat;
 
         [SerializeField] private Transform m_SpawnPos;
-        [SerializeField] private bool m_IsBounce;
 
+        [Header("Pooling")]
+        [SerializeField] private Transform m_ActiveObjectPool;
+
+        [SerializeField] private GameObject m_RendererObject;
         private Transform m_MainCamera;
         private Manager.ObjectPoolManager.PoolingObject m_PoolingObject;
+
+        private int m_TempHasCount = 1;
+
         protected override void Awake()
         {
             base.Awake();
             m_MainCamera = Camera.main.transform;
         }
 
-        private void Start()
-        {
-            AssignPooling();
-        }
+        private void Start() => AssignPooling();
+        
 
         public override void Init()
         {
@@ -36,10 +40,17 @@ namespace Test
             AssignKeyAction();
         }
 
+        private void ReInit()
+        {
+            m_RendererObject.SetActive(true);
+            m_ArmAnimator.SetTrigger("Equip");
+            m_EquipmentAnimator.SetTrigger("Equip");
+        }
+
         private void AssignPooling()
         {
-            m_PoolingObject = Manager.ObjectPoolManager.Register(m_Explosive, transform);
-            m_PoolingObject.GenerateObj(3);
+            m_PoolingObject = Manager.ObjectPoolManager.Register(m_Explosive, m_ActiveObjectPool);
+            m_PoolingObject.GenerateObj(1);
         }
 
         private void AssignKeyAction()
@@ -52,17 +63,17 @@ namespace Test
         {
             m_ArmAnimator.SetTrigger("Long Throw");
             m_EquipmentAnimator.SetTrigger("Long Throw");
-            StartCoroutine(PlayThrowSound());
+            StartCoroutine(PlayThrowSound(true));
         }
 
         private void ShortThrow()
         {
             m_ArmAnimator.SetTrigger("Short Throw");
             m_EquipmentAnimator.SetTrigger("Short Throw");
-            StartCoroutine(PlayThrowSound());
+            StartCoroutine(PlayThrowSound(false));
         }
 
-        private IEnumerator PlayThrowSound()
+        private IEnumerator PlayThrowSound(bool isLong)
         {
             WeaponSoundScriptable.DelaySoundClip[] playingSound = m_ThrowingWeaponSound.throwSound;
             for (int i = 0; i < playingSound.Length; i++)
@@ -70,28 +81,60 @@ namespace Test
                 yield return new WaitForSeconds(playingSound[i].delayTime);
                 m_AudioSource.PlayOneShot(playingSound[i].audioClip);
             }
-            Throw();
+            m_RendererObject.SetActive(false);
+            Throw(isLong);
         }
 
-        private void Throw()
+        private void Throw(bool isLong)
         {
             if(Physics.Raycast(m_MainCamera.position, m_MainCamera.forward, out RaycastHit hit, 300f, m_AttackableLayer))
             {
+                SetThrowVector(isLong, hit.point, out Vector3 forceToAdd, out Vector3 TorquToAdd);
+
                 Explosive poolable = (Explosive)m_PoolingObject.GetObject(false);
-                GameObject obj = Instantiate(poolable.gameObject, m_SpawnPos.position, m_MainCamera.rotation);
-                obj.SetActive(true);
-                obj.TryGetComponent(out Rigidbody throwingRigid);
 
-                Vector3 forceToAdd = (hit.point - m_SpawnPos.position).normalized * m_ThrowingWeaponStat.longThrowForwardForce
-                    + m_MainCamera.up * m_ThrowingWeaponStat.longThrowUpwardForce;
+                poolable.gameObject.SetActive(true);
+                poolable.Init(m_PoolingObject, m_SpawnPos.position, m_MainCamera.rotation);
+                poolable.TryGetComponent(out Rigidbody throwingRigid);
+
                 throwingRigid.AddForce(forceToAdd, ForceMode.Impulse);
-
-                poolable.Init(m_PoolingObject);
+                throwingRigid.AddTorque(TorquToAdd);
             }
+        }
+
+        private void EndThrow()
+        {
+            if (m_TempHasCount > 0)
+            {
+
+            }
+            else
+            {
+
+            }
+        }
+
+        private void SetThrowVector(bool isLong, Vector3 hitPoint, out Vector3 forceToAdd, out Vector3 TorquToAdd)
+        {
+            float forwardForce;
+            float upwardForce;
+            if (isLong)
+            {
+                forwardForce = m_ThrowingWeaponStat.longThrowForwardForce;
+                upwardForce = m_ThrowingWeaponStat.longThrowUpwardForce;
+            }
+            else
+            {
+                forwardForce = m_ThrowingWeaponStat.shortThrowForwardForce;
+                upwardForce = m_ThrowingWeaponStat.shortThrowUpwardForce;
+            }
+            forceToAdd = (hitPoint - m_SpawnPos.position).normalized * forwardForce + m_MainCamera.up * upwardForce;
+            TorquToAdd = new Vector3(Random.Range(-5, 5), Random.Range(-5, 5), Random.Range(-5, 5));
         }
 
         public override void Dispose()
         {
+            m_RendererObject.SetActive(true);
             base.Dispose();
             DischargeKeyAction();
         }

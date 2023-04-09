@@ -24,7 +24,7 @@ public class InteractableRepeatReload : Reloadable
         m_IsReloading = true;
         m_IsNonEmptyReloading = true;
 
-        yield return base.DelaySoundWithAnimation(m_RangeWeaponSound.reloadSoundClips, true, 5);
+        yield return base.DelaySoundWithAnimation(m_RangeWeaponSound.reloadSoundClips, 5);
 
         m_IsNonEmptyReloading = false;
         m_IsReloading = false;
@@ -43,7 +43,7 @@ public class InteractableRepeatReload : Reloadable
         m_ArmAnimator.SetTrigger("Start Reload");
         m_EquipmentAnimator.SetTrigger("Start Reload");
 
-        yield return base.DelaySoundWithAnimation(m_RangeWeaponSound.reloadSoundClips, true, 5, 0.3f);
+        yield return base.DelaySoundWithAnimation(m_RangeWeaponSound.reloadSoundClips, 5, 0.3f);
 
         m_IsEmptyReloading = false;
         m_IsReloading = false;

@@ -18,7 +18,7 @@ MonoBehaviour:
     m_Bits: 0
   m_RunningPosTime: 0.5
   m_DefaultCrossHair: 2
-  longThrowForwardForce: 24
-  longThrowUpwardForce: 3
-  shortThrowForwardForce: 9
-  shortThrowUpwardForce: 1
+  longThrowForwardForce: 20
+  longThrowUpwardForce: 2
+  shortThrowForwardForce: 12
+  shortThrowUpwardForce: 3
