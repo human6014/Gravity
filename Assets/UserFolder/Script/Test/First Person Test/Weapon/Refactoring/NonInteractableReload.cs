@@ -31,6 +31,7 @@ public class NonInteractableReload : Reloadable
         m_ArmAnimator.SetTrigger(animParamName);
 
         yield return base.DelaySound(soundClips, 1, 0.2f);
+        base.InstanceMagazine();
         m_IsReloading = false;
     }
 

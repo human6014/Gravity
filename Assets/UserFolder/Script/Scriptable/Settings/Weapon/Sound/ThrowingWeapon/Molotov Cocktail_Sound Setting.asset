@@ -17,7 +17,5 @@ MonoBehaviour:
   unequipSound:
   - {fileID: 8300000, guid: 756bee91b8f8a3d4fb6ed0525764c29c, type: 3}
   throwSound:
-  - audioClip: {fileID: 8300000, guid: a09f221fa85aecf49acb813b0379f4c8, type: 3}
-    delayTime: 0.35
   - audioClip: {fileID: 8300000, guid: 1f10c56640e24594e8d0093b0df0597e, type: 3}
-    delayTime: 0.15
+    delayTime: 0.7

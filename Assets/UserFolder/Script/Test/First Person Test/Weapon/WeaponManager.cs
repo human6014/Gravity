@@ -14,7 +14,7 @@ namespace Manager
         private readonly Dictionary<int, Weapon> m_WeaponDictionary = new Dictionary<int, Weapon>();
 
         private Weapon m_CurrentWeapon;
-        [SerializeField] private int EquipingItemIndex = 6;
+        [SerializeField] private int m_EquipingItemIndex = 6;
         public void SetObjectPool(
             ObjectPoolManager.PoolingObject[] effectPooling,
             ObjectPoolManager.PoolingObject[] casingPooling,
@@ -44,7 +44,7 @@ namespace Manager
         {
             if (m_CurrentWeapon != null) m_CurrentWeapon.Dispose();
 
-            m_WeaponDictionary.TryGetValue(EquipingItemIndex, out m_CurrentWeapon);
+            m_WeaponDictionary.TryGetValue(m_EquipingItemIndex, out m_CurrentWeapon);
             m_CurrentWeapon.Init();
         }
     }

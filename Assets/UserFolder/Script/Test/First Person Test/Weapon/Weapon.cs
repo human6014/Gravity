@@ -43,6 +43,7 @@ namespace Test
         /// </summary>
         protected WeaponManager m_WeaponManager { get; private set; }
 
+        
         public int GetItemIndex() => ItemIndex;
 
         [Header("Parent")]

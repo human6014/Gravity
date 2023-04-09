@@ -30,7 +30,7 @@ public class InteractableNonRepeatReload : Reloadable
 
         yield return base.DelaySound(m_RangeWeaponSound.reloadStartSoundClips, 1);
 
-        yield return base.DelaySoundWithAnimation(m_RangeWeaponSound.reloadSoundClips, true, 5, 0.4f);
+        yield return base.DelaySoundWithAnimation(m_RangeWeaponSound.reloadSoundClips, 5, 0.4f);
 
         yield return base.DelaySound(m_RangeWeaponSound.reloadEndSoundClips, 1);
 

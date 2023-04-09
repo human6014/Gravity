@@ -63,17 +63,15 @@ public abstract class Reloadable : MonoBehaviour
         magazinePoolingObject.gameObject.SetActive(true);
     }
 
-    protected IEnumerator DelaySoundWithAnimation(WeaponSoundScriptable.DelaySoundClip[] reloadSoundClip, bool playingAnimation, int playCount, float lastDelay = 0)
+    protected IEnumerator DelaySoundWithAnimation(WeaponSoundScriptable.DelaySoundClip[] reloadSoundClip, int playCount, float lastDelay = 0)
     {
         float delayTime;
 
         for (int j = 0; j < playCount; j++)
         {
-            if (playingAnimation)
-            {
-                m_ArmAnimator.SetTrigger("Reload");
-                m_EquipmentAnimator.SetTrigger("Reload");
-            }
+            m_ArmAnimator.SetTrigger("Reload");
+            m_EquipmentAnimator.SetTrigger("Reload");
+
             for (int i = 0; i < reloadSoundClip.Length; i++)
             {
                 delayTime = reloadSoundClip[i].delayTime;
@@ -88,7 +86,6 @@ public abstract class Reloadable : MonoBehaviour
 
         yield return new WaitForSeconds(lastDelay);
 
-        if (!playingAnimation) yield break;
         m_ArmAnimator.SetTrigger("End Reload");
         m_EquipmentAnimator.SetTrigger("End Reload");
     }
