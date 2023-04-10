@@ -9,7 +9,7 @@ namespace Test
     {
         [Space(15)]
         [Header("Child")]
-        [SerializeField] private Explosive m_Explosive;
+        [SerializeField] private Explosible m_Explosive;
 
         [SerializeField] private ThrowingWeaponSoundScriptable m_ThrowingWeaponSound;
         [SerializeField] private ThrowingWeaponStatScriptable m_ThrowingWeaponStat;
@@ -91,7 +91,7 @@ namespace Test
             {
                 SetThrowVector(isLong, hit.point, out Vector3 forceToAdd, out Vector3 TorquToAdd);
 
-                Explosive poolable = (Explosive)m_PoolingObject.GetObject(false);
+                Explosible poolable = (Explosible)m_PoolingObject.GetObject(false);
 
                 poolable.gameObject.SetActive(true);
                 poolable.Init(m_PoolingObject, m_SpawnPos.position, m_MainCamera.rotation);
