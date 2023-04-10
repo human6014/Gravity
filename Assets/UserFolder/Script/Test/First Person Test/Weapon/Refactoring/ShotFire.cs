@@ -35,15 +35,6 @@ public class ShotFire : Fireable
         StartCoroutine(EndFire());
     }
 
-    protected override IEnumerator EndFire()
-    {
-        yield return m_LightOffSecond;
-        m_FireLight.Stop(false);
-
-        yield return m_InstanceBulletSecond;
-        InstanceBullet();
-    }
-
     protected override void FireRay()
     {
         for (int i = 0; i < m_RayNum; i++)
@@ -63,5 +54,14 @@ public class ShotFire : Fireable
 
         Vector3 direction = targetPos - mainCamera.position;
         return direction.normalized;
+    }
+
+    protected override IEnumerator EndFire()
+    {
+        yield return m_LightOffSecond;
+        m_FireLight.Stop(false);
+
+        yield return m_InstanceBulletSecond;
+        InstanceBullet();
     }
 }

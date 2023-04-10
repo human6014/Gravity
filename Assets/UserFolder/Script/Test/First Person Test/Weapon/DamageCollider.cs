@@ -4,22 +4,10 @@ using UnityEngine;
 
 public class DamageCollider : MonoBehaviour
 {
-    private SphereCollider m_SphereCollider;
+    [SerializeField] private Explosible m_Explosible;
 
-    private void Awake()
-    {
-        m_SphereCollider = GetComponent<SphereCollider>();
-    }
+    private void OnTriggerEnter(Collider other) => m_Explosible.m_TriggerStay?.Invoke(true, other);
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.layer == 7)
-        {
-            Debug.Log(other.name);
-        }
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        
-    }
+    private void OnTriggerExit(Collider other) => m_Explosible.m_TriggerStay?.Invoke(false, other);
+    
 }

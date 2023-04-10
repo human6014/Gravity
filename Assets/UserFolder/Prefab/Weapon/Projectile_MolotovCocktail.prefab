@@ -126,19 +126,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 3547079874334172724}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acb4e3372b07d824d85b8cfe852948ae, type: 3}
+  m_Script: {fileID: 11500000, guid: d96f2e93b10e6134089214b013a1321c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_ActivatingEffectObject:
   - {fileID: 4390351110720477243}
   - {fileID: 4389716880930541455}
+  m_AutoExplosionTime: 0
+  m_EffectDuration: 6
+  m_StopDuration: 4.5
   m_ControllingParticle:
   - {fileID: 4480064021100270119}
   - {fileID: 4480209928976186703}
-  m_AutoExplosionTime: 0
-  m_EffectDuration: 10
-  m_IsBounce: 0
-  m_IsPersistencable: 1
 --- !u!1 &4389716880930541455
 GameObject:
   m_ObjectHideFlags: 0
@@ -5150,7 +5149,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 67563401
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
@@ -5174,7 +5173,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.4
+  m_Radius: 1.3
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5340662331457910580
 MonoBehaviour:
@@ -5208,6 +5207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d11618ef9b7db46bcce8fd5aff5606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Explosible: {fileID: -6246121654793064627}
 --- !u!1 &4390351108999256091
 GameObject:
   m_ObjectHideFlags: 0

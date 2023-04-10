@@ -9620,6 +9620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d11618ef9b7db46bcce8fd5aff5606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Explosible: {fileID: 5716165187039185698}
 --- !u!1 &3117185301738310020
 GameObject:
   m_ObjectHideFlags: 0
@@ -38593,14 +38594,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5006879613600943864}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acb4e3372b07d824d85b8cfe852948ae, type: 3}
+  m_Script: {fileID: 11500000, guid: ba5568d0a3def524b99c4f71e0fe48e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_ActivatingEffectObject:
   - {fileID: 3117185301073819222}
-  m_ControllingParticle: []
   m_AutoExplosionTime: 3
-  m_EffectDuration: 5
+  m_EffectDuration: 4
   m_StopDuration: 0
-  m_IsBounce: 1
-  m_IsPersistencable: 0

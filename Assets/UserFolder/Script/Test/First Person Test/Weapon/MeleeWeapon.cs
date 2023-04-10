@@ -1,5 +1,7 @@
 using Contoller.Player;
+using Entity.Object;
 using Manager;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,12 +14,18 @@ namespace Test
         [Header("Child")]
         [SerializeField] private Scriptable.MeleeWeaponSoundScripatble m_MeleeWeaponSound;
         [SerializeField] private Scriptable.MeleeWeaponStatScriptable m_MeleeWeaponStat;
-        
+ 
         private bool isRunning;
         private float currentFireRatio;
 
         private ObjectPoolManager.PoolingObject m_EffectPoolingObject;
 
+        [SerializeField] private Transform m_AttackPoint;
+        [SerializeField] private Transform m_MainCamera;
+        [SerializeField] private float m_SwingRadius;
+        [SerializeField] private float m_MaxDistance;
+        
+        public bool m_IsAttacking { get; private set; }
         protected override void Awake()
         {
             base.Awake();
@@ -36,18 +44,6 @@ namespace Test
             m_PlayerInputController.HeavyFire += TryHeavyAttack;
         }
 
-        private void Start()
-        {
-            m_ArmAnimator.runtimeAnimatorController = m_ArmOverrideController;
-
-            m_EquipmentAnimator.SetTrigger("Equip");
-            m_ArmAnimator.SetTrigger("Equip");
-
-            m_CrossHairController.SetCrossHair(0);
-
-            m_IsEquip = true;
-        }
-
         public override void Init()
         {
             base.Init();
@@ -61,6 +57,7 @@ namespace Test
         {
             currentFireRatio += Time.deltaTime;
 
+            //if (m_IsAttacking) TestDamage();
             //if (!firstPersonController.m_IsWalking)
             //{
             //    if (!isRunning)
@@ -99,22 +96,72 @@ namespace Test
 
         private void Attack(int swingIndex)
         {
+            //m_IsAttacking = true;
             m_ArmAnimator.SetFloat("Swing Index", swingIndex);
             m_EquipmentAnimator.SetFloat("Swing Index", swingIndex);
 
             m_ArmAnimator.SetTrigger("Swing");
             m_EquipmentAnimator.SetTrigger("Swing");
+        }
 
-            if (Physics.CapsuleCast(transform.position + transform.up, transform.position - transform.up,3, Vector3.zero,5, m_MeleeWeaponStat.m_AttackableLayer))
+        //Animation Event
+        public void StartAnimation()
+        {
+            m_IsAttacking = true;
+            TestDamage();
+        }
+
+        //Animation Event
+        public void EndAnimation()
+        {
+            m_IsAttacking = false;
+        }
+
+        //Vector3.Angle(mainCamera.forward, colls[i].transform.position - cachedTransform.position) 
+        //    <= settings.FOVAngleVector3.Angle(cachedTransform.forward, colls[i].transform.position - cachedTransform.position) 
+        //    <= settings.FOVAngle
+
+        private void TestDamage()
+        {
+            if (Physics.SphereCast(m_AttackPoint.position, m_SwingRadius, m_MainCamera.forward, out RaycastHit hit, m_MaxDistance, m_AttackableLayer, QueryTriggerInteraction.Collide))
             {
+                // Apply an impact impulse
+                //if (hitInfo.rigidbody != null)
+                //    hitInfo.rigidbody.AddForceAtPosition(itemUseRays.direction * swing.HitImpact, hitInfo.point, ForceMode.Impulse);
 
+                int fireEffectNumber;
+                int hitLayer = hit.transform.gameObject.layer;
+
+                if (hitLayer == 14) fireEffectNumber = 0;
+                else if (hitLayer == 17) fireEffectNumber = 1;
+                else
+                {
+                    if (!hit.transform.TryGetComponent(out MeshRenderer meshRenderer)) return;
+                    if ((fireEffectNumber = m_SurfaceManager.IsInMaterial(meshRenderer.sharedMaterial)) == -1) return;
+                }
+                EffectSet(out AudioClip audioClip, out DefaultPoolingScript effectObj, fireEffectNumber);
+
+                m_AudioSource.PlayOneShot(audioClip);
+
+                effectObj.Init(hit.point, Quaternion.LookRotation(hit.normal), m_EffectPoolingObject);
+                effectObj.gameObject.SetActive(true);
             }
+        }
+
+        private void EffectSet(out AudioClip audioClip, out DefaultPoolingScript effectObj, int fireEffectNumber)
+        {
+            AudioClip[] audioClips;
+
+            effectObj = (DefaultPoolingScript)m_EffectPoolingObject.GetObject(false);
+            audioClips = m_SurfaceManager.GetSlashHitEffectSounds(fireEffectNumber);
+            audioClip = audioClips[UnityEngine.Random.Range(0, audioClips.Length)];
         }
 
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.white;
-            
+            Gizmos.DrawWireSphere(m_AttackPoint.position, m_SwingRadius);
+            Gizmos.DrawWireSphere(m_AttackPoint.position + m_AttackPoint.forward * 0.3f + m_MainCamera.forward * m_MaxDistance, m_SwingRadius);
         }
 
         public override void Dispose()
