@@ -14,25 +14,48 @@ public abstract class Fireable : MonoBehaviour
     [SerializeField] protected TestFireLight m_FireLight;
 
     [Header("Casing")]
+    [Tooltip("총알이 생성되는지")]
+    [SerializeField] private bool m_HasBullet;
+
     [Tooltip("총알 생성 위치")]
-    [SerializeField] protected Transform m_CasingSpawnPos;
+    [SerializeField] private Transform m_CasingSpawnPos;
+
+    [Tooltip("총알 오브젝트")]
+    [SerializeField] private PoolableScript m_CasingObject;
+
+    [Header("Pooling")]
+    [Tooltip("풀링 오브젝트 하이라키 위치")]
+    [SerializeField] private Transform m_ActiveObjectPool;
+
+    [Tooltip("미리 생성할 개수")]
+    [SerializeField] [Range(0,50)] private int m_PoolingCount;
+
+    [Header("Timing")]
+    [SerializeField] private bool m_IsDelayCasing;
+    [SerializeField] private float m_LightOffTime = 0.3f;
+    [SerializeField] private float m_InstanceCasingTime = 1f;
+
+    private WaitForSeconds m_LightOffSecond;
+    private WaitForSeconds m_InstanceBulletSecond;
 
     protected Transform m_MuzzlePos;             //총구 위치
-    protected Transform mainCamera;
+    protected Transform m_MainCamera;
 
     protected RangeWeaponStatScriptable m_RangeWeaponStat;
-    protected ObjectPoolManager.PoolingObject[] m_BulletEffectPoolingObjects; //0 : Concrete, 1 : Metal, 2 : Wood
-    protected ObjectPoolManager.PoolingObject m_CasingPoolingObject;
 
-    protected SurfaceManager m_SurfaceManager;
-    protected FirstPersonController m_FirstPersonController;
+    private ObjectPoolManager.PoolingObject[] m_BulletEffectPoolingObjects; //0 : Concrete, 1 : Metal, 2 : Wood
+    private ObjectPoolManager.PoolingObject m_CasingPoolingObject;
 
-    protected bool m_HasBullet;
+    private SurfaceManager m_SurfaceManager;
+    private FirstPersonController m_FirstPersonController;
 
-    protected virtual void Awake()
+    private void Awake()
     {
         m_MuzzlePos = m_FireLight.transform;
-        mainCamera = Camera.main.transform;
+        m_MainCamera = Camera.main.transform;
+
+        m_LightOffSecond = new WaitForSeconds(m_LightOffTime);
+        m_InstanceBulletSecond = new WaitForSeconds(m_InstanceCasingTime);
     }
 
     public void Setup(RangeWeaponStatScriptable m_RangeWeaponStat, ObjectPoolManager.PoolingObject[] m_BulletEffectPoolingObjects,
@@ -42,22 +65,21 @@ public abstract class Fireable : MonoBehaviour
         this.m_BulletEffectPoolingObjects = m_BulletEffectPoolingObjects;
         this.m_SurfaceManager = m_SurfaceManager;
         this.m_FirstPersonController = m_FirstPersonController;
+
+        if (!m_HasBullet) return;
+        m_CasingPoolingObject = ObjectPoolManager.Register(m_CasingObject, m_ActiveObjectPool);
+        m_CasingPoolingObject.GenerateObj(m_PoolingCount);
     }
 
-    public void SetupCasingPooling(ObjectPoolManager.PoolingObject m_CasingPoolingObject)
-    {
-        this.m_CasingPoolingObject = m_CasingPoolingObject;
-        m_HasBullet = m_CasingPoolingObject != null;
-    }
-
-    public virtual void DoFire()
+    public void DoFire()
     {
         FireRay();
         FireRecoil();
         m_FireLight.Play(false);
+        StartCoroutine(EndFire());
     }
 
-    protected void InstanceBullet()
+    private void InstanceBullet()
     {
         if (!m_HasBullet) return;
         Quaternion cassingSpawnRotation = Quaternion.Euler(Random.Range(-30, 30), Random.Range(-30, 30), Random.Range(-30, 30));
@@ -69,10 +91,10 @@ public abstract class Fireable : MonoBehaviour
         Rigidbody cassingRB = casingPoolingObject.GetComponent<Rigidbody>();
 
         float spinValue = m_RangeWeaponStat.m_SpinValue;
-        Vector3 randomForce = new Vector3(Random.Range(0.75f, 1.25f), Random.Range(0.75f, 1.25f), Random.Range(0.75f, 1.25f));
+        Vector3 randomForce = new Vector3(Random.Range(0.12f, 0.36f), Random.Range(0.12f, 0.36f), Random.Range(0.12f, 0.36f));
         Vector3 randomTorque = new Vector3(Random.Range(-spinValue, spinValue), Random.Range(-spinValue, spinValue), Random.Range(-spinValue, spinValue));
 
-        cassingRB.velocity = m_CasingSpawnPos.right + randomForce * 0.5f;
+        cassingRB.velocity = m_CasingSpawnPos.right + randomForce;
         cassingRB.angularVelocity = randomTorque;
     }
 
@@ -97,7 +119,7 @@ public abstract class Fireable : MonoBehaviour
         effectObj.gameObject.SetActive(true);
     }
 
-    protected void EffectSet(out AudioClip audioClip, out DefaultPoolingScript effectObj, int fireEffectNumber)
+    private void EffectSet(out AudioClip audioClip, out DefaultPoolingScript effectObj, int fireEffectNumber)
     {
         AudioClip[] audioClips;
 
@@ -106,7 +128,7 @@ public abstract class Fireable : MonoBehaviour
         audioClip = audioClips[Random.Range(0, audioClips.Length)];
     }
 
-    protected void FireRecoil()
+    private void FireRecoil()
     {
         float upRandom = Random.Range(m_RangeWeaponStat.m_UpRandomRecoil.x, m_RangeWeaponStat.m_UpRandomRecoil.y);
         float rightRandom = Random.Range(m_RangeWeaponStat.m_RightRandomRecoil.x, m_RangeWeaponStat.m_RightRandomRecoil.y);
@@ -116,5 +138,16 @@ public abstract class Fireable : MonoBehaviour
         m_FirstPersonController.MouseLook.AddRecoil(upRandom * 0.2f, rightRandom * 0.2f);
     }
 
-    protected abstract IEnumerator EndFire();
+    private IEnumerator EndFire()
+    {
+        if (!m_IsDelayCasing) InstanceBullet();
+
+        yield return m_LightOffSecond;
+        m_FireLight.Stop(false);
+
+        if (!m_IsDelayCasing) yield break;
+
+        yield return m_InstanceBulletSecond;
+        InstanceBullet();
+    }
 }

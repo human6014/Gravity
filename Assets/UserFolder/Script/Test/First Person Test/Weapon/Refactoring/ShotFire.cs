@@ -14,27 +14,6 @@ public class ShotFire : Fireable
     [SerializeField] private int m_RayNum;
     [SerializeField] private Vector3 m_SpreadRange;
 
-    [Header("Timing")]
-    [SerializeField] private float m_LightOffTime = 0.3f;
-    [SerializeField] private float m_InstanceBulletTime = 1f;
-
-    private WaitForSeconds m_LightOffSecond;
-    private WaitForSeconds m_InstanceBulletSecond;
-
-    protected override void Awake()
-    {
-        base.Awake();
-
-        m_LightOffSecond = new WaitForSeconds(m_LightOffTime);
-        m_InstanceBulletSecond = new WaitForSeconds(m_InstanceBulletTime - m_LightOffTime);
-    }
-
-    public override void DoFire()
-    {
-        base.DoFire();
-        StartCoroutine(EndFire());
-    }
-
     protected override void FireRay()
     {
         for (int i = 0; i < m_RayNum; i++)
@@ -46,22 +25,13 @@ public class ShotFire : Fireable
 
     private Vector3 GetFireDirection()
     {
-        Vector3 targetPos = mainCamera.position + mainCamera.forward * m_RangeWeaponStat.m_MaxRange;
+        Vector3 targetPos = m_MainCamera.position + m_MainCamera.forward * m_RangeWeaponStat.m_MaxRange;
 
         targetPos.x += Random.Range(-m_SpreadRange.x, m_SpreadRange.x);
         targetPos.y += Random.Range(-m_SpreadRange.y, m_SpreadRange.y);
         targetPos.z += Random.Range(-m_SpreadRange.z, m_SpreadRange.z);
 
-        Vector3 direction = targetPos - mainCamera.position;
+        Vector3 direction = targetPos - m_MainCamera.position;
         return direction.normalized;
-    }
-
-    protected override IEnumerator EndFire()
-    {
-        yield return m_LightOffSecond;
-        m_FireLight.Stop(false);
-
-        yield return m_InstanceBulletSecond;
-        InstanceBullet();
     }
 }

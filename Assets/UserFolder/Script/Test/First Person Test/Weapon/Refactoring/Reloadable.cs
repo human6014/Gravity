@@ -14,9 +14,22 @@ public enum Interactabe
 [RequireComponent(typeof(Test.RangeWeapon))]
 public abstract class Reloadable : MonoBehaviour
 {
-    [Header("Reload magazine")]
+    [Tooltip("탄알집이 있는지")]
+    [SerializeField] private bool m_HasMagazine;
+
+    [Header("Magazine")]
     [Tooltip("탄알집 생성 위치")]
     [SerializeField] private Transform m_MagazineSpawnPos;
+
+    [Tooltip("탄알집 오브젝트")]
+    [SerializeField] private PoolableScript m_MagazineObject;
+
+    [Header("Pooling")]
+    [Tooltip("풀링 오브젝트 하이라키 위치")]
+    [SerializeField] private Transform m_ActiveObjectPool;
+
+    [Tooltip("미리 생성할 개수")]
+    [SerializeField] [Range(0, 30)] private int m_PoolingCount;
 
     private ObjectPoolManager.PoolingObject m_MagazinePoolingObject;
     private AudioSource m_AudioSource;
@@ -24,8 +37,6 @@ public abstract class Reloadable : MonoBehaviour
     protected RangeWeaponSoundScriptable m_RangeWeaponSound;
     protected Animator m_ArmAnimator;
     protected Animator m_EquipmentAnimator;
-
-    private bool m_HasMagazine;
 
     public bool m_IsReloading { get; protected set; }
     public bool m_IsNonEmptyReloading { get; protected set; }
@@ -42,14 +53,12 @@ public abstract class Reloadable : MonoBehaviour
         this.m_ArmAnimator = m_ArmAnimator;
         m_EquipmentAnimator = GetComponent<Animator>();
 
+        if (!m_HasMagazine) return;
+        m_MagazinePoolingObject = ObjectPoolManager.Register(m_MagazineObject, m_ActiveObjectPool);
+        m_MagazinePoolingObject.GenerateObj(m_PoolingCount);
+
         //this.m_EquipmentAnimator.speed += m_TestAcceleration / 100;
         //this.m_ArmAnimator.speed += m_TestAcceleration / 100;
-    }
-
-    public void SetupMagazinePooling(ObjectPoolManager.PoolingObject m_MagazinePoolingObject)
-    {
-        this.m_MagazinePoolingObject = m_MagazinePoolingObject;
-        m_HasMagazine = m_MagazinePoolingObject != null;
     }
 
     public abstract void DoReload(bool m_IsEmpty);
