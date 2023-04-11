@@ -17,11 +17,6 @@ namespace Test
         //Stat 관련 스크립터블
         [SerializeField] private RangeWeaponStatScriptable m_RangeWeaponStat;
 
-        [Header("Index")]
-        //풀링용 인덱스
-        [SerializeField] private int m_CasingIndex = -1;
-        [SerializeField] private int m_MagazineIndex = -1;
-
         [Header("Aiming adjustment factor")]
         //조준시 에임 위치
         [SerializeField] private Transform m_Pivot;                 //위치 조정용 부모 오브젝트
@@ -71,11 +66,9 @@ namespace Test
         private int m_FireModeLength;
         private int m_FireModeIndex = 1;
 
-
-
         private float m_CurrentFireTime;
 
-        [SerializeField] private bool m_IsEmpty;
+        [SerializeField] private bool m_IsEmpty; //Reload Test;
         protected override void Awake()
         {
             base.Awake();
@@ -92,9 +85,6 @@ namespace Test
 
         private void Start()
         {
-            if (m_CasingIndex != -1) m_Fireable.SetupCasingPooling(m_WeaponManager.GetCasingPoolingObject(m_CasingIndex));
-            if (m_MagazineIndex != -1) m_Reloadable.SetupMagazinePooling(m_WeaponManager.GetMagazinePoolingObject(m_MagazineIndex));
-
             m_Fireable.Setup(m_RangeWeaponStat, m_WeaponManager.GetEffectPoolingObjects(), m_SurfaceManager, m_FirstPersonController);
             m_Reloadable.Setup(m_RangeWeaponSound, m_ArmAnimator);
         }

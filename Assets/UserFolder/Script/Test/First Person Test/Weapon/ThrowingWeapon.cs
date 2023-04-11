@@ -23,6 +23,8 @@ namespace Test
         private Transform m_MainCamera;
         private Manager.ObjectPoolManager.PoolingObject m_PoolingObject;
 
+        private bool m_IsThrowing;
+
         private int m_TempHasCount = 1;
 
         protected override void Awake()
@@ -61,6 +63,7 @@ namespace Test
 
         private void LongThrow()
         {
+            if (m_IsThrowing) return;
             m_ArmAnimator.SetTrigger("Long Throw");
             m_EquipmentAnimator.SetTrigger("Long Throw");
             StartCoroutine(PlayThrowSound(true));
@@ -68,6 +71,7 @@ namespace Test
 
         private void ShortThrow()
         {
+            if (m_IsThrowing) return;
             m_ArmAnimator.SetTrigger("Short Throw");
             m_EquipmentAnimator.SetTrigger("Short Throw");
             StartCoroutine(PlayThrowSound(false));
@@ -75,6 +79,7 @@ namespace Test
 
         private IEnumerator PlayThrowSound(bool isLong)
         {
+            m_IsThrowing = true;
             WeaponSoundScriptable.DelaySoundClip[] playingSound = m_ThrowingWeaponSound.throwSound;
             for (int i = 0; i < playingSound.Length; i++)
             {
@@ -100,6 +105,7 @@ namespace Test
                 throwingRigid.AddForce(forceToAdd, ForceMode.Impulse);
                 throwingRigid.AddTorque(TorquToAdd);
             }
+            m_IsThrowing = false;
         }
 
         private void EndThrow()

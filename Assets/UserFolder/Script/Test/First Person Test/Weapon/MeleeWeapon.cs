@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Test 
 {
@@ -20,12 +21,12 @@ namespace Test
 
         private ObjectPoolManager.PoolingObject m_EffectPoolingObject;
 
-        [SerializeField] private Transform m_AttackPoint;
         [SerializeField] private Transform m_MainCamera;
         [SerializeField] private float m_SwingRadius;
         [SerializeField] private float m_MaxDistance;
         
         public bool m_IsAttacking { get; private set; }
+
         protected override void Awake()
         {
             base.Awake();
@@ -47,7 +48,7 @@ namespace Test
         public override void Init()
         {
             base.Init();
-
+            m_AudioSource.PlayOneShot(m_MeleeWeaponSound.equipSound[Random.Range(0, m_MeleeWeaponSound.equipSound.Length)]);
             m_CrossHairController.SetCrossHair((int)m_MeleeWeaponStat.m_DefaultCrossHair);
             AssignKeyAction();
             m_IsEquip = true;
@@ -94,9 +95,11 @@ namespace Test
             }
         }
 
+        private int m_SwingIndex;
         private void Attack(int swingIndex)
         {
             //m_IsAttacking = true;
+            m_SwingIndex = swingIndex;
             m_ArmAnimator.SetFloat("Swing Index", swingIndex);
             m_EquipmentAnimator.SetFloat("Swing Index", swingIndex);
 
@@ -105,14 +108,18 @@ namespace Test
         }
 
         //Animation Event
-        public void StartAnimation()
+        private void StartAnimation()
         {
             m_IsAttacking = true;
+
+            AudioClip[] playingAudio = m_SwingIndex == 1 ? m_MeleeWeaponSound.m_HeavyAttackSound : m_MeleeWeaponSound.m_LightAttackSound;
+
+            m_AudioSource.PlayOneShot(playingAudio[Random.Range(0, playingAudio.Length)]);
             TestDamage();
         }
 
         //Animation Event
-        public void EndAnimation()
+        private void EndAnimation()
         {
             m_IsAttacking = false;
         }
@@ -123,7 +130,7 @@ namespace Test
 
         private void TestDamage()
         {
-            if (Physics.SphereCast(m_AttackPoint.position, m_SwingRadius, m_MainCamera.forward, out RaycastHit hit, m_MaxDistance, m_AttackableLayer, QueryTriggerInteraction.Collide))
+            if (Physics.SphereCast(m_MainCamera.position, m_SwingRadius, m_MainCamera.forward, out RaycastHit hit, m_MaxDistance, m_AttackableLayer, QueryTriggerInteraction.Ignore))
             {
                 // Apply an impact impulse
                 //if (hitInfo.rigidbody != null)
@@ -154,19 +161,20 @@ namespace Test
 
             effectObj = (DefaultPoolingScript)m_EffectPoolingObject.GetObject(false);
             audioClips = m_SurfaceManager.GetSlashHitEffectSounds(fireEffectNumber);
-            audioClip = audioClips[UnityEngine.Random.Range(0, audioClips.Length)];
+            audioClip = audioClips[Random.Range(0, audioClips.Length)];
         }
 
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.white;
-            Gizmos.DrawWireSphere(m_AttackPoint.position, m_SwingRadius);
-            Gizmos.DrawWireSphere(m_AttackPoint.position + m_AttackPoint.forward * 0.3f + m_MainCamera.forward * m_MaxDistance, m_SwingRadius);
+            Gizmos.DrawWireSphere(m_MainCamera.position, m_SwingRadius);
+            Gizmos.DrawWireSphere(m_MainCamera.position + m_MainCamera.forward * 0.3f + m_MainCamera.forward * m_MaxDistance, m_SwingRadius);
         }
 
         public override void Dispose()
         {
             base.Dispose();
+            m_AudioSource.PlayOneShot(m_MeleeWeaponSound.unequipSound[Random.Range(0, m_MeleeWeaponSound.unequipSound.Length)]);
             DischargeKeyAction();
         }
 
