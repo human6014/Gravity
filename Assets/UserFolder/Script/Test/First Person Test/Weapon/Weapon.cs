@@ -6,6 +6,14 @@ using Manager;
 
 namespace Test
 {
+    public enum EquipingWeaponType
+    {
+        Melee,
+        Pistol,
+        MainRifle,
+        SubRifle,
+        Throwing
+    }
     public class Weapon : MonoBehaviour
     {
         /// <summary>
@@ -43,12 +51,15 @@ namespace Test
         /// </summary>
         protected WeaponManager m_WeaponManager { get; private set; }
 
-        
+        public int GetEquipingType() => (int)m_EquipingWeaponType;
         public int GetItemIndex() => ItemIndex;
 
         [Header("Parent")]
         [Header("Index")]
         [SerializeField] protected int ItemIndex;   //아이템 고유번호
+
+        [Header("Equiping Type")]
+        [SerializeField] private EquipingWeaponType m_EquipingWeaponType;
 
         [Header("Weapon Animation")]
         [SerializeField] protected Animator m_ArmAnimator; //팔 애니메이터
@@ -57,7 +68,11 @@ namespace Test
         [Header("Weapon Attack Layer")]
         [SerializeField] protected LayerMask m_AttackableLayer;     //총 피격 레이어
 
+
+
         protected bool m_IsEquip;
+
+        public virtual bool IsReloading() => false;
 
         protected virtual void Awake()
         {

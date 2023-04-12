@@ -18,8 +18,8 @@ MonoBehaviour:
     m_Bits: 454401
   m_RunningPosTime: 0.5
   m_DefaultCrossHair: 2
-  m_AttackTime: 0.15
-  m_BurstAttackTime: 0.12
+  m_AttackTime: 0.2
+  m_BurstAttackTime: 0.15
   m_MaxRange: 100
   m_UpAxisRecoil: 1.7
   m_RightAxisRecoil: 0.9

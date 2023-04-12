@@ -19,7 +19,7 @@ namespace Test
         private bool isRunning;
         private float currentFireRatio;
 
-        private ObjectPoolManager.PoolingObject m_EffectPoolingObject;
+        private ObjectPoolManager.PoolingObject[] m_EffectPoolingObject;
 
         [SerializeField] private Transform m_MainCamera;
         [SerializeField] private float m_SwingRadius;
@@ -36,7 +36,7 @@ namespace Test
 
         private void AssignPoolingObject()
         {
-            m_EffectPoolingObject = m_WeaponManager.GetEffectPoolingObject(0);
+            m_EffectPoolingObject = m_WeaponManager.m_EffectPoolingObjectArray;
         }
 
         private void AssignKeyAction()
@@ -136,31 +136,31 @@ namespace Test
                 //if (hitInfo.rigidbody != null)
                 //    hitInfo.rigidbody.AddForceAtPosition(itemUseRays.direction * swing.HitImpact, hitInfo.point, ForceMode.Impulse);
 
-                int fireEffectNumber;
+                int hitEffectNumber;
                 int hitLayer = hit.transform.gameObject.layer;
 
-                if (hitLayer == 14) fireEffectNumber = 0;
-                else if (hitLayer == 17) fireEffectNumber = 1;
+                if (hitLayer == 14) hitEffectNumber = 0;
+                else if (hitLayer == 17) hitEffectNumber = 1;
                 else
                 {
                     if (!hit.transform.TryGetComponent(out MeshRenderer meshRenderer)) return;
-                    if ((fireEffectNumber = m_SurfaceManager.IsInMaterial(meshRenderer.sharedMaterial)) == -1) return;
+                    if ((hitEffectNumber = m_SurfaceManager.IsInMaterial(meshRenderer.sharedMaterial)) == -1) return;
                 }
-                EffectSet(out AudioClip audioClip, out DefaultPoolingScript effectObj, fireEffectNumber);
+                EffectSet(out AudioClip audioClip, out DefaultPoolingScript effectObj, hitEffectNumber);
 
                 m_AudioSource.PlayOneShot(audioClip);
 
-                effectObj.Init(hit.point, Quaternion.LookRotation(hit.normal), m_EffectPoolingObject);
+                effectObj.Init(hit.point, Quaternion.LookRotation(hit.normal), m_EffectPoolingObject[hitEffectNumber]);
                 effectObj.gameObject.SetActive(true);
             }
         }
 
-        private void EffectSet(out AudioClip audioClip, out DefaultPoolingScript effectObj, int fireEffectNumber)
+        private void EffectSet(out AudioClip audioClip, out DefaultPoolingScript effectObj, int hitEffectNumber)
         {
             AudioClip[] audioClips;
 
-            effectObj = (DefaultPoolingScript)m_EffectPoolingObject.GetObject(false);
-            audioClips = m_SurfaceManager.GetSlashHitEffectSounds(fireEffectNumber);
+            effectObj = (DefaultPoolingScript)m_EffectPoolingObject[hitEffectNumber].GetObject(false);
+            audioClips = m_SurfaceManager.GetSlashHitEffectSounds(hitEffectNumber);
             audioClip = audioClips[Random.Range(0, audioClips.Length)];
         }
 
@@ -173,9 +173,9 @@ namespace Test
 
         public override void Dispose()
         {
-            base.Dispose();
             m_AudioSource.PlayOneShot(m_MeleeWeaponSound.unequipSound[Random.Range(0, m_MeleeWeaponSound.unequipSound.Length)]);
             DischargeKeyAction();
+            base.Dispose();
         }
 
         private void DischargeKeyAction()

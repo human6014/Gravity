@@ -69,6 +69,8 @@ namespace Test
         private float m_CurrentFireTime;
 
         [SerializeField] private bool m_IsEmpty; //Reload Test;
+
+        public override bool IsReloading() => m_Reloadable.m_IsReloading;
         protected override void Awake()
         {
             base.Awake();
@@ -79,13 +81,13 @@ namespace Test
 
             m_Fireable = GetComponent<Fireable>();
             m_Reloadable = GetComponent<Reloadable>();
-
+            m_IsEmpty = true;
             AssignFireMode();
         }
 
         private void Start()
         {
-            m_Fireable.Setup(m_RangeWeaponStat, m_WeaponManager.GetEffectPoolingObjects(), m_SurfaceManager, m_FirstPersonController);
+            m_Fireable.Setup(m_RangeWeaponStat, m_WeaponManager.m_EffectPoolingObjectArray, m_SurfaceManager, m_FirstPersonController);
             m_Reloadable.Setup(m_RangeWeaponSound, m_ArmAnimator);
         }
 
@@ -148,8 +150,10 @@ namespace Test
             if (m_IsRunning) return;
             m_IsAiming = isAiming;
 
-            int currentCrossHair = isAiming ? 0 : (int)m_RangeWeaponStat.m_DefaultCrossHair;
-            m_CrossHairController.SetCrossHair(currentCrossHair);
+            m_CrossHairController.CrossHairSetBool("IsAiming",isAiming);
+
+            //int currentCrossHair = isAiming ? 0 : (int)m_RangeWeaponStat.m_DefaultCrossHair;
+            //m_CrossHairController.SetCrossHair(currentCrossHair);
             if (isAiming) AimingPosRot(m_AimingPivotPosition, m_AimingPivotRotation);
             else AimingPosRot(m_OriginalPivotPosition, m_OriginalPivotRotation);
 
@@ -178,7 +182,6 @@ namespace Test
             int beforeChangeIndex = m_FireModeIndex;
             do
             {
-                //m_FireModeIndex <<= 1;
                 if ((m_FireModeIndex <<= 1) >= m_FireModeLength) m_FireModeIndex = 1;
             }
             while (!m_FireMode.HasFlag((FireMode)m_FireModeIndex));
@@ -267,7 +270,10 @@ namespace Test
             m_CurrentFireTime = 0;
 
             m_Reloadable.StopReload();
-
+            if (m_FirstPersonController.m_IsCrouch) m_CrossHairController.CrossHairSetTrigger("CrouchFire");
+            else if (m_FirstPersonController.m_IsIdle) m_CrossHairController.CrossHairSetTrigger("IdleFire");
+            else if(m_FirstPersonController.m_IsWalking) m_CrossHairController.CrossHairSetTrigger("WalkFire");
+            
 
             AudioClip audioClip = m_RangeWeaponSound.fireSound[Random.Range(0, m_RangeWeaponSound.fireSound.Length)];
             m_AudioSource.PlayOneShot(audioClip);
@@ -299,9 +305,8 @@ namespace Test
 
         public override void Dispose()
         {
-            base.Dispose();
-
             DischargeKeyAction();
+            base.Dispose();
         }
 
         private void DischargeKeyAction()
