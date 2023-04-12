@@ -47,6 +47,7 @@ public class PlayerInputController : MonoBehaviour
 
     private bool m_WasCrouch;
     private bool m_WasTimeSlow;
+
     //keyDown Movement
     public Action<float, float> MouseMovement { get; set; }
 

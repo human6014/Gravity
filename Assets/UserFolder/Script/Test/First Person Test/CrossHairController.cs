@@ -6,14 +6,17 @@ using Scriptable;
 
 public class CrossHairController : MonoBehaviour
 {
+    [SerializeField] private AnimatorOverrideController m_AnimatorController;
     [SerializeField] private CrossHairScripatble[] crossHairInfo;
 
+    private Animator m_Animator;
     private Image [] crossHairImage = new Image[5];
     private Color color;
     public CrossHairScripatble GetCrossHairInfo(int index) => crossHairInfo[index];
 
     private void Awake()
     {
+        m_Animator = GetComponent<Animator>();
         crossHairImage = GetComponentsInChildren<Image>();
     }
 
@@ -34,5 +37,16 @@ public class CrossHairController : MonoBehaviour
             crossHairImage[i].sprite = crossHairInfo[index].crossHairSprite[i];
             crossHairImage[i].enabled = true;
         }
+    }
+
+    //temp
+    public void CrossHairSetTrigger(string state)
+    {
+        m_Animator.SetTrigger(state);   
+    }
+
+    public void CrossHairSetBool(string state, bool active)
+    {
+        m_Animator.SetBool(state, active);
     }
 }

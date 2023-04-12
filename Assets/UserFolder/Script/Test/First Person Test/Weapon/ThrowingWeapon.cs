@@ -141,8 +141,8 @@ namespace Test
         public override void Dispose()
         {
             m_RendererObject.SetActive(true);
+            DischargeKeyAction(); 
             base.Dispose();
-            DischargeKeyAction();
         }
 
         private void DischargeKeyAction()

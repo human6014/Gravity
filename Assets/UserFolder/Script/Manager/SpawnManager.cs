@@ -32,24 +32,12 @@ namespace Manager
         [Tooltip("활성화된 유닛의 transform")]
         [SerializeField] private Transform activeUnitPool;
 
-        [Tooltip("활성화된 잡다한 오브젝트의 transform")]
-        [SerializeField] private Transform activeObjectPool;
-
         [Header("Pooling Count")]
         [Tooltip("미리 생성할 유닛 수 urban -> oldman -> women -> big -> giant")]
         [Range(0, 100)][SerializeField] private int[] normalMonsterPoolingCount;
 
         [Tooltip("미리 생성할 FlyingMonstr 수")]
         [Range(0, 100)] [SerializeField] private int[] flyingMonsterPoolingCount;
-
-        [Tooltip("미리 생성할 이펙트 개수")]
-        [Range(0, 100)] [SerializeField] private int[] m_EffectPoolingCount;
-
-        [Tooltip("미리 생성할 탄피 개수")]
-        [Range(0, 100)] [SerializeField] private int[] m_CasingPoolingCount;
-
-        [Tooltip("미리 생성할 탄알집 개수")]
-        [Range(0, 30)] [SerializeField] private int[] m_MagazinePoolingCount;
 
         [Header("Spawn info")]
         [Tooltip("최대로 생성될 일반 몬스터 총 개수")]
@@ -71,13 +59,11 @@ namespace Manager
 
         private EntityManager m_EntityManager;
         private Customization m_Customization;
-        
+        private Octree m_Octree;        //temp
 
         private ObjectPoolManager.PoolingObject[] m_NormalMonsterPoolingObjectArray;
         private ObjectPoolManager.PoolingObject[] m_FlyingMonsterPoolingObjectArray;
-        private ObjectPoolManager.PoolingObject[] m_EffectPoolingObjectArray;
-        private ObjectPoolManager.PoolingObject[] m_CasingPoolingObjectArray;
-        private ObjectPoolManager.PoolingObject[] m_MagazinePoolingObjectArray;
+
         #endregion
 
         #region Normal Value
@@ -92,13 +78,12 @@ namespace Manager
         private int m_RandomFlyingMonsterIndex;
         #endregion
 
-        [SerializeField] private WeaponManager m_WeaponManager;
-        [SerializeField] Octree octree;        //temp
+        
         private void Awake()
         {
             m_EntityManager = GetComponent<EntityManager>();
             m_Customization = GetComponent<Customization>();
-            //m_WeaponManager = FindObjectOfType<WeaponManager>();
+            m_Octree = FindObjectOfType<Octree>();
 
             for (int i = 0; i < spawnAreaTransform.Length; i++)
                 m_SpawnAreaCollider[i] = spawnAreaTransform[i].GetComponentsInChildren<BoxCollider>();
@@ -121,28 +106,17 @@ namespace Manager
         {
             int normalMonsterArrayLength = m_EntityManager.GetNormalMonsterArrayLength();
             int flyingMonsterArrayLength = m_EntityManager.GetFlyingMonsterArrayLength();
-            int effectArrayLength = m_EntityManager.GetEffectArrayLength();
-            int casingArrayLength = m_EntityManager.GetCasingArrayLength();
-            int magazineArrayLength = m_EntityManager.GetMagazineArrayLength();
 
             if (normalMonsterArrayLength != normalMonsterPoolingCount.Length)
                 Debug.LogError("Normal monster pooling Count is different from the number of PoolingObject's length");
             if (flyingMonsterArrayLength != flyingMonsterPoolingCount.Length)
                 Debug.LogError("Flying monster pooling Count is different from the number of PoolingObject's length");
-            if (effectArrayLength != m_EffectPoolingCount.Length)
-                Debug.LogError("Effect pooling Count is different from the number of PoolingObject's length");
-            if (casingArrayLength != m_CasingPoolingCount.Length)
-                Debug.LogError("Casing pooling Count is different from the number of PoolingObject's length");
-            if (magazineArrayLength != m_MagazinePoolingCount.Length)
-                Debug.LogError("Magazine pooling Count is different from the number of PoolingObject's length");
+
 
             //normal monster 인덱스 순서
             //urban -> oldman -> women -> big -> giant
             m_NormalMonsterPoolingObjectArray = new ObjectPoolManager.PoolingObject[normalMonsterArrayLength];
             m_FlyingMonsterPoolingObjectArray = new ObjectPoolManager.PoolingObject[flyingMonsterArrayLength];
-            m_EffectPoolingObjectArray = new ObjectPoolManager.PoolingObject[effectArrayLength];
-            m_CasingPoolingObjectArray = new ObjectPoolManager.PoolingObject[casingArrayLength];
-            m_MagazinePoolingObjectArray = new ObjectPoolManager.PoolingObject[magazineArrayLength];
 
             //Unit
             for (int i = 0; i < normalMonsterArrayLength; i++)
@@ -156,28 +130,6 @@ namespace Manager
                 m_FlyingMonsterPoolingObjectArray[i] = ObjectPoolManager.Register(m_EntityManager.GetFlyingMonster(i), activeUnitPool);
                 m_FlyingMonsterPoolingObjectArray[i].GenerateObj(flyingMonsterPoolingCount[i]);
             }
-
-            //Object
-            for(int i = 0; i < effectArrayLength; i++)
-            {
-                m_EffectPoolingObjectArray[i] = ObjectPoolManager.Register(m_EntityManager.GetEffectObject(i), activeObjectPool);
-                m_EffectPoolingObjectArray[i].GenerateObj(m_EffectPoolingCount[i]);
-            }
-
-            for (int i = 0; i < casingArrayLength; i++)
-            {
-                m_CasingPoolingObjectArray[i] = ObjectPoolManager.Register(m_EntityManager.GetCasingObject(i), activeObjectPool);
-                m_CasingPoolingObjectArray[i].GenerateObj(m_CasingPoolingCount[i]);
-            }
-
-            for (int i = 0; i < magazineArrayLength; i++)
-            {
-                m_MagazinePoolingObjectArray[i] = ObjectPoolManager.Register(m_EntityManager.GetMagazineObject(i), activeObjectPool);
-                m_MagazinePoolingObjectArray[i].GenerateObj(m_MagazinePoolingCount[i]);
-            }
-
-            //if (m_WeaponManager == null) return;
-            m_WeaponManager.SetObjectPool(m_EffectPoolingObjectArray, m_CasingPoolingObjectArray, m_MagazinePoolingObjectArray);
         }
 
         public void ChangeCurrentArea(EnumType.GravityType gravityType)
@@ -286,7 +238,7 @@ namespace Manager
             FlyingMonsterCount++;
 
             FlyingMonster currentFlyingMonster = (FlyingMonster)m_FlyingMonsterPoolingObjectArray[0].GetObject(false);
-            currentFlyingMonster.Init(octree.GetRandomSpawnableArea(), m_FlyingMonsterPoolingObjectArray[0]);
+            currentFlyingMonster.Init(m_Octree.GetRandomSpawnableArea(), m_FlyingMonsterPoolingObjectArray[0]);
             currentFlyingMonster.gameObject.SetActive(true);
         }
 

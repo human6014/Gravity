@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Test;
@@ -7,35 +8,62 @@ namespace Manager
 {
     public class WeaponManager : MonoBehaviour
     {
-        private ObjectPoolManager.PoolingObject[] m_EffectPoolingObjectArray;
-        private ObjectPoolManager.PoolingObject[] m_CasingPoolingObjectArray;
-        private ObjectPoolManager.PoolingObject[] m_MagazinePoolingObjectArray;
+        [SerializeField] PlayerInputController m_PlayerInputController;
 
-        private readonly Dictionary<int, Weapon> m_WeaponDictionary = new Dictionary<int, Weapon>();
+        [Header("Pooling")]
+        [SerializeField] private Transform m_ActiveObjectPool;
+        [SerializeField] private PoolableScript[] m_EffectPoolingObject;
+        [SerializeField] private int[] m_PoolingCount;
+
+        [SerializeField] private int m_EquipingItemIndex = 6;
+
+
+        [Header("Equip Index Test")]
+        [SerializeField] private int HavingMeleeWeaponIndex;
+        [SerializeField] private int HavingPistolWeaponIndex;
+        [SerializeField] private int HavingAutoRifleWeaponIndex;
+        [SerializeField] private int HavingSubRifleWeaponIndex;
+        [SerializeField] private int HavingThrowingWeaponIndex;
+
+        [Space(10)]
+        [SerializeField] private int ThrowingWeaponHavingCount;
+
+
+        //private readonly Dictionary<int, Weapon>[] m_WeaponDictionary = new Dictionary<int, Weapon>();
+        private readonly Dictionary<Tuple<int, int>, Weapon> m_WeaponDictionary = new();
+        [SerializeField] private Weapon[][] m_Weapon = new Weapon[5][];
 
         private Weapon m_CurrentWeapon;
-        [SerializeField] private int m_EquipingItemIndex = 6;
-        public void SetObjectPool(
-            ObjectPoolManager.PoolingObject[] effectPooling,
-            ObjectPoolManager.PoolingObject[] casingPooling,
-            ObjectPoolManager.PoolingObject[] magazinePooling)
-        {
-            m_EffectPoolingObjectArray = effectPooling;
-            m_CasingPoolingObjectArray = casingPooling;
-            m_MagazinePoolingObjectArray = magazinePooling;
-        }
+        private Inventory m_Inventory;
 
-        public ObjectPoolManager.PoolingObject[] GetEffectPoolingObjects() => m_EffectPoolingObjectArray;
-        public ObjectPoolManager.PoolingObject GetEffectPoolingObject(int index) => m_EffectPoolingObjectArray[index];
-        public ObjectPoolManager.PoolingObject GetCasingPoolingObject(int index) => m_CasingPoolingObjectArray[index];
-        public ObjectPoolManager.PoolingObject GetMagazinePoolingObject(int index) => m_MagazinePoolingObjectArray[index];
+        public ObjectPoolManager.PoolingObject[] m_EffectPoolingObjectArray { get; private set; }
 
         private void Awake()
         {
             foreach(Transform child in transform)
             {
                 if(!child.TryGetComponent(out Weapon weapon)) continue;
-                m_WeaponDictionary.Add(weapon.GetItemIndex(),weapon);
+                m_WeaponDictionary.Add(new Tuple<int,int>(weapon.GetEquipingType(),weapon.GetItemIndex()), weapon);
+            }
+            m_Inventory = new Inventory(5);
+            m_PlayerInputController.ChangeEquipment += TryWeaponChange;
+
+            m_Inventory.HavingWeaponIndex[0] = HavingMeleeWeaponIndex;
+            m_Inventory.HavingWeaponIndex[1] = HavingPistolWeaponIndex;
+            m_Inventory.HavingWeaponIndex[2] = HavingAutoRifleWeaponIndex;
+            m_Inventory.HavingWeaponIndex[3] = HavingSubRifleWeaponIndex;
+            m_Inventory.HavingWeaponIndex[4] = HavingThrowingWeaponIndex;
+
+            m_Inventory.ThrowingWeaponHavingCount = ThrowingWeaponHavingCount;
+        }
+
+        private void Start()
+        {
+            m_EffectPoolingObjectArray = new ObjectPoolManager.PoolingObject[m_EffectPoolingObject.Length];
+            for (int i = 0; i < m_EffectPoolingObject.Length; i++)
+            {
+                m_EffectPoolingObjectArray[i] = ObjectPoolManager.Register(m_EffectPoolingObject[i], m_ActiveObjectPool);
+                m_EffectPoolingObjectArray[i].GenerateObj(m_PoolingCount[i]);
             }
         }
 
@@ -44,7 +72,19 @@ namespace Manager
         {
             if (m_CurrentWeapon != null) m_CurrentWeapon.Dispose();
 
-            m_WeaponDictionary.TryGetValue(m_EquipingItemIndex, out m_CurrentWeapon);
+            //m_WeaponDictionary.TryGetValue(m_EquipingItemIndex, out m_CurrentWeapon);
+            m_CurrentWeapon.Init();
+        }
+
+        private void TryWeaponChange(int index)
+        {
+            if (m_CurrentWeapon != null)
+            {
+                if (m_CurrentWeapon.IsReloading()) return;
+                m_CurrentWeapon.Dispose();
+            }
+
+            m_WeaponDictionary.TryGetValue(new Tuple<int,int>(index,m_Inventory.HavingWeaponIndex[index]), out m_CurrentWeapon);
             m_CurrentWeapon.Init();
         }
     }
