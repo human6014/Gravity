@@ -130,7 +130,7 @@ namespace Contoller.Player
             m_Camera = m_RightAxisTransform.GetComponentInChildren<Camera>();
             m_AudioSource = GetComponent<AudioSource>();
 
-            AIManager.PlayerTransfrom = transform;
+            AIManager.PlayerTransform = transform;
 
             m_FovKick.Setup(m_Camera);
             m_HeadBob.Setup(m_UpAxisTransfrom, m_StepInterval);

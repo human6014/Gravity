@@ -35,6 +35,7 @@ namespace Manager
 
         private Weapon m_CurrentWeapon;
         private Inventory m_Inventory;
+        private int m_CurrentEquipIndex = -1;
 
         public ObjectPoolManager.PoolingObject[] m_EffectPoolingObjectArray { get; private set; }
 
@@ -80,12 +81,15 @@ namespace Manager
         {
             if (m_CurrentWeapon != null)
             {
+                if (m_CurrentEquipIndex == index) return;
                 if (m_CurrentWeapon.IsReloading()) return;
                 m_CurrentWeapon.Dispose();
             }
 
+            //¿ÃªÛ«‘
             m_WeaponDictionary.TryGetValue(new Tuple<int,int>(index,m_Inventory.HavingWeaponIndex[index]), out m_CurrentWeapon);
             m_CurrentWeapon.Init();
+            m_CurrentEquipIndex = index;
         }
     }
 }

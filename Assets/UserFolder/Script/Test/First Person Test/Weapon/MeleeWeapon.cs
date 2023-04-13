@@ -130,7 +130,7 @@ namespace Test
 
         private void TestDamage()
         {
-            if (Physics.SphereCast(m_MainCamera.position, m_SwingRadius, m_MainCamera.forward, out RaycastHit hit, m_MaxDistance, m_AttackableLayer, QueryTriggerInteraction.Ignore))
+            if (Physics.SphereCast(m_MainCamera.position, m_SwingRadius, m_MainCamera.forward, out RaycastHit hit, m_MaxDistance, m_MeleeWeaponStat.m_AttackableLayer, QueryTriggerInteraction.Ignore))
             {
                 // Apply an impact impulse
                 //if (hitInfo.rigidbody != null)

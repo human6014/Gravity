@@ -15,7 +15,23 @@ namespace Test
         Throwing
     }
     public class Weapon : MonoBehaviour
-    {
+    {        
+        //[SerializeField] private Scriptable.WeaponStatScriptable m_WeaponStatScriptable;
+        //[SerializeField] private Scriptable.RangeWeaponStatScriptable m_RangeWeaponStatScriptable;
+
+        [Header("Parent")]
+        [Header("Index")]
+        [SerializeField] protected int ItemIndex;   //아이템 고유번호
+
+        [Header("Equiping Type")]
+        [SerializeField] private EquipingWeaponType m_EquipingWeaponType;
+
+        [Header("Weapon Animation")]
+        [SerializeField] protected Animator m_ArmAnimator; //팔 애니메이터
+        [SerializeField] protected AnimatorOverrideController m_ArmOverrideController = null;   // 덮어씌울 팔 애니메이션들
+
+        private WaitForSeconds m_WaitChangeEquipmentTime;
+        protected bool m_IsEquip;
         /// <summary>
         /// 사용자의 입력을 받는 스크립트
         /// </summary>
@@ -53,30 +69,19 @@ namespace Test
 
         public int GetEquipingType() => (int)m_EquipingWeaponType;
         public int GetItemIndex() => ItemIndex;
-
-        [Header("Parent")]
-        [Header("Index")]
-        [SerializeField] protected int ItemIndex;   //아이템 고유번호
-
-        [Header("Equiping Type")]
-        [SerializeField] private EquipingWeaponType m_EquipingWeaponType;
-
-        [Header("Weapon Animation")]
-        [SerializeField] protected Animator m_ArmAnimator; //팔 애니메이터
-        [SerializeField] protected AnimatorOverrideController m_ArmOverrideController = null;   // 덮어씌울 팔 애니메이션들
-
-        [Header("Weapon Attack Layer")]
-        [SerializeField] protected LayerMask m_AttackableLayer;     //총 피격 레이어
-
-
-
-        protected bool m_IsEquip;
-
+        public virtual bool IsUnequiping() => false;
+        public virtual bool IsEquiping() => false;
+        public virtual bool IsFiring() => false;
         public virtual bool IsReloading() => false;
 
         protected virtual void Awake()
         {
             m_EquipmentAnimator = GetComponent<Animator>();
+
+            //((Scriptable.RangeWeaponStatScriptable)m_WeaponStatScriptable).m_Damage = 5;
+            //Debug.Log(((Scriptable.RangeWeaponStatScriptable)m_WeaponStatScriptable).m_Damage);
+
+            m_WaitChangeEquipmentTime = new WaitForSeconds(0.5f);
 
             Transform rootTransform = transform.root;
             m_PlayerInputController = rootTransform.GetComponent<PlayerInputController>();
@@ -109,6 +114,11 @@ namespace Test
             m_EquipmentAnimator.SetTrigger("Unequip");
 
             gameObject.SetActive(false);
+        }
+
+        private IEnumerator WaitChangeEquipment()
+        {
+            yield return new WaitForSeconds(0.5f);
         }
     }
 }

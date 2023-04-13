@@ -32,6 +32,9 @@ namespace Scriptable
         [Tooltip("좌우 랜덤 반동값")]
         public Vector2 m_RightRandomRecoil = new Vector2(-0.15f, 0.2f);
 
+        [Tooltip("사격 정확도")]
+        public Vector2 m_Accuracy = new Vector2(0,0);
+
         [Header("Pos")]
         [Tooltip("조준, 조준 해제 증감값")]
         public float m_AimingPosTimeRatio = 0.07f;

@@ -48,7 +48,7 @@ public abstract class Fireable : MonoBehaviour
 
     private SurfaceManager m_SurfaceManager;
     private FirstPersonController m_FirstPersonController;
-
+    private CrossHairController m_CrossHairController;
     private void Awake()
     {
         m_MuzzlePos = m_FireLight.transform;
@@ -59,12 +59,13 @@ public abstract class Fireable : MonoBehaviour
     }
 
     public void Setup(RangeWeaponStatScriptable m_RangeWeaponStat, ObjectPoolManager.PoolingObject[] m_BulletEffectPoolingObjects,
-                    SurfaceManager m_SurfaceManager, FirstPersonController m_FirstPersonController)
+                    SurfaceManager m_SurfaceManager, FirstPersonController m_FirstPersonController, CrossHairController m_CrossHairController)
     {
         this.m_RangeWeaponStat = m_RangeWeaponStat;
         this.m_BulletEffectPoolingObjects = m_BulletEffectPoolingObjects;
         this.m_SurfaceManager = m_SurfaceManager;
         this.m_FirstPersonController = m_FirstPersonController;
+        this.m_CrossHairController = m_CrossHairController;
 
         if (!m_HasBullet) return;
         m_CasingPoolingObject = ObjectPoolManager.Register(m_CasingObject, m_ActiveObjectPool);
@@ -104,7 +105,12 @@ public abstract class Fireable : MonoBehaviour
     {
         int fireEffectNumber;
         int hitLayer = hit.transform.gameObject.layer;
-        if (hitLayer == 14) fireEffectNumber = 0;
+        if (hit.transform.TryGetComponent(out IDamageable damageable))
+        {
+            damageable.Hit(m_RangeWeaponStat.m_Damage);
+            return;
+        }
+        else if (hitLayer == 14) fireEffectNumber = 0;
         else if (hitLayer == 17) fireEffectNumber = 1;
         else
         {
@@ -117,6 +123,11 @@ public abstract class Fireable : MonoBehaviour
 
         effectObj.Init(hit.point, Quaternion.LookRotation(hit.normal), m_BulletEffectPoolingObjects[fireEffectNumber]);
         effectObj.gameObject.SetActive(true);
+    }
+
+    private void DoDamage()
+    {
+
     }
 
     private void EffectSet(out AudioClip audioClip, out DefaultPoolingScript effectObj, int fireEffectNumber)
@@ -149,5 +160,14 @@ public abstract class Fireable : MonoBehaviour
 
         yield return m_InstanceBulletSecond;
         InstanceBullet();
+    }
+
+    protected Vector3 GetCurrentAccuracy()
+    {
+        float accuracy = m_CrossHairController.GetCurrentAccurancy();
+        float xAccuracy = Random.Range(-accuracy - m_RangeWeaponStat.m_Accuracy.x, accuracy + m_RangeWeaponStat.m_Accuracy.x);
+        float zAccuracy = Random.Range(-accuracy - m_RangeWeaponStat.m_Accuracy.y, accuracy + m_RangeWeaponStat.m_Accuracy.y);
+
+        return new Vector3(xAccuracy, 0, zAccuracy);
     }
 }

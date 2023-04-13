@@ -87,7 +87,7 @@ namespace Test
 
         private void Start()
         {
-            m_Fireable.Setup(m_RangeWeaponStat, m_WeaponManager.m_EffectPoolingObjectArray, m_SurfaceManager, m_FirstPersonController);
+            m_Fireable.Setup(m_RangeWeaponStat, m_WeaponManager.m_EffectPoolingObjectArray, m_SurfaceManager, m_FirstPersonController, m_CrossHairController);
             m_Reloadable.Setup(m_RangeWeaponSound, m_ArmAnimator);
         }
 
@@ -150,7 +150,7 @@ namespace Test
             if (m_IsRunning) return;
             m_IsAiming = isAiming;
 
-            m_CrossHairController.CrossHairSetBool("IsAiming",isAiming);
+            m_CrossHairController.CrossHairSetBool("IsAiming", isAiming);
 
             //int currentCrossHair = isAiming ? 0 : (int)m_RangeWeaponStat.m_DefaultCrossHair;
             //m_CrossHairController.SetCrossHair(currentCrossHair);
