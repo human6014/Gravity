@@ -12,12 +12,13 @@ namespace Scriptable
         Circle = 3,         //원형선
     }
 
+    [CreateAssetMenu(fileName = "WeaponStatSetting", menuName = "Scriptable Object/WeaponStatSettings", order = int.MaxValue - 11)]
     public class WeaponStatScriptable : ScriptableObject
     {
         [Header("Parent")]
         [Header("Attack info")]
         [Tooltip("공격 데미지")]
-        public float m_Damage;
+        public int m_Damage;
 
         [Tooltip("공격에 걸릴 레이어")]
         public LayerMask m_AttackableLayer;

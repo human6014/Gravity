@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3edd2e8b3bf2503448ae5ecda8a8f6b9, type: 3}
   m_Name: NoneCrossHair
   m_EditorClassIdentifier: 
+  m_AnimatorController: {fileID: 0}
   crossHairSprite:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  m_CrouchAccurancy: 0
+  m_IdleAccuracy: 0
+  m_WalkAccuracy: 0
+  m_JumpAccuracy: 0

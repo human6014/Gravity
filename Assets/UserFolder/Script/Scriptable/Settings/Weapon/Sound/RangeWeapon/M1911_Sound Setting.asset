@@ -57,4 +57,7 @@ MonoBehaviour:
   - audioClip: {fileID: 8300000, guid: d0deda4bdfb2f7348b551d9123404673, type: 3}
     delayTime: 1
   - audioClip: {fileID: 8300000, guid: b9578afcb3e05064397e31b1e9af7f99, type: 3}
-    delayTime: 0.6
+    delayTime: 0.2
+  instantReloadSoundClips: []
+  reloadStartSoundClips: []
+  reloadEndSoundClips: []

@@ -19,7 +19,6 @@ namespace Entity.Unit.Special
         [SerializeField] private Transform navObject;
         [SerializeField] private LegController legController;
 
-
         private Transform target;
         [SerializeField] private Transform aiTransform;
         private SpecialMonsterAI specialMonsterAI;
@@ -34,18 +33,15 @@ namespace Entity.Unit.Special
 
         private void Awake()
         {
-            Debug.Log("Awake");
             //aiTransform = GetComponent<Transform>();
-            Debug.Log(aiTransform.name);
             specialMonsterAI = aiTransform.GetComponent<SpecialMonsterAI>();
-            Debug.Log(specialMonsterAI.name);
         }
 
         public void Init(Quaternion rotation)
         {
-            Debug.Log("Init");
-            target = Manager.AI.AIManager.PlayerTransfrom;
+            target = Manager.AI.AIManager.PlayerTransform;
             specialMonsterAI.Init(rotation);
+
         }
 
         private void FixedUpdate()
@@ -108,6 +104,11 @@ namespace Entity.Unit.Special
         public void StartJumpCoroutine()
         {
             //StartCoroutine(Jump(0.9f));
+        }
+
+        public void Hit(int damage)
+        {
+            Debug.Log(damage);
         }
 
         #region 포물선 테스트중

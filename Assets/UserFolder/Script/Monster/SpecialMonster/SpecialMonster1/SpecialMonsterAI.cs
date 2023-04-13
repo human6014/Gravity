@@ -129,7 +129,7 @@ public class SpecialMonsterAI : MonoBehaviour
         if (AIManager.PlayerRerversePosition != Vector3.zero)
         {
             float reversedDistance = Vector3.Distance(cachedTransform.position, AIManager.PlayerRerversePosition);
-            float normalDistance = Vector3.Distance(cachedTransform.position, AIManager.PlayerTransfrom.position);
+            float normalDistance = Vector3.Distance(cachedTransform.position, AIManager.PlayerTransform.position);
 
             if (reversedDistance < normalDistance)
             {
@@ -137,7 +137,7 @@ public class SpecialMonsterAI : MonoBehaviour
                 return;
             }
         }
-        navMeshAgent.SetDestination(AIManager.PlayerTransfrom.position);
+        navMeshAgent.SetDestination(AIManager.PlayerTransform.position);
     }
 
     //public bool IsSameFloor() => navMeshAgent.navMeshOwner.name == floorDetector.GetNowFloor().name;

@@ -121,7 +121,7 @@ public class NormalMonsterAI : MonoBehaviour
         //Debug.Log("AutoMode");
 
         fallingTimer = 0;
-        navMeshAgent.SetDestination(AIManager.PlayerTransfrom.position);
+        navMeshAgent.SetDestination(AIManager.PlayerTransform.position);
 
         if (!navMeshAgent.isOnOffMeshLink && !AIManager.IsSameFloor(navMeshAgent))
         {
@@ -148,7 +148,7 @@ public class NormalMonsterAI : MonoBehaviour
                     break;
             }
             if (autoTargetDir == Vector3.zero)
-                autoTargetRot = Quaternion.LookRotation(AIManager.PlayerTransfrom.position, -GravityManager.GravityVector);
+                autoTargetRot = Quaternion.LookRotation(AIManager.PlayerTransform.position, -GravityManager.GravityVector);
             else
                 autoTargetRot = Quaternion.LookRotation(autoTargetDir, -GravityManager.GravityVector);
         }

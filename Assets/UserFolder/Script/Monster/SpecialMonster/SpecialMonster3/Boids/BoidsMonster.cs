@@ -42,7 +42,7 @@ public class BoidsMonster : PoolableScript
     {
         myBoids = _boids;
         speed = Random.Range(settings.speedRange.x, settings.speedRange.y);
-        target = Manager.AI.AIManager.PlayerTransfrom;
+        target = Manager.AI.AIManager.PlayerTransform;
 
         calcEgoWaitSeconds = new WaitForSeconds(Random.Range(1f, 3f));
         findNeighbourSeconds = new WaitForSeconds(Random.Range(1f, 2f));

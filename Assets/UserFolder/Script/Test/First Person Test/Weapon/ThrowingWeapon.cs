@@ -92,7 +92,7 @@ namespace Test
 
         private void Throw(bool isLong)
         {
-            if(Physics.Raycast(m_MainCamera.position, m_MainCamera.forward, out RaycastHit hit, 300f, m_AttackableLayer))
+            if(Physics.Raycast(m_MainCamera.position, m_MainCamera.forward, out RaycastHit hit, 300f, m_ThrowingWeaponStat.m_AttackableLayer))
             {
                 SetThrowVector(isLong, hit.point, out Vector3 forceToAdd, out Vector3 TorquToAdd);
 
