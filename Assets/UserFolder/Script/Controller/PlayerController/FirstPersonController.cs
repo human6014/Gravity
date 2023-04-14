@@ -12,9 +12,8 @@ namespace Contoller.Player
     [RequireComponent(typeof(AudioSource))]
     public class FirstPersonController : MonoBehaviour
     {
-        
         public MouseLook MouseLook { get => m_MouseLook; private set => m_MouseLook = value; }
-
+        public PlayerState m_PlayerState { get; } = new PlayerState();
         #region SerializeField
         [Tooltip("걷기 속도")]
         [SerializeField] private float m_WalkSpeed;
@@ -89,6 +88,8 @@ namespace Contoller.Player
         [Tooltip("플레이어 위쪽 위치")]
         [SerializeField] private LayerMask reversePosLayer;
 
+        [Tooltip("플레이어 지면 감지 레이어")]
+        [SerializeField] private LayerMask m_GroundLayer;
         //앉기랑 다시 일어나기
         [SerializeField] Vector3 m_CrouchInterporatePos;          //앉기, 일어나기 증감값
         [SerializeField] float m_CrouchTime = 0.3f;               //앉기, 일어나기 자세 전환 시간
@@ -98,8 +99,8 @@ namespace Contoller.Player
         #endregion
 
         private PlayerInputController m_PlayerInputController;
+        
         private CharacterController m_CharacterController;
-        private CrossHairController m_CrossHairController;
         private AudioSource m_AudioSource;
         private Camera m_Camera;
 
@@ -126,7 +127,6 @@ namespace Contoller.Player
         {
             m_PlayerInputController = GetComponent<PlayerInputController>();
             m_CharacterController = GetComponent<CharacterController>();
-            m_CrossHairController = FindObjectOfType<CrossHairController>();
             m_Camera = m_RightAxisTransform.GetComponentInChildren<Camera>();
             m_AudioSource = GetComponent<AudioSource>();
 
@@ -158,18 +158,22 @@ namespace Contoller.Player
 
         private void Update()
         {
+            //Debug.Log("PlayerBehaviorState : " + m_PlayerState.PlayerBehaviorState);
+            //Debug.Log("PlayerWeaponState : " + m_PlayerState.PlayerWeaponState);
+            
             if (!m_PreviouslyGrounded && m_IsGround)
             {
                 StartCoroutine(m_JumpBob.DoBobCycle());
                 PlayLandingSound();
                 CustomGravityChange(false,0);
                 m_Jumping = false;
+                m_PlayerState.SetBehaviorJumping(false);
             }
             if (!m_IsGround && !m_Jumping && m_PreviouslyGrounded)
             {
                 CustomGravityChange(false,0);
             }
-            m_CrossHairController.CrossHairSetBool("IsJumping", m_Jumping);
+            //m_CrossHairController.CrossHairSetBool("IsJumping", m_Jumping);
             m_PreviouslyGrounded = m_IsGround;
         }
 
@@ -190,7 +194,7 @@ namespace Contoller.Player
             float maxDistansce = m_CapsuleCollider.height * 0.5f - m_CapsuleCollider.radius - 0.1f;
             float radius = m_CapsuleCollider.radius + m_InterporationDist + 0.1f;
 
-            if (Physics.SphereCast(transform.position, radius, -transform.up, out RaycastHit hitInfo, maxDistansce, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+            if (Physics.SphereCast(transform.position, radius, -transform.up, out RaycastHit hitInfo, maxDistansce, m_GroundLayer, QueryTriggerInteraction.Ignore))
                 m_IsGround = true;
             else m_IsGround = false;
 
@@ -257,6 +261,7 @@ namespace Contoller.Player
         private void TryJump()
         {
             m_Jump = true;
+            m_PlayerState.SetBehaviorJumping(true);
         }
 
         private void PlayLandingSound()
@@ -324,9 +329,11 @@ namespace Contoller.Player
             m_MovementSpeed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;
             m_Input = new Vector2(horizontal, vertical);
 
-            m_IsIdle = true;
-            if (m_IsWalking) m_IsIdle = m_Input == Vector2.zero;
-            m_CrossHairController.CrossHairSetBool("IsWalking", !m_IsIdle);
+            if (m_Input == Vector2.zero) m_PlayerState.SetBehaviorIdle();
+            else m_PlayerState.SetBehaviorWalking();
+            
+            //if (m_IsWalking) m_IsIdle = m_Input == Vector2.zero;
+            //m_CrossHairController.CrossHairSetBool("IsWalking", !m_IsIdle);
 
             if (m_Input.sqrMagnitude > 1) m_Input.Normalize();
 
@@ -341,7 +348,9 @@ namespace Contoller.Player
         {
             m_WasWalking = m_IsWalking;
             m_IsWalking = !isRunning;
-            m_CrossHairController.CrossHairSetBool("IsRunning", isRunning);
+            m_PlayerState.SetBehaviorRunning(isRunning);
+
+            //m_CrossHairController.CrossHairSetBool("IsRunning", isRunning);
         }
 
         private void TryRotateView(float mouseHorizontal, float mouseVertical)
@@ -360,7 +369,8 @@ namespace Contoller.Player
         private void TryCrouch(bool isCrouch)
         {
             m_IsCrouch = isCrouch;
-            m_CrossHairController.CrossHairSetBool("IsCrouching", isCrouch);
+            m_PlayerState.SetBehaviorCrouching(isCrouch);
+            //m_CrossHairController.CrossHairSetBool("IsCrouching", isCrouch);
             StopAllCoroutines();
             if (isCrouch)
                 StartCoroutine(CrouchPos(m_CrouchTime, m_RightAxisTransform, m_CrouchPos));

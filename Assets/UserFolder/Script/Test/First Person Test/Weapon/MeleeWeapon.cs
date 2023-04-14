@@ -124,10 +124,6 @@ namespace Test
             m_IsAttacking = false;
         }
 
-        //Vector3.Angle(mainCamera.forward, colls[i].transform.position - cachedTransform.position) 
-        //    <= settings.FOVAngleVector3.Angle(cachedTransform.forward, colls[i].transform.position - cachedTransform.position) 
-        //    <= settings.FOVAngle
-
         private void TestDamage()
         {
             if (Physics.SphereCast(m_MainCamera.position, m_SwingRadius, m_MainCamera.forward, out RaycastHit hit, m_MaxDistance, m_MeleeWeaponStat.m_AttackableLayer, QueryTriggerInteraction.Ignore))

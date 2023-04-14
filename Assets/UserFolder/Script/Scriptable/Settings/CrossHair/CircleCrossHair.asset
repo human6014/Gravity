@@ -21,6 +21,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b1dea41ba25d4fd459a5763d4d9ec567, type: 3}
   - {fileID: 21300000, guid: 09016fb39f7a32143becbcead1012542, type: 3}
   m_CrouchAccurancy: 0
-  m_IdleAccuracy: 0.025
-  m_WalkAccuracy: 0.05
-  m_JumpAccuracy: 0.1
+  m_IdleAccuracy: 0.01
+  m_WalkAccuracy: 0.025
+  m_JumpAccuracy: 0.05

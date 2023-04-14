@@ -5,6 +5,7 @@ using Entity.Object;
 using Contoller.Player;
 using Manager;
 using Scriptable;
+using Contoller.Player.Utility;
 
 [RequireComponent(typeof(Test.RangeWeapon))]
 public abstract class Fireable : MonoBehaviour
@@ -47,7 +48,7 @@ public abstract class Fireable : MonoBehaviour
     private ObjectPoolManager.PoolingObject m_CasingPoolingObject;
 
     private SurfaceManager m_SurfaceManager;
-    private FirstPersonController m_FirstPersonController;
+    private MouseLook m_MouseLook;
     private CrossHairController m_CrossHairController;
     private void Awake()
     {
@@ -59,12 +60,12 @@ public abstract class Fireable : MonoBehaviour
     }
 
     public void Setup(RangeWeaponStatScriptable m_RangeWeaponStat, ObjectPoolManager.PoolingObject[] m_BulletEffectPoolingObjects,
-                    SurfaceManager m_SurfaceManager, FirstPersonController m_FirstPersonController, CrossHairController m_CrossHairController)
+                    SurfaceManager m_SurfaceManager, MouseLook m_MouseLook, CrossHairController m_CrossHairController)
     {
         this.m_RangeWeaponStat = m_RangeWeaponStat;
         this.m_BulletEffectPoolingObjects = m_BulletEffectPoolingObjects;
         this.m_SurfaceManager = m_SurfaceManager;
-        this.m_FirstPersonController = m_FirstPersonController;
+        this.m_MouseLook = m_MouseLook;
         this.m_CrossHairController = m_CrossHairController;
 
         if (!m_HasBullet) return;
@@ -146,7 +147,7 @@ public abstract class Fireable : MonoBehaviour
 
         upRandom += m_RangeWeaponStat.m_UpAxisRecoil;
         rightRandom += m_RangeWeaponStat.m_RightAxisRecoil;
-        m_FirstPersonController.MouseLook.AddRecoil(upRandom * 0.2f, rightRandom * 0.2f);
+        m_MouseLook.AddRecoil(upRandom * 0.2f, rightRandom * 0.2f);
     }
 
     private IEnumerator EndFire()
@@ -164,10 +165,18 @@ public abstract class Fireable : MonoBehaviour
 
     protected Vector3 GetCurrentAccuracy()
     {
-        float accuracy = m_CrossHairController.GetCurrentAccurancy();
-        float xAccuracy = Random.Range(-accuracy - m_RangeWeaponStat.m_Accuracy.x, accuracy + m_RangeWeaponStat.m_Accuracy.x);
-        float zAccuracy = Random.Range(-accuracy - m_RangeWeaponStat.m_Accuracy.y, accuracy + m_RangeWeaponStat.m_Accuracy.y);
+        float posAccuracy = m_CrossHairController.GetCurrentAccurancy();
 
-        return new Vector3(xAccuracy, 0, zAccuracy);
+        //Debug.Log(posAccuracy);
+        //Debug.Log(m_RangeWeaponStat.m_Accuracy);
+
+        float minValue = -posAccuracy - m_RangeWeaponStat.m_Accuracy;
+        float maxValue = posAccuracy + m_RangeWeaponStat.m_Accuracy;
+
+        float xAccuracy = Random.Range(minValue, maxValue);
+        float yAccuracy = Random.Range(minValue, maxValue);
+        float zAccuracy = Random.Range(minValue, maxValue);
+
+        return new Vector3(xAccuracy, yAccuracy, zAccuracy);
     }
 }
