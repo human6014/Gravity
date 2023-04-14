@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Contoller.Player;
 using Manager;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Test
 {
@@ -30,17 +32,14 @@ namespace Test
         [SerializeField] protected Animator m_ArmAnimator; //팔 애니메이터
         [SerializeField] protected AnimatorOverrideController m_ArmOverrideController = null;   // 덮어씌울 팔 애니메이션들
 
-        private WaitForSeconds m_WaitChangeEquipmentTime;
+        private WaitForSeconds m_WaitEquipingTime;
+        private WaitForSeconds m_WaitUnequipingTime;
+        protected PlayerState m_PlayerState;
         protected bool m_IsEquip;
         /// <summary>
         /// 사용자의 입력을 받는 스크립트
         /// </summary>
         public PlayerInputController m_PlayerInputController { get; private set; }
-
-        /// <summary>
-        /// 플레이어 몸의 행동을 조작하는 스크립트
-        /// </summary>
-        protected FirstPersonController m_FirstPersonController { get; private set; }
 
         /// <summary>
         /// 총기별 크로스 헤어 설정을 위한 UI관리 스크립트
@@ -69,10 +68,11 @@ namespace Test
 
         public int GetEquipingType() => (int)m_EquipingWeaponType;
         public int GetItemIndex() => ItemIndex;
-        public virtual bool IsUnequiping() => false;
-        public virtual bool IsEquiping() => false;
-        public virtual bool IsFiring() => false;
-        public virtual bool IsReloading() => false;
+
+        public bool IsEquiping { get; private set; }
+        public bool IsUnequiping { get; private set; }
+        public virtual bool IsFiring { get; private set; }
+        public virtual bool IsReloading { get; private set; }
 
         protected virtual void Awake()
         {
@@ -80,45 +80,58 @@ namespace Test
 
             //((Scriptable.RangeWeaponStatScriptable)m_WeaponStatScriptable).m_Damage = 5;
             //Debug.Log(((Scriptable.RangeWeaponStatScriptable)m_WeaponStatScriptable).m_Damage);
+            m_CrossHairController = FindObjectOfType<CrossHairController>();
 
-            m_WaitChangeEquipmentTime = new WaitForSeconds(0.5f);
+            m_WaitEquipingTime = new WaitForSeconds(0.35f);
+            m_WaitUnequipingTime = new WaitForSeconds(0.55f);
 
             Transform rootTransform = transform.root;
             m_PlayerInputController = rootTransform.GetComponent<PlayerInputController>();
-            m_FirstPersonController = rootTransform.GetComponent<FirstPersonController>();
+            m_PlayerState = rootTransform.GetComponent<FirstPersonController>().m_PlayerState;
  
             m_AudioSource = transform.parent.GetComponent<AudioSource>();
             m_WeaponManager = transform.parent.GetComponent<WeaponManager>();
 
             m_SurfaceManager = FindObjectOfType<SurfaceManager>();
-            m_CrossHairController = FindObjectOfType<CrossHairController>();
         }
 
         public virtual void Init()
         {
             m_ArmAnimator.runtimeAnimatorController = m_ArmOverrideController;
-            
+
             gameObject.SetActive(true);
-
-            m_ArmAnimator.SetTrigger("Equip");
-            m_EquipmentAnimator.SetTrigger("Equip");
-
-            m_IsEquip = true;
+            StartCoroutine(WaitEquip());
         }
 
         public virtual void Dispose()
         {
-            m_IsEquip = false; 
+            StartCoroutine(WaitUnequip());
+        }
 
+        private IEnumerator WaitEquip()
+        {
+            IsEquiping = true;
+            
+            m_ArmAnimator.SetTrigger("Equip");
+            m_EquipmentAnimator.SetTrigger("Equip");
+
+            yield return m_WaitEquipingTime;
+            m_PlayerState.SetWeaponChanging(false);
+            IsEquiping = false;
+        }
+
+        private IEnumerator WaitUnequip()
+        {
+            IsUnequiping = true;
+            m_PlayerState.SetWeaponChanging(true);
             m_ArmAnimator.SetTrigger("Unequip");
             m_EquipmentAnimator.SetTrigger("Unequip");
 
-            gameObject.SetActive(false);
-        }
+            yield return m_WaitUnequipingTime;
 
-        private IEnumerator WaitChangeEquipment()
-        {
-            yield return new WaitForSeconds(0.5f);
+            gameObject.SetActive(false);
+            IsUnequiping = false;
+            m_WeaponManager.ChangeWeapon();
         }
     }
 }

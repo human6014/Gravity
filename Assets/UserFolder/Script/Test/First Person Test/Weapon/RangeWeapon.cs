@@ -43,6 +43,7 @@ namespace Test
         private Vector3 m_OriginalPivotPosition;            //위치 조정용 부모 오브젝트 원래 위치
         private Quaternion m_OriginalPivotRotation;         //위치 조정용 부모 오브젝트 원래 각도
         private Quaternion m_AimingPivotRotation;           //위치 조정용 옮길 각도(Quaternion)
+        private Quaternion m_RunningPivotRotation;          //위치 조정용 옮길 각도
 
         private bool m_IsFiring;
         private bool m_IsRunning;
@@ -67,16 +68,17 @@ namespace Test
         private int m_FireModeIndex = 1;
 
         private float m_CurrentFireTime;
-
+        private float m_CurrentPosTime;
         [SerializeField] private bool m_IsEmpty; //Reload Test;
 
-        public override bool IsReloading() => m_Reloadable.m_IsReloading;
+        public override bool IsReloading { get => m_Reloadable.m_IsReloading; }
         protected override void Awake()
         {
             base.Awake();
             m_OriginalPivotPosition = m_Pivot.localPosition;
             m_OriginalPivotRotation = m_Pivot.localRotation;
             m_AimingPivotRotation = Quaternion.Euler(m_AimingPivotDirection);
+            m_RunningPivotRotation = Quaternion.Euler(runningPivotRotation);
             m_BurstFireTime = new WaitForSeconds(m_RangeWeaponStat.m_BurstAttackTime);
 
             m_Fireable = GetComponent<Fireable>();
@@ -87,7 +89,8 @@ namespace Test
 
         private void Start()
         {
-            m_Fireable.Setup(m_RangeWeaponStat, m_WeaponManager.m_EffectPoolingObjectArray, m_SurfaceManager, m_FirstPersonController, m_CrossHairController);
+            Contoller.Player.FirstPersonController firstPersonController = FindObjectOfType<Contoller.Player.FirstPersonController>();
+            m_Fireable.Setup(m_RangeWeaponStat, m_WeaponManager.m_EffectPoolingObjectArray, m_SurfaceManager, firstPersonController.MouseLook, m_CrossHairController);
             m_Reloadable.Setup(m_RangeWeaponSound, m_ArmAnimator);
         }
 
@@ -123,19 +126,19 @@ namespace Test
             m_CrossHairController.SetCrossHair((int)m_RangeWeaponStat.m_DefaultCrossHair);
 
             AssignKeyAction();
-        }        
-        
+        }
+
+        private bool m_IsChangeState;
         private void Update()
         {
             m_CurrentFireTime += Time.deltaTime;
-            //isRunning = !firstPersonController.m_IsWalking;
-            if (!m_FirstPersonController.m_IsWalking)
+            if (m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
             {
                 if (!m_IsRunning)
                 {
                     m_IsRunning = true;
                     if (m_RunningCoroutine != null) StopCoroutine(m_RunningCoroutine);
-                    m_RunningCoroutine = StartCoroutine(RunningPos());
+                    m_RunningCoroutine = StartCoroutine(PosChange(runningPivotPosition,m_RunningPivotRotation));
                 }
             }
             else if (m_IsRunning)
@@ -144,20 +147,41 @@ namespace Test
                 if (m_RunningCoroutine != null) StopCoroutine(m_RunningCoroutine);
             }
         }
+        
+        private IEnumerator PosChange(Vector3 EndPosition, Quaternion EndRotation)
+        {
+            float currentTime = 0;
+            float elapsedTime;
+            Vector3 startLocalPosition = m_Pivot.localPosition;
+            Quaternion startLocalRotation = m_Pivot.localRotation;
+            while (currentTime < m_RangeWeaponStat.m_RunningPosTime)
+            {
+                currentTime += Time.deltaTime;
+
+                elapsedTime = currentTime / m_RangeWeaponStat.m_RunningPosTime;
+                m_Pivot.localPosition = Vector3.Lerp(startLocalPosition, EndPosition, elapsedTime);
+                m_Pivot.localRotation = Quaternion.Lerp(startLocalRotation, EndRotation, elapsedTime);
+
+                yield return elapsedTime;
+            }
+        }
 
         private void TryAiming(bool isAiming)
         {
-            if (m_IsRunning) return;
+            if (m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running) return;
             m_IsAiming = isAiming;
 
-            m_CrossHairController.CrossHairSetBool("IsAiming", isAiming);
+            if (isAiming)
+            {
+                m_PlayerState.SetWeaponAiming();
+                AimingPosRot(m_AimingPivotPosition, m_AimingPivotRotation);
+            }
+            else
+            {
+                m_PlayerState.SetWeaponIdle();
+                AimingPosRot(m_OriginalPivotPosition, m_OriginalPivotRotation);
+            }
 
-            //int currentCrossHair = isAiming ? 0 : (int)m_RangeWeaponStat.m_DefaultCrossHair;
-            //m_CrossHairController.SetCrossHair(currentCrossHair);
-            if (isAiming) AimingPosRot(m_AimingPivotPosition, m_AimingPivotRotation);
-            else AimingPosRot(m_OriginalPivotPosition, m_OriginalPivotRotation);
-
-            m_IsRunning = false;
             SetCurrentFireIndex();
         }
 
@@ -192,11 +216,6 @@ namespace Test
             return true;
         }
 
-        private void ChangeCrossHair()
-        {
-            //Do
-        }
-
         private void SetCurrentFireIndex()
         {
             float fireIndex = m_IsAiming ? 1 : 0;
@@ -211,42 +230,29 @@ namespace Test
 
         private void TryReload()
         {
+            if (base.IsEquiping || base.IsUnequiping) return;
             if (m_Reloadable.m_IsReloading || m_IsFiring) return;
 
             m_Reloadable.DoReload(m_IsEmpty); //변경해야함
         }
 
-        private IEnumerator RunningPos()
-        {
-            float currentTime = 0;
-            float elapsedTime;
-            Vector3 startLocalPosition = m_Pivot.localPosition;
-            Quaternion startLocalRotation = m_Pivot.localRotation;
-            while (currentTime < m_RangeWeaponStat.m_RunningPosTime)
-            {
-                currentTime += Time.deltaTime;
 
-                elapsedTime = currentTime / m_RangeWeaponStat.m_RunningPosTime;
-                m_Pivot.localPosition = Vector3.Lerp(startLocalPosition, runningPivotPosition, elapsedTime);
-                m_Pivot.localRotation = Quaternion.Lerp(startLocalRotation, Quaternion.Euler(runningPivotRotation),elapsedTime);
-
-                yield return elapsedTime;
-            }
-        }
 
         #region Fire
-        private bool CanFire() => m_CurrentFireTime >= m_RangeWeaponStat.m_AttackTime && !m_IsRunning && 
-                m_Reloadable.CanFire() && !m_IsFiring;
+        private bool CanFire() => m_CurrentFireTime >= m_RangeWeaponStat.m_AttackTime && 
+            m_PlayerState.PlayerBehaviorState != PlayerBehaviorState.Running && m_Reloadable.CanFire() && !m_IsFiring;
         
 
         private void TryAutoFire()
         {
+            if (base.IsEquiping || base.IsUnequiping) return;
             if (m_CurrentFireMode != FireMode.Auto) return;
             if (CanFire()) DoFire();
         }
 
         private void TrySemiFire()
         {
+            if (base.IsEquiping || base.IsUnequiping) return;
             if (m_CurrentFireMode == FireMode.Auto) return;
             if (CanFire())
             {
@@ -268,12 +274,13 @@ namespace Test
         {
             m_IsFiring = true;
             m_CurrentFireTime = 0;
-
+            Debug.Log("Fire");
             m_Reloadable.StopReload();
-            if (m_FirstPersonController.m_IsCrouch) m_CrossHairController.CrossHairSetTrigger("CrouchFire");
-            else if (m_FirstPersonController.m_IsIdle) m_CrossHairController.CrossHairSetTrigger("IdleFire");
-            else if(m_FirstPersonController.m_IsWalking) m_CrossHairController.CrossHairSetTrigger("WalkFire");
-            
+            m_PlayerState.SetWeaponFiring();
+            //if (m_FirstPersonController.m_IsCrouch) m_CrossHairController.CrossHairSetTrigger("CrouchFire");
+            //else if (m_FirstPersonController.m_IsIdle) m_CrossHairController.CrossHairSetTrigger("IdleFire");
+            //else if(m_FirstPersonController.m_IsWalking) m_CrossHairController.CrossHairSetTrigger("WalkFire");
+
 
             AudioClip audioClip = m_RangeWeaponSound.fireSound[Random.Range(0, m_RangeWeaponSound.fireSound.Length)];
             m_AudioSource.PlayOneShot(audioClip);

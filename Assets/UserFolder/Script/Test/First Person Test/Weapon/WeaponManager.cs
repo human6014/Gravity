@@ -32,7 +32,7 @@ namespace Manager
         //private readonly Dictionary<int, Weapon>[] m_WeaponDictionary = new Dictionary<int, Weapon>();
         private readonly Dictionary<Tuple<int, int>, Weapon> m_WeaponDictionary = new();
         [SerializeField] private Weapon[][] m_Weapon = new Weapon[5][];
-
+        private const int m_EquipingTypeLength = 5;
         private Weapon m_CurrentWeapon;
         private Inventory m_Inventory;
         private int m_CurrentEquipIndex = -1;
@@ -82,14 +82,21 @@ namespace Manager
             if (m_CurrentWeapon != null)
             {
                 if (m_CurrentEquipIndex == index) return;
-                if (m_CurrentWeapon.IsReloading()) return;
+                if (m_CurrentWeapon.IsReloading) return;
                 m_CurrentWeapon.Dispose();
             }
-
-            //¿ÃªÛ«‘
-            m_WeaponDictionary.TryGetValue(new Tuple<int,int>(index,m_Inventory.HavingWeaponIndex[index]), out m_CurrentWeapon);
-            m_CurrentWeapon.Init();
+            else
+            {
+                m_WeaponDictionary.TryGetValue(new Tuple<int, int>(index, m_Inventory.HavingWeaponIndex[index]), out m_CurrentWeapon);
+                m_CurrentWeapon.Init();
+            }
             m_CurrentEquipIndex = index;
+        }
+
+        public void ChangeWeapon()
+        {
+            m_WeaponDictionary.TryGetValue(new Tuple<int, int>(m_CurrentEquipIndex, m_Inventory.HavingWeaponIndex[m_CurrentEquipIndex]), out m_CurrentWeapon);
+            m_CurrentWeapon.Init();
         }
     }
 }
