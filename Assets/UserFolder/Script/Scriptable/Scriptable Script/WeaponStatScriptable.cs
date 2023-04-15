@@ -12,7 +12,6 @@ namespace Scriptable
         Circle = 3,         //¿øÇü¼±
     }
 
-    [CreateAssetMenu(fileName = "WeaponStatSetting", menuName = "Scriptable Object/WeaponStatSettings", order = int.MaxValue - 11)]
     public class WeaponStatScriptable : ScriptableObject
     {
         [Header("Parent")]

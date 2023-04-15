@@ -23,7 +23,7 @@ public class PlayerState
 {
     public PlayerBehaviorState PlayerBehaviorState { get; private set; }
     public PlayerWeaponState PlayerWeaponState { get; private set; }
-    private PlayerWeaponState m_BeforePlayerWeaponState = PlayerWeaponState.Idle;
+    public PlayerWeaponState BeforePlayerWeaponState { get; private set; } = PlayerWeaponState.Idle;
     public PlayerState()
     {
         PlayerBehaviorState = PlayerBehaviorState.Idle;
@@ -88,14 +88,15 @@ public class PlayerState
     }
     public void SetWeaponFiring()
     {
-        if (PlayerWeaponState == PlayerWeaponState.Changing) return;
+        if (PlayerWeaponState == PlayerWeaponState.Changing ||
+            PlayerWeaponState == PlayerWeaponState.Aiming) return;
 
-        m_BeforePlayerWeaponState = PlayerWeaponState;
+        BeforePlayerWeaponState = PlayerWeaponState;
         PlayerWeaponState = PlayerWeaponState.Firing;
     }
     public void SetBack()
     {
-        PlayerWeaponState = m_BeforePlayerWeaponState;
+        PlayerWeaponState = BeforePlayerWeaponState;
     }
 
 

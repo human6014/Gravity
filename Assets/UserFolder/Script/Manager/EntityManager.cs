@@ -23,11 +23,6 @@ namespace Manager
         [SerializeField] private SpecialMonster2 specialMonster2;
         [SerializeField] private SpecialMonster3 specialMonster3;
 
-        [Space(15)]
-        [SerializeField] private DefaultPoolingScript[] m_EffectObject;
-        [SerializeField] private DefaultPoolingScript[] m_CasingObject;
-        [SerializeField] private DefaultPoolingScript[] m_MagazineObject;
-
         #region Property
         public GameObject GetSpecialMonster1 => specialMonster1;
         public SpecialMonster2 GetSpecialMonster2 => specialMonster2;
@@ -37,15 +32,9 @@ namespace Manager
         #region Getter
         public NormalMonster GetNormalMonster(int i) => normalZombies[i];
         public FlyingMonster GetFlyingMonster(int i) => flyingMonsters[i];
-        public DefaultPoolingScript GetEffectObject(int i) => m_EffectObject[i];
-        public DefaultPoolingScript GetCasingObject(int i) => m_CasingObject[i];
-        public DefaultPoolingScript GetMagazineObject(int i) => m_MagazineObject[i];
         
         public int GetFlyingMonsterArrayLength() => flyingMonsters.Length;
         public int GetNormalMonsterArrayLength() => normalZombies.Length;
-        public int GetEffectArrayLength() => m_EffectObject.Length;
-        public int GetCasingArrayLength() => m_CasingObject.Length;
-        public int GetMagazineArrayLength() => m_MagazineObject.Length;
         #endregion
         
     }

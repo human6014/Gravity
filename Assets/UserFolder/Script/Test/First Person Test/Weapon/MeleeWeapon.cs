@@ -13,13 +13,14 @@ namespace Test
     {
         [Space(15)]
         [Header("Child")]
-        [SerializeField] private Scriptable.MeleeWeaponSoundScripatble m_MeleeWeaponSound;
-        [SerializeField] private Scriptable.MeleeWeaponStatScriptable m_MeleeWeaponStat;
+        private Scriptable.MeleeWeaponSoundScripatble m_MeleeWeaponSound;
+        private Scriptable.MeleeWeaponStatScriptable m_MeleeWeaponStat;
  
         private bool isRunning;
         private float currentFireRatio;
 
         private ObjectPoolManager.PoolingObject[] m_EffectPoolingObject;
+        private SurfaceManager m_SurfaceManager;
 
         [SerializeField] private Transform m_MainCamera;
         [SerializeField] private float m_SwingRadius;
@@ -30,7 +31,10 @@ namespace Test
         protected override void Awake()
         {
             base.Awake();
-            AssignKeyAction(); //AwakeÀÚ¸® ¾Æ´Ô
+            m_MeleeWeaponSound = (Scriptable.MeleeWeaponSoundScripatble)base.m_WeaponSoundScriptable;
+            m_MeleeWeaponStat = (Scriptable.MeleeWeaponStatScriptable)base.m_WeaponStatScriptable;
+            m_SurfaceManager = FindObjectOfType<SurfaceManager>();
+
             AssignPoolingObject();
         }
 
@@ -39,19 +43,10 @@ namespace Test
             m_EffectPoolingObject = m_WeaponManager.m_EffectPoolingObjectArray;
         }
 
-        private void AssignKeyAction()
+        protected override void AssignKeyAction()
         {
             m_PlayerInputController.SemiFire += TryLightAttack;
             m_PlayerInputController.HeavyFire += TryHeavyAttack;
-        }
-
-        public override void Init()
-        {
-            base.Init();
-            m_AudioSource.PlayOneShot(m_MeleeWeaponSound.equipSound[Random.Range(0, m_MeleeWeaponSound.equipSound.Length)]);
-            m_CrossHairController.SetCrossHair((int)m_MeleeWeaponStat.m_DefaultCrossHair);
-            AssignKeyAction();
-            m_IsEquip = true;
         }
 
         private void Update()
@@ -98,7 +93,6 @@ namespace Test
         private int m_SwingIndex;
         private void Attack(int swingIndex)
         {
-            //m_IsAttacking = true;
             m_SwingIndex = swingIndex;
             m_ArmAnimator.SetFloat("Swing Index", swingIndex);
             m_EquipmentAnimator.SetFloat("Swing Index", swingIndex);
@@ -132,9 +126,14 @@ namespace Test
                 //if (hitInfo.rigidbody != null)
                 //    hitInfo.rigidbody.AddForceAtPosition(itemUseRays.direction * swing.HitImpact, hitInfo.point, ForceMode.Impulse);
 
+                if (hit.transform.TryGetComponent(out IDamageable damageable))
+                {
+                    damageable.Hit(m_MeleeWeaponStat.m_Damage);
+                    return;
+                }
+
                 int hitEffectNumber;
                 int hitLayer = hit.transform.gameObject.layer;
-
                 if (hitLayer == 14) hitEffectNumber = 0;
                 else if (hitLayer == 17) hitEffectNumber = 1;
                 else
@@ -142,6 +141,7 @@ namespace Test
                     if (!hit.transform.TryGetComponent(out MeshRenderer meshRenderer)) return;
                     if ((hitEffectNumber = m_SurfaceManager.IsInMaterial(meshRenderer.sharedMaterial)) == -1) return;
                 }
+                hitEffectNumber += 3;
                 EffectSet(out AudioClip audioClip, out DefaultPoolingScript effectObj, hitEffectNumber);
 
                 m_AudioSource.PlayOneShot(audioClip);
@@ -156,7 +156,7 @@ namespace Test
             AudioClip[] audioClips;
 
             effectObj = (DefaultPoolingScript)m_EffectPoolingObject[hitEffectNumber].GetObject(false);
-            audioClips = m_SurfaceManager.GetSlashHitEffectSounds(hitEffectNumber);
+            audioClips = m_SurfaceManager.GetSlashHitEffectSounds(hitEffectNumber - 3);
             audioClip = audioClips[Random.Range(0, audioClips.Length)];
         }
 
@@ -167,14 +167,7 @@ namespace Test
             Gizmos.DrawWireSphere(m_MainCamera.position + m_MainCamera.forward * 0.3f + m_MainCamera.forward * m_MaxDistance, m_SwingRadius);
         }
 
-        public override void Dispose()
-        {
-            m_AudioSource.PlayOneShot(m_MeleeWeaponSound.unequipSound[Random.Range(0, m_MeleeWeaponSound.unequipSound.Length)]);
-            DischargeKeyAction();
-            base.Dispose();
-        }
-
-        private void DischargeKeyAction()
+        protected override void DischargeKeyAction()
         {
             m_PlayerInputController.SemiFire -= TryLightAttack;
             m_PlayerInputController.HeavyFire -= TryHeavyAttack;

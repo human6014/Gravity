@@ -11,12 +11,6 @@ namespace Test
     {
         [Space(15)]
         [Header("Child")]
-        [Header("Scripatble")]
-        //각종 소리를 담은 스크립터블
-        [SerializeField] private RangeWeaponSoundScriptable m_RangeWeaponSound;  
-        //Stat 관련 스크립터블
-        [SerializeField] private RangeWeaponStatScriptable m_RangeWeaponStat;
-
         [Header("Aiming adjustment factor")]
         //조준시 에임 위치
         [SerializeField] private Transform m_Pivot;                 //위치 조정용 부모 오브젝트
@@ -47,7 +41,6 @@ namespace Test
 
         private bool m_IsFiring;
         private bool m_IsRunning;
-        private bool m_IsAiming;
 
         private WaitForSeconds m_BurstFireTime;
         private Coroutine m_RunningCoroutine;
@@ -71,6 +64,8 @@ namespace Test
         private float m_CurrentPosTime;
         [SerializeField] private bool m_IsEmpty; //Reload Test;
 
+        private RangeWeaponStatScriptable m_RangeWeaponStat;
+        private RangeWeaponSoundScriptable m_RangeWeaponSound;
         public override bool IsReloading { get => m_Reloadable.m_IsReloading; }
         protected override void Awake()
         {
@@ -79,18 +74,20 @@ namespace Test
             m_OriginalPivotRotation = m_Pivot.localRotation;
             m_AimingPivotRotation = Quaternion.Euler(m_AimingPivotDirection);
             m_RunningPivotRotation = Quaternion.Euler(runningPivotRotation);
+            
+            m_RangeWeaponStat = (RangeWeaponStatScriptable)base.m_WeaponStatScriptable;
+            m_RangeWeaponSound = (RangeWeaponSoundScriptable)base.m_WeaponSoundScriptable;
             m_BurstFireTime = new WaitForSeconds(m_RangeWeaponStat.m_BurstAttackTime);
 
             m_Fireable = GetComponent<Fireable>();
             m_Reloadable = GetComponent<Reloadable>();
-            m_IsEmpty = true;
+
             AssignFireMode();
         }
 
         private void Start()
         {
-            Contoller.Player.FirstPersonController firstPersonController = FindObjectOfType<Contoller.Player.FirstPersonController>();
-            m_Fireable.Setup(m_RangeWeaponStat, m_WeaponManager.m_EffectPoolingObjectArray, m_SurfaceManager, firstPersonController.MouseLook, m_CrossHairController);
+            m_Fireable.Setup(m_RangeWeaponStat, m_WeaponManager.m_EffectPoolingObjectArray, m_PlayerState);
             m_Reloadable.Setup(m_RangeWeaponSound, m_ArmAnimator);
         }
 
@@ -108,8 +105,9 @@ namespace Test
             if (!m_FireMode.HasFlag((FireMode)m_FireModeIndex)) ChangeFlag();
         }
 
-        private void AssignKeyAction()
+        protected override void AssignKeyAction()
         {
+            //m_PlayerInputController.MouseMovement += TryMouseSway;
             m_PlayerInputController.Reload += TryReload;
             m_PlayerInputController.ChangeFireMode += TryChangeFireMode;
             m_PlayerInputController.AutoFire += TryAutoFire;
@@ -118,17 +116,6 @@ namespace Test
         }
         #endregion
 
-        //Arm 애니메이터 덮어씌우기
-        public override void Init()
-        {
-            base.Init();
-
-            m_CrossHairController.SetCrossHair((int)m_RangeWeaponStat.m_DefaultCrossHair);
-
-            AssignKeyAction();
-        }
-
-        private bool m_IsChangeState;
         private void Update()
         {
             m_CurrentFireTime += Time.deltaTime;
@@ -141,7 +128,7 @@ namespace Test
                     m_RunningCoroutine = StartCoroutine(PosChange(runningPivotPosition,m_RunningPivotRotation));
                 }
             }
-            else if (m_IsRunning)
+            else
             {
                 m_IsRunning = false;
                 if (m_RunningCoroutine != null) StopCoroutine(m_RunningCoroutine);
@@ -166,10 +153,10 @@ namespace Test
             }
         }
 
+
         private void TryAiming(bool isAiming)
         {
             if (m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running) return;
-            m_IsAiming = isAiming;
 
             if (isAiming)
             {
@@ -182,7 +169,7 @@ namespace Test
                 AimingPosRot(m_OriginalPivotPosition, m_OriginalPivotRotation);
             }
 
-            SetCurrentFireIndex();
+            SetCurrentFireIndex(isAiming);
         }
 
         private void AimingPosRot(Vector3 EndPosition, Quaternion EndRotation)
@@ -216,10 +203,10 @@ namespace Test
             return true;
         }
 
-        private void SetCurrentFireIndex()
+        private void SetCurrentFireIndex(bool isAiming)
         {
-            float fireIndex = m_IsAiming ? 1 : 0;
-            int idleIndex = m_IsAiming ? 0 : 1;
+            float fireIndex = isAiming ? 1 : 0;
+            int idleIndex = isAiming ? 0 : 1;
 
             m_EquipmentAnimator.SetFloat("Fire Index", fireIndex);
             m_ArmAnimator.SetFloat("Fire Index", fireIndex);
@@ -235,7 +222,6 @@ namespace Test
 
             m_Reloadable.DoReload(m_IsEmpty); //변경해야함
         }
-
 
 
         #region Fire
@@ -274,13 +260,9 @@ namespace Test
         {
             m_IsFiring = true;
             m_CurrentFireTime = 0;
-            Debug.Log("Fire");
+
             m_Reloadable.StopReload();
             m_PlayerState.SetWeaponFiring();
-            //if (m_FirstPersonController.m_IsCrouch) m_CrossHairController.CrossHairSetTrigger("CrouchFire");
-            //else if (m_FirstPersonController.m_IsIdle) m_CrossHairController.CrossHairSetTrigger("IdleFire");
-            //else if(m_FirstPersonController.m_IsWalking) m_CrossHairController.CrossHairSetTrigger("WalkFire");
-
 
             AudioClip audioClip = m_RangeWeaponSound.fireSound[Random.Range(0, m_RangeWeaponSound.fireSound.Length)];
             m_AudioSource.PlayOneShot(audioClip);
@@ -310,13 +292,7 @@ namespace Test
 
         #endregion
 
-        public override void Dispose()
-        {
-            DischargeKeyAction();
-            base.Dispose();
-        }
-
-        private void DischargeKeyAction()
+        protected override void DischargeKeyAction()
         {
             m_PlayerInputController.Reload -= TryReload;
             m_PlayerInputController.ChangeFireMode -= TryChangeFireMode;

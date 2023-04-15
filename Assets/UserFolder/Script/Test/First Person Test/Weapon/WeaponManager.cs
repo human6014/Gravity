@@ -82,6 +82,8 @@ namespace Manager
             if (m_CurrentWeapon != null)
             {
                 if (m_CurrentEquipIndex == index) return;
+                if (m_CurrentWeapon.IsEquiping) return;
+                if (m_CurrentWeapon.IsUnequiping) return;
                 if (m_CurrentWeapon.IsReloading) return;
                 m_CurrentWeapon.Dispose();
             }

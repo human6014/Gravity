@@ -36,17 +36,17 @@ public abstract class Fireable : MonoBehaviour
     [SerializeField] private float m_LightOffTime = 0.3f;
     [SerializeField] private float m_InstanceCasingTime = 1f;
 
-    private WaitForSeconds m_LightOffSecond;
-    private WaitForSeconds m_InstanceBulletSecond;
-
     protected Transform m_MuzzlePos;             //ÃÑ±¸ À§Ä¡
     protected Transform m_MainCamera;
-
     protected RangeWeaponStatScriptable m_RangeWeaponStat;
+
+    private WaitForSeconds m_LightOffSecond;
+    private WaitForSeconds m_InstanceBulletSecond;
 
     private ObjectPoolManager.PoolingObject[] m_BulletEffectPoolingObjects; //0 : Concrete, 1 : Metal, 2 : Wood
     private ObjectPoolManager.PoolingObject m_CasingPoolingObject;
 
+    private PlayerState m_PlayerState;
     private SurfaceManager m_SurfaceManager;
     private MouseLook m_MouseLook;
     private CrossHairController m_CrossHairController;
@@ -59,14 +59,14 @@ public abstract class Fireable : MonoBehaviour
         m_InstanceBulletSecond = new WaitForSeconds(m_InstanceCasingTime);
     }
 
-    public void Setup(RangeWeaponStatScriptable m_RangeWeaponStat, ObjectPoolManager.PoolingObject[] m_BulletEffectPoolingObjects,
-                    SurfaceManager m_SurfaceManager, MouseLook m_MouseLook, CrossHairController m_CrossHairController)
+    public void Setup(RangeWeaponStatScriptable m_RangeWeaponStat, ObjectPoolManager.PoolingObject[] m_BulletEffectPoolingObjects, PlayerState m_PlayerState)
     {
         this.m_RangeWeaponStat = m_RangeWeaponStat;
         this.m_BulletEffectPoolingObjects = m_BulletEffectPoolingObjects;
-        this.m_SurfaceManager = m_SurfaceManager;
-        this.m_MouseLook = m_MouseLook;
-        this.m_CrossHairController = m_CrossHairController;
+        this.m_PlayerState = m_PlayerState;
+        m_SurfaceManager = FindObjectOfType<SurfaceManager>();
+        m_MouseLook = FindObjectOfType<FirstPersonController>().MouseLook;
+        m_CrossHairController = FindObjectOfType<CrossHairController>();
 
         if (!m_HasBullet) return;
         m_CasingPoolingObject = ObjectPoolManager.Register(m_CasingObject, m_ActiveObjectPool);
@@ -104,14 +104,15 @@ public abstract class Fireable : MonoBehaviour
 
     protected void ProcessingRay(RaycastHit hit,int i)
     {
-        int fireEffectNumber;
-        int hitLayer = hit.transform.gameObject.layer;
         if (hit.transform.TryGetComponent(out IDamageable damageable))
         {
             damageable.Hit(m_RangeWeaponStat.m_Damage);
             return;
         }
-        else if (hitLayer == 14) fireEffectNumber = 0;
+
+        int fireEffectNumber;
+        int hitLayer = hit.transform.gameObject.layer;
+        if (hitLayer == 14) fireEffectNumber = 0;
         else if (hitLayer == 17) fireEffectNumber = 1;
         else
         {
@@ -124,11 +125,6 @@ public abstract class Fireable : MonoBehaviour
 
         effectObj.Init(hit.point, Quaternion.LookRotation(hit.normal), m_BulletEffectPoolingObjects[fireEffectNumber]);
         effectObj.gameObject.SetActive(true);
-    }
-
-    private void DoDamage()
-    {
-
     }
 
     private void EffectSet(out AudioClip audioClip, out DefaultPoolingScript effectObj, int fireEffectNumber)
@@ -165,13 +161,12 @@ public abstract class Fireable : MonoBehaviour
 
     protected Vector3 GetCurrentAccuracy()
     {
-        float posAccuracy = m_CrossHairController.GetCurrentAccurancy();
+        float playerPosAccuracy = m_CrossHairController.GetCurrentAccurancy();
+        float weaponPosAccuracy = m_PlayerState.BeforePlayerWeaponState == PlayerWeaponState.Aiming ? 
+            m_RangeWeaponStat.m_AimingAccuracy : m_RangeWeaponStat.m_IdleAccuracy;
 
-        //Debug.Log(posAccuracy);
-        //Debug.Log(m_RangeWeaponStat.m_Accuracy);
-
-        float minValue = -posAccuracy - m_RangeWeaponStat.m_Accuracy;
-        float maxValue = posAccuracy + m_RangeWeaponStat.m_Accuracy;
+        float minValue = Mathf.Min(-playerPosAccuracy - weaponPosAccuracy, 0);
+        float maxValue = Mathf.Max( playerPosAccuracy + weaponPosAccuracy, 0);
 
         float xAccuracy = Random.Range(minValue, maxValue);
         float yAccuracy = Random.Range(minValue, maxValue);

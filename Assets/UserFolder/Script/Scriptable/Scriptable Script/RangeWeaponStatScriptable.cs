@@ -19,7 +19,7 @@ namespace Scriptable
         [Tooltip("최대 사거리")]
         public float m_MaxRange = 100;
 
-        [Header("Attack Recoil Info")]
+        [Header("Attack Recoil")]
         [Tooltip("상하 기본 반동값")]
         public float m_UpAxisRecoil = 1.7f;
 
@@ -32,8 +32,12 @@ namespace Scriptable
         [Tooltip("좌우 랜덤 반동값")]
         public Vector2 m_RightRandomRecoil = new Vector2(-0.15f, 0.2f);
 
-        [Tooltip("사격 정확도")]
-        public float m_Accuracy;
+        [Header("Attack Accuracy")]
+        [Tooltip("기본 상태 사격 정확도")]
+        public float m_IdleAccuracy;
+
+        [Tooltip("에임 상태 사격 정확도")]
+        public float m_AimingAccuracy;
 
         [Header("Pos")]
         [Tooltip("조준, 조준 해제 증감값")]

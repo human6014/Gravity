@@ -12,10 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3112d3a5520dad64298a8baaa59f6ec9, type: 3}
   m_Name: Molotov Cocktail_Sound Setting
   m_EditorClassIdentifier: 
-  equipSound:
-  - {fileID: 8300000, guid: 5ffc87182d1487045801b43821db69eb, type: 3}
-  unequipSound:
-  - {fileID: 8300000, guid: 756bee91b8f8a3d4fb6ed0525764c29c, type: 3}
+  equipSound: {fileID: 8300000, guid: 6f459e32dc808d74e9953493fdbe5cb4, type: 3}
+  unequipSound: {fileID: 8300000, guid: 756bee91b8f8a3d4fb6ed0525764c29c, type: 3}
   throwSound:
   - audioClip: {fileID: 8300000, guid: 1f10c56640e24594e8d0093b0df0597e, type: 3}
     delayTime: 0.7

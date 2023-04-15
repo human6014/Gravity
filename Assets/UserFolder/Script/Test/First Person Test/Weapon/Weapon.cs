@@ -16,11 +16,8 @@ namespace Test
         SubRifle,
         Throwing
     }
-    public class Weapon : MonoBehaviour
-    {        
-        //[SerializeField] private Scriptable.WeaponStatScriptable m_WeaponStatScriptable;
-        //[SerializeField] private Scriptable.RangeWeaponStatScriptable m_RangeWeaponStatScriptable;
-
+    public abstract class Weapon : MonoBehaviour
+    {
         [Header("Parent")]
         [Header("Index")]
         [SerializeField] protected int ItemIndex;   //아이템 고유번호
@@ -32,24 +29,20 @@ namespace Test
         [SerializeField] protected Animator m_ArmAnimator; //팔 애니메이터
         [SerializeField] protected AnimatorOverrideController m_ArmOverrideController = null;   // 덮어씌울 팔 애니메이션들
 
+        [Header("Scriptable")]
+        [SerializeField] protected Scriptable.WeaponStatScriptable m_WeaponStatScriptable;
+        [SerializeField] protected Scriptable.WeaponSoundScriptable m_WeaponSoundScriptable;
+
+        private CrossHairController m_CrossHairController;
         private WaitForSeconds m_WaitEquipingTime;
         private WaitForSeconds m_WaitUnequipingTime;
-        protected PlayerState m_PlayerState;
-        protected bool m_IsEquip;
+
+        protected PlayerState m_PlayerState { get; private set; }
+
         /// <summary>
         /// 사용자의 입력을 받는 스크립트
         /// </summary>
-        public PlayerInputController m_PlayerInputController { get; private set; }
-
-        /// <summary>
-        /// 총기별 크로스 헤어 설정을 위한 UI관리 스크립트
-        /// </summary>
-        protected CrossHairController m_CrossHairController { get; private set; }
-
-        /// <summary>
-        /// 피격당한 표면의 Material을 종류별로 가지고 판별해주는 스크립트
-        /// </summary>
-        protected SurfaceManager m_SurfaceManager { get; private set; }
+        protected PlayerInputController m_PlayerInputController { get; private set; }        
 
         /// <summary>
         /// 현재 자신의 무기 에니메이터
@@ -78,8 +71,6 @@ namespace Test
         {
             m_EquipmentAnimator = GetComponent<Animator>();
 
-            //((Scriptable.RangeWeaponStatScriptable)m_WeaponStatScriptable).m_Damage = 5;
-            //Debug.Log(((Scriptable.RangeWeaponStatScriptable)m_WeaponStatScriptable).m_Damage);
             m_CrossHairController = FindObjectOfType<CrossHairController>();
 
             m_WaitEquipingTime = new WaitForSeconds(0.35f);
@@ -91,8 +82,6 @@ namespace Test
  
             m_AudioSource = transform.parent.GetComponent<AudioSource>();
             m_WeaponManager = transform.parent.GetComponent<WeaponManager>();
-
-            m_SurfaceManager = FindObjectOfType<SurfaceManager>();
         }
 
         public virtual void Init()
@@ -100,22 +89,29 @@ namespace Test
             m_ArmAnimator.runtimeAnimatorController = m_ArmOverrideController;
 
             gameObject.SetActive(true);
+            AssignKeyAction();
             StartCoroutine(WaitEquip());
         }
 
+        protected abstract void AssignKeyAction();
+        protected abstract void DischargeKeyAction();
+
         public virtual void Dispose()
         {
+            DischargeKeyAction();
             StartCoroutine(WaitUnequip());
         }
 
         private IEnumerator WaitEquip()
         {
             IsEquiping = true;
-            
             m_ArmAnimator.SetTrigger("Equip");
             m_EquipmentAnimator.SetTrigger("Equip");
+            m_AudioSource.PlayOneShot(m_WeaponSoundScriptable.equipSound);
+            m_CrossHairController.SetCrossHair((int)m_WeaponStatScriptable.m_DefaultCrossHair);
 
             yield return m_WaitEquipingTime;
+
             m_PlayerState.SetWeaponChanging(false);
             IsEquiping = false;
         }
@@ -126,6 +122,7 @@ namespace Test
             m_PlayerState.SetWeaponChanging(true);
             m_ArmAnimator.SetTrigger("Unequip");
             m_EquipmentAnimator.SetTrigger("Unequip");
+            m_AudioSource.PlayOneShot(m_WeaponSoundScriptable.unequipSound);
 
             yield return m_WaitUnequipingTime;
 
