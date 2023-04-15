@@ -12,10 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53de1f3085ab9384c9a61ec6c6835814, type: 3}
   m_Name: F1_SoundSetting
   m_EditorClassIdentifier: 
-  equipSound:
-  - {fileID: 8300000, guid: 3013c91cb1efa464988c9407abaf9cd8, type: 3}
-  unequipSound:
-  - {fileID: 8300000, guid: 0449fbe5d1232f8488e573b5e380189f, type: 3}
+  equipSound: {fileID: 8300000, guid: 3013c91cb1efa464988c9407abaf9cd8, type: 3}
+  unequipSound: {fileID: 8300000, guid: 0449fbe5d1232f8488e573b5e380189f, type: 3}
   fireSound:
   - {fileID: 8300000, guid: ef192acc75e5f0846b67afe2e5a00363, type: 3}
   fireTailSound:
@@ -64,3 +62,6 @@ MonoBehaviour:
     delayTime: 0.4
   - audioClip: {fileID: 8300000, guid: 69cc04f6384fb0f42a2f4101840a9480, type: 3}
     delayTime: 0.3
+  instantReloadSoundClips: []
+  reloadStartSoundClips: []
+  reloadEndSoundClips: []

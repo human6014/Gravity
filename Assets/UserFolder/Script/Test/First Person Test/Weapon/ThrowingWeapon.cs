@@ -11,15 +11,14 @@ namespace Test
         [Header("Child")]
         [SerializeField] private Explosible m_Explosive;
 
-        [SerializeField] private ThrowingWeaponSoundScriptable m_ThrowingWeaponSound;
-        [SerializeField] private ThrowingWeaponStatScriptable m_ThrowingWeaponStat;
-
         [SerializeField] private Transform m_SpawnPos;
 
         [Header("Pooling")]
         [SerializeField] private Transform m_ActiveObjectPool;
 
         [SerializeField] private GameObject m_RendererObject;
+        private ThrowingWeaponSoundScriptable m_ThrowingWeaponSound;
+        private ThrowingWeaponStatScriptable m_ThrowingWeaponStat;
         private Transform m_MainCamera;
         private Manager.ObjectPoolManager.PoolingObject m_PoolingObject;
 
@@ -30,17 +29,12 @@ namespace Test
         protected override void Awake()
         {
             base.Awake();
+            m_ThrowingWeaponSound = (ThrowingWeaponSoundScriptable)base.m_WeaponSoundScriptable;
+            m_ThrowingWeaponStat = (ThrowingWeaponStatScriptable)base.m_WeaponStatScriptable;
             m_MainCamera = Camera.main.transform;
         }
 
         private void Start() => AssignPooling();
-        
-
-        public override void Init()
-        {
-            base.Init();
-            AssignKeyAction();
-        }
 
         private void ReInit()
         {
@@ -55,7 +49,7 @@ namespace Test
             m_PoolingObject.GenerateObj(1);
         }
 
-        private void AssignKeyAction()
+        protected override void AssignKeyAction()
         {
             m_PlayerInputController.SemiFire += LongThrow;
             m_PlayerInputController.HeavyFire += ShortThrow;
@@ -141,11 +135,10 @@ namespace Test
         public override void Dispose()
         {
             m_RendererObject.SetActive(true);
-            DischargeKeyAction(); 
             base.Dispose();
         }
 
-        private void DischargeKeyAction()
+        protected override void DischargeKeyAction()
         {
             m_PlayerInputController.SemiFire -= LongThrow;
             m_PlayerInputController.HeavyFire -= ShortThrow;

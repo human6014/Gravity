@@ -8,11 +8,11 @@ namespace Manager
 {
     public class SurfaceManager : MonoBehaviour
     {
-        [SerializeField] private SurfaceScriptable [] surfaceInfo;
+        [SerializeField] private SurfaceScriptable[] surfaceInfo;
 
         private readonly HashSet<Material>[] surfaceMaterialHashSet = new HashSet<Material>[3];
 
-        
+
         public SurfaceScriptable GetSurfaceInfo(int index) => surfaceInfo[index];
 
         public EnumType.SurfaceType GetSurfaceType(int index) => surfaceInfo[index].surfaceType;
@@ -33,7 +33,7 @@ namespace Manager
 
         private void HasingSurfaceMaterials()
         {
-            for(int i=0;i<surfaceInfo.Length;i++)
+            for (int i = 0; i < surfaceInfo.Length; i++)
             {
                 surfaceMaterialHashSet[i] = new HashSet<Material>();
                 for (int j = 0; j < surfaceInfo[i].surfaceMaterials.Length; j++)
@@ -43,7 +43,7 @@ namespace Manager
 
         public int IsInMaterial(Material material)
         {
-            for(int i=0;i< surfaceMaterialHashSet.Length; i++)
+            for (int i = 0; i < surfaceMaterialHashSet.Length; i++)
             {
                 if (surfaceMaterialHashSet[i].Contains(material)) return i;
             }

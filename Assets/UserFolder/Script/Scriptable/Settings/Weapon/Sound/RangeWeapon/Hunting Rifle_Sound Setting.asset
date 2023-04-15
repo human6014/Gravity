@@ -12,10 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53de1f3085ab9384c9a61ec6c6835814, type: 3}
   m_Name: Hunting Rifle_Sound Setting
   m_EditorClassIdentifier: 
-  equipSound:
-  - {fileID: 8300000, guid: 9271f804281c17847824a66eecfe71af, type: 3}
-  unequipSound:
-  - {fileID: 8300000, guid: 0449fbe5d1232f8488e573b5e380189f, type: 3}
+  equipSound: {fileID: 8300000, guid: 9271f804281c17847824a66eecfe71af, type: 3}
+  unequipSound: {fileID: 8300000, guid: 0449fbe5d1232f8488e573b5e380189f, type: 3}
   fireSound:
   - {fileID: 8300000, guid: aad9ff745cd635b449766dacde23a71c, type: 3}
   - {fileID: 8300000, guid: 250fb758c67e5d74cb653cbbd7035239, type: 3}

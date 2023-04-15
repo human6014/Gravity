@@ -12,10 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53de1f3085ab9384c9a61ec6c6835814, type: 3}
   m_Name: MP5_Sound Setting
   m_EditorClassIdentifier: 
-  equipSound:
-  - {fileID: 8300000, guid: 9271f804281c17847824a66eecfe71af, type: 3}
-  unequipSound:
-  - {fileID: 8300000, guid: 5b1f9678bc3929d42b41b10ee277742c, type: 3}
+  equipSound: {fileID: 8300000, guid: 9271f804281c17847824a66eecfe71af, type: 3}
+  unequipSound: {fileID: 8300000, guid: 5b1f9678bc3929d42b41b10ee277742c, type: 3}
   fireSound:
   - {fileID: 8300000, guid: 88037d3fba0b0a34d964af6bbd3e81b0, type: 3}
   - {fileID: 8300000, guid: ec6d5110f9d123e4eaa61838b01d8f08, type: 3}
@@ -64,3 +62,6 @@ MonoBehaviour:
     delayTime: 0.05
   - audioClip: {fileID: 8300000, guid: 5935f21e564c6984485383b5ff10402f, type: 3}
     delayTime: 0.15
+  instantReloadSoundClips: []
+  reloadStartSoundClips: []
+  reloadEndSoundClips: []

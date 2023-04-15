@@ -12,10 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3112d3a5520dad64298a8baaa59f6ec9, type: 3}
   m_Name: Frag Grenade_Sound Setting
   m_EditorClassIdentifier: 
-  equipSound:
-  - {fileID: 8300000, guid: 5b1f9678bc3929d42b41b10ee277742c, type: 3}
-  unequipSound:
-  - {fileID: 8300000, guid: 9271f804281c17847824a66eecfe71af, type: 3}
+  equipSound: {fileID: 8300000, guid: 5935f21e564c6984485383b5ff10402f, type: 3}
+  unequipSound: {fileID: 8300000, guid: 9271f804281c17847824a66eecfe71af, type: 3}
   throwSound:
   - audioClip: {fileID: 8300000, guid: 945a7f7de1faa1f4e9bfba3bac36f9d3, type: 3}
     delayTime: 0.2

@@ -12,10 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfeae6c39533ffd449937acad5bc07a9, type: 3}
   m_Name: Combat Knife_Sound Setting
   m_EditorClassIdentifier: 
-  equipSound:
-  - {fileID: 8300000, guid: 6ed8e9d00b4a6484d91eb996a6c83352, type: 3}
-  unequipSound:
-  - {fileID: 8300000, guid: 0449fbe5d1232f8488e573b5e380189f, type: 3}
+  equipSound: {fileID: 8300000, guid: 6ed8e9d00b4a6484d91eb996a6c83352, type: 3}
+  unequipSound: {fileID: 8300000, guid: 0449fbe5d1232f8488e573b5e380189f, type: 3}
   m_LightAttackSound:
   - {fileID: 8300000, guid: 24d3d38c05d97e841954876e7453a41c, type: 3}
   - {fileID: 8300000, guid: 1f10c56640e24594e8d0093b0df0597e, type: 3}

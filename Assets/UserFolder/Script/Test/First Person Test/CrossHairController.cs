@@ -13,7 +13,6 @@ public class CrossHairController : MonoBehaviour
     private PlayerState m_PlayerState;
     private Animator m_Animator;
     private Image [] crossHairImage = new Image[5];
-    private Color color;
 
     #region Test
     private const string m_RunState = "IsRunning";
@@ -27,7 +26,6 @@ public class CrossHairController : MonoBehaviour
     private const string m_WalkFire = "WalkFire";
     private const string m_JumpFire = "JumpFire";
 
-    private bool m_IsFadeOut;
     private string m_CurrentAnimState;
     #endregion
     public CrossHairScripatble GetCrossHairInfo(int index) => crossHairInfo[index];
@@ -38,7 +36,6 @@ public class CrossHairController : MonoBehaviour
         m_Animator = GetComponent<Animator>();
         crossHairImage = GetComponentsInChildren<Image>();
     }
-
 
     /// <summary>
     /// 총기 종류에 따라 크로스 해어 설정
@@ -91,12 +88,13 @@ public class CrossHairController : MonoBehaviour
 
     public void CrossHairSetTrigger(string state)
     {
-        if(!m_IsFadeOut) m_Animator.SetTrigger(state);
+        m_Animator.SetTrigger(state);
         m_PlayerState.SetBack();
     }
 
     public void CrossHairSetBool(string state)
     {
+        if (state == m_CurrentAnimState) return;
         m_Animator.SetBool(m_CurrentAnimState, false);
         m_Animator.SetBool(state, true);
         m_CurrentAnimState = state;

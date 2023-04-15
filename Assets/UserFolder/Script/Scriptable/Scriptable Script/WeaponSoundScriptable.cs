@@ -14,7 +14,7 @@ namespace Scriptable
         }
 
         [Header("Parent")]
-        public AudioClip[] equipSound;
-        public AudioClip[] unequipSound;
+        public AudioClip equipSound;
+        public AudioClip unequipSound;
     }
 }
