@@ -9,6 +9,7 @@ namespace Test
 {
     public class RangeWeapon : Weapon
     {
+        #region SerializeField
         [Space(15)]
         [Header("Child")]
         [Header("Aiming adjustment factor")]
@@ -16,6 +17,7 @@ namespace Test
         [SerializeField] private Transform m_Pivot;                 //위치 조정용 부모 오브젝트
         [SerializeField] private Vector3 m_AimingPivotPosition;     //위치 조정용 옮길 위치
         [SerializeField] private Vector3 m_AimingPivotDirection;    //위치 조정용 옮길 각도(Vector3)
+        [SerializeField] private float m_AimingValue = 10;
 
         [Header("Running adjustment factor")]
         //달릴때 총(pivot) 위치
@@ -34,13 +36,16 @@ namespace Test
         [Header("Fire mode")]
         [CustomAttribute.MultiEnum] [SerializeField] private FireMode m_FireMode;
 
-        private Vector3 m_OriginalPivotPosition;            //위치 조정용 부모 오브젝트 원래 위치
-        private Quaternion m_OriginalPivotRotation;         //위치 조정용 부모 오브젝트 원래 각도
+        [SerializeField] private bool m_IsEmpty; //Reload Test;
+        #endregion
+
         private Quaternion m_AimingPivotRotation;           //위치 조정용 옮길 각도(Quaternion)
         private Quaternion m_RunningPivotRotation;          //위치 조정용 옮길 각도
 
         private bool m_IsFiring;
         private bool m_IsRunning;
+        private float m_AimingFOV;
+        
 
         private WaitForSeconds m_BurstFireTime;
         private Coroutine m_RunningCoroutine;
@@ -48,6 +53,10 @@ namespace Test
         private Fireable m_Fireable;
         private Reloadable m_Reloadable;
 
+        private RangeWeaponStatScriptable m_RangeWeaponStat;
+        private RangeWeaponSoundScriptable m_RangeWeaponSound;
+
+        public override bool CanChangeWeapon { get => base.CanChangeWeapon && !IsFiring && !IsReloading;}
         [System.Flags]
         private enum FireMode
         {
@@ -62,16 +71,11 @@ namespace Test
 
         private float m_CurrentFireTime;
         private float m_CurrentPosTime;
-        [SerializeField] private bool m_IsEmpty; //Reload Test;
-
-        private RangeWeaponStatScriptable m_RangeWeaponStat;
-        private RangeWeaponSoundScriptable m_RangeWeaponSound;
+        
         public override bool IsReloading { get => m_Reloadable.m_IsReloading; }
         protected override void Awake()
         {
             base.Awake();
-            m_OriginalPivotPosition = m_Pivot.localPosition;
-            m_OriginalPivotRotation = m_Pivot.localRotation;
             m_AimingPivotRotation = Quaternion.Euler(m_AimingPivotDirection);
             m_RunningPivotRotation = Quaternion.Euler(runningPivotRotation);
             
@@ -81,13 +85,15 @@ namespace Test
 
             m_Fireable = GetComponent<Fireable>();
             m_Reloadable = GetComponent<Reloadable>();
+            
+            m_AimingFOV = m_WeaponManager.m_OriginalFOV - m_AimingValue;
 
             AssignFireMode();
         }
 
         private void Start()
         {
-            m_Fireable.Setup(m_RangeWeaponStat, m_WeaponManager.m_EffectPoolingObjectArray, m_PlayerState);
+            m_Fireable.Setup(m_RangeWeaponStat, m_WeaponManager.m_EffectPoolingObjectArray, m_PlayerState, m_MainCamera);
             m_Reloadable.Setup(m_RangeWeaponSound, m_ArmAnimator);
         }
 
@@ -107,7 +113,7 @@ namespace Test
 
         protected override void AssignKeyAction()
         {
-            //m_PlayerInputController.MouseMovement += TryMouseSway;
+            base.AssignKeyAction();
             m_PlayerInputController.Reload += TryReload;
             m_PlayerInputController.ChangeFireMode += TryChangeFireMode;
             m_PlayerInputController.AutoFire += TryAutoFire;
@@ -153,7 +159,7 @@ namespace Test
             }
         }
 
-
+        private float m_Multiplier = 4;
         private void TryAiming(bool isAiming)
         {
             if (m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running) return;
@@ -162,13 +168,14 @@ namespace Test
             {
                 m_PlayerState.SetWeaponAiming();
                 AimingPosRot(m_AimingPivotPosition, m_AimingPivotRotation);
+                m_MainCamera.fieldOfView = Mathf.Lerp(m_MainCamera.fieldOfView, m_AimingFOV, m_Multiplier * Time.deltaTime);
             }
             else
             {
                 m_PlayerState.SetWeaponIdle();
-                AimingPosRot(m_OriginalPivotPosition, m_OriginalPivotRotation);
+                AimingPosRot(m_WeaponManager.m_OriginalPivotPosition, m_WeaponManager.m_OriginalPivotRotation);
+                m_MainCamera.fieldOfView = Mathf.Lerp(m_MainCamera.fieldOfView, m_WeaponManager.m_OriginalFOV, m_Multiplier * Time.deltaTime);
             }
-
             SetCurrentFireIndex(isAiming);
         }
 
@@ -294,6 +301,7 @@ namespace Test
 
         protected override void DischargeKeyAction()
         {
+            base.DischargeKeyAction();
             m_PlayerInputController.Reload -= TryReload;
             m_PlayerInputController.ChangeFireMode -= TryChangeFireMode;
             m_PlayerInputController.AutoFire -= TryAutoFire;

@@ -11,7 +11,7 @@ public class NormalFire : Fireable
 {
     protected override void FireRay()
     {
-        if (Physics.Raycast(m_MuzzlePos.position, m_MainCamera.forward + base.GetCurrentAccuracy(), out RaycastHit hit, m_RangeWeaponStat.m_MaxRange, m_RangeWeaponStat.m_AttackableLayer, QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(m_MuzzlePos.position, m_CameraTransform.forward + base.GetCurrentAccuracy(), out RaycastHit hit, m_RangeWeaponStat.m_MaxRange, m_RangeWeaponStat.m_AttackableLayer, QueryTriggerInteraction.Ignore))
             base.ProcessingRay(hit, 0);
     }
 }

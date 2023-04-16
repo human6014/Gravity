@@ -8,8 +8,8 @@ namespace Manager
 {
     public class WeaponManager : MonoBehaviour
     {
-        [SerializeField] PlayerInputController m_PlayerInputController;
-
+        [SerializeField] private PlayerInputController m_PlayerInputController;
+        [SerializeField] private Transform m_Pivot;
         [Header("Pooling")]
         [SerializeField] private Transform m_ActiveObjectPool;
         [SerializeField] private PoolableScript[] m_EffectPoolingObject;
@@ -28,6 +28,9 @@ namespace Manager
         [Space(10)]
         [SerializeField] private int ThrowingWeaponHavingCount;
 
+        public Vector3 m_OriginalPivotPosition { get; private set; }            //위치 조정용 부모 오브젝트 원래 위치
+        public Quaternion m_OriginalPivotRotation { get; private set; }         //위치 조정용 부모 오브젝트 원래 각도
+        public float m_OriginalFOV { get; private set; }
 
         //private readonly Dictionary<int, Weapon>[] m_WeaponDictionary = new Dictionary<int, Weapon>();
         private readonly Dictionary<Tuple<int, int>, Weapon> m_WeaponDictionary = new();
@@ -41,7 +44,10 @@ namespace Manager
 
         private void Awake()
         {
-            foreach(Transform child in transform)
+            m_OriginalPivotPosition = m_Pivot.localPosition;
+            m_OriginalPivotRotation = m_Pivot.localRotation;
+            m_OriginalFOV = Camera.main.fieldOfView;
+            foreach (Transform child in transform)
             {
                 if(!child.TryGetComponent(out Weapon weapon)) continue;
                 m_WeaponDictionary.Add(new Tuple<int,int>(weapon.GetEquipingType(),weapon.GetItemIndex()), weapon);

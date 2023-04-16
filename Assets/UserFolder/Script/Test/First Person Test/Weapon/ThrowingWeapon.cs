@@ -19,7 +19,7 @@ namespace Test
         [SerializeField] private GameObject m_RendererObject;
         private ThrowingWeaponSoundScriptable m_ThrowingWeaponSound;
         private ThrowingWeaponStatScriptable m_ThrowingWeaponStat;
-        private Transform m_MainCamera;
+        private Transform m_CameraTransform;
         private Manager.ObjectPoolManager.PoolingObject m_PoolingObject;
 
         private bool m_IsThrowing;
@@ -31,7 +31,7 @@ namespace Test
             base.Awake();
             m_ThrowingWeaponSound = (ThrowingWeaponSoundScriptable)base.m_WeaponSoundScriptable;
             m_ThrowingWeaponStat = (ThrowingWeaponStatScriptable)base.m_WeaponStatScriptable;
-            m_MainCamera = Camera.main.transform;
+            m_CameraTransform = m_MainCamera.transform;
         }
 
         private void Start() => AssignPooling();
@@ -51,6 +51,7 @@ namespace Test
 
         protected override void AssignKeyAction()
         {
+            base.AssignKeyAction();
             m_PlayerInputController.SemiFire += LongThrow;
             m_PlayerInputController.HeavyFire += ShortThrow;
         }
@@ -86,14 +87,14 @@ namespace Test
 
         private void Throw(bool isLong)
         {
-            if(Physics.Raycast(m_MainCamera.position, m_MainCamera.forward, out RaycastHit hit, 300f, m_ThrowingWeaponStat.m_AttackableLayer))
+            if(Physics.Raycast(m_CameraTransform.position, m_CameraTransform.forward, out RaycastHit hit, 300f, m_ThrowingWeaponStat.m_AttackableLayer))
             {
                 SetThrowVector(isLong, hit.point, out Vector3 forceToAdd, out Vector3 TorquToAdd);
 
                 Explosible poolable = (Explosible)m_PoolingObject.GetObject(false);
 
                 poolable.gameObject.SetActive(true);
-                poolable.Init(m_PoolingObject, m_SpawnPos.position, m_MainCamera.rotation);
+                poolable.Init(m_PoolingObject, m_SpawnPos.position, m_CameraTransform.rotation);
                 poolable.TryGetComponent(out Rigidbody throwingRigid);
 
                 throwingRigid.AddForce(forceToAdd, ForceMode.Impulse);
@@ -128,7 +129,7 @@ namespace Test
                 forwardForce = m_ThrowingWeaponStat.shortThrowForwardForce;
                 upwardForce = m_ThrowingWeaponStat.shortThrowUpwardForce;
             }
-            forceToAdd = (hitPoint - m_SpawnPos.position).normalized * forwardForce + m_MainCamera.up * upwardForce;
+            forceToAdd = (hitPoint - m_SpawnPos.position).normalized * forwardForce + m_CameraTransform.up * upwardForce;
             TorquToAdd = new Vector3(Random.Range(-5, 5), Random.Range(-5, 5), Random.Range(-5, 5));
         }
 
@@ -140,6 +141,7 @@ namespace Test
 
         protected override void DischargeKeyAction()
         {
+            base.DischargeKeyAction();
             m_PlayerInputController.SemiFire -= LongThrow;
             m_PlayerInputController.HeavyFire -= ShortThrow;
         }

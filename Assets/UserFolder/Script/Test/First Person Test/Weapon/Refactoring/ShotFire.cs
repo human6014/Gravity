@@ -25,13 +25,13 @@ public class ShotFire : Fireable
 
     private Vector3 GetFireDirection()
     {
-        Vector3 targetPos = m_MainCamera.position + m_MainCamera.forward * m_RangeWeaponStat.m_MaxRange;
+        Vector3 targetPos = m_CameraTransform.position + m_CameraTransform.forward * m_RangeWeaponStat.m_MaxRange;
 
         targetPos.x += Random.Range(-m_SpreadRange.x, m_SpreadRange.x);
         targetPos.y += Random.Range(-m_SpreadRange.y, m_SpreadRange.y);
         targetPos.z += Random.Range(-m_SpreadRange.z, m_SpreadRange.z);
 
-        Vector3 direction = targetPos - m_MainCamera.position;
+        Vector3 direction = targetPos - m_CameraTransform.position;
         return direction.normalized;
     }
 }

@@ -33,7 +33,11 @@ namespace Test
         [SerializeField] protected Scriptable.WeaponStatScriptable m_WeaponStatScriptable;
         [SerializeField] protected Scriptable.WeaponSoundScriptable m_WeaponSoundScriptable;
 
+        [Header("Weapon Sway")]
+        [SerializeField] private WeaponSway m_WeaponSway;
+
         private CrossHairController m_CrossHairController;
+        
         private WaitForSeconds m_WaitEquipingTime;
         private WaitForSeconds m_WaitUnequipingTime;
 
@@ -59,20 +63,26 @@ namespace Test
         /// </summary>
         protected WeaponManager m_WeaponManager { get; private set; }
 
-        public int GetEquipingType() => (int)m_EquipingWeaponType;
-        public int GetItemIndex() => ItemIndex;
+        /// <summary>
+        /// 메인 카메라
+        /// </summary>
+        protected Camera m_MainCamera { get; private set; }
 
         public bool IsEquiping { get; private set; }
         public bool IsUnequiping { get; private set; }
         public virtual bool IsFiring { get; private set; }
         public virtual bool IsReloading { get; private set; }
 
+        public virtual bool CanChangeWeapon { get => !IsFiring && !IsUnequiping; }
+
+        public int GetEquipingType() => (int)m_EquipingWeaponType;
+        public int GetItemIndex() => ItemIndex;
+
         protected virtual void Awake()
         {
             m_EquipmentAnimator = GetComponent<Animator>();
-
             m_CrossHairController = FindObjectOfType<CrossHairController>();
-
+            
             m_WaitEquipingTime = new WaitForSeconds(0.35f);
             m_WaitUnequipingTime = new WaitForSeconds(0.55f);
 
@@ -82,9 +92,11 @@ namespace Test
  
             m_AudioSource = transform.parent.GetComponent<AudioSource>();
             m_WeaponManager = transform.parent.GetComponent<WeaponManager>();
+
+            m_MainCamera = Camera.main;
         }
 
-        public virtual void Init()
+        public void Init()
         {
             m_ArmAnimator.runtimeAnimatorController = m_ArmOverrideController;
 
@@ -93,8 +105,14 @@ namespace Test
             StartCoroutine(WaitEquip());
         }
 
-        protected abstract void AssignKeyAction();
-        protected abstract void DischargeKeyAction();
+        protected virtual void AssignKeyAction()
+        {
+            m_PlayerInputController.MouseMovement += m_WeaponSway.Sway;
+        }
+        protected virtual void DischargeKeyAction()
+        {
+            m_PlayerInputController.MouseMovement -= m_WeaponSway.Sway;
+        }
 
         public virtual void Dispose()
         {

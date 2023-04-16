@@ -37,7 +37,7 @@ public abstract class Fireable : MonoBehaviour
     [SerializeField] private float m_InstanceCasingTime = 1f;
 
     protected Transform m_MuzzlePos;             //ÃÑ±¸ À§Ä¡
-    protected Transform m_MainCamera;
+    protected Transform m_CameraTransform;
     protected RangeWeaponStatScriptable m_RangeWeaponStat;
 
     private WaitForSeconds m_LightOffSecond;
@@ -53,17 +53,19 @@ public abstract class Fireable : MonoBehaviour
     private void Awake()
     {
         m_MuzzlePos = m_FireLight.transform;
-        m_MainCamera = Camera.main.transform;
+        m_CameraTransform = Camera.main.transform;
 
         m_LightOffSecond = new WaitForSeconds(m_LightOffTime);
         m_InstanceBulletSecond = new WaitForSeconds(m_InstanceCasingTime);
     }
 
-    public void Setup(RangeWeaponStatScriptable m_RangeWeaponStat, ObjectPoolManager.PoolingObject[] m_BulletEffectPoolingObjects, PlayerState m_PlayerState)
+    public void Setup(RangeWeaponStatScriptable m_RangeWeaponStat, ObjectPoolManager.PoolingObject[] m_BulletEffectPoolingObjects, PlayerState m_PlayerState, Camera m_MainCamera)
     {
         this.m_RangeWeaponStat = m_RangeWeaponStat;
         this.m_BulletEffectPoolingObjects = m_BulletEffectPoolingObjects;
-        this.m_PlayerState = m_PlayerState;
+        this.m_PlayerState = m_PlayerState; 
+        m_CameraTransform = m_MainCamera.transform;
+
         m_SurfaceManager = FindObjectOfType<SurfaceManager>();
         m_MouseLook = FindObjectOfType<FirstPersonController>().MouseLook;
         m_CrossHairController = FindObjectOfType<CrossHairController>();

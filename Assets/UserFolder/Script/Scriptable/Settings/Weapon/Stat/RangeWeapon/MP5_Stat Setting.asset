@@ -26,6 +26,6 @@ MonoBehaviour:
   m_UpRandomRecoil: {x: -0.1, y: 0.3}
   m_RightRandomRecoil: {x: -0.1, y: 0.1}
   m_IdleAccuracy: 0
-  m_AimingAccuracy: 0
+  m_AimingAccuracy: -0.025
   m_AimingPosTimeRatio: 0.07
   m_SpinValue: 17

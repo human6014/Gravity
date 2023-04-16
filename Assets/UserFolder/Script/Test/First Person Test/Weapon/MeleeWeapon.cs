@@ -22,10 +22,10 @@ namespace Test
         private ObjectPoolManager.PoolingObject[] m_EffectPoolingObject;
         private SurfaceManager m_SurfaceManager;
 
-        [SerializeField] private Transform m_MainCamera;
         [SerializeField] private float m_SwingRadius;
         [SerializeField] private float m_MaxDistance;
-        
+
+        private Transform m_CameraTransform;
         public bool m_IsAttacking { get; private set; }
 
         protected override void Awake()
@@ -34,7 +34,7 @@ namespace Test
             m_MeleeWeaponSound = (Scriptable.MeleeWeaponSoundScripatble)base.m_WeaponSoundScriptable;
             m_MeleeWeaponStat = (Scriptable.MeleeWeaponStatScriptable)base.m_WeaponStatScriptable;
             m_SurfaceManager = FindObjectOfType<SurfaceManager>();
-
+            m_CameraTransform = m_MainCamera.transform;
             AssignPoolingObject();
         }
 
@@ -45,6 +45,7 @@ namespace Test
 
         protected override void AssignKeyAction()
         {
+            base.AssignKeyAction();
             m_PlayerInputController.SemiFire += TryLightAttack;
             m_PlayerInputController.HeavyFire += TryHeavyAttack;
         }
@@ -120,7 +121,7 @@ namespace Test
 
         private void TestDamage()
         {
-            if (Physics.SphereCast(m_MainCamera.position, m_SwingRadius, m_MainCamera.forward, out RaycastHit hit, m_MaxDistance, m_MeleeWeaponStat.m_AttackableLayer, QueryTriggerInteraction.Ignore))
+            if (Physics.SphereCast(m_CameraTransform.position, m_SwingRadius, m_CameraTransform.forward, out RaycastHit hit, m_MaxDistance, m_MeleeWeaponStat.m_AttackableLayer, QueryTriggerInteraction.Ignore))
             {
                 // Apply an impact impulse
                 //if (hitInfo.rigidbody != null)
@@ -160,15 +161,9 @@ namespace Test
             audioClip = audioClips[Random.Range(0, audioClips.Length)];
         }
 
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.white;
-            Gizmos.DrawWireSphere(m_MainCamera.position, m_SwingRadius);
-            Gizmos.DrawWireSphere(m_MainCamera.position + m_MainCamera.forward * 0.3f + m_MainCamera.forward * m_MaxDistance, m_SwingRadius);
-        }
-
         protected override void DischargeKeyAction()
         {
+            base.DischargeKeyAction();
             m_PlayerInputController.SemiFire -= TryLightAttack;
             m_PlayerInputController.HeavyFire -= TryHeavyAttack;
         }
