@@ -22,15 +22,22 @@ namespace Test
         private Transform m_CameraTransform;
         private Manager.ObjectPoolManager.PoolingObject m_PoolingObject;
 
-        private bool m_IsThrowing;
+        public override bool CanChangeWeapon => base.CanChangeWeapon && !m_IsThrowing;
 
+        private bool m_IsThrowing;
+        private bool m_IsRunning;
         private int m_TempHasCount = 1;
 
+        private Coroutine m_RunningCoroutine;
+        private Quaternion m_RunningPivotRotation;
         protected override void Awake()
         {
             base.Awake();
             m_ThrowingWeaponSound = (ThrowingWeaponSoundScriptable)base.m_WeaponSoundScriptable;
             m_ThrowingWeaponStat = (ThrowingWeaponStatScriptable)base.m_WeaponStatScriptable;
+
+            m_RunningPivotRotation = Quaternion.Euler(m_ThrowingWeaponStat.m_RunningPivotDirection);
+
             m_CameraTransform = m_MainCamera.transform;
         }
 
@@ -56,9 +63,50 @@ namespace Test
             m_PlayerInputController.HeavyFire += ShortThrow;
         }
 
+        private void Update()
+        {
+            if (m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
+            {
+                if (!m_IsRunning)
+                {
+                    m_IsRunning = true;
+                    if (m_RunningCoroutine != null) StopCoroutine(m_RunningCoroutine);
+                    m_RunningCoroutine = StartCoroutine(PosChange(m_ThrowingWeaponStat.m_RunningPivotPosition, m_RunningPivotRotation));
+                }
+            }
+            else
+            {
+                if (m_IsRunning)
+                {
+                    m_IsRunning = false;
+                    if (m_RunningCoroutine != null) StopCoroutine(m_RunningCoroutine);
+                    m_RunningCoroutine = StartCoroutine(PosChange(m_WeaponManager.m_OriginalPivotPosition, m_WeaponManager.m_OriginalPivotRotation));
+                }
+                m_MainCamera.fieldOfView = Mathf.Lerp(m_MainCamera.fieldOfView, m_WeaponManager.m_OriginalFOV, m_ThrowingWeaponStat.m_FOVMultiplier * Time.deltaTime);
+            }
+        }
+
+        private IEnumerator PosChange(Vector3 EndPosition, Quaternion EndRotation)
+        {
+            float currentTime = 0;
+            float elapsedTime;
+            Vector3 startLocalPosition = PivotTransform.localPosition;
+            Quaternion startLocalRotation = PivotTransform.localRotation;
+            while (currentTime < m_ThrowingWeaponStat.m_RunningPosTime)
+            {
+                currentTime += Time.deltaTime;
+
+                elapsedTime = currentTime / m_ThrowingWeaponStat.m_RunningPosTime;
+                PivotTransform.localPosition = Vector3.Lerp(startLocalPosition, EndPosition, elapsedTime);
+                PivotTransform.localRotation = Quaternion.Lerp(startLocalRotation, EndRotation, elapsedTime);
+
+                yield return elapsedTime;
+            }
+        }
+
         private void LongThrow()
         {
-            if (m_IsThrowing) return;
+            if (m_IsThrowing || m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running) return;
             m_ArmAnimator.SetTrigger("Long Throw");
             m_EquipmentAnimator.SetTrigger("Long Throw");
             StartCoroutine(PlayThrowSound(true));
@@ -66,7 +114,7 @@ namespace Test
 
         private void ShortThrow()
         {
-            if (m_IsThrowing) return;
+            if (m_IsThrowing || m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running) return;
             m_ArmAnimator.SetTrigger("Short Throw");
             m_EquipmentAnimator.SetTrigger("Short Throw");
             StartCoroutine(PlayThrowSound(false));

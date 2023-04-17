@@ -6,6 +6,17 @@ using UnityEngine;
 
 namespace Manager
 {
+    public struct CustomKey
+    {
+        private readonly int keyX;
+        private readonly int keyY;
+        public CustomKey(int keyX, int keyY)
+        {
+            this.keyX = keyX;
+            this.keyY = keyY;
+        }
+    }
+
     public class WeaponManager : MonoBehaviour
     {
         [SerializeField] private PlayerInputController m_PlayerInputController;
@@ -17,27 +28,17 @@ namespace Manager
 
         [SerializeField] private int m_EquipingItemIndex = 6;
 
-
-        [Header("Equip Index Test")]
-        [SerializeField] private int HavingMeleeWeaponIndex;
-        [SerializeField] private int HavingPistolWeaponIndex;
-        [SerializeField] private int HavingAutoRifleWeaponIndex;
-        [SerializeField] private int HavingSubRifleWeaponIndex;
-        [SerializeField] private int HavingThrowingWeaponIndex;
-
         [Space(10)]
-        [SerializeField] private int ThrowingWeaponHavingCount;
-
+        [SerializeField] private Inventory m_Inventory;
         public Vector3 m_OriginalPivotPosition { get; private set; }            //위치 조정용 부모 오브젝트 원래 위치
         public Quaternion m_OriginalPivotRotation { get; private set; }         //위치 조정용 부모 오브젝트 원래 각도
         public float m_OriginalFOV { get; private set; }
 
-        //private readonly Dictionary<int, Weapon>[] m_WeaponDictionary = new Dictionary<int, Weapon>();
-        private readonly Dictionary<Tuple<int, int>, Weapon> m_WeaponDictionary = new();
-        [SerializeField] private Weapon[][] m_Weapon = new Weapon[5][];
+        private readonly Dictionary<CustomKey, Weapon> m_WeaponDictionary = new();
         private const int m_EquipingTypeLength = 5;
         private Weapon m_CurrentWeapon;
-        private Inventory m_Inventory;
+
+        //현재 장착하고 있는 무기 슬롯 번호
         private int m_CurrentEquipIndex = -1;
 
         public ObjectPoolManager.PoolingObject[] m_EffectPoolingObjectArray { get; private set; }
@@ -47,21 +48,13 @@ namespace Manager
             m_OriginalPivotPosition = m_Pivot.localPosition;
             m_OriginalPivotRotation = m_Pivot.localRotation;
             m_OriginalFOV = Camera.main.fieldOfView;
+
             foreach (Transform child in transform)
             {
                 if(!child.TryGetComponent(out Weapon weapon)) continue;
-                m_WeaponDictionary.Add(new Tuple<int,int>(weapon.GetEquipingType(),weapon.GetItemIndex()), weapon);
+                m_WeaponDictionary.Add(new CustomKey(weapon.GetEquipingType(),weapon.GetItemIndex()), weapon);
             }
-            m_Inventory = new Inventory(5);
             m_PlayerInputController.ChangeEquipment += TryWeaponChange;
-
-            m_Inventory.HavingWeaponIndex[0] = HavingMeleeWeaponIndex;
-            m_Inventory.HavingWeaponIndex[1] = HavingPistolWeaponIndex;
-            m_Inventory.HavingWeaponIndex[2] = HavingAutoRifleWeaponIndex;
-            m_Inventory.HavingWeaponIndex[3] = HavingSubRifleWeaponIndex;
-            m_Inventory.HavingWeaponIndex[4] = HavingThrowingWeaponIndex;
-
-            m_Inventory.ThrowingWeaponHavingCount = ThrowingWeaponHavingCount;
         }
 
         private void Start()
@@ -74,36 +67,40 @@ namespace Manager
             }
         }
 
-        [ContextMenu("EquipWeapon")]
-        public void EquipWeapon()
-        {
-            if (m_CurrentWeapon != null) m_CurrentWeapon.Dispose();
+        public void RegisterWeapon(int slotNumber, int index)
+            => m_Inventory.SetHavingWeaponIndex(slotNumber, index);
+        
 
-            //m_WeaponDictionary.TryGetValue(m_EquipingItemIndex, out m_CurrentWeapon);
-            m_CurrentWeapon.Init();
-        }
+        public void AddThrowingWeapon(int value)
+            => m_Inventory.AddThrowingWeapon(value);
+        
 
-        private void TryWeaponChange(int index)
+        public void AddHealKit(int value)
+            => m_Inventory.AddThrowingWeapon(value);
+        
+
+        private void TryWeaponChange(int slotNumber)
         {
+            int index = m_Inventory.GetHavingWeaponIndex(slotNumber);
+            if (index == -1) return;
             if (m_CurrentWeapon != null)
             {
-                if (m_CurrentEquipIndex == index) return;
-                if (m_CurrentWeapon.IsEquiping) return;
-                if (m_CurrentWeapon.IsUnequiping) return;
-                if (m_CurrentWeapon.IsReloading) return;
+                if (m_CurrentEquipIndex == slotNumber) return;
+                if (!m_CurrentWeapon.CanChangeWeapon) return;
                 m_CurrentWeapon.Dispose();
             }
             else
             {
-                m_WeaponDictionary.TryGetValue(new Tuple<int, int>(index, m_Inventory.HavingWeaponIndex[index]), out m_CurrentWeapon);
+                
+                m_WeaponDictionary.TryGetValue(new CustomKey(slotNumber, index), out m_CurrentWeapon);
                 m_CurrentWeapon.Init();
             }
-            m_CurrentEquipIndex = index;
+            m_CurrentEquipIndex = slotNumber;
         }
 
         public void ChangeWeapon()
         {
-            m_WeaponDictionary.TryGetValue(new Tuple<int, int>(m_CurrentEquipIndex, m_Inventory.HavingWeaponIndex[m_CurrentEquipIndex]), out m_CurrentWeapon);
+            m_WeaponDictionary.TryGetValue(new CustomKey(m_CurrentEquipIndex, m_Inventory.GetHavingWeaponIndex(m_CurrentEquipIndex)), out m_CurrentWeapon);
             m_CurrentWeapon.Init();
         }
     }

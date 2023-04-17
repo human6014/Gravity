@@ -12,13 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4838d5a76f4fdc4a877d2e4faa3128e, type: 3}
   m_Name: M1A_Stat Setting
   m_EditorClassIdentifier: 
+  m_AttackTime: 0.3
   m_Damage: 0
   m_AttackableLayer:
     serializedVersion: 2
     m_Bits: 454401
   m_RunningPosTime: 0.5
   m_DefaultCrossHair: 2
-  m_AttackTime: 0.3
+  m_RunningPivotPosition: {x: -0.08, y: -0.09, z: 0.5}
+  m_RunningPivotDirection: {x: 18, y: -36.5, z: 13.5}
   m_BurstAttackTime: 0.1
   m_MaxRange: 150
   m_UpAxisRecoil: 2.1
@@ -29,3 +31,6 @@ MonoBehaviour:
   m_AimingAccuracy: -0.04
   m_AimingPosTimeRatio: 0.07
   m_SpinValue: 17
+  m_AimingPivotPosition: {x: -0.0345, y: 0.023, z: 0.437}
+  m_AimingPivotDirection: {x: 0.25, y: 1.75, z: -4.169}
+  m_AimingFOV: 10

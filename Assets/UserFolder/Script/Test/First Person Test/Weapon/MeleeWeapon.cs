@@ -16,8 +16,7 @@ namespace Test
         private Scriptable.MeleeWeaponSoundScripatble m_MeleeWeaponSound;
         private Scriptable.MeleeWeaponStatScriptable m_MeleeWeaponStat;
  
-        private bool isRunning;
-        private float currentFireRatio;
+        private float m_CurrentFireTime;
 
         private ObjectPoolManager.PoolingObject[] m_EffectPoolingObject;
         private SurfaceManager m_SurfaceManager;
@@ -26,22 +25,30 @@ namespace Test
         [SerializeField] private float m_MaxDistance;
 
         private Transform m_CameraTransform;
-        public bool m_IsAttacking { get; private set; }
 
+        public override bool CanChangeWeapon => base.CanChangeWeapon && !m_IsAttacking;
+        private bool m_IsAttacking;
+        private bool m_IsRunning;
+        private Coroutine m_RunningCoroutine;
+        private Quaternion m_RunningPivotRotation;
         protected override void Awake()
         {
             base.Awake();
+
             m_MeleeWeaponSound = (Scriptable.MeleeWeaponSoundScripatble)base.m_WeaponSoundScriptable;
             m_MeleeWeaponStat = (Scriptable.MeleeWeaponStatScriptable)base.m_WeaponStatScriptable;
+
             m_SurfaceManager = FindObjectOfType<SurfaceManager>();
             m_CameraTransform = m_MainCamera.transform;
+
+            m_RunningPivotRotation = Quaternion.Euler(m_MeleeWeaponStat.m_RunningPivotDirection);
+
             AssignPoolingObject();
         }
 
         private void AssignPoolingObject()
-        {
-            m_EffectPoolingObject = m_WeaponManager.m_EffectPoolingObjectArray;
-        }
+            => m_EffectPoolingObject = m_WeaponManager.m_EffectPoolingObjectArray;
+        
 
         protected override void AssignKeyAction()
         {
@@ -52,30 +59,51 @@ namespace Test
 
         private void Update()
         {
-            currentFireRatio += Time.deltaTime;
+            m_CurrentFireTime += Time.deltaTime;
+            if (m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
+            {
+                if (!m_IsRunning)
+                {
+                    m_IsRunning = true;
+                    if (m_RunningCoroutine != null) StopCoroutine(m_RunningCoroutine);
+                    m_RunningCoroutine = StartCoroutine(PosChange(m_MeleeWeaponStat.m_RunningPivotPosition, m_RunningPivotRotation));
+                }
+            }
+            else
+            {
+                if (m_IsRunning)
+                {
+                    m_IsRunning = false;
+                    if (m_RunningCoroutine != null) StopCoroutine(m_RunningCoroutine);
+                    m_RunningCoroutine = StartCoroutine(PosChange(m_WeaponManager.m_OriginalPivotPosition, m_WeaponManager.m_OriginalPivotRotation));
+                }
+                m_MainCamera.fieldOfView = Mathf.Lerp(m_MainCamera.fieldOfView, m_WeaponManager.m_OriginalFOV, m_MeleeWeaponStat.m_FOVMultiplier * Time.deltaTime);
+            }
+        }
 
-            //if (m_IsAttacking) TestDamage();
-            //if (!firstPersonController.m_IsWalking)
-            //{
-            //    if (!isRunning)
-            //    {
-            //        isRunning = true;
-            //        if (runningCoroutine != null) StopCoroutine(runningCoroutine);
-            //        runningCoroutine = StartCoroutine(RunningPos());
-            //    }
-            //}
-            //else if (isRunning)
-            //{
-            //    isRunning = false;
-            //    if (runningCoroutine != null) StopCoroutine(runningCoroutine);
-            //}
+        private IEnumerator PosChange(Vector3 EndPosition, Quaternion EndRotation)
+        {
+            float currentTime = 0;
+            float elapsedTime;
+            Vector3 startLocalPosition = PivotTransform.localPosition;
+            Quaternion startLocalRotation = PivotTransform.localRotation;
+            while (currentTime < m_MeleeWeaponStat.m_RunningPosTime)
+            {
+                currentTime += Time.deltaTime;
+
+                elapsedTime = currentTime / m_MeleeWeaponStat.m_RunningPosTime;
+                PivotTransform.localPosition = Vector3.Lerp(startLocalPosition, EndPosition, elapsedTime);
+                PivotTransform.localRotation = Quaternion.Lerp(startLocalRotation, EndRotation, elapsedTime);
+
+                yield return elapsedTime;
+            }
         }
 
         private void TryLightAttack()
         {
-            if (currentFireRatio > m_MeleeWeaponStat.m_LightFireTime)
+            if (m_CurrentFireTime > m_MeleeWeaponStat.m_LightFireTime)
             {
-                currentFireRatio = 0;
+                m_CurrentFireTime = 0;
 
                 Attack(0);
             }
@@ -83,9 +111,9 @@ namespace Test
 
         private void TryHeavyAttack()
         {
-            if (currentFireRatio > m_MeleeWeaponStat.m_HeavyFireTime)
+            if (m_CurrentFireTime > m_MeleeWeaponStat.m_HeavyFireTime)
             {
-                currentFireRatio = 0;
+                m_CurrentFireTime = 0;
 
                 Attack(1);
             }

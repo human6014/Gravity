@@ -49,7 +49,7 @@ public abstract class Fireable : MonoBehaviour
     private PlayerState m_PlayerState;
     private SurfaceManager m_SurfaceManager;
     private MouseLook m_MouseLook;
-    private CrossHairController m_CrossHairController;
+    private UI.Game.CrossHairDisplayer m_CrossHairController;
     private void Awake()
     {
         m_MuzzlePos = m_FireLight.transform;
@@ -68,7 +68,7 @@ public abstract class Fireable : MonoBehaviour
 
         m_SurfaceManager = FindObjectOfType<SurfaceManager>();
         m_MouseLook = FindObjectOfType<FirstPersonController>().MouseLook;
-        m_CrossHairController = FindObjectOfType<CrossHairController>();
+        m_CrossHairController = FindObjectOfType<UI.Game.CrossHairDisplayer>();
 
         if (!m_HasBullet) return;
         m_CasingPoolingObject = ObjectPoolManager.Register(m_CasingObject, m_ActiveObjectPool);

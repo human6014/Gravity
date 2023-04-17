@@ -12,17 +12,6 @@ namespace Test
         #region SerializeField
         [Space(15)]
         [Header("Child")]
-        [Header("Aiming adjustment factor")]
-        //조준시 에임 위치
-        [SerializeField] private Transform m_Pivot;                 //위치 조정용 부모 오브젝트
-        [SerializeField] private Vector3 m_AimingPivotPosition;     //위치 조정용 옮길 위치
-        [SerializeField] private Vector3 m_AimingPivotDirection;    //위치 조정용 옮길 각도(Vector3)
-        [SerializeField] private float m_AimingValue = 10;
-
-        [Header("Running adjustment factor")]
-        //달릴때 총(pivot) 위치
-        [SerializeField] private Vector3 runningPivotPosition;      //달릴 때 pivot 위치
-        [SerializeField] private Vector3 runningPivotRotation;      //달릴 때 pivot 각도
 
         [Header("Fire recoil")]
         //총 반동
@@ -45,7 +34,6 @@ namespace Test
         private bool m_IsFiring;
         private bool m_IsRunning;
         private float m_AimingFOV;
-        
 
         private WaitForSeconds m_BurstFireTime;
         private Coroutine m_RunningCoroutine;
@@ -56,7 +44,7 @@ namespace Test
         private RangeWeaponStatScriptable m_RangeWeaponStat;
         private RangeWeaponSoundScriptable m_RangeWeaponSound;
 
-        public override bool CanChangeWeapon { get => base.CanChangeWeapon && !IsFiring && !IsReloading;}
+        public override bool CanChangeWeapon => base.CanChangeWeapon && !m_IsFiring && !IsReloading;
         [System.Flags]
         private enum FireMode
         {
@@ -71,22 +59,23 @@ namespace Test
 
         private float m_CurrentFireTime;
         private float m_CurrentPosTime;
-        
-        public override bool IsReloading { get => m_Reloadable.m_IsReloading; }
+
+        private bool IsReloading => m_Reloadable.m_IsReloading; 
+
         protected override void Awake()
         {
             base.Awake();
-            m_AimingPivotRotation = Quaternion.Euler(m_AimingPivotDirection);
-            m_RunningPivotRotation = Quaternion.Euler(runningPivotRotation);
-            
+
             m_RangeWeaponStat = (RangeWeaponStatScriptable)base.m_WeaponStatScriptable;
             m_RangeWeaponSound = (RangeWeaponSoundScriptable)base.m_WeaponSoundScriptable;
             m_BurstFireTime = new WaitForSeconds(m_RangeWeaponStat.m_BurstAttackTime);
 
             m_Fireable = GetComponent<Fireable>();
             m_Reloadable = GetComponent<Reloadable>();
-            
-            m_AimingFOV = m_WeaponManager.m_OriginalFOV - m_AimingValue;
+
+            m_AimingPivotRotation = Quaternion.Euler(m_RangeWeaponStat.m_AimingPivotDirection);
+            m_RunningPivotRotation = Quaternion.Euler(m_RangeWeaponStat.m_RunningPivotDirection);
+            m_AimingFOV = m_WeaponManager.m_OriginalFOV - m_RangeWeaponStat.m_AimingFOV;
 
             AssignFireMode();
         }
@@ -131,7 +120,7 @@ namespace Test
                 {
                     m_IsRunning = true;
                     if (m_RunningCoroutine != null) StopCoroutine(m_RunningCoroutine);
-                    m_RunningCoroutine = StartCoroutine(PosChange(runningPivotPosition,m_RunningPivotRotation));
+                    m_RunningCoroutine = StartCoroutine(PosChange(m_RangeWeaponStat.m_RunningPivotPosition, m_RunningPivotRotation));
                 }
             }
             else
@@ -145,21 +134,21 @@ namespace Test
         {
             float currentTime = 0;
             float elapsedTime;
-            Vector3 startLocalPosition = m_Pivot.localPosition;
-            Quaternion startLocalRotation = m_Pivot.localRotation;
+            Vector3 startLocalPosition = PivotTransform.localPosition;
+            Quaternion startLocalRotation = PivotTransform.localRotation;
             while (currentTime < m_RangeWeaponStat.m_RunningPosTime)
             {
                 currentTime += Time.deltaTime;
 
                 elapsedTime = currentTime / m_RangeWeaponStat.m_RunningPosTime;
-                m_Pivot.localPosition = Vector3.Lerp(startLocalPosition, EndPosition, elapsedTime);
-                m_Pivot.localRotation = Quaternion.Lerp(startLocalRotation, EndRotation, elapsedTime);
+                PivotTransform.localPosition = Vector3.Lerp(startLocalPosition, EndPosition, elapsedTime);
+                PivotTransform.localRotation = Quaternion.Lerp(startLocalRotation, EndRotation, elapsedTime);
 
                 yield return elapsedTime;
             }
         }
 
-        private float m_Multiplier = 4;
+        
         private void TryAiming(bool isAiming)
         {
             if (m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running) return;
@@ -167,22 +156,22 @@ namespace Test
             if (isAiming)
             {
                 m_PlayerState.SetWeaponAiming();
-                AimingPosRot(m_AimingPivotPosition, m_AimingPivotRotation);
-                m_MainCamera.fieldOfView = Mathf.Lerp(m_MainCamera.fieldOfView, m_AimingFOV, m_Multiplier * Time.deltaTime);
+                AimingPosRot(m_RangeWeaponStat.m_AimingPivotPosition, m_AimingPivotRotation);
+                m_MainCamera.fieldOfView = Mathf.Lerp(m_MainCamera.fieldOfView, m_AimingFOV, m_RangeWeaponStat.m_FOVMultiplier * Time.deltaTime);
             }
             else
             {
                 m_PlayerState.SetWeaponIdle();
                 AimingPosRot(m_WeaponManager.m_OriginalPivotPosition, m_WeaponManager.m_OriginalPivotRotation);
-                m_MainCamera.fieldOfView = Mathf.Lerp(m_MainCamera.fieldOfView, m_WeaponManager.m_OriginalFOV, m_Multiplier * Time.deltaTime);
+                m_MainCamera.fieldOfView = Mathf.Lerp(m_MainCamera.fieldOfView, m_WeaponManager.m_OriginalFOV, m_RangeWeaponStat.m_FOVMultiplier * Time.deltaTime);
             }
             SetCurrentFireIndex(isAiming);
         }
 
         private void AimingPosRot(Vector3 EndPosition, Quaternion EndRotation)
         {
-            m_Pivot.localPosition = Vector3.Lerp(m_Pivot.localPosition, EndPosition, m_RangeWeaponStat.m_AimingPosTimeRatio);
-            m_Pivot.localRotation = Quaternion.Lerp(m_Pivot.localRotation, EndRotation, m_RangeWeaponStat.m_AimingPosTimeRatio);
+            PivotTransform.localPosition = Vector3.Lerp(PivotTransform.localPosition, EndPosition, m_RangeWeaponStat.m_AimingPosTimeRatio);
+            PivotTransform.localRotation = Quaternion.Lerp(PivotTransform.localRotation, EndRotation, m_RangeWeaponStat.m_AimingPosTimeRatio);
         }
 
         private void TryChangeFireMode()
