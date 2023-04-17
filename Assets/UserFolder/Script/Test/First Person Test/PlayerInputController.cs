@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerInputController : MonoBehaviour
 {
-    [SerializeField] private SettingUIManager m_SettingUIManager;
+    [SerializeField] private UI.Manager.SettingUIManager m_SettingUIManager;
 
     private readonly KeyCode[] m_GravityChangeInput =
     {
@@ -81,7 +81,7 @@ public class PlayerInputController : MonoBehaviour
 
     private void Update()
     {
-        if (m_SettingUIManager.m_IsActiveSettingUI) return;
+        if (m_SettingUIManager.IsActiveSettingUI) return;
 
         m_MouseX = Input.GetAxis("Mouse X");
         m_MouseY = Input.GetAxis("Mouse Y");

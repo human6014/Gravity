@@ -33,9 +33,17 @@ namespace Test
         [SerializeField] protected Scriptable.WeaponStatScriptable m_WeaponStatScriptable;
         [SerializeField] protected Scriptable.WeaponSoundScriptable m_WeaponSoundScriptable;
 
-        private CrossHairController m_CrossHairController;
+        [Header("Pos Change")]
+        [SerializeField] private Transform m_Pivot;                 //위치 조정용 부모 오브젝트
+
+        [Header("Weapon Sway")]
+        [SerializeField] private WeaponSway m_WeaponSway;
+
+        private UI.Game.CrossHairDisplayer m_CrossHairDisplayer;
+        
         private WaitForSeconds m_WaitEquipingTime;
         private WaitForSeconds m_WaitUnequipingTime;
+
 
         protected PlayerState m_PlayerState { get; private set; }
 
@@ -59,20 +67,28 @@ namespace Test
         /// </summary>
         protected WeaponManager m_WeaponManager { get; private set; }
 
-        public int GetEquipingType() => (int)m_EquipingWeaponType;
-        public int GetItemIndex() => ItemIndex;
+        /// <summary>
+        /// 메인 카메라
+        /// </summary>
+        protected Camera m_MainCamera { get; private set; }
+
+        protected Transform PivotTransform { get => m_Pivot; }
 
         public bool IsEquiping { get; private set; }
         public bool IsUnequiping { get; private set; }
-        public virtual bool IsFiring { get; private set; }
-        public virtual bool IsReloading { get; private set; }
+        //public virtual bool IsFiring { get; private set; }
+        //public virtual bool IsReloading { get; private set; }
+
+        public virtual bool CanChangeWeapon { get => !IsEquiping && !IsUnequiping; }
+
+        public int GetEquipingType() => (int)m_EquipingWeaponType;
+        public int GetItemIndex() => ItemIndex;
 
         protected virtual void Awake()
         {
             m_EquipmentAnimator = GetComponent<Animator>();
-
-            m_CrossHairController = FindObjectOfType<CrossHairController>();
-
+            m_CrossHairDisplayer = FindObjectOfType<UI.Game.CrossHairDisplayer>();
+            
             m_WaitEquipingTime = new WaitForSeconds(0.35f);
             m_WaitUnequipingTime = new WaitForSeconds(0.55f);
 
@@ -82,9 +98,11 @@ namespace Test
  
             m_AudioSource = transform.parent.GetComponent<AudioSource>();
             m_WeaponManager = transform.parent.GetComponent<WeaponManager>();
+
+            m_MainCamera = Camera.main;
         }
 
-        public virtual void Init()
+        public void Init()
         {
             m_ArmAnimator.runtimeAnimatorController = m_ArmOverrideController;
 
@@ -93,8 +111,14 @@ namespace Test
             StartCoroutine(WaitEquip());
         }
 
-        protected abstract void AssignKeyAction();
-        protected abstract void DischargeKeyAction();
+        protected virtual void AssignKeyAction()
+        {
+            m_PlayerInputController.MouseMovement += m_WeaponSway.Sway;
+        }
+        protected virtual void DischargeKeyAction()
+        {
+            m_PlayerInputController.MouseMovement -= m_WeaponSway.Sway;
+        }
 
         public virtual void Dispose()
         {
@@ -108,7 +132,7 @@ namespace Test
             m_ArmAnimator.SetTrigger("Equip");
             m_EquipmentAnimator.SetTrigger("Equip");
             m_AudioSource.PlayOneShot(m_WeaponSoundScriptable.equipSound);
-            m_CrossHairController.SetCrossHair((int)m_WeaponStatScriptable.m_DefaultCrossHair);
+            m_CrossHairDisplayer.SetCrossHair((int)m_WeaponStatScriptable.m_DefaultCrossHair);
 
             yield return m_WaitEquipingTime;
 
