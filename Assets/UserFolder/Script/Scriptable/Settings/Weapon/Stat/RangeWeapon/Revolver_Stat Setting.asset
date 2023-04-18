@@ -21,6 +21,7 @@ MonoBehaviour:
   m_DefaultCrossHair: 2
   m_RunningPivotPosition: {x: 0.04, y: -0.088, z: 0.472}
   m_RunningPivotDirection: {x: -59.838, y: -4.337, z: 7.059}
+  m_FOVMultiplier: 4
   m_BurstAttackTime: 0.1
   m_MaxRange: 100
   m_UpAxisRecoil: 1.7
@@ -32,5 +33,5 @@ MonoBehaviour:
   m_AimingPosTimeRatio: 0.07
   m_SpinValue: 17
   m_AimingPivotPosition: {x: -0.04, y: 0.029, z: 0.448}
-  m_AimingPivotDirection: {x: -2.545, y: 0.922, z: -2.129}
+  m_AimingPivotDirection: {x: -1, y: 0.86, z: -2.129}
   m_AimingFOV: 10

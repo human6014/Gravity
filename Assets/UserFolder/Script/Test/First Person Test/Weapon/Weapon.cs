@@ -39,7 +39,10 @@ namespace Test
         [Header("Weapon Sway")]
         [SerializeField] private WeaponSway m_WeaponSway;
 
-        private UI.Game.CrossHairDisplayer m_CrossHairDisplayer;
+        [Header("Player Data")]
+        [SerializeField] private PlayerData m_PlayerData;
+
+        private UI.Player.CrossHairDisplayer m_CrossHairDisplayer;
         
         private WaitForSeconds m_WaitEquipingTime;
         private WaitForSeconds m_WaitUnequipingTime;
@@ -87,7 +90,7 @@ namespace Test
         protected virtual void Awake()
         {
             m_EquipmentAnimator = GetComponent<Animator>();
-            m_CrossHairDisplayer = FindObjectOfType<UI.Game.CrossHairDisplayer>();
+            m_CrossHairDisplayer = FindObjectOfType<UI.Player.CrossHairDisplayer>();
             
             m_WaitEquipingTime = new WaitForSeconds(0.35f);
             m_WaitUnequipingTime = new WaitForSeconds(0.55f);

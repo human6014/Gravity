@@ -19,6 +19,7 @@ namespace Manager
 
     public class WeaponManager : MonoBehaviour
     {
+        [SerializeField] private PlayerData m_PlayerData;
         [SerializeField] private PlayerInputController m_PlayerInputController;
         [SerializeField] private Transform m_Pivot;
         [Header("Pooling")]
@@ -28,8 +29,6 @@ namespace Manager
 
         [SerializeField] private int m_EquipingItemIndex = 6;
 
-        [Space(10)]
-        [SerializeField] private Inventory m_Inventory;
         public Vector3 m_OriginalPivotPosition { get; private set; }            //위치 조정용 부모 오브젝트 원래 위치
         public Quaternion m_OriginalPivotRotation { get; private set; }         //위치 조정용 부모 오브젝트 원래 각도
         public float m_OriginalFOV { get; private set; }
@@ -68,20 +67,20 @@ namespace Manager
         }
 
         public void RegisterWeapon(int slotNumber, int index)
-            => m_Inventory.SetHavingWeaponIndex(slotNumber, index);
+            => m_PlayerData.GetInventory().SetHavingWeaponIndex(slotNumber, index);
         
 
         public void AddThrowingWeapon(int value)
-            => m_Inventory.AddThrowingWeapon(value);
+            => m_PlayerData.GetInventory().AddThrowingWeapon(value);
         
 
         public void AddHealKit(int value)
-            => m_Inventory.AddThrowingWeapon(value);
+            => m_PlayerData.GetInventory().AddThrowingWeapon(value);
         
 
         private void TryWeaponChange(int slotNumber)
         {
-            int index = m_Inventory.GetHavingWeaponIndex(slotNumber);
+            int index = m_PlayerData.GetInventory().GetHavingWeaponIndex(slotNumber);
             if (index == -1) return;
             if (m_CurrentWeapon != null)
             {
@@ -100,7 +99,7 @@ namespace Manager
 
         public void ChangeWeapon()
         {
-            m_WeaponDictionary.TryGetValue(new CustomKey(m_CurrentEquipIndex, m_Inventory.GetHavingWeaponIndex(m_CurrentEquipIndex)), out m_CurrentWeapon);
+            m_WeaponDictionary.TryGetValue(new CustomKey(m_CurrentEquipIndex, m_PlayerData.GetInventory().GetHavingWeaponIndex(m_CurrentEquipIndex)), out m_CurrentWeapon);
             m_CurrentWeapon.Init();
         }
     }
