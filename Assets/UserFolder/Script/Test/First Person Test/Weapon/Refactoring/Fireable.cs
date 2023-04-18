@@ -36,7 +36,6 @@ public abstract class Fireable : MonoBehaviour
     [SerializeField] private float m_LightOffTime = 0.3f;
     [SerializeField] private float m_InstanceCasingTime = 1f;
 
-    protected Transform m_MuzzlePos;             //ÃÑ±¸ À§Ä¡
     protected Transform m_CameraTransform;
     protected RangeWeaponStatScriptable m_RangeWeaponStat;
 
@@ -49,10 +48,9 @@ public abstract class Fireable : MonoBehaviour
     private PlayerState m_PlayerState;
     private SurfaceManager m_SurfaceManager;
     private MouseLook m_MouseLook;
-    private UI.Game.CrossHairDisplayer m_CrossHairController;
+    private UI.Player.CrossHairDisplayer m_CrossHairController;
     private void Awake()
     {
-        m_MuzzlePos = m_FireLight.transform;
         m_CameraTransform = Camera.main.transform;
 
         m_LightOffSecond = new WaitForSeconds(m_LightOffTime);
@@ -68,7 +66,7 @@ public abstract class Fireable : MonoBehaviour
 
         m_SurfaceManager = FindObjectOfType<SurfaceManager>();
         m_MouseLook = FindObjectOfType<FirstPersonController>().MouseLook;
-        m_CrossHairController = FindObjectOfType<UI.Game.CrossHairDisplayer>();
+        m_CrossHairController = FindObjectOfType<UI.Player.CrossHairDisplayer>();
 
         if (!m_HasBullet) return;
         m_CasingPoolingObject = ObjectPoolManager.Register(m_CasingObject, m_ActiveObjectPool);

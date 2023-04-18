@@ -42,7 +42,11 @@ namespace Scriptable
         [Tooltip("달릴 때 피봇 각도")]
         public Vector3 m_RunningPivotDirection;
 
-        [Header("")]
+        [Tooltip("달릴 때 FOV 가감 속도")]
         public float m_FOVMultiplier = 4;
+
+        [Space(10)]
+        [Header("UI")]
+        public Sprite m_WeaponIcon;
     }
 }

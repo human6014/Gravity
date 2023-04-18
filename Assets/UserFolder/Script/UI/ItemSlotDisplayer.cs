@@ -9,9 +9,9 @@ namespace UI.Player
     {
         [SerializeField] private Image[] m_WeaponIconImage;
 
-        public void UpdateWeaponIcon(int slotNumber)
+        public void UpdateWeaponSlotIcon(int slotNumber, Sprite sprite)
         {
-
+            m_WeaponIconImage[slotNumber].sprite = sprite;
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Scriptable;
 
-namespace UI.Game
+namespace UI.Player
 {
     public class CrossHairDisplayer : MonoBehaviour
     {
@@ -88,15 +88,15 @@ namespace UI.Game
 
         public void CrossHairSetTrigger(string state)
         {
-            m_Animator.SetTrigger(state);
+            //m_Animator.SetTrigger(state);
             m_PlayerState.SetBack();
         }
 
         public void CrossHairSetBool(string state)
         {
             if (state == m_CurrentAnimState) return;
-            m_Animator.SetBool(m_CurrentAnimState, false);
-            m_Animator.SetBool(state, true);
+            //m_Animator.SetBool(m_CurrentAnimState, false);
+            //m_Animator.SetBool(state, true);
             m_CurrentAnimState = state;
         }
 

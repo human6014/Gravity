@@ -7,6 +7,14 @@ using Entity.Object;
 
 namespace Test
 {
+    [System.Flags]
+    public enum FireMode
+    {
+        Auto = 1,
+        Burst = 2,
+        Semi = 4,
+    }
+
     public class RangeWeapon : Weapon
     {
         #region SerializeField
@@ -45,14 +53,7 @@ namespace Test
         private RangeWeaponSoundScriptable m_RangeWeaponSound;
 
         public override bool CanChangeWeapon => base.CanChangeWeapon && !m_IsFiring && !IsReloading;
-        [System.Flags]
-        private enum FireMode
-        {
-            Auto = 1,
-            Burst = 2,
-            Semi= 4,
-        }
-        
+
         private FireMode m_CurrentFireMode = FireMode.Auto;
         private int m_FireModeLength;
         private int m_FireModeIndex = 1;

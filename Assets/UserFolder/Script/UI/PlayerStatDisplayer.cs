@@ -7,17 +7,17 @@ namespace UI.Player
 {
     public class PlayerStatDisplayer : MonoBehaviour
     {
-        [SerializeField] private Image m_HPImages;
+        [SerializeField] private Image m_HPImage;
         [SerializeField] private Image m_MPImage;
 
-        public void UpdateHPImage()
+        public void UpdateHPImage(float value)
         {
-
+            m_HPImage.fillAmount = value;
         }
 
-        public void UpdateMPImage()
+        public void UpdateMPImage(float value)
         {
-
+            m_MPImage.fillAmount = value;
         }
     }
 }
