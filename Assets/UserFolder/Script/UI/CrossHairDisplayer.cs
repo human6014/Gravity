@@ -88,15 +88,15 @@ namespace UI.Player
 
         public void CrossHairSetTrigger(string state)
         {
-            //m_Animator.SetTrigger(state);
+            m_Animator.SetTrigger(state);
             m_PlayerState.SetBack();
         }
 
         public void CrossHairSetBool(string state)
         {
             if (state == m_CurrentAnimState) return;
-            //m_Animator.SetBool(m_CurrentAnimState, false);
-            //m_Animator.SetBool(state, true);
+            m_Animator.SetBool(m_CurrentAnimState, false);
+            if (state != m_IdleState) m_Animator.SetBool(state, true);
             m_CurrentAnimState = state;
         }
 

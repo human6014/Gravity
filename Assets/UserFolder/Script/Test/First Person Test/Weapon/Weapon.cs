@@ -20,10 +20,10 @@ namespace Test
     {
         [Header("Parent")]
         [Header("Index")]
-        [SerializeField] protected int ItemIndex;   //아이템 고유번호
+        [SerializeField] protected int ItemIndex;   //아이템 고유번호 -> 이름 바꾸자
 
         [Header("Equiping Type")]
-        [SerializeField] private EquipingWeaponType m_EquipingWeaponType;
+        [SerializeField] protected EquipingWeaponType m_EquipingWeaponType;
 
         [Header("Weapon Animation")]
         [SerializeField] protected Animator m_ArmAnimator; //팔 애니메이터
@@ -40,13 +40,14 @@ namespace Test
         [SerializeField] private WeaponSway m_WeaponSway;
 
         [Header("Player Data")]
-        [SerializeField] private PlayerData m_PlayerData;
+        [SerializeField] protected PlayerData m_PlayerData;
 
         private UI.Player.CrossHairDisplayer m_CrossHairDisplayer;
         
         private WaitForSeconds m_WaitEquipingTime;
         private WaitForSeconds m_WaitUnequipingTime;
 
+        protected WeaponInfo m_WeaponInfo { get; private set; }
 
         protected PlayerState m_PlayerState { get; private set; }
 
@@ -77,6 +78,8 @@ namespace Test
 
         protected Transform PivotTransform { get => m_Pivot; }
 
+        public Sprite WeaponIcon { get => m_WeaponStatScriptable.m_WeaponIcon; }
+        
         public bool IsEquiping { get; private set; }
         public bool IsUnequiping { get; private set; }
         //public virtual bool IsFiring { get; private set; }
@@ -84,8 +87,9 @@ namespace Test
 
         public virtual bool CanChangeWeapon { get => !IsEquiping && !IsUnequiping; }
 
-        public int GetEquipingType() => (int)m_EquipingWeaponType;
-        public int GetItemIndex() => ItemIndex;
+        public BulletType m_BulletType { get => m_WeaponStatScriptable.m_BulletType; }
+        public int EquipingType { get => (int)m_EquipingWeaponType; }
+        public int GetItemIndex { get => ItemIndex; }
 
         protected virtual void Awake()
         {
@@ -101,7 +105,7 @@ namespace Test
  
             m_AudioSource = transform.parent.GetComponent<AudioSource>();
             m_WeaponManager = transform.parent.GetComponent<WeaponManager>();
-
+            m_WeaponInfo = m_PlayerData.GetInventory().WeaponInfo[(int)m_EquipingWeaponType];
             m_MainCamera = Camera.main;
         }
 
@@ -138,8 +142,8 @@ namespace Test
             m_CrossHairDisplayer.SetCrossHair((int)m_WeaponStatScriptable.m_DefaultCrossHair);
 
             yield return m_WaitEquipingTime;
-
             m_PlayerState.SetWeaponChanging(false);
+
             IsEquiping = false;
         }
 

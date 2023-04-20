@@ -17,22 +17,24 @@ public class PlayerData : MonoBehaviour
     private const int m_ToAmountConst = 1000;
 
     private Test.EquipingWeaponType m_CurrentEquipingWeaponType;
-
+    private WeaponInfo m_CurrentWeaponInfo;
     public Inventory GetInventory() => m_Inventory;
     public int GetPlayerHP() => m_PlayerHP;
     public int GetPlayerMP() => m_PlayerMP;
+
 
     /// <summary>
     /// 무기 변경 시
     /// </summary>
     /// <param name="equipingWeaponType">무기 타입 (슬롯 번호랑 일치)</param>
+    /// <param name="bulletType">무기 총알 타입 (아이콘 표시용)</param>
     /// <param name="weaponImage">무기 아이콘 이미지</param>
-    public void ChangeWeapon(Test.EquipingWeaponType equipingWeaponType, UnityEngine.UI.Image weaponImage)
+    public void ChangeWeapon(int equipingWeaponType, BulletType bulletType, Sprite weaponImage)
     {
-        m_CurrentEquipingWeaponType = equipingWeaponType;
-        m_PlayerUIManager.ChangeWeapon(equipingWeaponType, weaponImage);
+        m_CurrentEquipingWeaponType = (Test.EquipingWeaponType)equipingWeaponType;
+        m_CurrentWeaponInfo = m_Inventory.WeaponInfo[equipingWeaponType];
+        m_PlayerUIManager.ChangeWeapon(equipingWeaponType, (int)bulletType, m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, weaponImage);
     }
-
 
     /// <summary>
     /// 원거리 무기 사격모드 변경 시
@@ -41,7 +43,6 @@ public class PlayerData : MonoBehaviour
     public void ChangeFireMode(Test.FireMode fireMode)
     {
         int arrayIndex = (int)Mathf.Log((int)fireMode);
-        Debug.Log("FireMode 로그값 : " + arrayIndex);
         m_PlayerUIManager.ChangeFireMode(arrayIndex);
     }
 
@@ -49,20 +50,46 @@ public class PlayerData : MonoBehaviour
     /// <summary>
     /// 원거리 무기 사격 시
     /// </summary>
-    public void RangeWeaponFire()   //아직 안댐
+    public void RangeWeaponFire(int maxBullet)   //아직 안댐
     {
         //m_Inventory.GetCurrentRemainBullet((int)m_CurrentEquipingWeaponType)
-        m_PlayerUIManager.RangeWeaponFire();
+        int currentRemainBullet = --m_CurrentWeaponInfo.m_CurrentRemainBullet;
+        bool isActiveReloadImage = IsActiveReloadImage(currentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, maxBullet);
+
+        m_PlayerUIManager.RangeWeaponFire(currentRemainBullet, isActiveReloadImage);
     }
 
+    public void RangeWeaponReload(int maxBullet)
+    {
+        int totalBullet = m_CurrentWeaponInfo.m_CurrentRemainBullet + m_CurrentWeaponInfo.m_MagazineRemainBullet;
+        
+        if (totalBullet > maxBullet)
+        {
+            m_CurrentWeaponInfo.m_MagazineRemainBullet -= maxBullet - m_CurrentWeaponInfo.m_CurrentRemainBullet;
+            m_CurrentWeaponInfo.m_CurrentRemainBullet = maxBullet;
+        }
+        else
+        {
+            m_CurrentWeaponInfo.m_CurrentRemainBullet = totalBullet;
+            m_CurrentWeaponInfo.m_MagazineRemainBullet = 0;
+        }
+        bool isActiveReloadImage = IsActiveReloadImage(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, maxBullet);
+        m_PlayerUIManager.RangeWeaponReload(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, isActiveReloadImage);
+    }
+
+    private bool IsActiveReloadImage(int currentRemainBullet, int currentMagazineBullet, int maxBullet)
+    {
+        if (maxBullet != 0 && currentRemainBullet < maxBullet * 0.5f && currentMagazineBullet != 0) return true;
+        return false;
+    }
 
     /// <summary>
     /// 무기를 얻었을 때
     /// </summary>
     /// <param name="equipingWeaponType">무기 타입 (슬롯 번호랑 일치)</param>
-    public void GetWeapon(Test.EquipingWeaponType equipingWeaponType, Sprite sprite, int weaponIndex)    //아직 안댐
+    public void GetWeapon(int equipingWeaponType, Sprite sprite, int weaponIndex, int maxBullet)    //아직 안댐
     {
-        m_Inventory.SetHavingWeaponIndex((int)equipingWeaponType, weaponIndex);
+        m_Inventory.WeaponInfo[equipingWeaponType].m_HavingWeaponIndex = weaponIndex;
         m_PlayerUIManager.UpdateWeaponSlot(equipingWeaponType, sprite);
     }
 

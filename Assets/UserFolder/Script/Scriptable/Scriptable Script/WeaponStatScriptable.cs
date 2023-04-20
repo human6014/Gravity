@@ -2,15 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum CrossHair
+{
+    None = 0,           //없음
+    Normal = 1,         //중앙점
+    Reticle = 2,        //십자선
+    Circle = 3,         //원형선
+}
+public enum BulletType
+{
+    None = 0,
+    Generic = 1,
+    HandGun = 2,
+    ShotGun = 3,
+    Sinper = 4
+}
 namespace Scriptable
 {
-    public enum CrossHair
-    {
-        None = 0,           //없음
-        Normal = 1,         //중앙점
-        Reticle = 2,        //십자선
-        Circle = 3,         //원형선
-    }
 
     public class WeaponStatScriptable : ScriptableObject
     {
@@ -47,6 +55,10 @@ namespace Scriptable
 
         [Space(10)]
         [Header("UI")]
+        [Tooltip("Weapon Icon")]
         public Sprite m_WeaponIcon;
+
+        [Tooltip("Bullet Type")]
+        public BulletType m_BulletType;
     }
 }

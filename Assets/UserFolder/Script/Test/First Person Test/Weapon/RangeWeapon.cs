@@ -15,6 +15,7 @@ namespace Test
         Semi = 4,
     }
 
+
     public class RangeWeapon : Weapon
     {
         #region SerializeField
@@ -32,16 +33,10 @@ namespace Test
 
         [Header("Fire mode")]
         [CustomAttribute.MultiEnum] [SerializeField] private FireMode m_FireMode;
-
-        [SerializeField] private bool m_IsEmpty; //Reload Test;
         #endregion
 
         private Quaternion m_AimingPivotRotation;           //위치 조정용 옮길 각도(Quaternion)
         private Quaternion m_RunningPivotRotation;          //위치 조정용 옮길 각도
-
-        private bool m_IsFiring;
-        private bool m_IsRunning;
-        private float m_AimingFOV;
 
         private WaitForSeconds m_BurstFireTime;
         private Coroutine m_RunningCoroutine;
@@ -52,15 +47,20 @@ namespace Test
         private RangeWeaponStatScriptable m_RangeWeaponStat;
         private RangeWeaponSoundScriptable m_RangeWeaponSound;
 
-        public override bool CanChangeWeapon => base.CanChangeWeapon && !m_IsFiring && !IsReloading;
-
+        
         private FireMode m_CurrentFireMode = FireMode.Auto;
         private int m_FireModeLength;
         private int m_FireModeIndex = 1;
 
         private float m_CurrentFireTime;
         private float m_CurrentPosTime;
+        private float m_AimingFOV;
 
+        private bool m_IsFiring;
+        private bool m_IsRunning;
+
+        
+        public override bool CanChangeWeapon => base.CanChangeWeapon && !m_IsFiring && !IsReloading;
         private bool IsReloading => m_Reloadable.m_IsReloading; 
 
         protected override void Awake()
@@ -76,8 +76,9 @@ namespace Test
 
             m_AimingPivotRotation = Quaternion.Euler(m_RangeWeaponStat.m_AimingPivotDirection);
             m_RunningPivotRotation = Quaternion.Euler(m_RangeWeaponStat.m_RunningPivotDirection);
-            m_AimingFOV = m_WeaponManager.m_OriginalFOV - m_RangeWeaponStat.m_AimingFOV;
 
+            m_AimingFOV = m_WeaponManager.m_OriginalFOV - m_RangeWeaponStat.m_AimingFOV;
+            
             AssignFireMode();
         }
 
@@ -90,12 +91,14 @@ namespace Test
         #region Assign
         private void AssignFireMode()
         {
+            #if UNITY_EDITOR
             if (m_FireMode == 0)
             {
                 Debug.LogError("FireMode must not be Nothing");
                 return;
             }
-            
+            #endif
+
             int length = System.Enum.GetValues(typeof(FireMode)).Length;
             m_FireModeLength = (int)Mathf.Pow(2, length);
             if (!m_FireMode.HasFlag((FireMode)m_FireModeIndex)) ChangeFlag();
@@ -183,6 +186,7 @@ namespace Test
             m_ArmAnimator.SetTrigger("ChangeFireMode");
 
             m_AudioSource.PlayOneShot(m_RangeWeaponSound.changeModeSound[0]);
+            m_PlayerData.ChangeFireMode(m_CurrentFireMode);
         }
 
         private bool ChangeFlag()
@@ -216,13 +220,21 @@ namespace Test
         {
             if (base.IsEquiping || base.IsUnequiping) return;
             if (m_Reloadable.m_IsReloading || m_IsFiring) return;
+            if (m_WeaponInfo.m_MagazineRemainBullet == 0) return;
 
-            m_Reloadable.DoReload(m_IsEmpty); //변경해야함
+            bool isEmpty = m_WeaponInfo.m_CurrentRemainBullet <= 0;
+            int totalBullet = m_WeaponInfo.m_CurrentRemainBullet + m_WeaponInfo.m_MagazineRemainBullet;
+
+            int difference;
+            if (totalBullet > m_RangeWeaponStat.m_MaxBullets) difference = m_RangeWeaponStat.m_MaxBullets - m_WeaponInfo.m_CurrentRemainBullet;
+            else difference = totalBullet - m_WeaponInfo.m_CurrentRemainBullet;
+            
+            m_Reloadable.DoReload(isEmpty, difference);
+            m_PlayerData.RangeWeaponReload(m_RangeWeaponStat.m_MaxBullets);
         }
 
-
         #region Fire
-        private bool CanFire() => m_CurrentFireTime >= m_RangeWeaponStat.m_AttackTime && 
+        private bool CanFire() => m_CurrentFireTime >= m_RangeWeaponStat.m_AttackTime  &&
             m_PlayerState.PlayerBehaviorState != PlayerBehaviorState.Running && m_Reloadable.CanFire() && !m_IsFiring;
         
 
@@ -230,14 +242,20 @@ namespace Test
         {
             if (base.IsEquiping || base.IsUnequiping) return;
             if (m_CurrentFireMode != FireMode.Auto) return;
-            if (CanFire()) DoFire();
+            if (!CanFire()) return;
+
+            if (m_WeaponInfo.m_CurrentRemainBullet <= 0) PlayEmptySound();
+            else DoFire();
         }
 
         private void TrySemiFire()
         {
             if (base.IsEquiping || base.IsUnequiping) return;
             if (m_CurrentFireMode == FireMode.Auto) return;
-            if (CanFire())
+            if (!CanFire()) return;
+
+            if (m_WeaponInfo.m_CurrentRemainBullet <= 0) PlayEmptySound();
+            else
             {
                 if (m_CurrentFireMode == FireMode.Semi) DoFire();
                 else if (m_CurrentFireMode == FireMode.Burst) StartCoroutine(BurstFire());
@@ -249,8 +267,14 @@ namespace Test
             for (int i = 0; i < 3; i++)
             {
                 DoFire();
+                if (m_WeaponInfo.m_CurrentRemainBullet <= 0) yield break;
                 yield return m_BurstFireTime;
             }
+        }
+
+        private void PlayEmptySound()
+        {
+            m_AudioSource.PlayOneShot(m_RangeWeaponSound.emptySound[0]);
         }
 
         private void DoFire()
@@ -259,6 +283,7 @@ namespace Test
             m_CurrentFireTime = 0;
 
             m_Reloadable.StopReload();
+            m_PlayerData.RangeWeaponFire(m_RangeWeaponStat.m_MaxBullets);
             m_PlayerState.SetWeaponFiring();
 
             AudioClip audioClip = m_RangeWeaponSound.fireSound[Random.Range(0, m_RangeWeaponSound.fireSound.Length)];

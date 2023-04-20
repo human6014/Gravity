@@ -14,13 +14,13 @@ public class InteractableNonRepeatReload : Reloadable
         m_HowInteratable = Interactabe.Semi;
     }
 
-    public override void DoReload(bool m_IsEmpty)
+    public override void DoReload(bool m_IsEmpty, int difference)
     {
         if (m_IsEmpty) StartCoroutine(NonRepeatableEmptyReload());
-        else StartCoroutine(NonRepeatableNonEmptyReload());
+        else StartCoroutine(NonRepeatableNonEmptyReload(difference));
     }
 
-    private IEnumerator NonRepeatableNonEmptyReload()
+    private IEnumerator NonRepeatableNonEmptyReload(int difference)
     {
         m_IsReloading = true;
         m_IsNonEmptyReloading = true;
@@ -28,9 +28,10 @@ public class InteractableNonRepeatReload : Reloadable
         m_ArmAnimator.SetTrigger("Empty Reload");
         m_EquipmentAnimator.SetTrigger("Empty Reload");
 
+        Debug.Log(difference);
         yield return base.DelaySound(m_RangeWeaponSound.reloadStartSoundClips, 1);
 
-        yield return base.DelaySoundWithAnimation(m_RangeWeaponSound.reloadSoundClips, 5, 0.4f);
+        yield return base.DelaySoundWithAnimation(m_RangeWeaponSound.reloadSoundClips, difference, 0.4f);
 
         yield return base.DelaySound(m_RangeWeaponSound.reloadEndSoundClips, 1);
 
