@@ -14,7 +14,7 @@ public class NonInteractableReload : Reloadable
         m_HowInteratable = Interactabe.Non;
     }
 
-    public override void DoReload(bool m_IsEmpty)
+    public override void DoReload(bool m_IsEmpty, int difference)
         => StartCoroutine(Reload(m_IsEmpty));
     
 

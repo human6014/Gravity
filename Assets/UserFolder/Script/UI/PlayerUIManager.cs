@@ -17,9 +17,11 @@ namespace UI.Manager
         [SerializeField] private DamageDisplayer m_DamageDisplayer;
 
 
-        public void ChangeWeapon(Test.EquipingWeaponType equipingWeaponType, UnityEngine.UI.Image weaponImage)
+        public void ChangeWeapon(int equipingWeaponType, int bulletType, int currentRemainBullet, int magazineRemainBullet, Sprite weaponImage)
         {
-
+            m_WeaponPropertyDisplayer.ChangeWeapon(bulletType, currentRemainBullet, weaponImage);
+            m_WeaponPropertyDisplayer.UpdateRemainBulletText(magazineRemainBullet);
+            //equipingWeaponTypeÀº ½½·Ô ¹«´Ì ÁÖ±â¿ë
         }
 
         public void ChangeFireMode(int index)
@@ -27,15 +29,22 @@ namespace UI.Manager
             m_WeaponPropertyDisplayer.UpdateFireMode(index);
         }
 
-        public void RangeWeaponFire()
+        public void RangeWeaponFire(int currentRemainBullet, bool isActive)
         {
-            m_WeaponPropertyDisplayer.UpdateRemainBulletIcon(1);
-            m_WeaponPropertyDisplayer.UpdateRemainBulletText(1);
+            m_WeaponPropertyDisplayer.UpdateRemainBulletIcon(currentRemainBullet);
+            m_WeaponPropertyDisplayer.DisplayReloadImage(isActive);
         }
 
-        public void UpdateWeaponSlot(Test.EquipingWeaponType equipingWeaponType, Sprite sprite)
+        public void RangeWeaponReload(int currentRemainBullet, int magazineRemainBullet, bool isActive)
         {
-            m_ItemSlotDisplayer.UpdateWeaponSlotIcon((int)equipingWeaponType, sprite);
+            m_WeaponPropertyDisplayer.UpdateRemainBulletIcon(currentRemainBullet);
+            m_WeaponPropertyDisplayer.UpdateRemainBulletText(magazineRemainBullet);
+            m_WeaponPropertyDisplayer.DisplayReloadImage(isActive);
+        }
+
+        public void UpdateWeaponSlot(int equipingWeaponType, Sprite sprite)
+        {
+            m_ItemSlotDisplayer.UpdateWeaponSlotIcon(equipingWeaponType, sprite);
         }
 
         public void UpdateRemainThrowingWeapon(int remainThrowingWeapon)

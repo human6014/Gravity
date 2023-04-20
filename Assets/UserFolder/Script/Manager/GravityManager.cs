@@ -79,7 +79,7 @@ namespace Manager
             if (beforeGravityType == currentGravityType) IsGravityDupleicated = true;
             else
             {
-                GravityChangeAction(currentGravityType);
+                GravityChangeAction?.Invoke(currentGravityType);
                 Physics.gravity = GravityVector * Physics.gravity.magnitude;
 
                 IsGravityChanging = true;

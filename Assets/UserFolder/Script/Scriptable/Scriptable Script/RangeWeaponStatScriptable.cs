@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace Scriptable
 {
     [CreateAssetMenu(fileName = "RangeWeaponStatSetting", menuName = "Scriptable Object/RangeWeaponStatSettings", order = int.MaxValue - 7)]
@@ -16,6 +17,8 @@ namespace Scriptable
         [Tooltip("최대 사거리")]
         public float m_MaxRange = 100;
 
+        [Tooltip("최대 장탄 수")]
+        public int m_MaxBullets = 30;
 
         [Header("Attack Recoil")]
         [Tooltip("상하 기본 반동값")]

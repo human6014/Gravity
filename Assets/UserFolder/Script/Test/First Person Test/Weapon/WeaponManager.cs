@@ -51,7 +51,7 @@ namespace Manager
             foreach (Transform child in transform)
             {
                 if(!child.TryGetComponent(out Weapon weapon)) continue;
-                m_WeaponDictionary.Add(new CustomKey(weapon.GetEquipingType(),weapon.GetItemIndex()), weapon);
+                m_WeaponDictionary.Add(new CustomKey(weapon.EquipingType,weapon.GetItemIndex), weapon);
             }
             m_PlayerInputController.ChangeEquipment += TryWeaponChange;
         }
@@ -67,20 +67,11 @@ namespace Manager
         }
 
         public void RegisterWeapon(int slotNumber, int index)
-            => m_PlayerData.GetInventory().SetHavingWeaponIndex(slotNumber, index);
-        
-
-        public void AddThrowingWeapon(int value)
-            => m_PlayerData.GetInventory().AddThrowingWeapon(value);
-        
-
-        public void AddHealKit(int value)
-            => m_PlayerData.GetInventory().AddThrowingWeapon(value);
-        
+            => m_PlayerData.GetInventory().WeaponInfo[slotNumber].m_HavingWeaponIndex = index;
 
         private void TryWeaponChange(int slotNumber)
         {
-            int index = m_PlayerData.GetInventory().GetHavingWeaponIndex(slotNumber);
+            int index = m_PlayerData.GetInventory().WeaponInfo[slotNumber].m_HavingWeaponIndex;
             if (index == -1) return;
             if (m_CurrentWeapon != null)
             {
@@ -90,8 +81,8 @@ namespace Manager
             }
             else
             {
-                
                 m_WeaponDictionary.TryGetValue(new CustomKey(slotNumber, index), out m_CurrentWeapon);
+                m_PlayerData.ChangeWeapon(m_CurrentWeapon.EquipingType, m_CurrentWeapon.m_BulletType, m_CurrentWeapon.WeaponIcon);
                 m_CurrentWeapon.Init();
             }
             m_CurrentEquipIndex = slotNumber;
@@ -99,8 +90,12 @@ namespace Manager
 
         public void ChangeWeapon()
         {
-            m_WeaponDictionary.TryGetValue(new CustomKey(m_CurrentEquipIndex, m_PlayerData.GetInventory().GetHavingWeaponIndex(m_CurrentEquipIndex)), out m_CurrentWeapon);
+            CustomKey key = new(m_CurrentEquipIndex, m_PlayerData.GetInventory().WeaponInfo[m_CurrentEquipIndex].m_HavingWeaponIndex);
+            m_WeaponDictionary.TryGetValue(key, out m_CurrentWeapon);
+
             m_CurrentWeapon.Init();
+            
+            m_PlayerData.ChangeWeapon(m_CurrentWeapon.EquipingType, m_CurrentWeapon.m_BulletType, m_CurrentWeapon.WeaponIcon);
         }
     }
 }

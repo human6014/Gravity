@@ -13,24 +13,24 @@ public class InteractableRepeatReload : Reloadable
         m_HowInteratable = Interactabe.Full;
     }
 
-    public override void DoReload(bool m_IsEmpty)
+    public override void DoReload(bool m_IsEmpty, int difference)
     {
-        if (m_IsEmpty) StartCoroutine(ReapeatableEmptyReload());
-        else StartCoroutine(ReapeatableNonEmptyReload());
+        if (m_IsEmpty) StartCoroutine(ReapeatableEmptyReload(difference));
+        else StartCoroutine(ReapeatableNonEmptyReload(difference));
     }
 
-    private IEnumerator ReapeatableNonEmptyReload()
+    private IEnumerator ReapeatableNonEmptyReload(int difference)
     {
         m_IsReloading = true;
         m_IsNonEmptyReloading = true;
 
-        yield return base.DelaySoundWithAnimation(m_RangeWeaponSound.reloadSoundClips, 5);
+        yield return base.DelaySoundWithAnimation(m_RangeWeaponSound.reloadSoundClips, difference);
 
         m_IsNonEmptyReloading = false;
         m_IsReloading = false;
     }
 
-    private IEnumerator ReapeatableEmptyReload()
+    private IEnumerator ReapeatableEmptyReload(int difference)
     {
         m_IsReloading = true;
         m_IsEmptyReloading = true;
@@ -40,11 +40,13 @@ public class InteractableRepeatReload : Reloadable
 
         yield return base.DelaySound(m_RangeWeaponSound.emptyReloadSoundClips, 1, 0.4f);
 
-        m_ArmAnimator.SetTrigger("Start Reload");
-        m_EquipmentAnimator.SetTrigger("Start Reload");
+        if (difference != 1)
+        {
+            m_ArmAnimator.SetTrigger("Start Reload");
+            m_EquipmentAnimator.SetTrigger("Start Reload");
 
-        yield return base.DelaySoundWithAnimation(m_RangeWeaponSound.reloadSoundClips, 5, 0.3f);
-
+            yield return base.DelaySoundWithAnimation(m_RangeWeaponSound.reloadSoundClips, difference - 1, 0.3f);
+        }
         m_IsEmptyReloading = false;
         m_IsReloading = false;
     }

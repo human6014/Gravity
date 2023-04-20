@@ -26,6 +26,7 @@ namespace Test
 
         private bool m_IsThrowing;
         private bool m_IsRunning;
+        private const int m_MaxBullet = 1;
         private int m_TempHasCount = 1;
 
         private Coroutine m_RunningCoroutine;
@@ -106,7 +107,7 @@ namespace Test
 
         private void LongThrow()
         {
-            if (m_IsThrowing || m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running) return;
+            if (m_IsThrowing || m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running || m_WeaponInfo.m_CurrentRemainBullet <= 0) return;
             m_ArmAnimator.SetTrigger("Long Throw");
             m_EquipmentAnimator.SetTrigger("Long Throw");
             StartCoroutine(PlayThrowSound(true));
@@ -114,7 +115,7 @@ namespace Test
 
         private void ShortThrow()
         {
-            if (m_IsThrowing || m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running) return;
+            if (m_IsThrowing || m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running || m_WeaponInfo.m_CurrentRemainBullet <= 0) return;
             m_ArmAnimator.SetTrigger("Short Throw");
             m_EquipmentAnimator.SetTrigger("Short Throw");
             StartCoroutine(PlayThrowSound(false));
@@ -122,6 +123,7 @@ namespace Test
 
         private IEnumerator PlayThrowSound(bool isLong)
         {
+            m_PlayerData.RangeWeaponFire(m_MaxBullet);
             m_IsThrowing = true;
             WeaponSoundScriptable.DelaySoundClip[] playingSound = m_ThrowingWeaponSound.throwSound;
             for (int i = 0; i < playingSound.Length; i++)
@@ -131,6 +133,7 @@ namespace Test
             }
             m_RendererObject.SetActive(false);
             Throw(isLong);
+            m_PlayerData.RangeWeaponReload(1);
         }
 
         private void Throw(bool isLong)

@@ -61,7 +61,7 @@ public abstract class Reloadable : MonoBehaviour
         //this.m_ArmAnimator.speed += m_TestAcceleration / 100;
     }
 
-    public abstract void DoReload(bool m_IsEmpty);
+    public abstract void DoReload(bool m_IsEmpty, int difference);
 
     protected void InstanceMagazine()
     {
@@ -78,6 +78,7 @@ public abstract class Reloadable : MonoBehaviour
 
         for (int j = 0; j < playCount; j++)
         {
+            Debug.Log("Reload");
             m_ArmAnimator.SetTrigger("Reload");
             m_EquipmentAnimator.SetTrigger("Reload");
 

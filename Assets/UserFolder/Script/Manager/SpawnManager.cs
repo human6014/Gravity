@@ -94,12 +94,12 @@ namespace Manager
             FlyingMonsterCount = 0;
 
             foreach (float elem in m_Probs) m_Total += elem;
+            GravityManager.GravityChangeAction += ChangeCurrentArea;
         }
 
         private void Start()
         {
             RegisterPoolingObject();
-            GravityManager.GravityChangeAction += (GravityType) => ChangeCurrentArea(GravityType);
         }
 
         private void RegisterPoolingObject()
