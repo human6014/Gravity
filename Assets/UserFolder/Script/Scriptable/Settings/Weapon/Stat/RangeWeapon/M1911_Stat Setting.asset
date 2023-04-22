@@ -27,10 +27,10 @@ MonoBehaviour:
   m_BurstAttackTime: 0.1
   m_MaxRange: 50
   m_MaxBullets: 8
-  m_UpAxisRecoil: 1.7
-  m_RightAxisRecoil: 0.9
-  m_UpRandomRecoil: {x: -0.2, y: 0.4}
-  m_RightRandomRecoil: {x: -0.15, y: 0.2}
+  m_UpAxisRecoil: 0.8
+  m_RightAxisRecoil: 0.3
+  m_UpRandomRecoil: {x: -0.1, y: 0.25}
+  m_RightRandomRecoil: {x: -0.1, y: 0.1}
   m_IdleAccuracy: 0
   m_AimingAccuracy: -0.01
   m_AimingPosTimeRatio: 0.07
