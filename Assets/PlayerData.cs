@@ -34,6 +34,9 @@ public class PlayerData : MonoBehaviour
         m_CurrentEquipingWeaponType = (Test.EquipingWeaponType)equipingWeaponType;
         m_CurrentWeaponInfo = m_Inventory.WeaponInfo[equipingWeaponType];
         m_PlayerUIManager.ChangeWeapon(equipingWeaponType, (int)bulletType, m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, weaponImage);
+
+        bool isActive = IsActiveReloadImage(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, 30);
+        m_PlayerUIManager.DisplayReloadImage(isActive);
     }
 
     /// <summary>
@@ -42,10 +45,20 @@ public class PlayerData : MonoBehaviour
     /// <param name="fireMode">사격 모드</param>
     public void ChangeFireMode(Test.FireMode fireMode)
     {
-        int arrayIndex = (int)Mathf.Log((int)fireMode);
+        int arrayIndex = GetBitPosition((int)fireMode);
         m_PlayerUIManager.ChangeFireMode(arrayIndex);
     }
 
+    int GetBitPosition(int value)
+    {
+        int position = 0;
+        while ((value & 1) == 0)
+        {
+            value >>= 1;
+            position++;
+        }
+        return position;
+    }
 
     /// <summary>
     /// 원거리 무기 사격 시

@@ -237,14 +237,14 @@ namespace Test
         private bool CanFire() => m_CurrentFireTime >= m_RangeWeaponStat.m_AttackTime  &&
             m_PlayerState.PlayerBehaviorState != PlayerBehaviorState.Running && m_Reloadable.CanFire() && !m_IsFiring;
         
-
+        private bool m_OnFireSound;
         private void TryAutoFire()
         {
             if (base.IsEquiping || base.IsUnequiping) return;
             if (m_CurrentFireMode != FireMode.Auto) return;
             if (!CanFire()) return;
 
-            if (m_WeaponInfo.m_CurrentRemainBullet <= 0) PlayEmptySound();
+            if (m_WeaponInfo.m_CurrentRemainBullet <= 0 && !m_OnFireSound) PlayEmptySound();
             else DoFire();
         }
 
@@ -274,6 +274,7 @@ namespace Test
 
         private void PlayEmptySound()
         {
+            m_CurrentFireTime = 0;
             m_AudioSource.PlayOneShot(m_RangeWeaponSound.emptySound[0]);
         }
 

@@ -48,6 +48,8 @@ namespace UI.Player
                 m_BulletTemplate[i].SetActive(true);
             }
             top = currentRemainBullet;
+
+
         }
 
         public void DisplayReloadImage(bool isActive)

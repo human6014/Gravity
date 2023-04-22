@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: FP_FlashLight_Arm
+  m_Controller: {fileID: 9100000, guid: 0f70562277cafc2439947a60804d6400, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 6fcd4ef4b0dd5df49a09e341d846c3d2, type: 2}
+    m_OverrideClip: {fileID: 5473056745151456003, guid: 772fc44a698250f4fae9284c29c3a354,
+      type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 4966c1d6c082a3d46a96afb0b9716e91, type: 2}
+    m_OverrideClip: {fileID: -6442078947726823758, guid: 772fc44a698250f4fae9284c29c3a354,
+      type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 1cee0a70c42f89f44ba4b62f9490d37d, type: 2}
+    m_OverrideClip: {fileID: -2432014218800865095, guid: 772fc44a698250f4fae9284c29c3a354,
+      type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 950eee3d4ad5ca94db617191d3dda239, type: 2}
+    m_OverrideClip: {fileID: -6150562527074411254, guid: 772fc44a698250f4fae9284c29c3a354,
+      type: 3}

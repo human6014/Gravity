@@ -21,7 +21,13 @@ namespace UI.Manager
         {
             m_WeaponPropertyDisplayer.ChangeWeapon(bulletType, currentRemainBullet, weaponImage);
             m_WeaponPropertyDisplayer.UpdateRemainBulletText(magazineRemainBullet);
+
             //equipingWeaponTypeÀº ½½·Ô ¹«´Ì ÁÖ±â¿ë
+        }
+
+        public void DisplayReloadImage(bool isActive)
+        {
+            m_WeaponPropertyDisplayer.DisplayReloadImage(isActive);
         }
 
         public void ChangeFireMode(int index)
