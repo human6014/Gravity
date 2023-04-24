@@ -1,6 +1,7 @@
 using Scriptable;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Test
@@ -184,11 +185,19 @@ namespace Test
             TorquToAdd = new Vector3(Random.Range(-5, 5), Random.Range(-5, 5), Random.Range(-5, 5));
         }
 
+        public override Task UnEquip()
+        {
+            m_RendererObject.SetActive(true);
+            return base.UnEquip();
+        }
+
+        /*
         public override void Dispose()
         {
             m_RendererObject.SetActive(true);
             base.Dispose();
         }
+        */
 
         protected override void DischargeKeyAction()
         {

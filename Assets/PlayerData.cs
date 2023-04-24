@@ -63,7 +63,7 @@ public class PlayerData : MonoBehaviour
     /// <summary>
     /// 원거리 무기 사격 시
     /// </summary>
-    public void RangeWeaponFire(int maxBullet)   //아직 안댐
+    public void RangeWeaponFire(int maxBullet)
     {
         //m_Inventory.GetCurrentRemainBullet((int)m_CurrentEquipingWeaponType)
         int currentRemainBullet = --m_CurrentWeaponInfo.m_CurrentRemainBullet;

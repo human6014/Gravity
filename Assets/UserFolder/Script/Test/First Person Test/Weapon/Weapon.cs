@@ -10,13 +10,14 @@ namespace Test
 {
     public enum EquipingWeaponType
     {
-        Melee,
+        Melee = 0,
         Pistol,
         MainRifle,
         SubRifle,
-        Throwing
+        Throwing,
+        Other = 99
     }
-    public abstract class Weapon : MonoBehaviour
+    public class Weapon : MonoBehaviour
     {
         [Header("Parent")]
         [Header("Index")]
@@ -45,7 +46,7 @@ namespace Test
         private UI.Player.CrossHairDisplayer m_CrossHairDisplayer;
         
         private WaitForSeconds m_WaitEquipingTime;
-        private WaitForSeconds m_WaitUnequipingTime;
+        private const int m_UnequipingTime = 550;
 
         protected WeaponInfo m_WeaponInfo { get; private set; }
 
@@ -82,9 +83,6 @@ namespace Test
         
         public bool IsEquiping { get; private set; }
         public bool IsUnequiping { get; private set; }
-        //public virtual bool IsFiring { get; private set; }
-        //public virtual bool IsReloading { get; private set; }
-
         public virtual bool CanChangeWeapon { get => !IsEquiping && !IsUnequiping; }
 
         public BulletType m_BulletType { get => m_WeaponStatScriptable.m_BulletType; }
@@ -97,7 +95,6 @@ namespace Test
             m_CrossHairDisplayer = FindObjectOfType<UI.Player.CrossHairDisplayer>();
             
             m_WaitEquipingTime = new WaitForSeconds(0.35f);
-            m_WaitUnequipingTime = new WaitForSeconds(0.55f);
 
             Transform rootTransform = transform.root;
             m_PlayerInputController = rootTransform.GetComponent<PlayerInputController>();
@@ -130,8 +127,24 @@ namespace Test
         public virtual void Dispose()
         {
             DischargeKeyAction();
-            StartCoroutine(WaitUnequip());
+            //StartCoroutine(WaitUnequip());
         }
+
+        public virtual async Task UnEquip()
+        {
+            DischargeKeyAction();
+            IsUnequiping = true;
+            m_PlayerState.SetWeaponChanging(true);
+            m_ArmAnimator.SetTrigger("Unequip");
+            m_EquipmentAnimator.SetTrigger("Unequip");
+            m_AudioSource.PlayOneShot(m_WeaponSoundScriptable.unequipSound);
+
+            await Task.Delay(m_UnequipingTime);
+
+            gameObject.SetActive(false);
+            IsUnequiping = false;
+        }
+
 
         private IEnumerator WaitEquip()
         {
@@ -147,19 +160,19 @@ namespace Test
             IsEquiping = false;
         }
 
-        private IEnumerator WaitUnequip()
-        {
-            IsUnequiping = true;
-            m_PlayerState.SetWeaponChanging(true);
-            m_ArmAnimator.SetTrigger("Unequip");
-            m_EquipmentAnimator.SetTrigger("Unequip");
-            m_AudioSource.PlayOneShot(m_WeaponSoundScriptable.unequipSound);
+        //private IEnumerator WaitUnequip()
+        //{
+        //    IsUnequiping = true;
+        //    m_PlayerState.SetWeaponChanging(true);
+        //    m_ArmAnimator.SetTrigger("Unequip");
+        //    m_EquipmentAnimator.SetTrigger("Unequip");
+        //    m_AudioSource.PlayOneShot(m_WeaponSoundScriptable.unequipSound);
 
-            yield return m_WaitUnequipingTime;
+        //    yield return m_WaitUnequipingTime;
 
-            gameObject.SetActive(false);
-            IsUnequiping = false;
-            m_WeaponManager.ChangeWeapon();
-        }
+        //    gameObject.SetActive(false);
+        //    IsUnequiping = false;
+        //    m_WeaponManager.ChangeWeapon();
+        //}
     }
 }

@@ -57,7 +57,9 @@ public abstract class Fireable : MonoBehaviour
         m_InstanceBulletSecond = new WaitForSeconds(m_InstanceCasingTime);
     }
 
-    public void Setup(RangeWeaponStatScriptable m_RangeWeaponStat, ObjectPoolManager.PoolingObject[] m_BulletEffectPoolingObjects, PlayerState m_PlayerState, Camera m_MainCamera)
+    public void Setup(RangeWeaponStatScriptable m_RangeWeaponStat, 
+                      ObjectPoolManager.PoolingObject[] m_BulletEffectPoolingObjects, 
+                      PlayerState m_PlayerState, Camera m_MainCamera)
     {
         this.m_RangeWeaponStat = m_RangeWeaponStat;
         this.m_BulletEffectPoolingObjects = m_BulletEffectPoolingObjects;
