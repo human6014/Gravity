@@ -30,8 +30,7 @@ public class Inventory
     private Test.FireMode [] currentFireMode;
 
     public int ThrowingWeaponHavingCount(int value) => m_ThrowingWeaponHavingCount += value;
-    public int HealKitHavingCount(int value) => m_HealKitHavingCount += value;
-
+    public int HealKitHavingCount() => m_HealKitHavingCount;
 
     public int AddThrowingWeapon(int value) => m_ThrowingWeaponHavingCount += value;
     public int AddHealKit(int value) => m_HealKitHavingCount += value;

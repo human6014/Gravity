@@ -6,6 +6,8 @@ namespace Manager
 {
     public class ObjectPoolManager : MonoBehaviour
     {
+        [SerializeField] private Transform m_ActiveMonsterPool;
+        [SerializeField] private Transform m_ActiveObjectPool;
         private static Transform cachedTransform;
 
         private void Awake() => cachedTransform = transform;

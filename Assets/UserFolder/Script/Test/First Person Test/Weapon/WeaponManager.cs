@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Test;
 using UnityEngine;
 
@@ -19,27 +20,27 @@ namespace Manager
 
     public class WeaponManager : MonoBehaviour
     {
+        #region SerializeField
         [SerializeField] private PlayerData m_PlayerData;
         [SerializeField] private PlayerInputController m_PlayerInputController;
         [SerializeField] private Transform m_Pivot;
+        [SerializeField] private Syringe m_Syringe;
+        [SerializeField] private FlashLight m_FlashLight; 
+
         [Header("Pooling")]
         [SerializeField] private Transform m_ActiveObjectPool;
         [SerializeField] private PoolableScript[] m_EffectPoolingObject;
         [SerializeField] private int[] m_PoolingCount;
+        #endregion
 
-        [SerializeField] private int m_EquipingItemIndex = 6;
+        private readonly Dictionary<CustomKey, Weapon> m_WeaponDictionary = new();
+        private Weapon m_CurrentWeapon = null;
+        private int m_CurrentEquipIndex = -1; //현재 장착하고 있는 무기 슬롯 번호
+        private bool IsInteracting;
 
         public Vector3 m_OriginalPivotPosition { get; private set; }            //위치 조정용 부모 오브젝트 원래 위치
         public Quaternion m_OriginalPivotRotation { get; private set; }         //위치 조정용 부모 오브젝트 원래 각도
         public float m_OriginalFOV { get; private set; }
-
-        private readonly Dictionary<CustomKey, Weapon> m_WeaponDictionary = new();
-        private const int m_EquipingTypeLength = 5;
-        private Weapon m_CurrentWeapon;
-
-        //현재 장착하고 있는 무기 슬롯 번호
-        private int m_CurrentEquipIndex = -1;
-
         public ObjectPoolManager.PoolingObject[] m_EffectPoolingObjectArray { get; private set; }
 
         private void Awake()
@@ -51,9 +52,11 @@ namespace Manager
             foreach (Transform child in transform)
             {
                 if(!child.TryGetComponent(out Weapon weapon)) continue;
-                m_WeaponDictionary.Add(new CustomKey(weapon.EquipingType,weapon.GetItemIndex), weapon);
+                m_WeaponDictionary.Add(new CustomKey(weapon.EquipingType, weapon.GetItemIndex), weapon);
             }
             m_PlayerInputController.ChangeEquipment += TryWeaponChange;
+            m_PlayerInputController.Heal += TryHealInteract;
+            m_PlayerInputController.Light += TryLightEquip;
         }
 
         private void Start()
@@ -69,15 +72,16 @@ namespace Manager
         public void RegisterWeapon(int slotNumber, int index)
             => m_PlayerData.GetInventory().WeaponInfo[slotNumber].m_HavingWeaponIndex = index;
 
-        private void TryWeaponChange(int slotNumber)
+        private async void TryWeaponChange(int slotNumber)
         {
+            if (IsInteracting) return;
             int index = m_PlayerData.GetInventory().WeaponInfo[slotNumber].m_HavingWeaponIndex;
-            if (index == -1) return;
             if (m_CurrentWeapon != null)
             {
                 if (m_CurrentEquipIndex == slotNumber) return;
                 if (!m_CurrentWeapon.CanChangeWeapon) return;
-                m_CurrentWeapon.Dispose();
+                await m_CurrentWeapon.UnEquip();
+                ChangeWeapon(slotNumber, index);
             }
             else
             {
@@ -88,14 +92,37 @@ namespace Manager
             m_CurrentEquipIndex = slotNumber;
         }
 
-        public void ChangeWeapon()
+        public void ChangeWeapon(int slotNumber, int index)
         {
-            CustomKey key = new(m_CurrentEquipIndex, m_PlayerData.GetInventory().WeaponInfo[m_CurrentEquipIndex].m_HavingWeaponIndex);
+            CustomKey key = new(slotNumber, index);
             m_WeaponDictionary.TryGetValue(key, out m_CurrentWeapon);
 
             m_CurrentWeapon.Init();
             
             m_PlayerData.ChangeWeapon(m_CurrentWeapon.EquipingType, m_CurrentWeapon.m_BulletType, m_CurrentWeapon.WeaponIcon);
+        }
+
+        private async void TryHealInteract()
+        {
+            //if (m_PlayerData.GetInventory().HealKitHavingCount() < 1) return;
+            //원래 이걸로 동작
+            if (IsInteracting) return;
+            IsInteracting = true;
+            if (m_CurrentWeapon == null) await m_Syringe.TryHeal();
+            else if (m_CurrentWeapon.CanChangeWeapon)
+            {
+                await m_CurrentWeapon.UnEquip();
+                await m_Syringe.TryHeal();
+                m_PlayerData.UsingHealKit(-1);
+                m_CurrentWeapon.Init();
+            }
+            IsInteracting = false;
+        }
+
+        private void TryLightEquip()
+        {
+            if (IsInteracting) return;
+            m_FlashLight.Init();
         }
     }
 }
