@@ -8,8 +8,9 @@ public class Syringe : MonoBehaviour
 {
     [SerializeField] private Animator m_ArmAnimator;
     [SerializeField] private AnimatorOverrideController m_ArmOverrideController;
-
-    private AudioSource m_AudioSource;
+    [SerializeField] private AudioSource m_AudioSource;
+    [SerializeField] private AudioClip m_HealSound;
+    
     private Animator m_EquipmentAnimator;
 
     public bool IsUsing { get; private set; }
@@ -27,28 +28,11 @@ public class Syringe : MonoBehaviour
         m_ArmAnimator.SetTrigger("Use");
         m_EquipmentAnimator.SetTrigger("Use");
 
-        await Task.Delay(2800);
+        await Task.Delay(800);
+        m_AudioSource.PlayOneShot(m_HealSound);
+        await Task.Delay(2000);
 
         IsUsing = false;
         gameObject.SetActive(false);
     }
-
-    /*
-    public void TryHeal()
-    {
-        if (IsUsing) return;
-        IsUsing = true;
-        m_ArmAnimator.runtimeAnimatorController = m_ArmOverrideController;
-        m_ArmAnimator.SetTrigger("Use");
-        m_EquipmentAnimator.SetTrigger("Use");
-        StartCoroutine(Heal());
-    }
-    
-    private IEnumerator Heal()
-    {
-
-        yield return new WaitForSeconds(2);
-        IsUsing = false;
-    }
-    */
 }

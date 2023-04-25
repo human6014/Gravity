@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: M1911_Stat Setting
   m_EditorClassIdentifier: 
   m_AttackTime: 0.15
-  m_Damage: 0
+  m_Damage: 5
   m_AttackableLayer:
     serializedVersion: 2
-    m_Bits: 454401
+    m_Bits: 268886017
   m_RunningPosTime: 0.5
   m_DefaultCrossHair: 2
   m_RunningPivotPosition: {x: 0.04, y: -0.088, z: 0.472}
@@ -33,7 +33,7 @@ MonoBehaviour:
   m_RightRandomRecoil: {x: -0.1, y: 0.1}
   m_IdleAccuracy: 0
   m_AimingAccuracy: -0.01
-  m_AimingPosTimeRatio: 0.07
+  m_AimingPosTimeRatio: 6
   m_SpinValue: 17
   m_AimingPivotPosition: {x: -0.06445, y: 0.039, z: 0.209}
   m_AimingPivotDirection: {x: -2.493, y: 0, z: -1.132}

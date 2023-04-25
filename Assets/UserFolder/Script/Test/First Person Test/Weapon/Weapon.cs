@@ -15,7 +15,7 @@ namespace Test
         MainRifle,
         SubRifle,
         Throwing,
-        Other = 99
+        Other
     }
     public class Weapon : MonoBehaviour
     {
@@ -35,7 +35,7 @@ namespace Test
         [SerializeField] protected Scriptable.WeaponSoundScriptable m_WeaponSoundScriptable;
 
         [Header("Pos Change")]
-        [SerializeField] private Transform m_Pivot;                 //위치 조정용 부모 오브젝트
+        [SerializeField] protected Transform m_Pivot;                 //위치 조정용 부모 오브젝트
 
         [Header("Weapon Sway")]
         [SerializeField] private WeaponSway m_WeaponSway;
@@ -77,8 +77,6 @@ namespace Test
         /// </summary>
         protected Camera m_MainCamera { get; private set; }
 
-        protected Transform PivotTransform { get => m_Pivot; }
-
         public Sprite WeaponIcon { get => m_WeaponStatScriptable.m_WeaponIcon; }
         
         public bool IsEquiping { get; private set; }
@@ -106,7 +104,7 @@ namespace Test
             m_MainCamera = Camera.main;
         }
 
-        public void Init()
+        public virtual void Init()
         {
             m_ArmAnimator.runtimeAnimatorController = m_ArmOverrideController;
 
@@ -127,7 +125,6 @@ namespace Test
         public virtual void Dispose()
         {
             DischargeKeyAction();
-            //StartCoroutine(WaitUnequip());
         }
 
         public virtual async Task UnEquip()
@@ -145,7 +142,6 @@ namespace Test
             IsUnequiping = false;
         }
 
-
         private IEnumerator WaitEquip()
         {
             IsEquiping = true;
@@ -159,20 +155,5 @@ namespace Test
 
             IsEquiping = false;
         }
-
-        //private IEnumerator WaitUnequip()
-        //{
-        //    IsUnequiping = true;
-        //    m_PlayerState.SetWeaponChanging(true);
-        //    m_ArmAnimator.SetTrigger("Unequip");
-        //    m_EquipmentAnimator.SetTrigger("Unequip");
-        //    m_AudioSource.PlayOneShot(m_WeaponSoundScriptable.unequipSound);
-
-        //    yield return m_WaitUnequipingTime;
-
-        //    gameObject.SetActive(false);
-        //    IsUnequiping = false;
-        //    m_WeaponManager.ChangeWeapon();
-        //}
     }
 }

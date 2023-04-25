@@ -138,15 +138,15 @@ namespace Test
         {
             float currentTime = 0;
             float elapsedTime;
-            Vector3 startLocalPosition = PivotTransform.localPosition;
-            Quaternion startLocalRotation = PivotTransform.localRotation;
+            Vector3 startLocalPosition = m_Pivot.localPosition;
+            Quaternion startLocalRotation = m_Pivot.localRotation;
             while (currentTime < m_RangeWeaponStat.m_RunningPosTime)
             {
                 currentTime += Time.deltaTime;
 
                 elapsedTime = currentTime / m_RangeWeaponStat.m_RunningPosTime;
-                PivotTransform.localPosition = Vector3.Lerp(startLocalPosition, EndPosition, elapsedTime);
-                PivotTransform.localRotation = Quaternion.Lerp(startLocalRotation, EndRotation, elapsedTime);
+                m_Pivot.localPosition = Vector3.Lerp(startLocalPosition, EndPosition, elapsedTime);
+                m_Pivot.localRotation = Quaternion.Lerp(startLocalRotation, EndRotation, elapsedTime);
 
                 yield return elapsedTime;
             }
@@ -160,22 +160,21 @@ namespace Test
             if (isAiming)
             {
                 m_PlayerState.SetWeaponAiming();
-                AimingPosRot(m_RangeWeaponStat.m_AimingPivotPosition, m_AimingPivotRotation);
-                m_MainCamera.fieldOfView = Mathf.Lerp(m_MainCamera.fieldOfView, m_AimingFOV, m_RangeWeaponStat.m_FOVMultiplier * Time.deltaTime);
+                AimingPosRot(m_RangeWeaponStat.m_AimingPivotPosition, m_AimingPivotRotation, m_AimingFOV);
             }
             else
             {
                 m_PlayerState.SetWeaponIdle();
-                AimingPosRot(m_WeaponManager.m_OriginalPivotPosition, m_WeaponManager.m_OriginalPivotRotation);
-                m_MainCamera.fieldOfView = Mathf.Lerp(m_MainCamera.fieldOfView, m_WeaponManager.m_OriginalFOV, m_RangeWeaponStat.m_FOVMultiplier * Time.deltaTime);
+                AimingPosRot(m_WeaponManager.m_OriginalPivotPosition, m_WeaponManager.m_OriginalPivotRotation, m_WeaponManager.m_OriginalFOV);
             }
             SetCurrentFireIndex(isAiming);
         }
 
-        private void AimingPosRot(Vector3 EndPosition, Quaternion EndRotation)
+        private void AimingPosRot(Vector3 endPosition, Quaternion endRotation, float endFOV)
         {
-            PivotTransform.localPosition = Vector3.Lerp(PivotTransform.localPosition, EndPosition, m_RangeWeaponStat.m_AimingPosTimeRatio);
-            PivotTransform.localRotation = Quaternion.Lerp(PivotTransform.localRotation, EndRotation, m_RangeWeaponStat.m_AimingPosTimeRatio);
+            m_Pivot.localPosition = Vector3.Lerp(m_Pivot.localPosition, endPosition, m_RangeWeaponStat.m_AimingPosTimeRatio * Time.deltaTime);
+            m_Pivot.localRotation = Quaternion.Lerp(m_Pivot.localRotation, endRotation, m_RangeWeaponStat.m_AimingPosTimeRatio * Time.deltaTime);
+            m_MainCamera.fieldOfView = Mathf.Lerp(m_MainCamera.fieldOfView, endFOV, m_RangeWeaponStat.m_FOVMultiplier * Time.deltaTime);
         }
 
         private void TryChangeFireMode()
