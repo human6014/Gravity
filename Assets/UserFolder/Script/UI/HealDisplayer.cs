@@ -10,6 +10,11 @@ namespace UI.Player
         [SerializeField] private Text m_RemainHeal;
         [SerializeField] private GameObject m_HealNotification;
 
+        public void Init()
+        {
+
+        }
+
         public void UpdateRemainHeal(int value)
         {
             m_RemainHeal.text = value.ToString();

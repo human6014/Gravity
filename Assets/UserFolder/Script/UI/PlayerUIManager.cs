@@ -16,13 +16,21 @@ namespace UI.Manager
         [SerializeField] private WeaponPropertyDisplayer m_WeaponPropertyDisplayer;
         [SerializeField] private DamageDisplayer m_DamageDisplayer;
 
+        public void Init()
+        {
+            m_PlayerStatDisplayer.Init();
+            m_HealDisplayer.Init();
+            //CrossHair ¿¹Á¤
+            m_WeaponPropertyDisplayer.Init();
+            
+        }
 
         public void ChangeWeapon(int equipingWeaponType, int bulletType, int currentRemainBullet, int magazineRemainBullet, Sprite weaponImage)
         {
             m_WeaponPropertyDisplayer.ChangeWeapon(bulletType, currentRemainBullet, weaponImage);
             m_WeaponPropertyDisplayer.UpdateRemainBulletText(magazineRemainBullet);
 
-            //equipingWeaponTypeÀº ½½·Ô ¹«´Ì ÁÖ±â¿ë
+            m_ItemSlotDisplayer.UpdateFocusSlot(equipingWeaponType);
         }
 
         public void DisplayReloadImage(bool isActive)
@@ -61,15 +69,19 @@ namespace UI.Manager
         public void UsingHealKit(int value, float hpAmount)
         {
             m_HealDisplayer.UpdateRemainHeal(value);
-
             m_PlayerStatDisplayer.UpdateHPImage(hpAmount);
+            DisplayHealImage(hpAmount);
         }
 
         public void UpdatePlayerHP(float hpAmount)
         {
             m_PlayerStatDisplayer.UpdateHPImage(hpAmount);
+            DisplayHealImage(hpAmount);
+        }
 
-            if(hpAmount <= 500) m_HealDisplayer.DisplayHealNotification(true);
+        private void DisplayHealImage(float hpAmount)
+        {
+            if (hpAmount <= 0.5f) m_HealDisplayer.DisplayHealNotification(true);
             else m_HealDisplayer.DisplayHealNotification(false);
         }
 

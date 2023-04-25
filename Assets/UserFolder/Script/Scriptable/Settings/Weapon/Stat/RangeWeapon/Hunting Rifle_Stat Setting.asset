@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Hunting Rifle_Stat Setting
   m_EditorClassIdentifier: 
   m_AttackTime: 0.4
-  m_Damage: 0
+  m_Damage: 5
   m_AttackableLayer:
     serializedVersion: 2
-    m_Bits: 454401
+    m_Bits: 268886017
   m_RunningPosTime: 0.5
   m_DefaultCrossHair: 2
   m_RunningPivotPosition: {x: -0.08, y: -0.09, z: 0.5}
@@ -33,7 +33,7 @@ MonoBehaviour:
   m_RightRandomRecoil: {x: -0.15, y: 0.2}
   m_IdleAccuracy: -0.015
   m_AimingAccuracy: -0.04
-  m_AimingPosTimeRatio: 0.07
+  m_AimingPosTimeRatio: 6
   m_SpinValue: 17
   m_AimingPivotPosition: {x: -0.0448, y: 0.022, z: 0.414}
   m_AimingPivotDirection: {x: 0.938, y: 2.3, z: 0.044}

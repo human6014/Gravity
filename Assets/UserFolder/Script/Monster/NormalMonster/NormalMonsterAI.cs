@@ -215,7 +215,5 @@ public class NormalMonsterAI : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(transform.position, castRadius);
         Gizmos.DrawSphere(transform.position + transform.up * castHeight, castRadius);
-
-        if (!IsBatch) return;
     }
 }

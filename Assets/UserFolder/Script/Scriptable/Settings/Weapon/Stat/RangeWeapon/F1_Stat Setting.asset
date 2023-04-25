@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: F1_Stat Setting
   m_EditorClassIdentifier: 
   m_AttackTime: 0.15
-  m_Damage: 0
+  m_Damage: 5
   m_AttackableLayer:
     serializedVersion: 2
-    m_Bits: 454401
+    m_Bits: 268886017
   m_RunningPosTime: 0.5
   m_DefaultCrossHair: 2
   m_RunningPivotPosition: {x: -0.08, y: -0.09, z: 0.5}
@@ -33,7 +33,7 @@ MonoBehaviour:
   m_RightRandomRecoil: {x: -0.25, y: 0.2}
   m_IdleAccuracy: 0.01
   m_AimingAccuracy: -0.018
-  m_AimingPosTimeRatio: 0.07
+  m_AimingPosTimeRatio: 6
   m_SpinValue: 17
   m_AimingPivotPosition: {x: -0.0794, y: -0.0142, z: 0.334}
   m_AimingPivotDirection: {x: 0, y: 4, z: 1.5}

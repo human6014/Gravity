@@ -36,6 +36,7 @@ namespace Manager
         private readonly Dictionary<CustomKey, Weapon> m_WeaponDictionary = new();
         private Weapon m_CurrentWeapon = null;
         private int m_CurrentEquipIndex = -1; //현재 장착하고 있는 무기 슬롯 번호
+        private const int m_ToolKitToEquipIndex = 5;
         private bool IsInteracting;
 
         public Vector3 m_OriginalPivotPosition { get; private set; }            //위치 조정용 부모 오브젝트 원래 위치
@@ -56,7 +57,7 @@ namespace Manager
             }
             m_PlayerInputController.ChangeEquipment += TryWeaponChange;
             m_PlayerInputController.Heal += TryHealInteract;
-            m_PlayerInputController.Light += TryLightEquip;
+            m_PlayerInputController.Light += () => TryWeaponChange(m_ToolKitToEquipIndex);
         }
 
         private void Start()
@@ -104,25 +105,20 @@ namespace Manager
 
         private async void TryHealInteract()
         {
-            //if (m_PlayerData.GetInventory().HealKitHavingCount() < 1) return;
-            //원래 이걸로 동작
+            if (m_PlayerData.GetInventory().HealKitHavingCount < 1) return;
+            if (m_PlayerData.PlayerMaxHP <= m_PlayerData.PlayerHP) return;
             if (IsInteracting) return;
+
             IsInteracting = true;
             if (m_CurrentWeapon == null) await m_Syringe.TryHeal();
             else if (m_CurrentWeapon.CanChangeWeapon)
             {
                 await m_CurrentWeapon.UnEquip();
                 await m_Syringe.TryHeal();
-                m_PlayerData.UsingHealKit(-1);
                 m_CurrentWeapon.Init();
             }
+            m_PlayerData.UsingHealKit(-1);
             IsInteracting = false;
-        }
-
-        private void TryLightEquip()
-        {
-            if (IsInteracting) return;
-            m_FlashLight.Init();
         }
     }
 }

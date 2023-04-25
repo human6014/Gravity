@@ -10,6 +10,11 @@ namespace UI.Player
         [SerializeField] private Image m_HPImage;
         [SerializeField] private Image m_MPImage;
 
+        public void Init()
+        {
+
+        }
+
         public void UpdateHPImage(float value)
         {
             m_HPImage.fillAmount = value;

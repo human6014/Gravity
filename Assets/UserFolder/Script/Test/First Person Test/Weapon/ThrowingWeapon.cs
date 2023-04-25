@@ -92,15 +92,15 @@ namespace Test
         {
             float currentTime = 0;
             float elapsedTime;
-            Vector3 startLocalPosition = PivotTransform.localPosition;
-            Quaternion startLocalRotation = PivotTransform.localRotation;
+            Vector3 startLocalPosition = m_Pivot.localPosition;
+            Quaternion startLocalRotation = m_Pivot.localRotation;
             while (currentTime < m_ThrowingWeaponStat.m_RunningPosTime)
             {
                 currentTime += Time.deltaTime;
 
                 elapsedTime = currentTime / m_ThrowingWeaponStat.m_RunningPosTime;
-                PivotTransform.localPosition = Vector3.Lerp(startLocalPosition, EndPosition, elapsedTime);
-                PivotTransform.localRotation = Quaternion.Lerp(startLocalRotation, EndRotation, elapsedTime);
+                m_Pivot.localPosition = Vector3.Lerp(startLocalPosition, EndPosition, elapsedTime);
+                m_Pivot.localRotation = Quaternion.Lerp(startLocalRotation, EndRotation, elapsedTime);
 
                 yield return elapsedTime;
             }

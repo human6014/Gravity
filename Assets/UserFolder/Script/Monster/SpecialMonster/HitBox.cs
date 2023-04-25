@@ -14,5 +14,4 @@ public class HitBox : MonoBehaviour, IDamageable
         damage = m_IsWeakPoint ? (int)(damage * 1.2f): damage;
         m_HitEvent?.Invoke(damage);
     }
-    
 }

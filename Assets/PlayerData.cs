@@ -10,18 +10,47 @@ public class PlayerData : MonoBehaviour
     [SerializeField] private Inventory m_Inventory;
     [SerializeField] private int HealAmount;
 
-    private int m_PlayerHP;
-    private int m_PlayerMP;
-    private float m_AmountPlayerHP;
-    private float m_AmountPlayerMP;
-    private const int m_ToAmountConst = 1000;
+    private int m_CurrentPlayerHP = 100;
+    private int m_CurrentPlayerMP = 100;
 
-    private Test.EquipingWeaponType m_CurrentEquipingWeaponType;
+    private float m_AmountPlayerHP = 1;
+    private float m_AmountPlayerMP = 1;
+
+    private const float m_ToAmountConst = 0.01f;
+
+    //private Test.EquipingWeaponType m_CurrentEquipingWeaponType;
     private WeaponInfo m_CurrentWeaponInfo;
-    public Inventory GetInventory() => m_Inventory;
-    public int GetPlayerHP() => m_PlayerHP;
-    public int GetPlayerMP() => m_PlayerMP;
 
+    public Inventory GetInventory() => m_Inventory;
+
+    public int PlayerMaxHP { get; } = 100;
+
+    public int PlayerMaxMP { get; } = 100;
+
+    public int PlayerHP 
+    {
+        get => m_CurrentPlayerHP;
+        set
+        {
+            m_CurrentPlayerHP = value;
+            m_AmountPlayerHP = m_CurrentPlayerHP * m_ToAmountConst;
+        } 
+    }
+
+    public int PlayerMP
+    {
+        get => m_CurrentPlayerMP;
+        set
+        {
+            m_CurrentPlayerMP = value;
+            m_AmountPlayerMP = m_CurrentPlayerMP * m_ToAmountConst;
+        }
+    }
+
+    private void Awake()
+    {
+        //m_PlayerUIManager.Init(PlayerMaxHP, PlayerMaxMP, );
+    }
 
     /// <summary>
     /// 무기 변경 시
@@ -31,7 +60,7 @@ public class PlayerData : MonoBehaviour
     /// <param name="weaponImage">무기 아이콘 이미지</param>
     public void ChangeWeapon(int equipingWeaponType, BulletType bulletType, Sprite weaponImage)
     {
-        m_CurrentEquipingWeaponType = (Test.EquipingWeaponType)equipingWeaponType;
+        //m_CurrentEquipingWeaponType = (Test.EquipingWeaponType)equipingWeaponType;
         m_CurrentWeaponInfo = m_Inventory.WeaponInfo[equipingWeaponType];
         m_PlayerUIManager.ChangeWeapon(equipingWeaponType, (int)bulletType, m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, weaponImage);
 
@@ -49,7 +78,7 @@ public class PlayerData : MonoBehaviour
         m_PlayerUIManager.ChangeFireMode(arrayIndex);
     }
 
-    int GetBitPosition(int value)
+    private int GetBitPosition(int value)
     {
         int position = 0;
         while ((value & 1) == 0)
@@ -83,8 +112,8 @@ public class PlayerData : MonoBehaviour
         }
         else
         {
-            m_CurrentWeaponInfo.m_CurrentRemainBullet = totalBullet;
             m_CurrentWeaponInfo.m_MagazineRemainBullet = 0;
+            m_CurrentWeaponInfo.m_CurrentRemainBullet = totalBullet;
         }
         bool isActiveReloadImage = IsActiveReloadImage(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, maxBullet);
         m_PlayerUIManager.RangeWeaponReload(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, isActiveReloadImage);
@@ -124,10 +153,8 @@ public class PlayerData : MonoBehaviour
     /// <param name="value">사용하거나 얻은 개수 (음수 가능)</param>
     public void UsingHealKit(int value)
     {
-        m_PlayerHP += HealAmount;
-        m_AmountPlayerHP = m_PlayerHP / m_ToAmountConst;
-
-        int remainHealKit = m_Inventory.AddHealKit(value);
+        PlayerHP = Mathf.Clamp(PlayerHP + HealAmount, 0, PlayerMaxHP);
+        int remainHealKit = m_Inventory.HealKitHavingCount += value;
         m_PlayerUIManager.UsingHealKit(remainHealKit, m_AmountPlayerHP);
     }
 
@@ -138,11 +165,13 @@ public class PlayerData : MonoBehaviour
     /// <param name="value">피격시 또는 회복할 계수</param>
     public void UpdatePlayerHP(int value)
     {
-        m_PlayerHP -= value;
-        m_AmountPlayerHP = m_PlayerHP / m_ToAmountConst;
+        PlayerHP = Mathf.Clamp(PlayerHP - value, 0, PlayerMaxMP);
         m_PlayerUIManager.UpdatePlayerHP(m_AmountPlayerHP);
+        if (PlayerHP <= 0)
+        {
+            //GameEnd
+        }
     }
-
 
     /// <summary>
     /// 플레이어가 특수한 동작을 사용하거나 자연회복할 때
@@ -150,8 +179,15 @@ public class PlayerData : MonoBehaviour
     /// <param name="value">동작시 또는 회복할 계수</param>
     public void UpdatePlayerMP(int value)
     {
-        m_PlayerMP -= value;
-        m_AmountPlayerMP = m_PlayerMP / m_ToAmountConst;
+        m_CurrentPlayerMP -= value;
+        m_AmountPlayerMP = m_CurrentPlayerMP / m_ToAmountConst;
         m_PlayerUIManager.UpdatePlayerMP(m_AmountPlayerMP);
+    }
+
+
+    [ContextMenu("TestHit")]
+    public void TestHit()
+    {
+        UpdatePlayerHP(10);
     }
 }

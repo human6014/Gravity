@@ -22,6 +22,12 @@ namespace UI.Player
 
         public  readonly GameObject[] m_BulletTemplate = new GameObject[m_MaxBulletCount];
         private Sprite currentBulletImage;
+
+        public void Init()
+        {
+
+        }
+
         private void Awake()
         {
             int iter = 0;
