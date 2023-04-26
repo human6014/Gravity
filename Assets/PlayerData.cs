@@ -16,7 +16,8 @@ public class PlayerData : MonoBehaviour
     private float m_AmountPlayerHP = 1;
     private float m_AmountPlayerMP = 1;
 
-    private const float m_ToAmountConst = 0.01f;
+    private const float m_RealToAmountConst = 0.01f;
+    private const int m_AmountToRealConst = 100;
 
     //private Test.EquipingWeaponType m_CurrentEquipingWeaponType;
     private WeaponInfo m_CurrentWeaponInfo;
@@ -33,7 +34,7 @@ public class PlayerData : MonoBehaviour
         set
         {
             m_CurrentPlayerHP = value;
-            m_AmountPlayerHP = m_CurrentPlayerHP * m_ToAmountConst;
+            m_AmountPlayerHP = m_CurrentPlayerHP * m_RealToAmountConst;
         } 
     }
 
@@ -43,13 +44,13 @@ public class PlayerData : MonoBehaviour
         set
         {
             m_CurrentPlayerMP = value;
-            m_AmountPlayerMP = m_CurrentPlayerMP * m_ToAmountConst;
+            m_AmountPlayerMP = m_CurrentPlayerMP * m_RealToAmountConst;
         }
     }
 
     private void Awake()
     {
-        //m_PlayerUIManager.Init(PlayerMaxHP, PlayerMaxMP, );
+        m_PlayerUIManager.Init(PlayerMaxHP, PlayerMaxMP, m_AmountToRealConst);
     }
 
     /// <summary>
@@ -180,7 +181,7 @@ public class PlayerData : MonoBehaviour
     public void UpdatePlayerMP(int value)
     {
         m_CurrentPlayerMP -= value;
-        m_AmountPlayerMP = m_CurrentPlayerMP / m_ToAmountConst;
+        m_AmountPlayerMP = m_CurrentPlayerMP / m_RealToAmountConst;
         m_PlayerUIManager.UpdatePlayerMP(m_AmountPlayerMP);
     }
 
