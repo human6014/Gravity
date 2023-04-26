@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8825990798216746537}
   - component: {fileID: 4956202268612193335}
   - component: {fileID: 7097219352225317910}
-  - component: {fileID: -4158627736417805356}
+  - component: {fileID: 8265494106899473255}
   m_Layer: 23
   m_Name: AKM_Magazine_7.62x39mm_Empty
   m_TagString: Untagged
@@ -31,8 +31,8 @@ Transform:
   m_GameObject: {fileID: 7164978312568235700}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -135,7 +135,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.14048557, y: 0.17338747, z: 0.02429219}
   m_Center: {x: 0.01467997, y: -0.0076312013, z: 0.00000006752089}
---- !u!114 &-4158627736417805356
+--- !u!114 &8265494106899473255
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

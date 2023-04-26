@@ -24,7 +24,7 @@ public class FlyingRotationController : MonoBehaviour
 	{
 		cachedRigidbody = GetComponent<Rigidbody>();
 		movementController = GetComponent<FlyingMovementController>();
-		playerHead = Manager.AI.AIManager.PlayerTransfrom;
+		playerHead = Manager.AI.AIManager.PlayerTransform;
 	}
 
 	public void Init()

@@ -79,7 +79,7 @@ public class FlyingMovementController : MonoBehaviour
         cachedRigidbody = GetComponent<Rigidbody>();
         octree = FindObjectOfType<Octree>();
 
-        playerObject = Manager.AI.AIManager.PlayerTransfrom.gameObject;
+        playerObject = Manager.AI.AIManager.PlayerTransform.gameObject;
         target = Manager.AI.AIManager.PlayerSupportTargetTransform;
     }
 

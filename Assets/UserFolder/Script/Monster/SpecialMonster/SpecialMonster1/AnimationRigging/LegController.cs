@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class LegController : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class LegController : MonoBehaviour
     [Tooltip("땅으로 감지할 레이어")]
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private LayerMask layerMaskBack;
+    [SerializeField] private MultiAimConstraint[] m_MultiAimConstraint;
 
     private bool preJump = false;
     private bool isNavOn = true;
@@ -37,7 +39,19 @@ public class LegController : MonoBehaviour
     public void SetPreJump(bool _preJump) => preJump = _preJump;
     //public void SetMaxTipWait(float _maxTipWait) => maxTipWait = _maxTipWait;
 
-    private void Start() => StartCoroutine(AdjustBodyTransform());
+
+    private void Start()
+    {
+        SetAimConstraint();
+        StartCoroutine(AdjustBodyTransform());
+    }
+
+    private void SetAimConstraint()
+    {
+        WeightedTransform weightedTransform = new(Manager.AI.AIManager.PlayerTransform, 1);
+        WeightedTransformArray weightedTransforms = new() { weightedTransform };
+        foreach (MultiAimConstraint m in m_MultiAimConstraint) m.data.sourceObjects = weightedTransforms;
+    }
     
 
     private void FixedUpdate()

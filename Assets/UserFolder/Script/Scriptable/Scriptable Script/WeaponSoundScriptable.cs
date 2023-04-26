@@ -13,7 +13,8 @@ namespace Scriptable
             public float delayTime;
         }
 
-        public AudioClip[] equipSound;
-        public AudioClip[] unequipSound;
+        [Header("Parent")]
+        public AudioClip equipSound;
+        public AudioClip unequipSound;
     }
 }

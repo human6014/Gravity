@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8261881234727118696}
   - component: {fileID: 4874232837471638440}
   - component: {fileID: 7104887659426504646}
+  - component: {fileID: 1820009117113137873}
   m_Layer: 23
   m_Name: MP5_Magazine_.45ACP_Empty
   m_TagString: Untagged
@@ -30,8 +31,8 @@ Transform:
   m_GameObject: {fileID: 1193854626302726693}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -134,3 +135,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.07168163, y: 0.16607635, z: 0.019432886}
   m_Center: {x: 0.010097138, y: -0.0021280611, z: -0.00000018021095}
+--- !u!114 &1820009117113137873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1193854626302726693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d07c9e4cd2a8a9143930481d644cc49d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

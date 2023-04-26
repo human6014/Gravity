@@ -43,16 +43,16 @@ namespace Entity.Unit.Normal
 
         public void Attack()
         {
-            throw new System.NotImplementedException();
+
         }
         public void Hit(int damage)
         {
-            throw new System.NotImplementedException();
+            Debug.Log(damage);
         }
 
         public void Die()
         {
-            throw new System.NotImplementedException();
+
         }
 
         [ContextMenu("ReturnObject")]

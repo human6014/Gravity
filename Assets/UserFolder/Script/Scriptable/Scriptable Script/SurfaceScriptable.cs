@@ -18,25 +18,15 @@ namespace Scriptable
 
         [Space(10)]
         [Header("Sound & Effect")]
-        public EffectPair softFootStepEffect;
+        public AudioClip[] m_SoftFootStepSounds;
 
         [Space(10)]
-        public EffectPair hardFootStepEffect;
+        public AudioClip[] m_HardFootStepSounds;
 
         [Space(10)]
-        public EffectPair bulletHitEffect;
+        public AudioClip[] m_BulletHitSounds;
 
         [Space(10)]
-        public EffectPair SlashHitEffect;
-    }
-
-    [Serializable]
-    public class EffectPair
-    {
-        [Tooltip("Sound")]
-        public AudioClip[] audioClips;
-
-        [Tooltip("Effect")]
-        public GameObject effectObject;
+        public AudioClip[] m_SlashHitSounds;
     }
 }

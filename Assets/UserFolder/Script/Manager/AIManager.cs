@@ -11,7 +11,7 @@ namespace Manager.AI
     public class AIManager : MonoBehaviour
     {
         public static FloorController FloorDetector { get; set; }
-        public static Transform PlayerTransfrom { get; set; }
+        public static Transform PlayerTransform { get; set; }
         public static Vector3 PlayerRerversePosition { get; set; }
         public static Transform PlayerSupportTargetTransform { get; set; }
 
@@ -33,7 +33,7 @@ namespace Manager.AI
         /// <returns>값을 구할 수 있을 경우 유효한 Vector3 값, 오류일 경우 Vector3.zero</returns>
         public static Vector3 CurrentTargetPosition(Transform transform)
         {
-            Vector3 playerPos = PlayerTransfrom.position;
+            Vector3 playerPos = PlayerTransform.position;
             switch (GravityManager.gravityDirection)
             {
                 case GravityDirection.X: return new(transform.position.x, playerPos.y, playerPos.z);

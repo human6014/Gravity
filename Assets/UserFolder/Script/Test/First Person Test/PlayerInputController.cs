@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerInputController : MonoBehaviour
 {
-    [SerializeField] private SettingUIManager m_SettingUIManager;
+    [SerializeField] private UI.Manager.SettingUIManager m_SettingUIManager;
 
     private readonly KeyCode[] m_GravityChangeInput =
     {
@@ -36,17 +36,18 @@ public class PlayerInputController : MonoBehaviour
     private bool m_Reload;              //재장전          R                 누르기          원거리 무기 전용
     private bool m_IsCrouch;            //앉기            LeftCtrl          누르기
     private bool m_IsRunning;           //뛰기            LeftShift         꾹 누르기
+    private bool m_IsHeavyFiring;       //강공격          마우스 우클릭     누르기          근접 무기 전용
     private bool m_IsAiming;            //조준            마우스 우클릭     꾹 누르기       원거리 무기 전용
     private bool m_IsAutoFiring;        //공격            마우스 좌클릭     꾹 누르기       원거리 무기 전용
     private bool m_IsSemiFiring;        //사격(단발, 점사)마우스 좌클릭     누르기
     private bool m_Heal;                //회복            E                 누르기
     private bool m_TimeSlow;            //시간 슬로우     F                 누르기
     private bool m_ChangeFireMode;      //사격 방식 변경  N                 누르기
-    private bool m_IsHeavyFiring;       //강공격          마우스 우클릭     누르기          근접 무기 전용
-
+    private bool m_Light;               //라이트장착      Q                 누르기
 
     private bool m_WasCrouch;
     private bool m_WasTimeSlow;
+
     //keyDown Movement
     public Action<float, float> MouseMovement { get; set; }
 
@@ -67,6 +68,7 @@ public class PlayerInputController : MonoBehaviour
     public Action Reload { get; set; }          //Trigger
     public Action Jump { get; set; }            //Trigger
     public Action Heal { get; set; }            //Trigger
+    public Action Light { get; set; }           
 
     //key
     public Action<bool> Aiming { get; set; }          //Down
@@ -77,10 +79,9 @@ public class PlayerInputController : MonoBehaviour
 
     public Action ChangeFireMode { get; set; }
 
-
     private void Update()
     {
-        if (m_SettingUIManager.m_IsActiveSettingUI) return;
+        if (m_SettingUIManager.IsActiveSettingUI) return;
 
         m_MouseX = Input.GetAxis("Mouse X");
         m_MouseY = Input.GetAxis("Mouse Y");
@@ -101,6 +102,9 @@ public class PlayerInputController : MonoBehaviour
 
         m_Heal = Input.GetKeyDown(KeyCode.E);
         if (m_Heal) Heal?.Invoke();
+
+        m_Light = Input.GetKeyDown(KeyCode.Q);
+        if (m_Light) Light?.Invoke();
 
         m_ChangeFireMode = Input.GetKeyDown(KeyCode.N);
         if (m_ChangeFireMode) ChangeFireMode?.Invoke();

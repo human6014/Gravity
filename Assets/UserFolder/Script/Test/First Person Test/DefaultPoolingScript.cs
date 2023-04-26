@@ -8,8 +8,9 @@ namespace Entity.Object
     {
         private Manager.ObjectPoolManager.PoolingObject poolingObject;
 
-        public void Init(Manager.ObjectPoolManager.PoolingObject poolingObject)
+        public void Init(Vector3 pos, Quaternion rot ,Manager.ObjectPoolManager.PoolingObject poolingObject)
         {
+            transform.SetPositionAndRotation(pos, rot);
             this.poolingObject = poolingObject;
             Invoke(nameof(ReturnObject), 5);
         }

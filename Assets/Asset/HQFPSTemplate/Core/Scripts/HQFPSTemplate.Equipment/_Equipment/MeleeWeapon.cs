@@ -70,8 +70,9 @@ namespace HQFPSTemplate.Equipment
 		protected virtual IDamageable SphereCast(Ray itemUseRays, MeleeWeaponInfo.SwingData swing)
 		{
 			IDamageable damageable = null;
-
-			if(Physics.SphereCast(itemUseRays.origin, swing.CastRadius, itemUseRays.direction, out RaycastHit hitInfo, m_MW.MeleeSettings.MaxHitDistance, m_MW.MeleeSettings.HitMask, QueryTriggerInteraction.Collide))
+			useRay = itemUseRays;
+			this.swing = swing;
+			if (Physics.SphereCast(itemUseRays.origin, swing.CastRadius, itemUseRays.direction, out RaycastHit hitInfo, m_MW.MeleeSettings.MaxHitDistance, m_MW.MeleeSettings.HitMask, QueryTriggerInteraction.Collide))
 			{
 				SurfaceManager.SpawnEffect(hitInfo, m_MW.MeleeSettings.ImpactEffect, 1f);
 
@@ -95,7 +96,15 @@ namespace HQFPSTemplate.Equipment
 			return damageable;
 		}
 
-		private IEnumerator C_SphereCastDelayed(MeleeWeaponInfo.SwingData swing)
+		private Ray useRay;
+		private MeleeWeaponInfo.SwingData swing;
+
+		private void OnDrawGizmos()
+        {
+			if(swing != null) Gizmos.DrawWireSphere(useRay.origin, swing.CastRadius);
+        }
+
+        private IEnumerator C_SphereCastDelayed(MeleeWeaponInfo.SwingData swing)
 		{
 			yield return new WaitForSeconds(swing.CastDelay);
 

@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4838d5a76f4fdc4a877d2e4faa3128e, type: 3}
+  m_Name: MP5_Stat Setting
+  m_EditorClassIdentifier: 
+  m_AttackTime: 0.11
+  m_Damage: 5
+  m_AttackableLayer:
+    serializedVersion: 2
+    m_Bits: 268886017
+  m_RunningPosTime: 0.5
+  m_DefaultCrossHair: 2
+  m_RunningPivotPosition: {x: -0.08, y: -0.09, z: 0.5}
+  m_RunningPivotDirection: {x: 18, y: -36.5, z: 13.5}
+  m_FOVMultiplier: 4
+  m_WeaponIcon: {fileID: 21300000, guid: 184d68930b633c84a92498ed0bddc6b3, type: 3}
+  m_BulletType: 1
+  m_BurstAttackTime: 0.1
+  m_MaxRange: 100
+  m_MaxBullets: 30
+  m_UpAxisRecoil: 0.7
+  m_RightAxisRecoil: 0.4
+  m_UpRandomRecoil: {x: -0.1, y: 0.3}
+  m_RightRandomRecoil: {x: -0.15, y: 0.15}
+  m_IdleAccuracy: 0.005
+  m_AimingAccuracy: -0.018
+  m_AimingPosTimeRatio: 6
+  m_SpinValue: 17
+  m_AimingPivotPosition: {x: -0.06, y: 0.033, z: 0.404}
+  m_AimingPivotDirection: {x: 0, y: 1.8, z: 1.313}
+  m_AimingFOV: 10

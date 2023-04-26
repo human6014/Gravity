@@ -32,24 +32,12 @@ namespace Manager
         [Tooltip("활성화된 유닛의 transform")]
         [SerializeField] private Transform activeUnitPool;
 
-        [Tooltip("활성화된 잡다한 오브젝트의 transform")]
-        [SerializeField] private Transform activeObjectPool;
-
         [Header("Pooling Count")]
         [Tooltip("미리 생성할 유닛 수 urban -> oldman -> women -> big -> giant")]
         [Range(0, 100)][SerializeField] private int[] normalMonsterPoolingCount;
 
         [Tooltip("미리 생성할 FlyingMonstr 수")]
         [Range(0, 100)] [SerializeField] private int[] flyingMonsterPoolingCount;
-
-        [Tooltip("미리 생성할 이펙트 개수")]
-        [Range(0, 100)] [SerializeField] private int[] m_EffectPoolingCount;
-
-        [Tooltip("미리 생성할 탄피 개수")]
-        [Range(0, 100)] [SerializeField] private int[] m_CasingPoolingCount;
-
-        [Tooltip("미리 생성할 탄알집 개수")]
-        [Range(0, 30)] [SerializeField] private int[] m_MagazinePoolingCount;
 
         [Header("Spawn info")]
         [Tooltip("최대로 생성될 일반 몬스터 총 개수")]
@@ -66,118 +54,88 @@ namespace Manager
         #endregion
 
         #region Object Value
-        private BoxCollider[][] spawnAreaCollider = new BoxCollider[6][];
-        private BoxCollider[] currentAreaCollider;
+        private readonly BoxCollider[][] m_SpawnAreaCollider = new BoxCollider[6][];
+        private BoxCollider[] m_CurrentAreaCollider;
 
-        private EntityManager unitManager;
-        private Customization customization;
+        private EntityManager m_EntityManager;
+        private Customization m_Customization;
+        private Octree m_Octree;        //temp
 
         private ObjectPoolManager.PoolingObject[] m_NormalMonsterPoolingObjectArray;
         private ObjectPoolManager.PoolingObject[] m_FlyingMonsterPoolingObjectArray;
-        private ObjectPoolManager.PoolingObject[] m_EffectPoolingObjectArray;
-        private ObjectPoolManager.PoolingObject[] m_CasingPoolingObjectArray;
-        private ObjectPoolManager.PoolingObject[] m_MagazinePoolingObjectArray;
+
         #endregion
 
         #region Normal Value
         private EnumType.GravityType currentGravityType = EnumType.GravityType.yUp;
-        private readonly float[] probs = new float[] { 45, 20, 20, 10, 5 };
-        private float total = 0;
+        private readonly float[] m_Probs = new float[] { 45, 20, 20, 10, 5 };
+        private float m_Total = 0;
 
-        private float normalMonsterTimer;
-        private float flyingMonsterTimer;
+        private float m_NormalMonsterTimer;
+        private float m_FlyingMonsterTimer;
 
-        private int randomNormalMonsterIndex;
-        private int randomFlyingMonsterIndex;
+        private int m_RandomNormalMonsterIndex;
+        private int m_RandomFlyingMonsterIndex;
         #endregion
 
-
-        [SerializeField] Octree octree;        //temp
+        
         private void Awake()
         {
-            unitManager = GetComponent<EntityManager>();
-            customization = GetComponent<Customization>();
+            m_EntityManager = GetComponent<EntityManager>();
+            m_Customization = GetComponent<Customization>();
+            m_Octree = FindObjectOfType<Octree>();
 
-            for(int i = 0; i < spawnAreaTransform.Length; i++)
-                spawnAreaCollider[i] = spawnAreaTransform[i].GetComponentsInChildren<BoxCollider>();
+            for (int i = 0; i < spawnAreaTransform.Length; i++)
+                m_SpawnAreaCollider[i] = spawnAreaTransform[i].GetComponentsInChildren<BoxCollider>();
             
-            currentAreaCollider = spawnAreaCollider[2]; // YDown
+            m_CurrentAreaCollider = m_SpawnAreaCollider[2]; // YDown
 
             NormalMonsterCount = 0;
             FlyingMonsterCount = 0;
 
-            foreach (float elem in probs) total += elem;
+            foreach (float elem in m_Probs) m_Total += elem;
+            GravityManager.GravityChangeAction += ChangeCurrentArea;
         }
 
         private void Start()
         {
             RegisterPoolingObject();
-            GravityManager.GravityChangeAction += (GravityType) => ChangeCurrentArea(GravityType);
         }
 
         private void RegisterPoolingObject()
         {
-            int normalMonsterArrayLength = unitManager.GetNormalMonsterArrayLength();
-            int flyingMonsterArrayLength = unitManager.GetFlyingMonsterArrayLength();
-            int effectArrayLength = unitManager.GetEffectArrayLength();
-            int casingArrayLength = unitManager.GetCasingArrayLength();
-            int magazineArrayLength = unitManager.GetMagazineArrayLength();
+            int normalMonsterArrayLength = m_EntityManager.GetNormalMonsterArrayLength();
+            int flyingMonsterArrayLength = m_EntityManager.GetFlyingMonsterArrayLength();
 
             if (normalMonsterArrayLength != normalMonsterPoolingCount.Length)
                 Debug.LogError("Normal monster pooling Count is different from the number of PoolingObject's length");
             if (flyingMonsterArrayLength != flyingMonsterPoolingCount.Length)
                 Debug.LogError("Flying monster pooling Count is different from the number of PoolingObject's length");
-            if (effectArrayLength != m_EffectPoolingCount.Length)
-                Debug.LogError("Effect pooling Count is different from the number of PoolingObject's length");
-            if (casingArrayLength != m_CasingPoolingCount.Length)
-                Debug.LogError("Casing pooling Count is different from the number of PoolingObject's length");
-            if (magazineArrayLength != m_MagazinePoolingCount.Length)
-                Debug.LogError("Magazine pooling Count is different from the number of PoolingObject's length");
+
 
             //normal monster 인덱스 순서
             //urban -> oldman -> women -> big -> giant
-
             m_NormalMonsterPoolingObjectArray = new ObjectPoolManager.PoolingObject[normalMonsterArrayLength];
             m_FlyingMonsterPoolingObjectArray = new ObjectPoolManager.PoolingObject[flyingMonsterArrayLength];
-            m_EffectPoolingObjectArray = new ObjectPoolManager.PoolingObject[effectArrayLength];
-            m_CasingPoolingObjectArray = new ObjectPoolManager.PoolingObject[casingArrayLength];
-            m_MagazinePoolingObjectArray = new ObjectPoolManager.PoolingObject[magazineArrayLength];
 
+            //Unit
             for (int i = 0; i < normalMonsterArrayLength; i++)
             {
-                m_NormalMonsterPoolingObjectArray[i] = ObjectPoolManager.Register(unitManager.GetNormalMonster(i), activeUnitPool);
+                m_NormalMonsterPoolingObjectArray[i] = ObjectPoolManager.Register(m_EntityManager.GetNormalMonster(i), activeUnitPool);
                 m_NormalMonsterPoolingObjectArray[i].GenerateObj(normalMonsterPoolingCount[i]);
             }
 
             for (int i = 0; i < flyingMonsterArrayLength; i++)
             {
-                m_FlyingMonsterPoolingObjectArray[i] = ObjectPoolManager.Register(unitManager.GetFlyingMonster(i), activeUnitPool);
+                m_FlyingMonsterPoolingObjectArray[i] = ObjectPoolManager.Register(m_EntityManager.GetFlyingMonster(i), activeUnitPool);
                 m_FlyingMonsterPoolingObjectArray[i].GenerateObj(flyingMonsterPoolingCount[i]);
-            }
-
-            for(int i = 0; i < effectArrayLength; i++)
-            {
-                m_EffectPoolingObjectArray[i] = ObjectPoolManager.Register(unitManager.GetEffectObject(i), activeObjectPool);
-                m_EffectPoolingObjectArray[i].GenerateObj(m_EffectPoolingCount[i]);
-            }
-
-            for (int i = 0; i < effectArrayLength; i++)
-            {
-                m_CasingPoolingObjectArray[i] = ObjectPoolManager.Register(unitManager.GetCasingObject(i), activeObjectPool);
-                m_CasingPoolingObjectArray[i].GenerateObj(m_CasingPoolingCount[i]);
-            }
-
-            for (int i = 0; i < effectArrayLength; i++)
-            {
-                m_MagazinePoolingObjectArray[i] = ObjectPoolManager.Register(unitManager.GetMagazineObject(i), activeObjectPool);
-                m_MagazinePoolingObjectArray[i].GenerateObj(m_MagazinePoolingCount[i]);
             }
         }
 
         public void ChangeCurrentArea(EnumType.GravityType gravityType)
         {
             currentGravityType = gravityType;
-            currentAreaCollider = spawnAreaCollider[(int)gravityType];
+            m_CurrentAreaCollider = m_SpawnAreaCollider[(int)gravityType];
         }
 
         #region Random related
@@ -218,14 +176,14 @@ namespace Manager
         /// <returns>무작위 int index</returns>
         private int RandomUnitIndex()
         {
-            float randomPoint = Random.value * total;
+            float randomPoint = Random.value * m_Total;
 
-            for (int i = 0; i < probs.Length; i++)
+            for (int i = 0; i < m_Probs.Length; i++)
             {
-                if (randomPoint < probs[i]) return i;
-                else randomPoint -= probs[i];
+                if (randomPoint < m_Probs[i]) return i;
+                else randomPoint -= m_Probs[i];
             }
-            return probs.Length - 1;
+            return m_Probs.Length - 1;
         }
 
         /// <summary>
@@ -237,11 +195,11 @@ namespace Manager
         private BoxCollider[] ExcludeRandomIndex(int excludeIndex, out int specificIndex)
         {
             HashSet<int> exclude = new() { excludeIndex };
-            IEnumerable<int> range = Enumerable.Range(0, spawnAreaCollider.Length).Where(i => !exclude.Contains(i));
+            IEnumerable<int> range = Enumerable.Range(0, m_SpawnAreaCollider.Length).Where(i => !exclude.Contains(i));
             
-            int index = Random.Range(0,spawnAreaCollider.Length - exclude.Count);
+            int index = Random.Range(0,m_SpawnAreaCollider.Length - exclude.Count);
             specificIndex = range.ElementAt(index);
-            return spawnAreaCollider[range.ElementAt(index)];
+            return m_SpawnAreaCollider[range.ElementAt(index)];
         }
         #endregion
 
@@ -249,38 +207,38 @@ namespace Manager
         {
             if (!m_IsActiveSpawn) return;
 
-            normalMonsterTimer += Time.deltaTime;
-            flyingMonsterTimer += Time.deltaTime;
+            m_NormalMonsterTimer += Time.deltaTime;
+            m_FlyingMonsterTimer += Time.deltaTime;
 
-            if (normalMonsterTimer >= normalMonsterSpawnTime && NormalMonsterCount < maxNormalMonsterCount) SpawnNormalMonster();
-            if (flyingMonsterTimer >= flyingMonsterSpawnTime && FlyingMonsterCount < maxFlyingMonsterCount) SpawnFlyingMonster();
+            if (m_NormalMonsterTimer >= normalMonsterSpawnTime && NormalMonsterCount < maxNormalMonsterCount) SpawnNormalMonster();
+            if (m_FlyingMonsterTimer >= flyingMonsterSpawnTime && FlyingMonsterCount < maxFlyingMonsterCount) SpawnFlyingMonster();
         }
 
         #region SpawnUnit
         private void SpawnNormalMonster()
         {
-            normalMonsterTimer = 0;
-            randomNormalMonsterIndex = RandomUnitIndex();
+            m_NormalMonsterTimer = 0;
+            m_RandomNormalMonsterIndex = RandomUnitIndex();
             NormalMonsterCount++;
 
-            NormalMonster currentNormalMonster = (NormalMonster)m_NormalMonsterPoolingObjectArray[randomNormalMonsterIndex].GetObject(false);
-            customization.Customize(currentNormalMonster);
+            NormalMonster currentNormalMonster = (NormalMonster)m_NormalMonsterPoolingObjectArray[m_RandomNormalMonsterIndex].GetObject(false);
+            m_Customization.Customize(currentNormalMonster);
 
-            BoxCollider boxCollider = GetClosetArea(currentAreaCollider);
+            BoxCollider boxCollider = GetClosetArea(m_CurrentAreaCollider);
             Vector3 pos = GetRandomPos(boxCollider, 1);
 
-            currentNormalMonster.Init(pos, m_NormalMonsterPoolingObjectArray[randomNormalMonsterIndex]);
+            currentNormalMonster.Init(pos, m_NormalMonsterPoolingObjectArray[m_RandomNormalMonsterIndex]);
             currentNormalMonster.gameObject.SetActive(true);
         }
 
         private void SpawnFlyingMonster()
         {
-            flyingMonsterTimer = 0;
+            m_FlyingMonsterTimer = 0;
             //index 할당 아직 필요 x
             FlyingMonsterCount++;
 
             FlyingMonster currentFlyingMonster = (FlyingMonster)m_FlyingMonsterPoolingObjectArray[0].GetObject(false);
-            currentFlyingMonster.Init(octree.GetRandomSpawnableArea(), m_FlyingMonsterPoolingObjectArray[0]);
+            currentFlyingMonster.Init(m_Octree.GetRandomSpawnableArea(), m_FlyingMonsterPoolingObjectArray[0]);
             currentFlyingMonster.gameObject.SetActive(true);
         }
 
@@ -292,7 +250,7 @@ namespace Manager
             Vector3 initPosition = GetRandomPos(initCollider, 4);
             Quaternion initRotation = GravityManager.GetSpecificGravityNormalRotation(specificIndex);
 
-            SpecialMonster1 specialMonster1 = Instantiate(unitManager.GetSpecialMonster1, initPosition, Quaternion.identity).GetComponent<SpecialMonster1>();
+            SpecialMonster1 specialMonster1 = Instantiate(m_EntityManager.GetSpecialMonster1, initPosition, Quaternion.identity).GetComponent<SpecialMonster1>();
             specialMonster1.Init(initRotation);
 
             IsSP1MonsterSpawned = true;

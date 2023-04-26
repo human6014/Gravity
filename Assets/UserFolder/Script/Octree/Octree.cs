@@ -134,8 +134,8 @@ public class Octree : MonoBehaviour
             Dictionary<OctreeElement, OctreeElement> cameFrom = new();
             Dictionary<OctreeElement, float> weights = new();
 
-            weights.Add(startNode, startNode.cost);
-            fronteer.Enqueue(new OctreeElementQueueElemenet(startNode), startNode.cost);
+            weights.Add(startNode, startNode.Cost);
+            fronteer.Enqueue(new OctreeElementQueueElemenet(startNode), startNode.Cost);
 
             float closestDistance = Vector3.SqrMagnitude(startNode.Bounds.center - request.to);
             long lastMiliseconds = 0;
@@ -164,7 +164,7 @@ public class Octree : MonoBehaviour
                             }
 
                             float distance = (next.Bounds.center - request.to).sqrMagnitude;
-                            float newWeight = weights[current] + next.cost;
+                            float newWeight = weights[current] + next.Cost;
                             if (!weights.ContainsKey(next) || newWeight < weights[next])
                             {
                                 weights[next] = newWeight;
@@ -237,8 +237,7 @@ public class Octree : MonoBehaviour
         if (topmostNeighbor == null) return null;
 
         //find the lowest mirrored child of the parent neighbor
-        OctreeElement lowerMostReflectedChild = GetLowestChild(topmostNeighbor, dir, getNeighborStartingDepth);
-        return lowerMostReflectedChild;
+        return GetLowestChild(topmostNeighbor, dir, getNeighborStartingDepth);
     }
 
     private OctreeElement GetLowestChild(OctreeElement start, OctreeElement.Dir dir, int maxDepth)
@@ -307,7 +306,6 @@ public class Octree : MonoBehaviour
 
         public PathRequest() => path = new List<Vector3>();
 
-
         public List<Vector3> Path
         {
             get => path;
@@ -319,12 +317,6 @@ public class Octree : MonoBehaviour
             isCalculating = false;
             path.Clear();
         }
-    }
-
-    public enum PathfindingAlgorith
-    {
-        AStar,
-        Greedy
     }
 
     public class OctreeElementQueueElemenet : FastPriorityQueueNode
@@ -383,7 +375,7 @@ public class Octree : MonoBehaviour
         public OctreeElement[] Children { get; private set; }
         public OctreeElement Parent { get; private set; }
         public OctreeElement[][] Neigbors { get; set; }
-        public float cost { get; private set; } = 1;
+        public float Cost { get; private set; } = 1;
         public int Depth { get; private set; }
         public bool Empty { get; set; }
 

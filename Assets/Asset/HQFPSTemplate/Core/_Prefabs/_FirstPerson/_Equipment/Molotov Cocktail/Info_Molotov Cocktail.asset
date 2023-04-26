@@ -63,6 +63,7 @@ MonoBehaviour:
     AimThreshold: 0
     AimCamHeadbobMod: 1
     AimMovementSpeedMod: 0
+    AimWhileAirborne: 0
     UseAimBlur: 0
     AimSounds:
       m_Clips:
