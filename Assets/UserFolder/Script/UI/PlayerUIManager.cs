@@ -16,13 +16,13 @@ namespace UI.Manager
         [SerializeField] private WeaponPropertyDisplayer m_WeaponPropertyDisplayer;
         [SerializeField] private DamageDisplayer m_DamageDisplayer;
 
-        public void Init()
+        public void Init(int playerMaxHP, int playerMaxMP, int amountToRealConst)
         {
             m_PlayerStatDisplayer.Init();
             m_HealDisplayer.Init();
             //CrossHair ¿¹Á¤
             m_WeaponPropertyDisplayer.Init();
-            
+            m_DamageDisplayer.Init(playerMaxHP, amountToRealConst);
         }
 
         public void ChangeWeapon(int equipingWeaponType, int bulletType, int currentRemainBullet, int magazineRemainBullet, Sprite weaponImage)
@@ -70,12 +70,14 @@ namespace UI.Manager
         {
             m_HealDisplayer.UpdateRemainHeal(value);
             m_PlayerStatDisplayer.UpdateHPImage(hpAmount);
+            m_DamageDisplayer.DisplayBloodScreen(hpAmount);
             DisplayHealImage(hpAmount);
         }
 
         public void UpdatePlayerHP(float hpAmount)
         {
             m_PlayerStatDisplayer.UpdateHPImage(hpAmount);
+            m_DamageDisplayer.DisplayBloodScreen(hpAmount);
             DisplayHealImage(hpAmount);
         }
 
