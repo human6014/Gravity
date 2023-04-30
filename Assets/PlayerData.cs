@@ -50,7 +50,7 @@ public class PlayerData : MonoBehaviour
 
     private void Awake()
     {
-        m_PlayerUIManager.Init(PlayerMaxHP, PlayerMaxMP, m_AmountToRealConst);
+        m_PlayerUIManager.Init(PlayerMaxHP, PlayerMaxMP, m_AmountToRealConst, m_RealToAmountConst, m_Inventory.HealKitHavingCount);
     }
 
     /// <summary>
@@ -59,11 +59,11 @@ public class PlayerData : MonoBehaviour
     /// <param name="equipingWeaponType">무기 타입 (슬롯 번호랑 일치)</param>
     /// <param name="bulletType">무기 총알 타입 (아이콘 표시용)</param>
     /// <param name="weaponImage">무기 아이콘 이미지</param>
-    public void ChangeWeapon(int equipingWeaponType, BulletType bulletType, Sprite weaponImage)
+    public void ChangeWeapon(int equipingWeaponType, BulletType bulletType, Test.FireMode fireMode, Sprite weaponImage)
     {
         //m_CurrentEquipingWeaponType = (Test.EquipingWeaponType)equipingWeaponType;
         m_CurrentWeaponInfo = m_Inventory.WeaponInfo[equipingWeaponType];
-        m_PlayerUIManager.ChangeWeapon(equipingWeaponType, (int)bulletType, m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, weaponImage);
+        m_PlayerUIManager.ChangeWeapon(equipingWeaponType, (int)bulletType, GetBitPosition((int)fireMode), m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, weaponImage);
 
         bool isActive = IsActiveReloadImage(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, 30);
         m_PlayerUIManager.DisplayReloadImage(isActive);
@@ -75,8 +75,7 @@ public class PlayerData : MonoBehaviour
     /// <param name="fireMode">사격 모드</param>
     public void ChangeFireMode(Test.FireMode fireMode)
     {
-        int arrayIndex = GetBitPosition((int)fireMode);
-        m_PlayerUIManager.ChangeFireMode(arrayIndex);
+        m_PlayerUIManager.ChangeFireMode(GetBitPosition((int)fireMode));
     }
 
     private int GetBitPosition(int value)

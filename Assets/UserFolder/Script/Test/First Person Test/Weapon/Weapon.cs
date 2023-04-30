@@ -17,14 +17,28 @@ namespace Test
         Throwing,
         Other
     }
+
+    [System.Flags]
+    public enum FireMode
+    {
+        None = 1,
+        Auto = 2,
+        Burst = 4,
+        Semi = 8,
+    }
+
     public class Weapon : MonoBehaviour
     {
+        #region SerializeField
         [Header("Parent")]
         [Header("Index")]
         [SerializeField] protected int ItemIndex;   //아이템 고유번호 -> 이름 바꾸자
 
         [Header("Equiping Type")]
         [SerializeField] protected EquipingWeaponType m_EquipingWeaponType;
+
+        [Header("Fire mode")]
+        [CustomAttribute.MultiEnum] [SerializeField] protected FireMode m_FireMode;
 
         [Header("Weapon Animation")]
         [SerializeField] protected Animator m_ArmAnimator; //팔 애니메이터
@@ -42,14 +56,21 @@ namespace Test
 
         [Header("Player Data")]
         [SerializeField] protected PlayerData m_PlayerData;
+        #endregion
 
         private UI.Player.CrossHairDisplayer m_CrossHairDisplayer;
-        
         private WaitForSeconds m_WaitEquipingTime;
         private const int m_UnequipingTime = 550;
 
+        #region Property
+        /// <summary>
+        /// 인벤토리의 Weapon들을 담는 클래스
+        /// </summary>
         protected WeaponInfo m_WeaponInfo { get; private set; }
 
+        /// <summary>
+        /// 플레이어 상태 (행동에만 관련)
+        /// </summary>
         protected PlayerState m_PlayerState { get; private set; }
 
         /// <summary>
@@ -77,15 +98,23 @@ namespace Test
         /// </summary>
         protected Camera m_MainCamera { get; private set; }
 
+        /// <summary>
+        /// 무기 아이콘
+        /// </summary>
         public Sprite WeaponIcon { get => m_WeaponStatScriptable.m_WeaponIcon; }
+
         
         public bool IsEquiping { get; private set; }
         public bool IsUnequiping { get; private set; }
         public virtual bool CanChangeWeapon { get => !IsEquiping && !IsUnequiping; }
 
+        public FireMode m_CurrentFireMode { get; protected set; } = FireMode.None;
         public BulletType m_BulletType { get => m_WeaponStatScriptable.m_BulletType; }
+
         public int EquipingType { get => (int)m_EquipingWeaponType; }
         public int GetItemIndex { get => ItemIndex; }
+
+        #endregion
 
         protected virtual void Awake()
         {

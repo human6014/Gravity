@@ -25,7 +25,7 @@ namespace UI.Player
             color = m_BloodScreenImage.color;
             m_HPToScreenAlpha = amountToRealConst / maxHP * m_MaxAlpha; 
 
-            DisplayHitDirection(test);
+            DisplayHitDirection(test);  //Test
         }
 
         public void DisplayBloodScreen(float HPAmount)

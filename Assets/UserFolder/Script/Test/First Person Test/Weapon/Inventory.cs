@@ -23,7 +23,7 @@ public class Inventory
 {
     [SerializeField] private WeaponInfo[] m_WeaponInfo;
     [SerializeField] private int m_HealKitHavingCount = 0; 
-    private Test.FireMode[] currentFireMode;
+    private Test.FireMode[] m_CurrentFireMode;
 
     public WeaponInfo[] WeaponInfo { get => m_WeaponInfo; }
 
@@ -31,10 +31,9 @@ public class Inventory
 
     public int AddThrowingWeapon(int value) => WeaponInfo[4].m_MagazineRemainBullet += value;
 
-    public void SetCurrentFireMode(int value, Test.FireMode fireMode) => currentFireMode[value] = fireMode;
+    public void SetCurrentFireMode(int slot, Test.FireMode fireMode) => m_CurrentFireMode[slot] = fireMode;
 
-
-    public Test.FireMode CurrentFireMode(int value) => currentFireMode[value];
+    public Test.FireMode GetCurrentFireMode(int value) => m_CurrentFireMode[value];
 
     public Inventory(int m_EquipingTypeLength)
     {

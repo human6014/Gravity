@@ -10,9 +10,10 @@ namespace UI.Player
         [SerializeField] private Image m_HPImage;
         [SerializeField] private Image m_MPImage;
 
-        public void Init()
+        public void Init(int maxHP,int maxMP, float realToAmountConst)
         {
-
+            m_HPImage.fillAmount = maxHP * realToAmountConst;
+            m_MPImage.fillAmount = maxMP * realToAmountConst;
         }
 
         public void UpdateHPImage(float value)

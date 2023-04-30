@@ -53,7 +53,7 @@ namespace Manager
             foreach (Transform child in transform)
             {
                 if(!child.TryGetComponent(out Weapon weapon)) continue;
-                m_WeaponDictionary.Add(new CustomKey(weapon.EquipingType, weapon.GetItemIndex), weapon);
+                m_WeaponDictionary.Add(new (weapon.EquipingType, weapon.GetItemIndex), weapon);
             }
             m_PlayerInputController.ChangeEquipment += TryWeaponChange;
             m_PlayerInputController.Heal += TryHealInteract;
@@ -86,21 +86,19 @@ namespace Manager
             }
             else
             {
-                m_WeaponDictionary.TryGetValue(new CustomKey(slotNumber, index), out m_CurrentWeapon);
-                m_PlayerData.ChangeWeapon(m_CurrentWeapon.EquipingType, m_CurrentWeapon.m_BulletType, m_CurrentWeapon.WeaponIcon);
+                m_WeaponDictionary.TryGetValue(new (slotNumber, index), out m_CurrentWeapon);
                 m_CurrentWeapon.Init();
+                m_PlayerData.ChangeWeapon(m_CurrentWeapon.EquipingType, m_CurrentWeapon.m_BulletType, m_CurrentWeapon.m_CurrentFireMode,m_CurrentWeapon.WeaponIcon);
             }
             m_CurrentEquipIndex = slotNumber;
         }
 
         public void ChangeWeapon(int slotNumber, int index)
         {
-            CustomKey key = new(slotNumber, index);
-            m_WeaponDictionary.TryGetValue(key, out m_CurrentWeapon);
+            m_WeaponDictionary.TryGetValue(new(slotNumber, index), out m_CurrentWeapon);
 
             m_CurrentWeapon.Init();
-            
-            m_PlayerData.ChangeWeapon(m_CurrentWeapon.EquipingType, m_CurrentWeapon.m_BulletType, m_CurrentWeapon.WeaponIcon);
+            m_PlayerData.ChangeWeapon(m_CurrentWeapon.EquipingType, m_CurrentWeapon.m_BulletType, m_CurrentWeapon.m_CurrentFireMode, m_CurrentWeapon.WeaponIcon);
         }
 
         private async void TryHealInteract()
