@@ -7,14 +7,6 @@ using Entity.Object;
 
 namespace Test
 {
-    [System.Flags]
-    public enum FireMode
-    {
-        Auto = 1,
-        Burst = 2,
-        Semi = 4,
-    }
-
 
     public class RangeWeapon : Weapon
     {
@@ -30,9 +22,6 @@ namespace Test
         [Header("Reload")]
         [Tooltip("쏘고 바로 장전인지")]
         [SerializeField] private bool m_IsInstantReload;
-
-        [Header("Fire mode")]
-        [CustomAttribute.MultiEnum] [SerializeField] private FireMode m_FireMode;
         #endregion
 
         private Quaternion m_AimingPivotRotation;           //위치 조정용 옮길 각도(Quaternion)
@@ -47,8 +36,6 @@ namespace Test
         private RangeWeaponStatScriptable m_RangeWeaponStat;
         private RangeWeaponSoundScriptable m_RangeWeaponSound;
 
-        
-        private FireMode m_CurrentFireMode = FireMode.Auto;
         private int m_FireModeLength;
         private int m_FireModeIndex = 1;
 
@@ -193,7 +180,7 @@ namespace Test
             int beforeChangeIndex = m_FireModeIndex;
             do
             {
-                if ((m_FireModeIndex <<= 1) >= m_FireModeLength) m_FireModeIndex = 1;
+                if ((m_FireModeIndex <<= 1) >= m_FireModeLength) m_FireModeIndex = 2;
             }
             while (!m_FireMode.HasFlag((FireMode)m_FireModeIndex));
             int afterChangeIndex = m_FireModeIndex;

@@ -16,19 +16,21 @@ namespace UI.Manager
         [SerializeField] private WeaponPropertyDisplayer m_WeaponPropertyDisplayer;
         [SerializeField] private DamageDisplayer m_DamageDisplayer;
 
-        public void Init(int playerMaxHP, int playerMaxMP, int amountToRealConst)
+        public void Init(int playerMaxHP, int playerMaxMP, int amountToRealConst, float realToAmountConst, int havingHealKit)
         {
-            m_PlayerStatDisplayer.Init();
-            m_HealDisplayer.Init();
+            m_PlayerStatDisplayer.Init(playerMaxHP, playerMaxMP, realToAmountConst);
+            m_HealDisplayer.Init(havingHealKit);
             //CrossHair ¿¹Á¤
             m_WeaponPropertyDisplayer.Init();
             m_DamageDisplayer.Init(playerMaxHP, amountToRealConst);
         }
 
-        public void ChangeWeapon(int equipingWeaponType, int bulletType, int currentRemainBullet, int magazineRemainBullet, Sprite weaponImage)
+        public void ChangeWeapon(int equipingWeaponType, int bulletType, int fireMode, int currentRemainBullet, int magazineRemainBullet, Sprite weaponImage)
         {
-            m_WeaponPropertyDisplayer.ChangeWeapon(bulletType, currentRemainBullet, weaponImage);
+            m_WeaponPropertyDisplayer.ChangeWeapon(bulletType, currentRemainBullet);
+            m_WeaponPropertyDisplayer.UpdateWeaponIcon(weaponImage);
             m_WeaponPropertyDisplayer.UpdateRemainBulletText(magazineRemainBullet);
+            m_WeaponPropertyDisplayer.UpdateFireMode(fireMode);
 
             m_ItemSlotDisplayer.UpdateFocusSlot(equipingWeaponType);
         }

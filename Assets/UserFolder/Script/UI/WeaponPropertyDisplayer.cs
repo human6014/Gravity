@@ -20,11 +20,15 @@ namespace UI.Player
         [SerializeField] private Sprite [] m_FireModeIcon;
         [SerializeField] private Sprite [] m_BulletIcon;
 
-        public  readonly GameObject[] m_BulletTemplate = new GameObject[m_MaxBulletCount];
+        public readonly GameObject[] m_BulletTemplate = new GameObject[m_MaxBulletCount];
         private Sprite currentBulletImage;
 
         public void Init()
         {
+            m_ReloadNotification.SetActive(false);
+            m_FireModeImage.sprite = null;
+            m_WeaponImage.sprite = null;
+            m_RemainbulletText.text = "0";
 
         }
 
@@ -38,10 +42,8 @@ namespace UI.Player
             }
         }
 
-        public void ChangeWeapon(int bulletType, int currentRemainBullet, Sprite sprite)
+        public void ChangeWeapon(int bulletType, int currentRemainBullet)
         {
-            m_WeaponImage.sprite = sprite;
-
             for(int i = top; i > currentRemainBullet; i--)
                 m_BulletTemplate[i - 1].SetActive(false);
             
@@ -54,8 +56,6 @@ namespace UI.Player
                 m_BulletTemplate[i].SetActive(true);
             }
             top = currentRemainBullet;
-
-
         }
 
         public void DisplayReloadImage(bool isActive)
@@ -65,7 +65,13 @@ namespace UI.Player
 
         public void UpdateFireMode(int index)
         {
-            m_FireModeImage.sprite = m_FireModeIcon[index];
+            if (index == 0)
+            {
+                m_FireModeImage.enabled = false;
+                return;
+            }
+            m_FireModeImage.enabled = true;
+            m_FireModeImage.sprite = m_FireModeIcon[index - 1];
         }
 
         public void UpdateWeaponIcon(Sprite sprite)
