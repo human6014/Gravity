@@ -126,12 +126,7 @@ public class PlayerInputController : MonoBehaviour
 
         // FixedUpdate ¿¡¼­ ³Ñ¾î¿È
 
-        m_IsRunning = Input.GetKey(KeyCode.LeftShift) && m_Vertical > 0;
-        Run?.Invoke(m_IsRunning);
 
-        m_Horizontal = Input.GetAxis("Horizontal");
-        m_Vertical = Input.GetAxis("Vertical");
-        PlayerMovement?.Invoke(m_Horizontal, m_Vertical);
 
 
         m_IsAutoFiring = Input.GetKey(KeyCode.Mouse0);
@@ -146,6 +141,16 @@ public class PlayerInputController : MonoBehaviour
         m_IsHeavyFiring = Input.GetKeyDown(KeyCode.Mouse1);
         if(m_IsHeavyFiring) HeavyFire?.Invoke();
         //
+    }
+
+    private void FixedUpdate()
+    {
+        m_Horizontal = Input.GetAxis("Horizontal");
+        m_Vertical = Input.GetAxis("Vertical");
+        PlayerMovement?.Invoke(m_Horizontal, m_Vertical);
+
+        m_IsRunning = Input.GetKey(KeyCode.LeftShift) && m_Vertical > 0;
+        Run?.Invoke(m_IsRunning);
     }
 
     private void GravityChangInput()

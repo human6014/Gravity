@@ -55,6 +55,7 @@ namespace Manager
                 if(!child.TryGetComponent(out Weapon weapon)) continue;
                 m_WeaponDictionary.Add(new (weapon.EquipingType, weapon.GetItemIndex), weapon);
             }
+
             m_PlayerInputController.ChangeEquipment += TryWeaponChange;
             m_PlayerInputController.Heal += TryHealInteract;
             m_PlayerInputController.Light += () => TryWeaponChange(m_ToolKitToEquipIndex);

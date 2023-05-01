@@ -26,8 +26,9 @@ namespace EnumType
 
     public enum FlyingMonsterType
     {
-        RangedFlyingMonster = 0,
-        MeleeFlyingMonster = 1
+        BoidMonster = 0,
+        RangedFlyingMonster = 1,
+        MeleeFlyingMonster = 2
     }
 
     public enum Boss1

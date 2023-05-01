@@ -12,8 +12,8 @@ namespace Contoller.Player
     [RequireComponent(typeof(AudioSource))]
     public class FirstPersonController : MonoBehaviour
     {
-        public MouseLook MouseLook { get => m_MouseLook; private set => m_MouseLook = value; }
-        public PlayerState m_PlayerState { get; } = new PlayerState();
+        public MouseLook MouseLook { get => m_MouseLook;}
+
         #region SerializeField
         [Tooltip("걷기 속도")]
         [SerializeField] private float m_WalkSpeed;
@@ -90,20 +90,20 @@ namespace Contoller.Player
 
         [Tooltip("플레이어 지면 감지 레이어")]
         [SerializeField] private LayerMask m_GroundLayer;
-        //앉기랑 다시 일어나기
+
+        [Tooltip("앉기, 일어나기")]
         [SerializeField] Vector3 m_CrouchInterporatePos;          //앉기, 일어나기 증감값
         [SerializeField] float m_CrouchTime = 0.3f;               //앉기, 일어나기 자세 전환 시간
-        private Vector3 m_IdlePos;                                //일어난 상태 원래 위치
-        private Vector3 m_CrouchPos;                              //앉은 상태 위치
-        
-        #endregion
 
+        #endregion
         private PlayerInputController m_PlayerInputController;
-        
         private CharacterController m_CharacterController;
         private AudioSource m_AudioSource;
+        private PlayerData m_PlayerData;
         private Camera m_Camera;
 
+        private Vector3 m_IdlePos;                                //일어난 상태 원래 위치
+        private Vector3 m_CrouchPos;                              //앉은 상태 위치
         private Vector3 m_MoveDir = Vector3.zero;
         private Vector3 m_OriginalCameraPosition;
         private Vector3 m_DesiredMove;
@@ -122,12 +122,14 @@ namespace Contoller.Player
 
         public bool m_IsIdle { get; private set; }
         public bool m_IsCrouch { get; private set; }
-        public bool m_IsWalking { get; private set; }          //걷고 있는지
+        public bool m_IsWalking { get; private set; }
+
         private void Awake()
         {
             m_PlayerInputController = GetComponent<PlayerInputController>();
             m_CharacterController = GetComponent<CharacterController>();
             m_Camera = m_RightAxisTransform.GetComponentInChildren<Camera>();
+            m_PlayerData = GetComponent<PlayerData>();
             m_AudioSource = GetComponent<AudioSource>();
 
             AIManager.PlayerTransform = transform;
@@ -149,7 +151,9 @@ namespace Contoller.Player
 
         private void AssignKeyAction()
         {
-            m_PlayerInputController.MouseMovement += TryRotateView;
+            m_PlayerInputController.MouseMovement += (float mouseHorizontal, float mouseVertical) 
+                => m_MouseLook.LookRotation(mouseHorizontal, mouseVertical);
+
             m_PlayerInputController.PlayerMovement += TryMovement;
             m_PlayerInputController.Run += TryRun;
             m_PlayerInputController.Crouch += TryCrouch;
@@ -158,22 +162,19 @@ namespace Contoller.Player
 
         private void Update()
         {
-            //Debug.Log("PlayerBehaviorState : " + m_PlayerState.PlayerBehaviorState);
-            //Debug.Log("PlayerWeaponState : " + m_PlayerState.PlayerWeaponState);
-            
             if (!m_PreviouslyGrounded && m_IsGround)
             {
                 StartCoroutine(m_JumpBob.DoBobCycle());
                 PlayLandingSound();
                 CustomGravityChange(false,0);
                 m_Jumping = false;
-                m_PlayerState.SetBehaviorJumping(false);
+                m_PlayerData.m_PlayerState.SetBehaviorJumping(false);
             }
             if (!m_IsGround && !m_Jumping && m_PreviouslyGrounded)
             {
                 CustomGravityChange(false,0);
             }
-            //m_CrossHairController.CrossHairSetBool("IsJumping", m_Jumping);
+
             m_PreviouslyGrounded = m_IsGround;
         }
 
@@ -207,6 +208,7 @@ namespace Contoller.Player
                 if (m_Jump)
                 {
                     CustomGravityChange(false, m_JumpSpeed * -GravityManager.GravityDirectionValue);
+                    m_PlayerData.m_PlayerState.SetBehaviorJumping(true);
                     PlayJumpSound();
                     m_Jump = false;
                     m_Jumping = true;
@@ -260,8 +262,8 @@ namespace Contoller.Player
 
         private void TryJump()
         {
+            if (m_Jumping || !m_PlayerData.CanJumping()) return;
             m_Jump = true;
-            m_PlayerState.SetBehaviorJumping(true);
         }
 
         private void PlayLandingSound()
@@ -329,8 +331,8 @@ namespace Contoller.Player
             m_MovementSpeed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;
             m_Input = new Vector2(horizontal, vertical);
 
-            if (m_Input == Vector2.zero) m_PlayerState.SetBehaviorIdle();
-            else m_PlayerState.SetBehaviorWalking();
+            if (m_Input == Vector2.zero) m_PlayerData.m_PlayerState.SetBehaviorIdle();
+            else m_PlayerData.m_PlayerState.SetBehaviorWalking();
             
             //if (m_IsWalking) m_IsIdle = m_Input == Vector2.zero;
             //m_CrossHairController.CrossHairSetBool("IsWalking", !m_IsIdle);
@@ -347,15 +349,17 @@ namespace Contoller.Player
         private void TryRun(bool isRunning)
         {
             m_WasWalking = m_IsWalking;
+
+            if (isRunning && !m_PlayerData.CanRunning())
+            {
+                m_IsWalking = true;
+                return;
+            }
+
             m_IsWalking = !isRunning;
-            m_PlayerState.SetBehaviorRunning(isRunning);
+            m_PlayerData.m_PlayerState.SetBehaviorRunning(isRunning);
 
             //m_CrossHairController.CrossHairSetBool("IsRunning", isRunning);
-        }
-
-        private void TryRotateView(float mouseHorizontal, float mouseVertical)
-        {
-            m_MouseLook.LookRotation(mouseHorizontal, mouseVertical);
         }
 
         private void PositionRay()
@@ -369,7 +373,7 @@ namespace Contoller.Player
         private void TryCrouch(bool isCrouch)
         {
             m_IsCrouch = isCrouch;
-            m_PlayerState.SetBehaviorCrouching(isCrouch);
+            m_PlayerData.m_PlayerState.SetBehaviorCrouching(isCrouch);
             //m_CrossHairController.CrossHairSetBool("IsCrouching", isCrouch);
             StopAllCoroutines();
             if (isCrouch)

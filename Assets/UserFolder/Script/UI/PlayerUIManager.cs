@@ -9,9 +9,6 @@ namespace UI.Manager
     {
         [SerializeField] private PlayerStatDisplayer m_PlayerStatDisplayer;
         [SerializeField] private HealDisplayer m_HealDisplayer;
-
-        [SerializeField] private CrossHairDisplayer m_CrossHairDisplayer;   //옮겨야함
-
         [SerializeField] private ItemSlotDisplayer m_ItemSlotDisplayer;
         [SerializeField] private WeaponPropertyDisplayer m_WeaponPropertyDisplayer;
         [SerializeField] private DamageDisplayer m_DamageDisplayer;
@@ -20,7 +17,6 @@ namespace UI.Manager
         {
             m_PlayerStatDisplayer.Init(playerMaxHP, playerMaxMP, realToAmountConst);
             m_HealDisplayer.Init(havingHealKit);
-            //CrossHair 예정
             m_WeaponPropertyDisplayer.Init();
             m_DamageDisplayer.Init(playerMaxHP, amountToRealConst);
         }
@@ -53,9 +49,8 @@ namespace UI.Manager
 
         public void RangeWeaponReload(int currentRemainBullet, int magazineRemainBullet, bool isActive)
         {
-            m_WeaponPropertyDisplayer.UpdateRemainBulletIcon(currentRemainBullet);
             m_WeaponPropertyDisplayer.UpdateRemainBulletText(magazineRemainBullet);
-            m_WeaponPropertyDisplayer.DisplayReloadImage(isActive);
+            RangeWeaponFire(currentRemainBullet, isActive);
         }
 
         public void UpdateWeaponSlot(int equipingWeaponType, Sprite sprite)
@@ -71,9 +66,6 @@ namespace UI.Manager
         public void UsingHealKit(int value, float hpAmount)
         {
             m_HealDisplayer.UpdateRemainHeal(value);
-            m_PlayerStatDisplayer.UpdateHPImage(hpAmount);
-            m_DamageDisplayer.DisplayBloodScreen(hpAmount);
-            DisplayHealImage(hpAmount);
         }
 
         public void UpdatePlayerHP(float hpAmount)

@@ -26,10 +26,9 @@ namespace UI.Player
         public void Init()
         {
             m_ReloadNotification.SetActive(false);
-            m_FireModeImage.sprite = null;
-            m_WeaponImage.sprite = null;
+            m_FireModeImage.enabled = false;
+            m_WeaponImage.enabled = false;
             m_RemainbulletText.text = "0";
-
         }
 
         private void Awake()
@@ -76,6 +75,7 @@ namespace UI.Player
 
         public void UpdateWeaponIcon(Sprite sprite)
         {
+            m_WeaponImage.enabled = true;
             m_WeaponImage.sprite = sprite;
         }
 
@@ -83,7 +83,9 @@ namespace UI.Player
         {
             if (value >= top)
             {
-                for (int i = top; i < value; i++) m_BulletTemplate[i].SetActive(true);
+                Debug.Log(value);
+                Debug.Log(top);
+                for (int i = top; i < value; i++) m_BulletTemplate[i].SetActive(true);  //바로 5번 무기 들고 공격 시 버그
                 top = value;
             }
             else

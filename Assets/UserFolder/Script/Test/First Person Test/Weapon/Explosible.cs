@@ -19,8 +19,6 @@ public class Explosible : PoolableScript
     [Tooltip("이펙트가 꺼지는 데 걸리는 시간")]
     [SerializeField] protected float m_StopDuration = 5;
 
-    private Manager.ObjectPoolManager.PoolingObject m_PoolingObject;
-
     private Rigidbody m_Rigidbody;
     private MeshRenderer m_MeshRenderer;
 

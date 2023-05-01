@@ -280,7 +280,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.3583182
+      - time: 0.48901728
         functionName: EndAnimation
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 83fa5366fa38ebf498e7e719c3e6b8a4,
@@ -325,7 +325,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.37212223
+      - time: 0.4541891
         functionName: EndAnimation
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 83fa5366fa38ebf498e7e719c3e6b8a4,
