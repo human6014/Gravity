@@ -23,11 +23,12 @@ public class PlayerState
 {
     public PlayerBehaviorState PlayerBehaviorState { get; private set; }
     public PlayerWeaponState PlayerWeaponState { get; private set; }
-    public PlayerWeaponState BeforePlayerWeaponState { get; private set; } = PlayerWeaponState.Idle;
+    public PlayerWeaponState BeforePlayerWeaponState { get; private set; } 
     public PlayerState()
     {
         PlayerBehaviorState = PlayerBehaviorState.Idle;
         PlayerWeaponState = PlayerWeaponState.Idle;
+        BeforePlayerWeaponState = PlayerWeaponState.Idle;
     }
 
     #region SetPlayerBehaviorState

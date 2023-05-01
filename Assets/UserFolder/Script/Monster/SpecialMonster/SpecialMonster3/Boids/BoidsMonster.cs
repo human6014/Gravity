@@ -7,6 +7,7 @@ public class BoidsMonster : PoolableScript
     #region Variables & Initializer
     [Header("Info")]
     [SerializeField] private Scriptable.BoidsScriptable settings;
+    [SerializeField] private Scriptable.FlyingMonsterScriptable m_FlyingMonsterScriptable;
 
     private WaitForSeconds calcEgoWaitSeconds;
     private WaitForSeconds findNeighbourSeconds;

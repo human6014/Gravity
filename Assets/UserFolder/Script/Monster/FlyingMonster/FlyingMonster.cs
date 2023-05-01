@@ -8,7 +8,6 @@ namespace Entity.Unit.Flying
     public class FlyingMonster : PoolableScript, IMonster
     {
         [SerializeField] private Scriptable.FlyingMonsterScriptable settings;
-        private Manager.ObjectPoolManager.PoolingObject poolingObject;
 
         private FlyingMovementController flyingMovementController;
         private FlyingRotationController flyingRotationController;
@@ -31,7 +30,7 @@ namespace Entity.Unit.Flying
         public void Init(Vector3 pos, Manager.ObjectPoolManager.PoolingObject poolingObject)
         {
             transform.position = pos;
-            this.poolingObject = poolingObject;
+            this.m_PoolingObject = poolingObject;
             flyingMovementController.Init();
             flyingRotationController.Init();
         }
@@ -62,7 +61,7 @@ namespace Entity.Unit.Flying
             Manager.SpawnManager.FlyingMonsterCount--;
             flyingMovementController.Dispose();
             flyingRotationController.Dispose();
-            poolingObject.ReturnObject(this);
+            m_PoolingObject.ReturnObject(this);
         }
     }
 }

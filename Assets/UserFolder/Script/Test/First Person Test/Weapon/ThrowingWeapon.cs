@@ -11,27 +11,28 @@ namespace Test
         [Space(15)]
         [Header("Child")]
         [SerializeField] private Explosible m_Explosive;
-
         [SerializeField] private Transform m_SpawnPos;
 
         [Header("Pooling")]
         [SerializeField] private Transform m_ActiveObjectPool;
 
         [SerializeField] private GameObject m_RendererObject;
+
         private ThrowingWeaponSoundScriptable m_ThrowingWeaponSound;
         private ThrowingWeaponStatScriptable m_ThrowingWeaponStat;
         private Transform m_CameraTransform;
         private Manager.ObjectPoolManager.PoolingObject m_PoolingObject;
 
-        public override bool CanChangeWeapon => base.CanChangeWeapon && !m_IsThrowing;
-
         private bool m_IsThrowing;
         private bool m_IsRunning;
+        private bool m_IsActiveState;
         private const int m_MaxBullet = 1;
-        private int m_TempHasCount = 1;
+        private const float m_ReInitTime = 0.35f;
 
         private Coroutine m_RunningCoroutine;
         private Quaternion m_RunningPivotRotation;
+
+        public override bool CanChangeWeapon => base.CanChangeWeapon && !m_IsThrowing;
         protected override void Awake()
         {
             base.Awake();
@@ -45,8 +46,15 @@ namespace Test
 
         private void Start() => AssignPooling();
 
+        public override void Init()
+        {
+            base.Init();
+            if(m_WeaponInfo.m_CurrentRemainBullet <= 0) gameObject.SetActive(false);
+        }
+
         private void ReInit()
         {
+            m_IsThrowing = false;
             m_RendererObject.SetActive(true);
             m_ArmAnimator.SetTrigger("Equip");
             m_EquipmentAnimator.SetTrigger("Equip");
@@ -61,13 +69,13 @@ namespace Test
         protected override void AssignKeyAction()
         {
             base.AssignKeyAction();
-            m_PlayerInputController.SemiFire += LongThrow;
-            m_PlayerInputController.HeavyFire += ShortThrow;
+            m_PlayerInputController.SemiFire += TryLongThrow;
+            m_PlayerInputController.HeavyFire += TryShortThrow;
         }
 
         private void Update()
         {
-            if (m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
+            if (m_PlayerData.m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
             {
                 if (!m_IsRunning)
                 {
@@ -106,17 +114,18 @@ namespace Test
             }
         }
 
-        private void LongThrow()
+        private bool CanThrowing() => !m_IsThrowing && m_PlayerData.m_PlayerState.PlayerBehaviorState != PlayerBehaviorState.Running && m_WeaponInfo.m_CurrentRemainBullet > 0;
+        private void TryLongThrow()
         {
-            if (m_IsThrowing || m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running || m_WeaponInfo.m_CurrentRemainBullet <= 0) return;
+            if (!CanThrowing()) return;
             m_ArmAnimator.SetTrigger("Long Throw");
             m_EquipmentAnimator.SetTrigger("Long Throw");
             StartCoroutine(PlayThrowSound(true));
         }
 
-        private void ShortThrow()
+        private void TryShortThrow()
         {
-            if (m_IsThrowing || m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running || m_WeaponInfo.m_CurrentRemainBullet <= 0) return;
+            if (!CanThrowing()) return;
             m_ArmAnimator.SetTrigger("Short Throw");
             m_EquipmentAnimator.SetTrigger("Short Throw");
             StartCoroutine(PlayThrowSound(false));
@@ -134,7 +143,7 @@ namespace Test
             }
             m_RendererObject.SetActive(false);
             Throw(isLong);
-            m_PlayerData.RangeWeaponReload(1);
+            EndThrow();
         }
 
         private void Throw(bool isLong)
@@ -152,18 +161,19 @@ namespace Test
                 throwingRigid.AddForce(forceToAdd, ForceMode.Impulse);
                 throwingRigid.AddTorque(TorquToAdd);
             }
-            m_IsThrowing = false;
         }
 
         private void EndThrow()
         {
-            if (m_TempHasCount > 0)
+            if (m_WeaponInfo.m_MagazineRemainBullet <= 0)
             {
-
+                m_IsThrowing = false;
+                m_IsActiveState = false;
             }
             else
             {
-
+                m_PlayerData.RangeWeaponReload(1);
+                Invoke(nameof(ReInit), m_ReInitTime);
             }
         }
 
@@ -202,8 +212,8 @@ namespace Test
         protected override void DischargeKeyAction()
         {
             base.DischargeKeyAction();
-            m_PlayerInputController.SemiFire -= LongThrow;
-            m_PlayerInputController.HeavyFire -= ShortThrow;
+            m_PlayerInputController.SemiFire -= TryLongThrow;
+            m_PlayerInputController.HeavyFire -= TryShortThrow;
         }
     }
 }

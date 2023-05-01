@@ -13,24 +13,30 @@ namespace Test
     {
         [Space(15)]
         [Header("Child")]
-        private Scriptable.MeleeWeaponSoundScripatble m_MeleeWeaponSound;
-        private Scriptable.MeleeWeaponStatScriptable m_MeleeWeaponStat;
- 
-        private float m_CurrentFireTime;
-
-        private ObjectPoolManager.PoolingObject[] m_EffectPoolingObject;
-        private SurfaceManager m_SurfaceManager;
-
         [SerializeField] private float m_SwingRadius;
         [SerializeField] private float m_MaxDistance;
 
-        private Transform m_CameraTransform;
+        [SerializeField] private bool m_CanComboAttack;
 
-        public override bool CanChangeWeapon => base.CanChangeWeapon && !m_IsAttacking;
+        private Scriptable.MeleeWeaponSoundScripatble m_MeleeWeaponSound;
+        private Scriptable.MeleeWeaponStatScriptable m_MeleeWeaponStat;
+
+        private ObjectPoolManager.PoolingObject[] m_EffectPoolingObject;
+        private SurfaceManager m_SurfaceManager;
+        private Transform m_CameraTransform;
+        private Coroutine m_RunningCoroutine;
+
+        private Quaternion m_RunningPivotRotation;
+        private float m_CurrentFireTime;
+        private int m_SwingIndex;
+        private bool m_IsLightAttacking;
+        private bool m_IsHeavyAttacking;
         private bool m_IsAttacking;
         private bool m_IsRunning;
-        private Coroutine m_RunningCoroutine;
-        private Quaternion m_RunningPivotRotation;
+        
+        public override bool CanChangeWeapon => base.CanChangeWeapon && !m_IsAttacking;
+        private bool CanComboAttacking() => m_CanComboAttack && (m_IsLightAttacking && !m_IsHeavyAttacking);
+
         protected override void Awake()
         {
             base.Awake();
@@ -60,7 +66,7 @@ namespace Test
         private void Update()
         {
             m_CurrentFireTime += Time.deltaTime;
-            if (m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
+            if (m_PlayerData.m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
             {
                 if (!m_IsRunning)
                 {
@@ -104,22 +110,21 @@ namespace Test
             if (m_CurrentFireTime > m_MeleeWeaponStat.m_LightFireTime)
             {
                 m_CurrentFireTime = 0;
-
+                m_IsLightAttacking = true;
                 Attack(0);
             }
         }
 
         private void TryHeavyAttack()
         {
-            if (m_CurrentFireTime > m_MeleeWeaponStat.m_HeavyFireTime)
+            if ((m_CurrentFireTime > m_MeleeWeaponStat.m_HeavyFireTime) || CanComboAttacking())
             {
                 m_CurrentFireTime = 0;
-
+                m_IsHeavyAttacking = true;
                 Attack(1);
             }
         }
 
-        private int m_SwingIndex;
         private void Attack(int swingIndex)
         {
             m_SwingIndex = swingIndex;
@@ -144,6 +149,8 @@ namespace Test
         //Animation Event
         private void EndAnimation()
         {
+            m_IsLightAttacking = false;
+            m_IsHeavyAttacking = false;
             m_IsAttacking = false;
         }
 

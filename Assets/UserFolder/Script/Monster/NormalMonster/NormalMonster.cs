@@ -8,7 +8,6 @@ namespace Entity.Unit.Normal
     public class NormalMonster : PoolableScript, IMonster
     {
         [SerializeField] private Scriptable.NormalMonsterScriptable settings;
-        private Manager.ObjectPoolManager.PoolingObject poolingObject;
 
         private Animator animator;
         private NormalMonsterAI normalMonsterAI;
@@ -32,7 +31,7 @@ namespace Entity.Unit.Normal
         public void Init(Vector3 pos, Manager.ObjectPoolManager.PoolingObject poolingObject)
         {
             normalMonsterAI.Init(pos);
-            this.poolingObject = poolingObject;
+            m_PoolingObject = poolingObject;
         }
 
         public void Move()
@@ -60,7 +59,7 @@ namespace Entity.Unit.Normal
         {
             normalMonsterAI.Dispose();
             Manager.SpawnManager.NormalMonsterCount--;
-            poolingObject.ReturnObject(this);
+            m_PoolingObject.ReturnObject(this);
         }
     }
 }

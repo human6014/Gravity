@@ -4,5 +4,6 @@ using UnityEngine;
 
 public abstract class PoolableScript : MonoBehaviour
 {
-    abstract public void ReturnObject();
+    protected Manager.ObjectPoolManager.PoolingObject m_PoolingObject;
+    public abstract void ReturnObject();
 }

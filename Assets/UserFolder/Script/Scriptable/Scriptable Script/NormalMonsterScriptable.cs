@@ -5,31 +5,11 @@ using UnityEngine;
 namespace Scriptable
 {
     [CreateAssetMenu(fileName = "NormalMonsterSetting", menuName = "Scriptable Object/NormalMonsterSettings", order = int.MaxValue - 1)]
-    public class NormalMonsterScriptable : ScriptableObject
+    public class NormalMonsterScriptable : UnitScriptable
     {
+        [Header("Child")]
         [Header("Script info")]
-        [Tooltip("¸ó½ºÅÍ Å¸ÀÔ")] 
+        [Tooltip("ëª¬ìŠ¤í„° íƒ€ìž…")] 
         public EnumType.NoramlMonsterType m_MonsterType;
-
-        [Header("Stat value")]
-        [Tooltip("Ã¼·Â")] 
-        public int m_MaxHp;
-
-        [Tooltip("¹æ¾î·Â")]
-        public int m_Def;
-
-        [Tooltip("°ø°Ý·Â")] 
-        public int m_Damage;
-
-        [Tooltip("ÀÌµ¿ ¼Óµµ")]
-        public float m_MovementSpeed;
-
-        [Tooltip("°ø°Ý ¼Óµµ")]
-        public float m_AttackSpeed;
-
-        [Tooltip("°ø°Ý »ç°Å¸®")]
-        public float m_AttackRange;
-
-        //µîµî...
     }
 }

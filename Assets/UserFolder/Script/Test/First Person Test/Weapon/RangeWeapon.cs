@@ -71,7 +71,7 @@ namespace Test
 
         private void Start()
         {
-            m_Fireable.Setup(m_RangeWeaponStat, m_WeaponManager.m_EffectPoolingObjectArray, m_PlayerState, m_MainCamera);
+            m_Fireable.Setup(m_RangeWeaponStat, m_WeaponManager.m_EffectPoolingObjectArray, m_PlayerData.m_PlayerState, m_MainCamera);
             m_Reloadable.Setup(m_RangeWeaponSound, m_ArmAnimator);
         }
 
@@ -105,7 +105,7 @@ namespace Test
         private void Update()
         {
             m_CurrentFireTime += Time.deltaTime;
-            if (m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
+            if (m_PlayerData.m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
             {
                 if (!m_IsRunning)
                 {
@@ -142,16 +142,16 @@ namespace Test
         
         private void TryAiming(bool isAiming)
         {
-            if (m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running) return;
+            if (m_PlayerData.m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running) return;
 
             if (isAiming)
             {
-                m_PlayerState.SetWeaponAiming();
+                m_PlayerData.m_PlayerState.SetWeaponAiming();
                 AimingPosRot(m_RangeWeaponStat.m_AimingPivotPosition, m_AimingPivotRotation, m_AimingFOV);
             }
             else
             {
-                m_PlayerState.SetWeaponIdle();
+                m_PlayerData.m_PlayerState.SetWeaponIdle();
                 AimingPosRot(m_WeaponManager.m_OriginalPivotPosition, m_WeaponManager.m_OriginalPivotRotation, m_WeaponManager.m_OriginalFOV);
             }
             SetCurrentFireIndex(isAiming);
@@ -221,7 +221,7 @@ namespace Test
 
         #region Fire
         private bool CanFire() => m_CurrentFireTime >= m_RangeWeaponStat.m_AttackTime  &&
-            m_PlayerState.PlayerBehaviorState != PlayerBehaviorState.Running && m_Reloadable.CanFire() && !m_IsFiring;
+            m_PlayerData.m_PlayerState.PlayerBehaviorState != PlayerBehaviorState.Running && m_Reloadable.CanFire() && !m_IsFiring;
         
         private bool m_OnFireSound;
         private void TryAutoFire()
@@ -271,7 +271,7 @@ namespace Test
 
             m_Reloadable.StopReload();
             m_PlayerData.RangeWeaponFire(m_RangeWeaponStat.m_MaxBullets);
-            m_PlayerState.SetWeaponFiring();
+            m_PlayerData.m_PlayerState.SetWeaponFiring();
 
             AudioClip audioClip = m_RangeWeaponSound.fireSound[Random.Range(0, m_RangeWeaponSound.fireSound.Length)];
             m_AudioSource.PlayOneShot(audioClip);

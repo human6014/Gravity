@@ -31,5 +31,5 @@ MonoBehaviour:
     m_Range: 45
   - m_InnerAngle: 60
     m_OuterAngle: 90
-    m_Intensity: 40
+    m_Intensity: 45
     m_Range: 30

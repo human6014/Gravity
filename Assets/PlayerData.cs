@@ -8,32 +8,64 @@ public class PlayerData : MonoBehaviour
     //UIManager한테 보낼 껀 다 계산된 데이터임
     [SerializeField] private UI.Manager.PlayerUIManager m_PlayerUIManager;
     [SerializeField] private Inventory m_Inventory;
-    [SerializeField] private int HealAmount;
 
-    private int m_CurrentPlayerHP = 100;
-    private int m_CurrentPlayerMP = 100;
+    [Tooltip("힐 킷 회복량")]
+    [SerializeField] private int HealKitAmount = 40;
+
+    [Tooltip("최대 HP")]
+    [SerializeField] private int m_MaxPlayerHP = 100;
+
+    [Tooltip("최대 MP")]
+    [SerializeField] private int m_MaxPlayerMP = 100;
+
+
+    [Tooltip("특정 시간당 회복 할 HP계수")]
+    [SerializeField] private int m_AutoHPHealAmount = 1;
+
+    [Tooltip("특정 시간당 회복 할 MP계수")]
+    [SerializeField] private int m_AutoMPHealAmount = 1;
+
+    [Tooltip("HP 회복 할 시간")]
+    [SerializeField] private float m_AutoHPHealTime = 1;
+
+    [Tooltip("MP 회복 할 시간")]
+    [SerializeField] private float m_AutoMPHealTime = 1;
+
+    [Tooltip("달리기 MP 소모량")]
+    [SerializeField] private int m_RunningMP;
+
+    [SerializeField] private int m_JumpingMP;
+
+    
+    private bool m_IsAlive = true;
+
+    private int m_CurrentPlayerHP;
+    private int m_CurrentPlayerMP;
 
     private float m_AmountPlayerHP = 1;
     private float m_AmountPlayerMP = 1;
 
-    private const float m_RealToAmountConst = 0.01f;
-    private const int m_AmountToRealConst = 100;
+    private float m_HPTimer;
+    private float m_MPTimer;
 
-    //private Test.EquipingWeaponType m_CurrentEquipingWeaponType;
+    private const float m_RealToAmountConst = 0.001f;
+    private const int m_AmountToRealConst = 1000;
+
     private WeaponInfo m_CurrentWeaponInfo;
 
+    public PlayerState m_PlayerState { get; } = new PlayerState();
     public Inventory GetInventory() => m_Inventory;
 
-    public int PlayerMaxHP { get; } = 100;
+    public int PlayerMaxHP { get; } = 1000;
 
-    public int PlayerMaxMP { get; } = 100;
+    public int PlayerMaxMP { get; } = 1000;
 
     public int PlayerHP 
     {
         get => m_CurrentPlayerHP;
         set
         {
-            m_CurrentPlayerHP = value;
+            m_CurrentPlayerHP = Mathf.Clamp(value, 0, m_MaxPlayerHP);
             m_AmountPlayerHP = m_CurrentPlayerHP * m_RealToAmountConst;
         } 
     }
@@ -43,14 +75,35 @@ public class PlayerData : MonoBehaviour
         get => m_CurrentPlayerMP;
         set
         {
-            m_CurrentPlayerMP = value;
+            m_CurrentPlayerMP = Mathf.Clamp(value, 0, m_MaxPlayerMP);
             m_AmountPlayerMP = m_CurrentPlayerMP * m_RealToAmountConst;
         }
     }
 
     private void Awake()
     {
+        PlayerHP = m_MaxPlayerHP;
+        PlayerMP = m_MaxPlayerMP;
         m_PlayerUIManager.Init(PlayerMaxHP, PlayerMaxMP, m_AmountToRealConst, m_RealToAmountConst, m_Inventory.HealKitHavingCount);
+    }
+
+    private void Update()
+    {
+        if (!m_IsAlive) return;
+
+        if ((m_HPTimer += Time.deltaTime) >= m_AutoHPHealTime)
+        {
+            m_HPTimer = 0;
+            PlayerHP += m_AutoHPHealAmount;
+            m_PlayerUIManager.UpdatePlayerHP(m_AmountPlayerHP);
+        }
+
+        if ((m_MPTimer += Time.deltaTime) >= m_AutoMPHealTime)
+        {
+            m_MPTimer = 0;
+            PlayerMP += m_AutoMPHealAmount;
+            m_PlayerUIManager.UpdatePlayerMP(m_AmountPlayerMP);
+        }
     }
 
     /// <summary>
@@ -61,7 +114,6 @@ public class PlayerData : MonoBehaviour
     /// <param name="weaponImage">무기 아이콘 이미지</param>
     public void ChangeWeapon(int equipingWeaponType, BulletType bulletType, Test.FireMode fireMode, Sprite weaponImage)
     {
-        //m_CurrentEquipingWeaponType = (Test.EquipingWeaponType)equipingWeaponType;
         m_CurrentWeaponInfo = m_Inventory.WeaponInfo[equipingWeaponType];
         m_PlayerUIManager.ChangeWeapon(equipingWeaponType, (int)bulletType, GetBitPosition((int)fireMode), m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, weaponImage);
 
@@ -153,19 +205,19 @@ public class PlayerData : MonoBehaviour
     /// <param name="value">사용하거나 얻은 개수 (음수 가능)</param>
     public void UsingHealKit(int value)
     {
-        PlayerHP = Mathf.Clamp(PlayerHP + HealAmount, 0, PlayerMaxHP);
         int remainHealKit = m_Inventory.HealKitHavingCount += value;
         m_PlayerUIManager.UsingHealKit(remainHealKit, m_AmountPlayerHP);
+        UpdatePlayerHP(-HealKitAmount);
     }
 
 
     /// <summary>
-    /// 플레이어가 피격당하거나 자연회복 또는 힐킷을 때
+    /// 플레이어가 피격당하거나 힐킷 사용 시
     /// </summary>
     /// <param name="value">피격시 또는 회복할 계수</param>
     public void UpdatePlayerHP(int value)
     {
-        PlayerHP = Mathf.Clamp(PlayerHP - value, 0, PlayerMaxMP);
+        PlayerHP -= value;
         m_PlayerUIManager.UpdatePlayerHP(m_AmountPlayerHP);
         if (PlayerHP <= 0)
         {
@@ -174,16 +226,28 @@ public class PlayerData : MonoBehaviour
     }
 
     /// <summary>
-    /// 플레이어가 특수한 동작을 사용하거나 자연회복할 때
+    /// 플레이어가 특수한 동작을 사용할 때
     /// </summary>
     /// <param name="value">동작시 또는 회복할 계수</param>
     public void UpdatePlayerMP(int value)
     {
-        m_CurrentPlayerMP -= value;
-        m_AmountPlayerMP = m_CurrentPlayerMP / m_RealToAmountConst;
+        PlayerMP -= value;
         m_PlayerUIManager.UpdatePlayerMP(m_AmountPlayerMP);
     }
 
+    public bool CanRunning()
+    {
+        if (PlayerMP < m_RunningMP) return false;
+        UpdatePlayerMP(m_RunningMP);
+        return true;
+    }
+
+    public bool CanJumping()
+    {
+        if (PlayerMP < m_JumpingMP) return false;
+        UpdatePlayerMP(m_JumpingMP);
+        return true;
+    }
 
     [ContextMenu("TestHit")]
     public void TestHit()

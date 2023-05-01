@@ -237,7 +237,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.2140371
+      - time: 0.22923468
         functionName: StartAnimation
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 83fa5366fa38ebf498e7e719c3e6b8a4,
@@ -245,7 +245,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.362339
+      - time: 0.3896946
         functionName: EndAnimation
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 83fa5366fa38ebf498e7e719c3e6b8a4,

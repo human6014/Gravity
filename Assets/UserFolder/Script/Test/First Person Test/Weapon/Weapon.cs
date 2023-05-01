@@ -32,9 +32,7 @@ namespace Test
         #region SerializeField
         [Header("Parent")]
         [Header("Index")]
-        [SerializeField] protected int ItemIndex;   //아이템 고유번호 -> 이름 바꾸자
-
-        [Header("Equiping Type")]
+        [SerializeField] protected int ItemIndex;
         [SerializeField] protected EquipingWeaponType m_EquipingWeaponType;
 
         [Header("Fire mode")]
@@ -67,11 +65,6 @@ namespace Test
         /// 인벤토리의 Weapon들을 담는 클래스
         /// </summary>
         protected WeaponInfo m_WeaponInfo { get; private set; }
-
-        /// <summary>
-        /// 플레이어 상태 (행동에만 관련)
-        /// </summary>
-        protected PlayerState m_PlayerState { get; private set; }
 
         /// <summary>
         /// 사용자의 입력을 받는 스크립트
@@ -125,7 +118,6 @@ namespace Test
 
             Transform rootTransform = transform.root;
             m_PlayerInputController = rootTransform.GetComponent<PlayerInputController>();
-            m_PlayerState = rootTransform.GetComponent<FirstPersonController>().m_PlayerState;
  
             m_AudioSource = transform.parent.GetComponent<AudioSource>();
             m_WeaponManager = transform.parent.GetComponent<WeaponManager>();
@@ -160,7 +152,7 @@ namespace Test
         {
             DischargeKeyAction();
             IsUnequiping = true;
-            m_PlayerState.SetWeaponChanging(true);
+            m_PlayerData.m_PlayerState.SetWeaponChanging(true);
             m_ArmAnimator.SetTrigger("Unequip");
             m_EquipmentAnimator.SetTrigger("Unequip");
             m_AudioSource.PlayOneShot(m_WeaponSoundScriptable.unequipSound);
@@ -180,7 +172,7 @@ namespace Test
             m_CrossHairDisplayer.SetCrossHair((int)m_WeaponStatScriptable.m_DefaultCrossHair);
 
             yield return m_WaitEquipingTime;
-            m_PlayerState.SetWeaponChanging(false);
+            m_PlayerData.m_PlayerState.SetWeaponChanging(false);
 
             IsEquiping = false;
         }
