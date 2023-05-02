@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Scriptable
+namespace Scriptable.Equipment
 {
     [CreateAssetMenu(fileName = "RangeWeaponStatSetting", menuName = "Scriptable Object/RangeWeaponStatSettings", order = int.MaxValue - 7)]
     public class RangeWeaponStatScriptable : WeaponStatScriptable

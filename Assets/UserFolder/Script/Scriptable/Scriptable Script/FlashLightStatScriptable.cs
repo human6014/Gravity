@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scriptable
+namespace Scriptable.Equipment
 {
     [CreateAssetMenu(fileName = "FlashLightStatSetting", menuName = "Scriptable Object/FlashLightStatSettings", order = int.MaxValue - 13)]
     public class FlashLightStatScriptable : WeaponStatScriptable

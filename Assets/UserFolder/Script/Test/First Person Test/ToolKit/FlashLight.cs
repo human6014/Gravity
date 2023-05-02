@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Scriptable.Equipment;
 using Test;
 
 
@@ -16,8 +16,8 @@ public class FlashLight : Weapon
     }
     private LightMode m_LightMode = LightMode.Narrow;
 
-    private Scriptable.FlashLightSoundScriptable m_FlashLightSoundScriptable;
-    private Scriptable.FlashLightStatScriptable m_FlashLightStatScriptable;
+    private FlashLightSoundScriptable m_FlashLightSoundScriptable;
+    private FlashLightStatScriptable m_FlashLightStatScriptable;
     private AudioClip audioClip;
 
     private bool m_IsLightOn = true;
@@ -27,8 +27,8 @@ public class FlashLight : Weapon
     {
         base.Awake();
         m_LightModeLength = System.Enum.GetValues(typeof(LightMode)).Length;
-        m_FlashLightSoundScriptable = (Scriptable.FlashLightSoundScriptable)m_WeaponSoundScriptable;
-        m_FlashLightStatScriptable = (Scriptable.FlashLightStatScriptable)m_WeaponStatScriptable;
+        m_FlashLightSoundScriptable = (FlashLightSoundScriptable)m_WeaponSoundScriptable;
+        m_FlashLightStatScriptable = (FlashLightStatScriptable)m_WeaponStatScriptable;
         audioClip = m_FlashLightSoundScriptable.m_SwitchOnSound;
     }
 

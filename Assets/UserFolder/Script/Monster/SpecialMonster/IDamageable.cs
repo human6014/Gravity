@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    public void Hit(int damage);
+    public void Hit(int damage, BulletType bulletType);
 }

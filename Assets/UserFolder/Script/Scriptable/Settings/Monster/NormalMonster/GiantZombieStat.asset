@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7c789772375c3e4f90f6ba1a8339401, type: 3}
   m_Name: GiantZombieStat
   m_EditorClassIdentifier: 
-  m_HP: 0
-  m_Def: 0
-  m_Damage: 0
+  m_HP: 2750
+  m_Def: 100
+  m_Damage: 300
   m_MovementSpeed: 0
-  m_AttackSpeed: 0
-  m_AttackRange: 0
+  m_AttackSpeed: 1.2
+  m_AttackRange: 3
+  m_ExplosionResistance: 10
   m_MonsterType: 4

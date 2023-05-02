@@ -106,7 +106,7 @@ namespace Entity.Unit.Special
             //StartCoroutine(Jump(0.9f));
         }
 
-        public void Hit(int damage)
+        public void Hit(int damage, BulletType bulletType)
         {
             Debug.Log(damage);
         }

@@ -10,6 +10,7 @@ public class PersistenceExplosive : Explosible
     private AudioSource m_AudioSource;
     private Light m_Light;
     private SphereCollider m_SphereCollider;
+    private WaitForSecondsRealtime PersistenceExplosionTime;
 
     private float m_InitialAudioSourceVolume;
     private float m_InitialLightIntensity;
@@ -25,6 +26,7 @@ public class PersistenceExplosive : Explosible
         m_AudioSource = m_ControllingParticle[0].GetComponent<AudioSource>();
         m_Light = m_ControllingParticle[0].GetComponent<Light>();
         m_SphereCollider = m_ControllingParticle[0].GetComponent<SphereCollider>();
+        PersistenceExplosionTime = new WaitForSecondsRealtime(0.1f);
 
         m_InitialAudioSourceVolume = m_AudioSource.volume;
         m_InitialLightIntensity = m_Light.intensity;
@@ -32,16 +34,14 @@ public class PersistenceExplosive : Explosible
         m_InitialColliderRadius = m_SphereCollider.radius;
     }
 
-    public override void Init(Manager.ObjectPoolManager.PoolingObject poolingObject, Vector3 pos, Quaternion rot)
+    public override void Init(Manager.ObjectPoolManager.PoolingObject poolingObject, Vector3 pos, Quaternion rot, BulletType bulletType)
     {
-        base.Init(poolingObject, pos, rot);
+        base.Init(poolingObject, pos, rot, bulletType);
 
         m_AudioSource.volume = m_InitialAudioSourceVolume;
         m_Light.intensity = m_InitialLightIntensity;
         m_Light.range = m_InitialLightRange;
         m_SphereCollider.radius = m_InitialColliderRadius;
-        
-        m_TriggerStay += Damage;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -56,6 +56,15 @@ public class PersistenceExplosive : Explosible
     private IEnumerator PersistenceExplosion()
     {
         yield return base.Explosion();
+
+        float startTime = Time.realtimeSinceStartup;
+        float elapsedTime = 0;
+        while(elapsedTime < m_EffectDuration)
+        {
+            elapsedTime = Time.realtimeSinceStartup - startTime;
+            base.Damage();
+            yield return PersistenceExplosionTime;
+        }
 
         yield return PersistencingDestroy();
 
@@ -72,6 +81,7 @@ public class PersistenceExplosive : Explosible
         while (elapsedTime < m_StopDuration)
         {
             elapsedTime += Time.deltaTime;
+            if (elapsedTime * 2 < m_StopDuration) base.Damage();
             float t = Mathf.Clamp01(elapsedTime / m_StopDuration); 
 
             m_AudioSource.volume = Mathf.Lerp(m_InitialAudioSourceVolume, 0, t);
@@ -80,22 +90,6 @@ public class PersistenceExplosive : Explosible
             m_SphereCollider.radius = Mathf.Lerp(m_InitialColliderRadius, 0, t);
 
             yield return null;
-        }
-    }
-
-    protected override void Damage(bool isInside, Collider other)
-    {
-        base.Damage(isInside, other);
-        //들어왔을 때 한번만 호출됨
-
-        if (isInside)
-        {
-            //계속 데미지 부여
-            //m_WasInside = isInside;
-        }
-        else
-        {
-            //데미지 주는거 갱신 끝
         }
     }
 }

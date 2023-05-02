@@ -1,6 +1,7 @@
 using Entity.Object;
 using Manager;
 using Scriptable;
+using Scriptable.Equipment;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

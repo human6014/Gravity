@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using Scriptable.Equipment;
 
 namespace Test
 {
@@ -155,7 +156,7 @@ namespace Test
                 Explosible poolable = (Explosible)m_PoolingObject.GetObject(false);
 
                 poolable.gameObject.SetActive(true);
-                poolable.Init(m_PoolingObject, m_SpawnPos.position, m_CameraTransform.rotation);
+                poolable.Init(m_PoolingObject, m_SpawnPos.position, m_CameraTransform.rotation, m_BulletType);
                 poolable.TryGetComponent(out Rigidbody throwingRigid);
 
                 throwingRigid.AddForce(forceToAdd, ForceMode.Impulse);
