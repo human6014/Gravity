@@ -9,8 +9,7 @@ namespace Scriptable.Monster
     {
         [Header("Child")]
         [Header("Script info")]
-        [Tooltip("¸ó½ºÅÍ Å¸ÀÔ")] 
+        [Tooltip("ëª¬ìŠ¤í„° íƒ€ìž…")] 
         public EnumType.NoramlMonsterType m_MonsterType;
-
     }
 }
