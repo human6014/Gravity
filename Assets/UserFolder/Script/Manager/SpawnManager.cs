@@ -68,7 +68,7 @@ namespace Manager
 
         #region Normal Value
         private EnumType.GravityType currentGravityType = EnumType.GravityType.yUp;
-        private readonly float[] m_Probs = new float[] { 45, 20, 20, 10, 5 };
+        private readonly float[] m_Probs = new float[] { 52, 21, 21, 4, 500 };
         private float m_Total = 0;
 
         private float m_NormalMonsterTimer;

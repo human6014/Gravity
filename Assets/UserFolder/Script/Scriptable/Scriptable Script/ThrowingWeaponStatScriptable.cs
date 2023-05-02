@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-namespace Scriptable
+
+namespace Scriptable.Equipment
 {
 
     [CreateAssetMenu(fileName = "ThrowingWeaponStatSetting", menuName = "Scriptable Object/ThrowingWeaponStatSettings", order = int.MaxValue - 10)]

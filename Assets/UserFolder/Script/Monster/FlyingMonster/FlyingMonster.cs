@@ -7,7 +7,7 @@ namespace Entity.Unit.Flying
     [RequireComponent(typeof(FlyingMovementController), typeof(FlyingRotationController))]
     public class FlyingMonster : PoolableScript, IMonster
     {
-        [SerializeField] private Scriptable.FlyingMonsterScriptable settings;
+        [SerializeField] private Scriptable.Monster.FlyingMonsterScriptable settings;
 
         private FlyingMovementController flyingMovementController;
         private FlyingRotationController flyingRotationController;
@@ -45,7 +45,7 @@ namespace Entity.Unit.Flying
             throw new System.NotImplementedException();
         }
 
-        public void Hit(int damage)
+        public void Hit(int damage, BulletType bulletType)
         {
             throw new System.NotImplementedException();
         }

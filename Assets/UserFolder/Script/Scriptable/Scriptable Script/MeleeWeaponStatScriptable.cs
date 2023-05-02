@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scriptable
+namespace Scriptable.Equipment
 {
     [CreateAssetMenu(fileName = "MeleeWeaponStatSetting", menuName = "Scriptable Object/MeleeWeaponStatSettings", order = int.MaxValue - 8)]
     public class MeleeWeaponStatScriptable : WeaponStatScriptable

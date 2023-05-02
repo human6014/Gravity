@@ -4,7 +4,7 @@ using UnityEngine;
 using Entity.Object;
 using Contoller.Player;
 using Manager;
-using Scriptable;
+using Scriptable.Equipment;
 using Contoller.Player.Utility;
 
 [RequireComponent(typeof(Test.RangeWeapon))]
@@ -49,6 +49,7 @@ public abstract class Fireable : MonoBehaviour
     private SurfaceManager m_SurfaceManager;
     private MouseLook m_MouseLook;
     private UI.Player.CrossHairDisplayer m_CrossHairController;
+    private BulletType m_BulletType;
     private void Awake()
     {
         m_CameraTransform = Camera.main.transform;
@@ -59,12 +60,12 @@ public abstract class Fireable : MonoBehaviour
 
     public void Setup(RangeWeaponStatScriptable m_RangeWeaponStat, 
                       ObjectPoolManager.PoolingObject[] m_BulletEffectPoolingObjects, 
-                      PlayerState m_PlayerState, Camera m_MainCamera)
+                      PlayerState m_PlayerState, BulletType bulletType)
     {
         this.m_RangeWeaponStat = m_RangeWeaponStat;
         this.m_BulletEffectPoolingObjects = m_BulletEffectPoolingObjects;
-        this.m_PlayerState = m_PlayerState; 
-        m_CameraTransform = m_MainCamera.transform;
+        this.m_PlayerState = m_PlayerState;
+        m_BulletType = bulletType;
 
         m_SurfaceManager = FindObjectOfType<SurfaceManager>();
         m_MouseLook = FindObjectOfType<FirstPersonController>().MouseLook;
@@ -108,7 +109,7 @@ public abstract class Fireable : MonoBehaviour
     {
         if (hit.transform.TryGetComponent(out IDamageable damageable))
         {
-            damageable.Hit(m_RangeWeaponStat.m_Damage);
+            damageable.Hit(m_RangeWeaponStat.m_Damage, m_BulletType);
             return;
         }
 

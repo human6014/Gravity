@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Scriptable;
-using Manager;
 using Entity.Object;
+using Scriptable.Equipment;
 
 namespace Test
 {
@@ -71,7 +70,7 @@ namespace Test
 
         private void Start()
         {
-            m_Fireable.Setup(m_RangeWeaponStat, m_WeaponManager.m_EffectPoolingObjectArray, m_PlayerData.m_PlayerState, m_MainCamera);
+            m_Fireable.Setup(m_RangeWeaponStat, m_WeaponManager.m_EffectPoolingObjectArray, m_PlayerData.m_PlayerState, m_BulletType);
             m_Reloadable.Setup(m_RangeWeaponSound, m_ArmAnimator);
         }
 

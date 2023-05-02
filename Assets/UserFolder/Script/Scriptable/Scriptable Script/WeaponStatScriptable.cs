@@ -15,11 +15,12 @@ public enum BulletType
     Generic = 1,
     HandGun = 2,
     ShotGun = 3,
-    Sinper = 4
+    Sinper = 4,
+    Explosion = 5
 }
-namespace Scriptable
-{
 
+namespace Scriptable.Equipment
+{
     public class WeaponStatScriptable : ScriptableObject
     {
         [Header("Parent")]

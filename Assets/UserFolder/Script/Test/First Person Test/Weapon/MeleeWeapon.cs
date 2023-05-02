@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Scriptable.Equipment;
 using Random = UnityEngine.Random;
 
 namespace Test 
@@ -18,8 +19,8 @@ namespace Test
 
         [SerializeField] private bool m_CanComboAttack;
 
-        private Scriptable.MeleeWeaponSoundScripatble m_MeleeWeaponSound;
-        private Scriptable.MeleeWeaponStatScriptable m_MeleeWeaponStat;
+        private MeleeWeaponSoundScripatble m_MeleeWeaponSound;
+        private MeleeWeaponStatScriptable m_MeleeWeaponStat;
 
         private ObjectPoolManager.PoolingObject[] m_EffectPoolingObject;
         private SurfaceManager m_SurfaceManager;
@@ -41,8 +42,8 @@ namespace Test
         {
             base.Awake();
 
-            m_MeleeWeaponSound = (Scriptable.MeleeWeaponSoundScripatble)base.m_WeaponSoundScriptable;
-            m_MeleeWeaponStat = (Scriptable.MeleeWeaponStatScriptable)base.m_WeaponStatScriptable;
+            m_MeleeWeaponSound = (MeleeWeaponSoundScripatble)base.m_WeaponSoundScriptable;
+            m_MeleeWeaponStat = (MeleeWeaponStatScriptable)base.m_WeaponStatScriptable;
 
             m_SurfaceManager = FindObjectOfType<SurfaceManager>();
             m_CameraTransform = m_MainCamera.transform;
@@ -164,7 +165,7 @@ namespace Test
 
                 if (hit.transform.TryGetComponent(out IDamageable damageable))
                 {
-                    damageable.Hit(m_MeleeWeaponStat.m_Damage);
+                    damageable.Hit(m_MeleeWeaponStat.m_Damage, m_BulletType);
                     return;
                 }
 

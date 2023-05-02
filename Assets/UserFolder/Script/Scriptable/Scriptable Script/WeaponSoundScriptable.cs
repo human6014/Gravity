@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scriptable
+namespace Scriptable.Equipment
 {
     public class WeaponSoundScriptable : ScriptableObject
     {

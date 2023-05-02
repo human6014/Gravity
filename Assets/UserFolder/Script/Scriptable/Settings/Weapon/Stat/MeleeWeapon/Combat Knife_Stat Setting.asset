@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Combat Knife_Stat Setting
   m_EditorClassIdentifier: 
   m_AttackTime: 0.15
-  m_Damage: 0
+  m_Damage: 500
   m_AttackableLayer:
     serializedVersion: 2
     m_Bits: 268886017

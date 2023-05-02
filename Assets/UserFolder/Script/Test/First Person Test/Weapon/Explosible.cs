@@ -9,25 +9,28 @@ public class Explosible : PoolableScript
     [Tooltip("활성, 비활성화 할 이펙트 오브젝트")]
     [SerializeField] protected GameObject[] m_ActivatingEffectObject;
 
-    [Header("Info")]
     [Tooltip("자동으로 폭파하는 시간")]
     [SerializeField] private float m_AutoExplosionTime = 3;
 
     [Tooltip("이펙트 지속 시간")]
-    [SerializeField] private float m_EffectDuration = 5;
+    [SerializeField] protected float m_EffectDuration = 5;
 
     [Tooltip("이펙트가 꺼지는 데 걸리는 시간")]
     [SerializeField] protected float m_StopDuration = 5;
+
+    [Header("Stat")]
+    [SerializeField] protected int m_Damage;
+    [SerializeField] protected float m_AttackRadius;
+    [SerializeField] protected LayerMask m_Layer;
 
     private Rigidbody m_Rigidbody;
     private MeshRenderer m_MeshRenderer;
 
     private WaitForSeconds m_AutoExplosionSecond;
-    private WaitForSeconds m_DestroyObjectSecond;
+    protected WaitForSeconds m_DestroyObjectSecond;
 
+    protected BulletType m_BulletType;
     protected bool m_IsExploded;
-
-    public Action<bool, Collider> m_TriggerStay;
 
     protected virtual void Awake()
     {
@@ -38,11 +41,12 @@ public class Explosible : PoolableScript
         m_DestroyObjectSecond = new WaitForSeconds(m_EffectDuration);
     }
 
-    public virtual void Init(Manager.ObjectPoolManager.PoolingObject poolingObject, Vector3 pos, Quaternion rot)
+    public virtual void Init(Manager.ObjectPoolManager.PoolingObject poolingObject, Vector3 pos, Quaternion rot, BulletType bulletType)
     {
         m_PoolingObject = poolingObject;
         m_IsExploded = m_Rigidbody.isKinematic = false;
         m_MeshRenderer.enabled = true;
+        m_BulletType = bulletType;
         transform.SetPositionAndRotation(pos, rot);
     }
 
@@ -54,8 +58,7 @@ public class Explosible : PoolableScript
 
         for (int i = 0; i < m_ActivatingEffectObject.Length; i++)
             m_ActivatingEffectObject[i].SetActive(true);
-        
-        yield return m_DestroyObjectSecond;
+        Damage();
     }
 
     protected void EndExplosion()
@@ -64,9 +67,14 @@ public class Explosible : PoolableScript
             m_ActivatingEffectObject[i].SetActive(false);
     }
 
-    protected virtual void Damage(bool isInside, Collider other)
+    protected void Damage()
     {
-        if (!m_IsExploded) return;
+        Collider[] col = Physics.OverlapSphere(transform.position, m_AttackRadius, m_Layer);
+
+        for (int i = 0; i < col.Length; i++)
+        {
+            if (col[i].TryGetComponent(out IDamageable damageable)) damageable.Hit(m_Damage, m_BulletType);
+        }
     }
 
     public override void ReturnObject() => m_PoolingObject.ReturnObject(this);

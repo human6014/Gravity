@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Scriptable
+namespace Scriptable.Monster
 {
     public class UnitScriptable : ScriptableObject
     {
@@ -26,5 +26,9 @@ namespace Scriptable
 
         [Tooltip("공격 사거리")]
         public float m_AttackRange;
+
+        [Tooltip("폭발 저항")]
+        [Range(1,50)]
+        public int m_ExplosionResistance = 1;
     }
 }

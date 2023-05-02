@@ -5,6 +5,7 @@ using Contoller.Player;
 using Manager;
 using System.Threading.Tasks;
 using System.Threading;
+using Scriptable.Equipment;
 
 namespace Test
 {
@@ -43,8 +44,8 @@ namespace Test
         [SerializeField] protected AnimatorOverrideController m_ArmOverrideController = null;   // 덮어씌울 팔 애니메이션들
 
         [Header("Scriptable")]
-        [SerializeField] protected Scriptable.WeaponStatScriptable m_WeaponStatScriptable;
-        [SerializeField] protected Scriptable.WeaponSoundScriptable m_WeaponSoundScriptable;
+        [SerializeField] protected WeaponStatScriptable m_WeaponStatScriptable;
+        [SerializeField] protected WeaponSoundScriptable m_WeaponSoundScriptable;
 
         [Header("Pos Change")]
         [SerializeField] protected Transform m_Pivot;                 //위치 조정용 부모 오브젝트

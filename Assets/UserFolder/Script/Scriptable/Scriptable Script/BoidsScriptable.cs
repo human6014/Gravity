@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scriptable
+namespace Scriptable.Monster
 {
     [CreateAssetMenu(fileName = "BoidSetting", menuName = "Scriptable Object/BoidSettings", order = int.MaxValue)]
     public class BoidsScriptable : ScriptableObject

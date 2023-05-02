@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Frag Grenade_StatSetting
   m_EditorClassIdentifier: 
   m_AttackTime: 0.15
-  m_Damage: 0
+  m_Damage: 1800
   m_AttackableLayer:
     serializedVersion: 2
     m_Bits: 454401
@@ -23,7 +23,7 @@ MonoBehaviour:
   m_RunningPivotDirection: {x: 0, y: 0, z: 0}
   m_FOVMultiplier: 4
   m_WeaponIcon: {fileID: 21300000, guid: ac883a87dab662441a656e568ef60c73, type: 3}
-  m_BulletType: 0
+  m_BulletType: 5
   longThrowForwardForce: 20
   longThrowUpwardForce: 2
   shortThrowForwardForce: 12

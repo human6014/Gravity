@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Entity.Object;
 using Manager;
-using Scriptable;
+using Scriptable.Equipment;
+
 public enum Interactabe
 {
     Non,
@@ -78,7 +79,6 @@ public abstract class Reloadable : MonoBehaviour
 
         for (int j = 0; j < playCount; j++)
         {
-            Debug.Log("Reload");
             m_ArmAnimator.SetTrigger("Reload");
             m_EquipmentAnimator.SetTrigger("Reload");
 

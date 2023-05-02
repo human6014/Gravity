@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scriptable
+namespace Scriptable.Equipment
 {
     [CreateAssetMenu(fileName = "RangeWeaponSoundSetting", menuName = "Scriptable Object/RangeWeaponSoundSettings", order = int.MaxValue - 5)]
     public class RangeWeaponSoundScriptable : WeaponSoundScriptable

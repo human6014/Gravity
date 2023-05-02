@@ -10,7 +10,7 @@ public class Illuminant : MonoBehaviour
    
     public void LightOnOff(bool isActive) => m_Light.enabled = isActive;
     
-    public void ChangeLightMode(Scriptable.FlashLightStatScriptable.Angle angle)
+    public void ChangeLightMode(Scriptable.Equipment.FlashLightStatScriptable.Angle angle)
     {
         m_Light.innerSpotAngle = angle.m_InnerAngle;
         m_Light.spotAngle = angle.m_OuterAngle;

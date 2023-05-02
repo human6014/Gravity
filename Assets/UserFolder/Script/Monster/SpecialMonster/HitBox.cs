@@ -7,11 +7,12 @@ using UnityEngine.Events;
 
 public class HitBox : MonoBehaviour, IDamageable
 {
-    [SerializeField] private UnityEvent<int> m_HitEvent;
+    [SerializeField] private UnityEvent<int, BulletType> m_HitEvent;
     [SerializeField] private bool m_IsWeakPoint;
-    public void Hit(int damage)
+
+    public void Hit(int damage, BulletType bulletType)
     {
-        damage = m_IsWeakPoint ? (int)(damage * 1.2f): damage;
-        m_HitEvent?.Invoke(damage);
+        int totalDamage = m_IsWeakPoint ? (int)(damage * 1.5f) : damage;
+        m_HitEvent?.Invoke(totalDamage, bulletType);
     }
 }
