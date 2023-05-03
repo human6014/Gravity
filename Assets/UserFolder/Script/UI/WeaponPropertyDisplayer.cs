@@ -46,7 +46,8 @@ namespace UI.Player
             for(int i = top; i > currentRemainBullet; i--)
                 m_BulletTemplate[i - 1].SetActive(false);
             
-            if (bulletType <= 0 || bulletType >= 5) return;
+            if (bulletType <= 0) return;
+            if (bulletType >= 5) bulletType = 1;
 
             currentBulletImage = m_BulletIcon[bulletType - 1];
             for (int i = 0; i < currentRemainBullet; i++)
@@ -83,9 +84,7 @@ namespace UI.Player
         {
             if (value >= top)
             {
-                //Debug.Log(value);
-                //Debug.Log(top);
-                for (int i = top; i < value; i++) m_BulletTemplate[i].SetActive(true);  //바로 5번 무기 들고 공격 시 버그
+                for (int i = 0; i < value; i++) m_BulletTemplate[i].SetActive(true);  //바로 5번 무기 들고 공격 시 버그
                 top = value;
             }
             else

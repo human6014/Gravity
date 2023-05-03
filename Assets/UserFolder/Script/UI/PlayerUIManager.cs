@@ -9,6 +9,7 @@ namespace UI.Manager
     {
         [SerializeField] private PlayerStatDisplayer m_PlayerStatDisplayer;
         [SerializeField] private HealDisplayer m_HealDisplayer;
+        [SerializeField] private AttackCrossHairDisplayer m_AttackCrossHairDisplayer;
         [SerializeField] private ItemSlotDisplayer m_ItemSlotDisplayer;
         [SerializeField] private WeaponPropertyDisplayer m_WeaponPropertyDisplayer;
         [SerializeField] private DamageDisplayer m_DamageDisplayer;
@@ -39,6 +40,11 @@ namespace UI.Manager
         public void ChangeFireMode(int index)
         {
             m_WeaponPropertyDisplayer.UpdateFireMode(index);
+        }
+
+        public void HitEnemy()
+        {
+            m_AttackCrossHairDisplayer.AttackCrossHairActive();
         }
 
         public void RangeWeaponFire(int currentRemainBullet, bool isActive)
@@ -74,16 +80,15 @@ namespace UI.Manager
             m_DamageDisplayer.DisplayBloodScreen(hpAmount);
             DisplayHealImage(hpAmount);
         }
+        public void UpdatePlayerMP(float mpAmount)
+        {
+            m_PlayerStatDisplayer.UpdateMPImage(mpAmount);
+        }
 
         private void DisplayHealImage(float hpAmount)
         {
             if (hpAmount <= 0.5f) m_HealDisplayer.DisplayHealNotification(true);
             else m_HealDisplayer.DisplayHealNotification(false);
-        }
-
-        public void UpdatePlayerMP(float mpAmount)
-        {
-            m_PlayerStatDisplayer.UpdateMPImage(mpAmount);
         }
     }
 }

@@ -10,31 +10,31 @@ public class PlayerData : MonoBehaviour
     [SerializeField] private Inventory m_Inventory;
 
     [Tooltip("힐 킷 회복량")]
-    [SerializeField] private int HealKitAmount = 40;
+    [SerializeField] private int HealKitAmount = 400;
 
     [Tooltip("최대 HP")]
-    [SerializeField] private int m_MaxPlayerHP = 100;
+    [SerializeField] private int m_MaxPlayerHP = 1000;
 
     [Tooltip("최대 MP")]
-    [SerializeField] private int m_MaxPlayerMP = 100;
+    [SerializeField] private int m_MaxPlayerMP = 1000;
 
 
     [Tooltip("특정 시간당 회복 할 HP계수")]
-    [SerializeField] private int m_AutoHPHealAmount = 1;
+    [SerializeField] private int m_AutoHPHealAmount = 2;
 
     [Tooltip("특정 시간당 회복 할 MP계수")]
-    [SerializeField] private int m_AutoMPHealAmount = 1;
+    [SerializeField] private int m_AutoMPHealAmount = 12;
 
     [Tooltip("HP 회복 할 시간")]
-    [SerializeField] private float m_AutoHPHealTime = 1;
+    [SerializeField] private float m_AutoHPHealTime = 0.1f;
 
     [Tooltip("MP 회복 할 시간")]
-    [SerializeField] private float m_AutoMPHealTime = 1;
+    [SerializeField] private float m_AutoMPHealTime = 0.1f;
 
     [Tooltip("달리기 MP 소모량")]
-    [SerializeField] private int m_RunningMP;
+    [SerializeField] private int m_RunningMP = 4;
 
-    [SerializeField] private int m_JumpingMP;
+    [SerializeField] private int m_JumpingMP = 180;
 
     
     private bool m_IsAlive = true;
@@ -141,6 +141,11 @@ public class PlayerData : MonoBehaviour
         return position;
     }
 
+    public void HitEnemy()
+    {
+        m_PlayerUIManager.HitEnemy();
+    }
+
     /// <summary>
     /// 원거리 무기 사격 시
     /// </summary>
@@ -221,7 +226,7 @@ public class PlayerData : MonoBehaviour
         m_PlayerUIManager.UpdatePlayerHP(m_AmountPlayerHP);
         if (PlayerHP <= 0)
         {
-            //GameEnd
+            Manager.GameManager.GameEnd();
         }
     }
 
@@ -253,5 +258,10 @@ public class PlayerData : MonoBehaviour
     public void TestHit()
     {
         UpdatePlayerHP(10);
+    }
+
+    public void PlayerHit(int damager, BulletType bulletType)
+    {
+
     }
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Hunting Rifle_Stat Setting
   m_EditorClassIdentifier: 
   m_AttackTime: 0.4
-  m_Damage: 1050
+  m_Damage: 2000
   m_AttackableLayer:
     serializedVersion: 2
     m_Bits: 268886017

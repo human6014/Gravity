@@ -16,7 +16,6 @@ namespace Test
         [Header("Child")]
         [SerializeField] private float m_SwingRadius;
         [SerializeField] private float m_MaxDistance;
-
         [SerializeField] private bool m_CanComboAttack;
 
         private MeleeWeaponSoundScripatble m_MeleeWeaponSound;
@@ -144,7 +143,7 @@ namespace Test
             AudioClip[] playingAudio = m_SwingIndex == 1 ? m_MeleeWeaponSound.m_HeavyAttackSound : m_MeleeWeaponSound.m_LightAttackSound;
 
             m_AudioSource.PlayOneShot(playingAudio[Random.Range(0, playingAudio.Length)]);
-            TestDamage();
+            SwingCast();
         }
 
         //Animation Event
@@ -155,7 +154,7 @@ namespace Test
             m_IsAttacking = false;
         }
 
-        private void TestDamage()
+        private void SwingCast()
         {
             if (Physics.SphereCast(m_CameraTransform.position, m_SwingRadius, m_CameraTransform.forward, out RaycastHit hit, m_MaxDistance, m_MeleeWeaponStat.m_AttackableLayer, QueryTriggerInteraction.Ignore))
             {
@@ -166,6 +165,7 @@ namespace Test
                 if (hit.transform.TryGetComponent(out IDamageable damageable))
                 {
                     damageable.Hit(m_MeleeWeaponStat.m_Damage, m_BulletType);
+                    m_PlayerData.HitEnemy();
                     return;
                 }
 

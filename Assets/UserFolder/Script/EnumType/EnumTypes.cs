@@ -31,6 +31,13 @@ namespace EnumType
         MeleeFlyingMonster = 2
     }
 
+    public enum SpecialMonsterType
+    {
+        Horridomorph = 0,
+        SP2 = 1,
+        SP3 = 2
+    }
+
     public enum Boss1
     {
         normalAttack = 0,   //가까이서 평타

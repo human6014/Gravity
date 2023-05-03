@@ -1176,6 +1176,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5265c5073d94b9640a08b260682fe75e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_NormalMonsterScriptable: {fileID: 11400000, guid: 84a066f648ef34840967e7627c04ef0e,
+    type: 2}
   _step: 0.01
   lineRenderer: {fileID: 0}
   layerMask:

@@ -17,7 +17,8 @@ namespace Test
         [Header("Pooling")]
         [SerializeField] private Transform m_ActiveObjectPool;
 
-        [SerializeField] private GameObject m_RendererObject;
+        [Header("Appear")]
+        [SerializeField] private SkinnedMeshRenderer m_RendererObject;
 
         private ThrowingWeaponSoundScriptable m_ThrowingWeaponSound;
         private ThrowingWeaponStatScriptable m_ThrowingWeaponStat;
@@ -50,13 +51,23 @@ namespace Test
         public override void Init()
         {
             base.Init();
-            if(m_WeaponInfo.m_CurrentRemainBullet <= 0) gameObject.SetActive(false);
+
+        }
+
+        protected override void DoAppearObject()
+        {
+            if (m_WeaponInfo.m_CurrentRemainBullet <= 0)
+            {
+                m_RendererObject.enabled = false;
+                m_ArmController.AppearArms(false);
+            }
+            else m_RendererObject.enabled = true;
         }
 
         private void ReInit()
         {
             m_IsThrowing = false;
-            m_RendererObject.SetActive(true);
+            m_RendererObject.enabled = true;
             m_ArmAnimator.SetTrigger("Equip");
             m_EquipmentAnimator.SetTrigger("Equip");
         }
@@ -142,7 +153,7 @@ namespace Test
                 yield return new WaitForSeconds(playingSound[i].delayTime);
                 m_AudioSource.PlayOneShot(playingSound[i].audioClip);
             }
-            m_RendererObject.SetActive(false);
+            m_RendererObject.enabled = false;
             Throw(isLong);
             EndThrow();
         }
@@ -176,6 +187,7 @@ namespace Test
                 m_PlayerData.RangeWeaponReload(1);
                 Invoke(nameof(ReInit), m_ReInitTime);
             }
+
         }
 
         private void SetThrowVector(bool isLong, Vector3 hitPoint, out Vector3 forceToAdd, out Vector3 TorquToAdd)
@@ -196,11 +208,10 @@ namespace Test
             TorquToAdd = new Vector3(Random.Range(-5, 5), Random.Range(-5, 5), Random.Range(-5, 5));
         }
 
-        public override Task UnEquip()
-        {
-            m_RendererObject.SetActive(true);
-            return base.UnEquip();
-        }
+        //public override Task UnEquip()
+        //{
+        //    return base.UnEquip();
+        //}
 
         /*
         public override void Dispose()

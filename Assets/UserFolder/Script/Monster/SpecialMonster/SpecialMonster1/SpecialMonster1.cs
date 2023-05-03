@@ -6,9 +6,11 @@ using EnumType;
 
 namespace Entity.Unit.Special
 {
-    public class SpecialMonster1 : MonoBehaviour
+    public class SpecialMonster1 : MonoBehaviour, IMonster
     {
-        // Parabola
+        [Header("Stat")]
+        [SerializeField] private Scriptable.Monster.SpecialMonsterScriptable m_NormalMonsterScriptable;
+
         [Header("Parabola")]
         [SerializeField] private float _step = 0.01f;
         [SerializeField] private LineRenderer lineRenderer;
@@ -18,74 +20,101 @@ namespace Entity.Unit.Special
         [Header("Code")]
         [SerializeField] private Transform navObject;
         [SerializeField] private LegController legController;
-
-        private Transform target;
         [SerializeField] private Transform aiTransform;
-        private SpecialMonsterAI specialMonsterAI;
 
-        private Vector3 groundDirection = Vector3.zero;
-        private Vector3 targetPos = Vector3.zero;
-        private Vector3 direction;
+        private Transform m_Target;
+        private SpecialMonsterAI m_SpecialMonsterAI;
 
-        bool isPreJump = false;
-        public Quaternion GetRotation() => transform.rotation;
-        public Vector3 GetPosition() => transform.position;
+        private Vector3 m_GroundDirection;
+        private Vector3 m_TargetPos;
+        private Vector3 m_Direction;
+
+        private float m_CurrentHP;
+
+        private bool m_IsAlive;
+        private bool m_IsPreJump;
 
         private void Awake()
         {
             //aiTransform = GetComponent<Transform>();
-            specialMonsterAI = aiTransform.GetComponent<SpecialMonsterAI>();
+            m_SpecialMonsterAI = aiTransform.GetComponent<SpecialMonsterAI>();
         }
 
         public void Init(Quaternion rotation)
         {
-            target = Manager.AI.AIManager.PlayerTransform;
-            specialMonsterAI.Init(rotation);
-
+            m_Target = Manager.AI.AIManager.PlayerTransform;
+            m_SpecialMonsterAI.Init(rotation);
+            m_CurrentHP = m_NormalMonsterScriptable.m_HP;
+            m_IsAlive = true;
         }
 
         private void FixedUpdate()
         {
-            specialMonsterAI.OperateAIBehavior();
-            //UpdateCollider();
+            if (!m_IsAlive) return;
+            m_SpecialMonsterAI.OperateAIBehavior();
         }
+
+        public void Move()
+        {
+            
+        }
+
+        public void Attack()
+        {
+            
+        }
+
+        public void Hit(int damage, BulletType bulletType)
+        {
+            if (!m_IsAlive) return;
+            if (bulletType == BulletType.Explosion) m_CurrentHP -= (damage / m_NormalMonsterScriptable.m_ExplosionResistance);
+            else m_CurrentHP -= (damage - m_NormalMonsterScriptable.m_Def);
+            Debug.Log(m_CurrentHP);
+            if (m_CurrentHP <= 0) Die();
+        }
+
+        public void Die()
+        {
+            m_IsAlive = false;
+        }
+
         void Update()
         {
-            if (!target) return;
+            if (!m_Target || !m_IsAlive) return;
 
-            direction = target.position - aiTransform.position;
+            m_Direction = m_Target.position - aiTransform.position;
             float dir = 0;
             switch (GravityManager.currentGravityType)
             {
                 case GravityType.xUp:
                 case GravityType.xDown:
-                    groundDirection = new(0, direction.y, direction.z);
-                    dir = direction.x;
+                    m_GroundDirection = new(0, m_Direction.y, m_Direction.z);
+                    dir = m_Direction.x;
                     break;
 
                 case GravityType.yUp: //Init
                 case GravityType.yDown:
-                    groundDirection = new(direction.x, 0, direction.z);
-                    dir = direction.y;
+                    m_GroundDirection = new(m_Direction.x, 0, m_Direction.z);
+                    dir = m_Direction.y;
                     break;
 
                 case GravityType.zUp:
                 case GravityType.zDown:
-                    groundDirection = new(direction.x, direction.y, 0);
-                    dir = direction.z;
+                    m_GroundDirection = new(m_Direction.x, m_Direction.y, 0);
+                    dir = m_Direction.z;
                     break;
             }
-            targetPos = new(groundDirection.magnitude, dir * -GravityManager.GravityDirectionValue, 0);
-            float height = Mathf.Max(0.01f, targetPos.y + targetPos.magnitude / 2f);
+            m_TargetPos = new(m_GroundDirection.magnitude, dir * -GravityManager.GravityDirectionValue, 0);
+            float height = Mathf.Max(0.01f, m_TargetPos.y + m_TargetPos.magnitude / 2f);
 
-            CalculatePathWithHeight(targetPos, height, out float v0, out float angle, out float time);
+            CalculatePathWithHeight(m_TargetPos, height, out float v0, out float angle, out float time);
             t_v0 = v0;
             t_angle = angle;
             t_time = time;
             //DrawPath(groundDirection.normalized, v0, angle, time, _step); //경로 그리기
 
-            if (Input.GetKeyDown(KeyCode.Backspace) && !isPreJump && !specialMonsterAI.GetIsOnOffMeshLink())
-                StartCoroutine(Coroutine_Movement(groundDirection.normalized, v0, angle, time));
+            if (Input.GetKeyDown(KeyCode.Backspace) && !m_IsPreJump && !m_SpecialMonsterAI.GetIsOnOffMeshLink())
+                StartCoroutine(Coroutine_Movement(m_GroundDirection.normalized, v0, angle, time));
         }
 
 
@@ -95,9 +124,9 @@ namespace Entity.Unit.Special
         [ContextMenu("ExcuteJump")]
         public void ExcuteJump()
         {
-            if (!isPreJump && !specialMonsterAI.GetIsOnOffMeshLink())
+            if (!m_IsPreJump && !m_SpecialMonsterAI.GetIsOnOffMeshLink())
             {
-                StartCoroutine(Coroutine_Movement(groundDirection.normalized, t_v0, t_angle, t_time));
+                StartCoroutine(Coroutine_Movement(m_GroundDirection.normalized, t_v0, t_angle, t_time));
             }
         }
 
@@ -106,15 +135,9 @@ namespace Entity.Unit.Special
             //StartCoroutine(Jump(0.9f));
         }
 
-        public void Hit(int damage, BulletType bulletType)
-        {
-            Debug.Log(damage);
-        }
+
 
         #region 포물선 테스트중
-
-
-
 
 #if UNITY_EDITOR
         private void DrawPath(Vector3 direction, float v0, float angle, float time, float step)
@@ -158,8 +181,8 @@ namespace Entity.Unit.Special
 
         IEnumerator Coroutine_Movement(Vector3 direction, float v0, float angle, float time)
         {
-            specialMonsterAI.SetNavMeshEnable(false);
-            isPreJump = true;
+            m_SpecialMonsterAI.SetNavMeshEnable(false);
+            m_IsPreJump = true;
             legController.SetPreJump(true);
 
             float beforeJumpingTime = 1f;
@@ -174,11 +197,11 @@ namespace Entity.Unit.Special
 
             legController.SetPreJump(false);
             legController.Jump(true);
-            Debug.Log("Coroutine target : " + target);
+            Debug.Log("Coroutine target : " + m_Target);
             elapsedTime = 0;
             startPos = aiTransform.position;
             Quaternion startRotation = aiTransform.rotation;
-            Quaternion targetRot = Quaternion.LookRotation(groundDirection, target.up);
+            Quaternion targetRot = Quaternion.LookRotation(m_GroundDirection, m_Target.up);
             Debug.Log("time : " + time);
             while (elapsedTime < time)
             {
@@ -192,8 +215,8 @@ namespace Entity.Unit.Special
                 yield return null;
             }
             legController.Jump(false);
-            isPreJump = false;
-            specialMonsterAI.SetNavMeshEnable(true);
+            m_IsPreJump = false;
+            m_SpecialMonsterAI.SetNavMeshEnable(true);
             //specialMonsterAI.SetNavMeshPos(transform.position);
         }
         #endregion

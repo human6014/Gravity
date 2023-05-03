@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using Random = UnityEngine.Random;
 using Manager;
 using Manager.AI;
 using Contoller.Player.Utility;
@@ -109,10 +108,10 @@ namespace Contoller.Player
         private Vector3 m_DesiredMove;
         private Vector2 m_Input;
 
+        private readonly float m_InterporationDist = -0.1f;
         private float m_MovementSpeed;
         private float m_StepCycle;
         private float m_NextStep;
-        private readonly float m_InterporationDist = -0.1f;
 
         private bool m_PreviouslyGrounded;  //이전 프레임에서 지상이었는지
         private bool m_Jumping;             //점프하고 있는지
@@ -180,9 +179,9 @@ namespace Contoller.Player
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.red;
-            float maxDistansce = m_CapsuleCollider.height * 0.5f - m_CapsuleCollider.radius + 0.1f;
-            Gizmos.DrawSphere(transform.position - transform.up * (m_CapsuleCollider.height * 0.5f - m_CapsuleCollider.radius) , m_CapsuleCollider.radius + m_InterporationDist);
+            //Gizmos.color = Color.red;
+            //float maxDistansce = m_CapsuleCollider.height * 0.5f - m_CapsuleCollider.radius + 0.1f;
+            //Gizmos.DrawSphere(transform.position - transform.up * (m_CapsuleCollider.height * 0.5f - m_CapsuleCollider.radius) , m_CapsuleCollider.radius + m_InterporationDist);
         }
 
         
@@ -297,7 +296,7 @@ namespace Contoller.Player
             // pick & play a random footstep sound from the array,
             // excluding sound at index 0
 
-            int n = Random.Range(1, m_FootstepSounds.Length);
+            int n = UnityEngine.Random.Range(1, m_FootstepSounds.Length);
             m_AudioSource.clip = m_FootstepSounds[n];
             m_AudioSource.PlayOneShot(m_AudioSource.clip);
 
@@ -333,9 +332,6 @@ namespace Contoller.Player
 
             if (m_Input == Vector2.zero) m_PlayerData.m_PlayerState.SetBehaviorIdle();
             else m_PlayerData.m_PlayerState.SetBehaviorWalking();
-            
-            //if (m_IsWalking) m_IsIdle = m_Input == Vector2.zero;
-            //m_CrossHairController.CrossHairSetBool("IsWalking", !m_IsIdle);
 
             if (m_Input.sqrMagnitude > 1) m_Input.Normalize();
 
@@ -358,8 +354,6 @@ namespace Contoller.Player
 
             m_IsWalking = !isRunning;
             m_PlayerData.m_PlayerState.SetBehaviorRunning(isRunning);
-
-            //m_CrossHairController.CrossHairSetBool("IsRunning", isRunning);
         }
 
         private void PositionRay()
@@ -374,13 +368,14 @@ namespace Contoller.Player
         {
             m_IsCrouch = isCrouch;
             m_PlayerData.m_PlayerState.SetBehaviorCrouching(isCrouch);
-            //m_CrossHairController.CrossHairSetBool("IsCrouching", isCrouch);
+
             StopAllCoroutines();
             if (isCrouch)
                 StartCoroutine(CrouchPos(m_CrouchTime, m_RightAxisTransform, m_CrouchPos));
             else
                 StartCoroutine(CrouchPos(m_CrouchTime, m_RightAxisTransform, m_IdlePos));
         }
+
         private IEnumerator CrouchPos(float runTotalTime, Transform target, Vector3 endLocalPosition)
         {
             float currentTime = 0;
