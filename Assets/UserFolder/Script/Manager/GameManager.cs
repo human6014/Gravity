@@ -7,17 +7,11 @@ namespace Manager
 {
     public class GameManager : MonoBehaviour
     {
-
-
-        void Start()
+        public static bool IsGameEnd { get; private set; } = false;
+        public static void GameEnd()
         {
 
-        }
-
-
-        void Update()
-        {
-
+            Debug.Log("GameEnd");
         }
     }
 }

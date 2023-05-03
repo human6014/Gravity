@@ -206,6 +206,7 @@ namespace Test
             if (base.IsEquiping || base.IsUnequiping) return;
             if (m_Reloadable.m_IsReloading || m_IsFiring) return;
             if (m_WeaponInfo.m_MagazineRemainBullet == 0) return;
+            if (m_WeaponInfo.m_CurrentRemainBullet == m_RangeWeaponStat.m_MaxBullets) return;
 
             bool isEmpty = m_WeaponInfo.m_CurrentRemainBullet <= 0;
             int totalBullet = m_WeaponInfo.m_CurrentRemainBullet + m_WeaponInfo.m_MagazineRemainBullet;
@@ -278,7 +279,7 @@ namespace Test
             m_EquipmentAnimator.SetBool("Fire", true);
             m_ArmAnimator.SetBool("Fire", true);
 
-            m_Fireable.DoFire();
+            if (m_Fireable.DoFire()) m_PlayerData.HitEnemy();
 
             audioClip = m_RangeWeaponSound.fireTailSound[Random.Range(0, m_RangeWeaponSound.fireTailSound.Length)];
             m_AudioSource.PlayOneShot(audioClip);

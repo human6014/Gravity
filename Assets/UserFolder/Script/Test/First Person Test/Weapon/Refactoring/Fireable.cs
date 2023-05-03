@@ -76,12 +76,13 @@ public abstract class Fireable : MonoBehaviour
         m_CasingPoolingObject.GenerateObj(m_PoolingCount);
     }
 
-    public void DoFire()
+    public bool DoFire()
     {
-        FireRay();
+        bool isHitEnemy = FireRay();
         FireRecoil();
         m_FireLight.Play(false);
         StartCoroutine(EndFire());
+        return isHitEnemy;
     }
 
     private void InstanceBullet()
@@ -103,14 +104,14 @@ public abstract class Fireable : MonoBehaviour
         cassingRB.angularVelocity = randomTorque;
     }
 
-    protected abstract void FireRay();
+    protected abstract bool FireRay();
 
-    protected void ProcessingRay(RaycastHit hit,int i)
+    protected bool ProcessingRay(RaycastHit hit,int i)
     {
         if (hit.transform.TryGetComponent(out IDamageable damageable))
         {
             damageable.Hit(m_RangeWeaponStat.m_Damage, m_BulletType);
-            return;
+            return true;
         }
 
         int fireEffectNumber;
@@ -119,8 +120,8 @@ public abstract class Fireable : MonoBehaviour
         else if (hitLayer == 17) fireEffectNumber = 1;
         else
         {
-            if (!hit.transform.TryGetComponent(out MeshRenderer meshRenderer)) return;
-            if ((fireEffectNumber = m_SurfaceManager.IsInMaterial(meshRenderer.sharedMaterial)) == -1) return;
+            if (!hit.transform.TryGetComponent(out MeshRenderer meshRenderer)) return false;
+            if ((fireEffectNumber = m_SurfaceManager.IsInMaterial(meshRenderer.sharedMaterial)) == -1) return false;
         }
         EffectSet(out AudioClip audioClip, out DefaultPoolingScript effectObj, fireEffectNumber);
 
@@ -128,6 +129,8 @@ public abstract class Fireable : MonoBehaviour
 
         effectObj.Init(hit.point, Quaternion.LookRotation(hit.normal), m_BulletEffectPoolingObjects[fireEffectNumber]);
         effectObj.gameObject.SetActive(true);
+
+        return false;
     }
 
     private void EffectSet(out AudioClip audioClip, out DefaultPoolingScript effectObj, int fireEffectNumber)

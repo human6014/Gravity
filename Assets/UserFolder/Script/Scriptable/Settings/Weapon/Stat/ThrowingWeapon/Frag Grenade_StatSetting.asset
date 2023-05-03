@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Frag Grenade_StatSetting
   m_EditorClassIdentifier: 
   m_AttackTime: 0.15
-  m_Damage: 1800
+  m_Damage: 2000
   m_AttackableLayer:
     serializedVersion: 2
     m_Bits: 454401

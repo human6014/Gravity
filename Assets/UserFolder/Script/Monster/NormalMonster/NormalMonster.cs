@@ -51,7 +51,6 @@ namespace Entity.Unit.Normal
         public void Hit(int damage, BulletType bulletType)
         {
             if (!m_IsAlive) return;
-            Debug.Log(damage);
             if (bulletType == BulletType.Explosion) m_CurrentHP -= (damage / settings.m_ExplosionResistance);
             else m_CurrentHP -= (damage - settings.m_Def);
 

@@ -53,15 +53,20 @@ namespace Test
         [Header("Weapon Sway")]
         [SerializeField] private WeaponSway m_WeaponSway;
 
-        [Header("Player Data")]
-        [SerializeField] protected PlayerData m_PlayerData;
+
+        [SerializeField] protected ArmController m_ArmController;
+        
         #endregion
 
+        
         private UI.Player.CrossHairDisplayer m_CrossHairDisplayer;
         private WaitForSeconds m_WaitEquipingTime;
         private const int m_UnequipingTime = 550;
 
+
         #region Property
+        protected PlayerData m_PlayerData { get; private set; }
+
         /// <summary>
         /// 인벤토리의 Weapon들을 담는 클래스
         /// </summary>
@@ -118,10 +123,14 @@ namespace Test
             m_WaitEquipingTime = new WaitForSeconds(0.35f);
 
             Transform rootTransform = transform.root;
+            Transform parentTransform = transform.parent;
+
             m_PlayerInputController = rootTransform.GetComponent<PlayerInputController>();
+            m_PlayerData = rootTransform.GetComponent<PlayerData>();
  
-            m_AudioSource = transform.parent.GetComponent<AudioSource>();
-            m_WeaponManager = transform.parent.GetComponent<WeaponManager>();
+            m_AudioSource = parentTransform.GetComponent<AudioSource>();
+            m_WeaponManager = parentTransform.GetComponent<WeaponManager>();
+
             m_WeaponInfo = m_PlayerData.GetInventory().WeaponInfo[(int)m_EquipingWeaponType];
             m_MainCamera = Camera.main;
         }
@@ -131,8 +140,14 @@ namespace Test
             m_ArmAnimator.runtimeAnimatorController = m_ArmOverrideController;
 
             gameObject.SetActive(true);
+            DoAppearObject();
             AssignKeyAction();
             StartCoroutine(WaitEquip());
+        }
+
+        protected virtual void DoAppearObject()
+        {
+            m_ArmController.AppearArms(true);
         }
 
         protected virtual void AssignKeyAction()
