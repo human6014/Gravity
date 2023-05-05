@@ -49,11 +49,9 @@ MonoBehaviour:
   - audioClip: {fileID: 8300000, guid: b9578afcb3e05064397e31b1e9af7f99, type: 3}
     delayTime: 1
   - audioClip: {fileID: 8300000, guid: 34f3b24b0f7b70d42b972bd402f6e407, type: 3}
-    delayTime: 0.05
-  - audioClip: {fileID: 8300000, guid: 674fd2f03c8ed5045b212ea20a13e3a0, type: 3}
-    delayTime: 0.2
+    delayTime: 0.15
   - audioClip: {fileID: 8300000, guid: 788afea45059e4843b59231b6d4f730a, type: 3}
-    delayTime: 0.3
+    delayTime: 0.4
   - audioClip: {fileID: 8300000, guid: df0438b999affa8439b2e40113775c4c, type: 3}
     delayTime: 0.1
   - audioClip: {fileID: 8300000, guid: b18b6a494e7fd3a41b56b973c64295d4, type: 3}

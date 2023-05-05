@@ -9,7 +9,7 @@ public enum CrossHair
     Reticle = 2,        //십자선
     Circle = 3,         //원형선
 }
-public enum BulletType
+public enum AttackType
 {
     None = 0,
     Generic = 1,
@@ -60,6 +60,6 @@ namespace Scriptable.Equipment
         public Sprite m_WeaponIcon;
 
         [Tooltip("Bullet Type")]
-        public BulletType m_BulletType;
+        public AttackType m_BulletType;
     }
 }

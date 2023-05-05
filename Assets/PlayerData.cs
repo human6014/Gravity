@@ -110,12 +110,12 @@ public class PlayerData : MonoBehaviour
     /// 무기 변경 시
     /// </summary>
     /// <param name="equipingWeaponType">무기 타입 (슬롯 번호랑 일치)</param>
-    /// <param name="bulletType">무기 총알 타입 (아이콘 표시용)</param>
+    /// <param name="attackType">무기 총알 타입 (아이콘 표시용)</param>
     /// <param name="weaponImage">무기 아이콘 이미지</param>
-    public void ChangeWeapon(int equipingWeaponType, BulletType bulletType, Test.FireMode fireMode, Sprite weaponImage)
+    public void ChangeWeapon(int equipingWeaponType, AttackType attackType, FireMode fireMode, Sprite weaponImage)
     {
         m_CurrentWeaponInfo = m_Inventory.WeaponInfo[equipingWeaponType];
-        m_PlayerUIManager.ChangeWeapon(equipingWeaponType, (int)bulletType, GetBitPosition((int)fireMode), m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, weaponImage);
+        m_PlayerUIManager.ChangeWeapon(equipingWeaponType, (int)attackType, GetBitPosition((int)fireMode), m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, weaponImage);
 
         bool isActive = IsActiveReloadImage(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, 30);
         m_PlayerUIManager.DisplayReloadImage(isActive);
@@ -125,7 +125,7 @@ public class PlayerData : MonoBehaviour
     /// 원거리 무기 사격모드 변경 시
     /// </summary>
     /// <param name="fireMode">사격 모드</param>
-    public void ChangeFireMode(Test.FireMode fireMode)
+    public void ChangeFireMode(FireMode fireMode)
     {
         m_PlayerUIManager.ChangeFireMode(GetBitPosition((int)fireMode));
     }
@@ -254,14 +254,16 @@ public class PlayerData : MonoBehaviour
         return true;
     }
 
-    [ContextMenu("TestHit")]
-    public void TestHit()
+    public void PlayerHit(Transform target, int damage, AttackType attackType)
     {
-        UpdatePlayerHP(10);
+        //if (attackType == AttackType.Explosion) damage = (int)(damage * 0.5f);
+        UpdatePlayerHP(damage);
+        m_PlayerUIManager.DisplayHitDirection(target);
     }
 
-    public void PlayerHit(int damager, BulletType bulletType)
+    public void PlayerHit(int damage, AttackType attackType)
     {
-
+        if (attackType == AttackType.Explosion) damage = (int)(damage * 0.5f);
+        UpdatePlayerHP(damage);
     }
 }
