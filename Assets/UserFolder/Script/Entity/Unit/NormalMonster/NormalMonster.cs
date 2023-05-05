@@ -70,7 +70,6 @@ namespace Entity.Unit.Normal
             }
 
             m_PlayerData.PlayerHit(transform, settings.m_Damage, settings.m_AttackType);
-            Debug.Log("Attack");
         }
 
         public void Hit(int damage, AttackType bulletType)
