@@ -30,5 +30,8 @@ namespace Scriptable.Monster
         [Tooltip("폭발 저항")]
         [Range(1,50)]
         public int m_ExplosionResistance = 1;
+
+        [Tooltip("공격 타입")]
+        public AttackType m_AttackType = AttackType.None;
     }
 }

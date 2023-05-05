@@ -8,7 +8,7 @@ namespace Manager
 {
     public class GravityManager : MonoBehaviour
     {
-        [SerializeField] private PlayerInputController m_PlayerInputController;
+        [SerializeField] private Contoller.PlayerInputController m_PlayerInputController;
 
         public static GravityType currentGravityType = GravityType.yDown;
         public static GravityType beforeGravityType = GravityType.yDown;

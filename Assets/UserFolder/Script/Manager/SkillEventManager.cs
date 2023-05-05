@@ -8,11 +8,18 @@ namespace Manager
     {
         [SerializeField] private PlayerData m_PlayerData;
         [SerializeField] private RectTransform m_SkillPos;
-        [SerializeField] private UI.Game.SkillEvent[] m_SkillEvents;
+        [SerializeField] private UI.Event.SkillEvent[] m_SkillEvents;
+
+        private int m_EventCount = 0;
+
+        private void Awake()
+        {
+
+        }
 
         public void OccurSkillEvent()
         {
-
+            m_EventCount++;
         }
     }
 }

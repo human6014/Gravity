@@ -309,17 +309,17 @@ namespace Contoller.Player
         private void UpdateCameraPosition(float speed)
         {
             if (!m_UseHeadBob) return;
-            Vector3 newCameraPosition;
-            if (m_CharacterController.velocity.magnitude > 0 && m_IsGround)
+            Vector3 newCameraPosition = m_UpAxisTransfrom.localPosition;
+
+            if (m_CharacterController.velocity.magnitude > 0 && m_IsGround && 
+                m_PlayerData.m_PlayerState.PlayerWeaponState != PlayerWeaponState.Aiming)
             {
                 m_UpAxisTransfrom.localPosition = m_HeadBob.DoHeadBob(m_CharacterController.velocity.magnitude +
                                       (speed * (m_IsWalking ? m_WalkStepLenghten : m_RunStepLenghten)));
-                newCameraPosition = m_UpAxisTransfrom.localPosition;
                 newCameraPosition.y = m_UpAxisTransfrom.localPosition.y - m_JumpBob.Offset();
             }
             else
             {
-                newCameraPosition = m_UpAxisTransfrom.localPosition;
                 newCameraPosition.y = m_OriginalCameraPosition.y - m_JumpBob.Offset();
             }
             m_UpAxisTransfrom.localPosition = newCameraPosition;
