@@ -69,7 +69,7 @@ namespace Entity.Unit.Normal
                 m_PlayerData = playerData;
             }
 
-            m_PlayerData.PlayerHit(transform, settings.m_Damage, settings.m_AttackType);
+            m_PlayerData.PlayerHit(transform, settings.m_Damage, settings.m_NoramlAttackType);
         }
 
         public void Hit(int damage, AttackType bulletType)

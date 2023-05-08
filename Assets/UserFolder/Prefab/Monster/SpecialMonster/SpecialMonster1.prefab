@@ -86,7 +86,7 @@ MonoBehaviour:
   ikTarget: {fileID: 2851243571707920060}
   tipMoveDist: 1.1
   tipAnimationTime: 0.35
-  ikOffset: 1.5
+  ikOffset: 2.3
   maxFowardRayDist: 3
 --- !u!1 &544955035050553022
 GameObject:
@@ -238,7 +238,7 @@ MonoBehaviour:
   ikTarget: {fileID: 2851243572017217871}
   tipMoveDist: 1.9
   tipAnimationTime: 0.55
-  ikOffset: 2
+  ikOffset: 2.5
   maxFowardRayDist: 7
 --- !u!1 &1115060510911033123
 GameObject:
@@ -1763,9 +1763,10 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 0
-  navObject: {fileID: 4332540135787782581}
   aiTransform: {fileID: 4332540135787782581}
   legController: {fileID: 2851243572512173295}
+  m_GrabPoint: {fileID: 952444041814510326}
+  m_ThrowingPoint: {fileID: 2477478181235482701}
   m_AnimationController: {fileID: 2851243573218337996}
 --- !u!1 &2851243572220859027
 GameObject:
@@ -5305,7 +5306,7 @@ Animator:
   m_GameObject: {fileID: 3993451387209956111}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: f30f5b5e3ae3f2d45a99e2aa36c82a8d, type: 3}
-  m_Controller: {fileID: 9100000, guid: 6a1e18e0e12ae1e48aa70ad87a8bd1bf, type: 2}
+  m_Controller: {fileID: 9100000, guid: 5ac75db849673494db30e5d858344890, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -5424,6 +5425,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2336000a1c92d34ba122944f27e6636, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &3995316664101280692
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2477478181235482701}
+  m_Layer: 0
+  m_Name: ThrowingPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2477478181235482701
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3995316664101280692}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.352, y: -0.214, z: 0.056}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6955781161939879596}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4209352004385344389
 GameObject:
   m_ObjectHideFlags: 0
@@ -5541,6 +5573,37 @@ Transform:
   - {fileID: 3916325973940024225}
   m_Father: {fileID: 6955781161939879596}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4736272555810916104
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 952444041814510326}
+  m_Layer: 0
+  m_Name: GrabPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &952444041814510326
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4736272555810916104}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.435, y: -0.103, z: -0.006}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 6955781161939879596}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4904537358766173610
 GameObject:
@@ -6069,7 +6132,7 @@ MonoBehaviour:
   ikTarget: {fileID: 2851243573316737740}
   tipMoveDist: 1.9
   tipAnimationTime: 0.55
-  ikOffset: 2
+  ikOffset: 2.5
   maxFowardRayDist: 7
 --- !u!1 &6208796425635070974
 GameObject:
@@ -6463,7 +6526,7 @@ MonoBehaviour:
   ikTarget: {fileID: 2851243573450156525}
   tipMoveDist: 1.1
   tipAnimationTime: 0.35
-  ikOffset: 1.5
+  ikOffset: 2.3
   maxFowardRayDist: 3
 --- !u!1 &7348923212738455884
 GameObject:
@@ -6569,7 +6632,15 @@ MonoBehaviour:
     m_Active: 1
   - m_Rig: {fileID: 5033788245960327421}
     m_Active: 1
-  m_Effectors: []
+  m_Effectors:
+  - m_Transform: {fileID: 952444041814510326}
+    m_Style:
+      shape: {fileID: 4300000, guid: c6793350c150f456688e39a81f97364a, type: 2}
+      color: {r: 1, g: 0, b: 0, a: 0.5}
+      size: 0.1
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+    m_Visible: 1
 --- !u!1 &7740911801619414953
 GameObject:
   m_ObjectHideFlags: 0
@@ -6655,7 +6726,7 @@ MonoBehaviour:
   ikTarget: {fileID: 2851243572658227724}
   tipMoveDist: 3.9
   tipAnimationTime: 0.6
-  ikOffset: 4.5
+  ikOffset: 5
   maxFowardRayDist: 4
 --- !u!1 &8163713388281536244
 GameObject:
@@ -6961,6 +7032,8 @@ Transform:
   - {fileID: 5347104948151910533}
   - {fileID: 8468432944086569295}
   - {fileID: 2851243573187513060}
+  - {fileID: 952444041814510326}
+  - {fileID: 2477478181235482701}
   m_Father: {fileID: 7783702727333663469}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7018,5 +7091,5 @@ MonoBehaviour:
   ikTarget: {fileID: 2851243572659539946}
   tipMoveDist: 3.9
   tipAnimationTime: 0.6
-  ikOffset: 4.5
+  ikOffset: 5
   maxFowardRayDist: 4

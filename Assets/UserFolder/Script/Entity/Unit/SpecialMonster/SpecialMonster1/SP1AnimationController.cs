@@ -3,24 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using EnumType;
 using UnityEngine.Animations.Rigging;
+using System.Threading.Tasks;
 
 public class SP1AnimationController : MonoBehaviour
 {
     [SerializeField] Animator []rigAnimators;
     [SerializeField] RigBuilder []rigBuilders;
     private LegController legController;
-    private Animator animator;
+    private Animator m_Animator;
 
     private bool m_DoBiteAttacking;
     private bool m_DoCrawsAttacking;
     private bool m_DoRoaring;
     private bool m_DoSpiting;
-
-    public bool CanMoving() => !m_DoBiteAttacking && !m_DoCrawsAttacking && !m_DoRoaring && !m_DoSpiting;
+    private bool m_DoBiteAttackingReverse;
+    public bool CanMoving() => !m_DoBiteAttacking && !m_DoCrawsAttacking && !m_DoRoaring && !m_DoSpiting && !m_DoBiteAttackingReverse;
 
     void Start()
     {
-        animator = GetComponent<Animator>();
+        m_Animator = GetComponent<Animator>();
         legController = FindObjectOfType<LegController>();
         //SetIKEnable(false);
     }
@@ -35,61 +36,64 @@ public class SP1AnimationController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// None 상태 : IK만 동작함
-    /// </summary>
-    public void SetNone()
-    {
-        animator.SetBool("None", true);
-        animator.SetBool("Walk", false);
-        animator.SetBool("Idle", false);
-        SetIKEnable(true);
-    }
 
-    public void SetIdle()
+    public void SetIdle(bool isActiveIK)
     {
-        animator.SetBool("Idle", true);
-        animator.SetBool("Walk", false);
-        animator.SetBool("None", true);
-        SetIKEnable(false);
+        m_Animator.SetBool("Walk", false);
+        SetIKEnable(isActiveIK);
     }
 
     public void SetWalk()
     {
-        animator.SetBool("Walk", true);
-        animator.SetBool("Idle", false);
-        animator.SetBool("None", false);
+        m_Animator.SetBool("Walk", true);
         SetIKEnable(true);
     }
 
-    public void SetBiteAttack()
+    public Task SetBiteAttack()
     {
+        TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+        
         m_DoBiteAttacking = true;
-        SetIKEnable(false);
-        animator.SetTrigger("BiteAttack");
+        m_DoBiteAttackingReverse = true;
+        SetIdle(false);
+        m_Animator.SetTrigger("BiteAttack");
+
+        StartCoroutine(CheckForEndBiteAttack(tcs));
+
+        return tcs.Task;
+    }
+
+    private IEnumerator CheckForEndBiteAttack(TaskCompletionSource<bool> tcs)
+    {
+        while (m_DoBiteAttackingReverse) yield return null;
+        tcs.SetResult(true);
     }
 
     public void SetClawsAttack()
     {
         m_DoCrawsAttacking = true;
-        SetIKEnable(false);
-        animator.SetTrigger("ClawsAttack");
+        SetIdle(false);
+        m_Animator.SetTrigger("ClawsAttack");
     }
 
     public void SetRoar()
     {
         m_DoRoaring = true;
-        SetIKEnable(false);
-        animator.SetTrigger("Roar");
+        SetIdle(false);
+        m_Animator.SetTrigger("Roar");
     }
 
     public void SetSpitVenom()
     {
         m_DoSpiting = true;
-        SetIKEnable(false);
-        animator.SetTrigger("SpitVenom");
+        SetIdle(false);
+        m_Animator.SetTrigger("SpitVenom");
     }
 
+    public void SetDie()
+    {
+        m_Animator.SetTrigger("Die");
+    }
 
     #region Animation Event
     private void EndBiteAttack()
@@ -114,6 +118,12 @@ public class SP1AnimationController : MonoBehaviour
     {
         m_DoSpiting = false;
         Debug.Log("EndSpitVenom");
+    }
+
+    private void EndBiteAttackReverse()
+    {
+        m_DoBiteAttackingReverse = false;
+        Debug.Log("EndBiteAttackReverse");
     }
     #endregion
 }

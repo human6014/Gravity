@@ -69,6 +69,11 @@ public class SpecialMonsterAI : MonoBehaviour
         m_NavMeshAgent.enabled = true;
     }
 
+    public void Dispose()
+    {
+
+    }
+
     /// <summary>
     /// AI 행동 실시 (Recommended calling from FixedUpdate())
     /// </summary>
@@ -77,7 +82,7 @@ public class SpecialMonsterAI : MonoBehaviour
         if (!isInit) return;
         if (!m_LegController.GetIsNavOn())
         {
-            m_AnimationController.SetIdle();
+            m_AnimationController.SetIdle(true);
             return;
         }
 
@@ -115,13 +120,9 @@ public class SpecialMonsterAI : MonoBehaviour
         if (m_NavMeshAgent.remainingDistance <= m_NavMeshAgent.stoppingDistance)
         {
             m_NavMeshAgent.nextPosition = transform.position;
-            if (m_IsCloseToTargetTime >= m_StateChangeThreshold)
-            {
-                m_AnimationController.SetIdle();
-                m_AnimationController.SetIKEnable(true);
-                m_IsCloseToTargetTime = 0;
-                //여기 문제임
-            }
+
+            m_AnimationController.SetIdle(false);
+            m_IsCloseToTargetTime = 0;
         }
         else
         {

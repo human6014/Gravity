@@ -52,6 +52,14 @@ namespace Manager
         {
             m_PlayerInputController.DoGravityChange += GravityChange;
         }
+        public void GravityChange(int gravityKeyInput, float mouseScroll)
+        {
+            if (IsGravityChanging) return;
+
+            gravityDirection = (GravityDirection)gravityKeyInput;
+            GravityChange(Mathf.FloorToInt(mouseScroll * 10));
+            StartCoroutine(GravityRotate());
+        }
 
         /// <summary>
         /// 중력 변경, 중력이 향하는 방향을 기록함
@@ -95,14 +103,7 @@ namespace Manager
         
         public static Quaternion GetCurrentGravityNormalRotation() => Quaternion.Euler(gravityRotation[(int)currentGravityType]);
 
-        public void GravityChange(int gravityKeyInput, float mouseScroll)
-        {
-            if (IsGravityChanging) return;
 
-            gravityDirection = (GravityDirection)gravityKeyInput;
-            GravityChange(Mathf.FloorToInt(mouseScroll * 10));
-            StartCoroutine(GravityRotate());
-        }
 
         private IEnumerator GravityRotate()
         {

@@ -18,13 +18,13 @@ AvatarMask:
   - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1
     m_Weight: 1
   - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_LegMiddleLeft1
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_LegMiddleLeft1/Horridomorph_LegMiddleLeft2
     m_Weight: 0
   - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_LegMiddleLeft1/Horridomorph_LegMiddleLeft2/Horridomorph_LegMiddleLeft3
     m_Weight: 0
   - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_LegMiddleRight1
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_LegMiddleRight1/Horridomorph_LegMiddleRight2
     m_Weight: 0
   - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_LegMiddleRight1/Horridomorph_LegMiddleRight2/Horridomorph_LegMiddleLRight3
@@ -32,13 +32,13 @@ AvatarMask:
   - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2
     m_Weight: 1
   - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_LegFrontLeft1
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_LegFrontLeft1/Horridomorph_LegFrontLeft2
     m_Weight: 0
   - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_LegFrontLeft1/Horridomorph_LegFrontLeft2/Horridomorph_LegFrontLeft3
     m_Weight: 0
   - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_LegFrontRight1
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_LegFrontRight1/Horridomorph_LegFrontRight2
     m_Weight: 0
   - m_Path: root/Horridomorph_Pelvis/Horridomorph_Spine1/Horridomorph_Spine2/Horridomorph_LegFrontRight1/Horridomorph_LegFrontRight2/Horridomorph_LegFrontLRight3

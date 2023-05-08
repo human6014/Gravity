@@ -18,9 +18,11 @@ namespace Entity.Unit.Special
         //[SerializeField] float height = 10;
 
         [Header("Code")]
-        [SerializeField] private Transform navObject;
         [SerializeField] private Transform aiTransform;
         [SerializeField] private LegController legController;
+
+        [SerializeField] private Transform m_GrabPoint;
+        [SerializeField] private Transform m_ThrowingPoint;
 
         [Header("Animation")]
         [SerializeField] private SP1AnimationController m_AnimationController;
@@ -82,19 +84,21 @@ namespace Entity.Unit.Special
             else if (CanBiteAttack()) CrawsAttack();
         }
 
-        public void BiteAttack()
+        public async void BiteAttack()
         {
             m_AttackTimer = 0;
 
-            m_PlayerData.PlayerHit(transform, m_settings.m_Damage, m_settings.m_AttackType);
-            m_AnimationController.SetBiteAttack();
+            m_PlayerData.PlayerHit(m_GrabPoint, m_settings.m_Damage, m_settings.m_GrabAttack);
+            await m_AnimationController.SetBiteAttack();
+
+            m_PlayerData.EndGrab(m_ThrowingPoint);
         }
 
         public void CrawsAttack()
         {
             m_AttackTimer = 0;
 
-            m_PlayerData.PlayerHit(transform, m_settings.m_Damage, m_settings.m_AttackType);
+            m_PlayerData.PlayerHit(aiTransform, m_settings.m_Damage, m_settings.m_NoramlAttackType);
             m_AnimationController.SetClawsAttack();
         }
 
@@ -112,6 +116,7 @@ namespace Entity.Unit.Special
         public void Die()
         {
             m_IsAlive = false;
+            m_AnimationController.SetDie();
         }
 
         private void Update()

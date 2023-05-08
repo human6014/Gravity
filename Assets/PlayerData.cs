@@ -34,6 +34,7 @@ public class PlayerData : MonoBehaviour
     [Tooltip("달리기 MP 소모량")]
     [SerializeField] private int m_RunningMP = 4;
 
+    [Tooltip("점프 MP 소모량")]
     [SerializeField] private int m_JumpingMP = 180;
 
     
@@ -54,6 +55,7 @@ public class PlayerData : MonoBehaviour
     private WeaponInfo m_CurrentWeaponInfo;
 
     public PlayerState m_PlayerState { get; } = new PlayerState();
+    public System.Action<Transform,bool> GrabAction { get; set; }
     public Inventory GetInventory() => m_Inventory;
 
     public int PlayerMaxHP { get; } = 1000;
@@ -256,14 +258,24 @@ public class PlayerData : MonoBehaviour
 
     public void PlayerHit(Transform target, int damage, AttackType attackType)
     {
-        //if (attackType == AttackType.Explosion) damage = (int)(damage * 0.5f);
+        if(attackType == AttackType.Grab)
+        {
+            GrabAction?.Invoke(target, true);
+        }
+        else if (attackType == AttackType.Explosion) damage = (int)(damage * 0.5f);
         UpdatePlayerHP(damage);
         m_PlayerUIManager.DisplayHitDirection(target);
     }
 
+    //UnityEvent 호출
     public void PlayerHit(int damage, AttackType attackType)
     {
         if (attackType == AttackType.Explosion) damage = (int)(damage * 0.5f);
         UpdatePlayerHP(damage);
+    }
+
+    public void EndGrab(Transform target)
+    {
+        GrabAction?.Invoke(target, false);
     }
 }
