@@ -5,48 +5,47 @@ using UnityEngine;
 public class OriginalController : MonoBehaviour
 {
     // Player movement script
-    AnimationController animationController;
-    private float MoveSpeed { get; } = 22f;
-    private float RotSpeed { get; } = 75.0f;
+    [SerializeField] private SP1AnimationController animationController;
+    private float MoveSpeed { get; } = 9f;
+    private float RotSpeed { get; } = 60f;
 
-    private void Start()
-    {
-        animationController = GetComponent<AnimationController>();
-    }
     void Update()
     {
         // Handle keyboard control
         // This loop competes with AdjustBodyTransform() in LegController script to properly postion the body transform
 
-        float ws = Input.GetAxis("Vertical") * MoveSpeed * Time.deltaTime;
-        float ad = Input.GetAxis("Horizontal") * MoveSpeed * Time.deltaTime;
+        float ws = Input.GetAxis("Vertical") * -MoveSpeed * Time.deltaTime;
+        float ad = Input.GetAxis("Horizontal") * -MoveSpeed * Time.deltaTime;
 
-        transform.Translate(ad, 0, ws);
+        //transform.Translate(ad, 0, ws);
 
         if (Input.GetKey(KeyCode.Q))
         {
-            transform.Rotate(0, -RotSpeed * Time.deltaTime, 0);
+            //transform.Rotate(0, -RotSpeed * Time.deltaTime, 0);
         }
         if (Input.GetKey(KeyCode.E))
         {
-            transform.Rotate(0, RotSpeed * Time.deltaTime, 0);
+            //transform.Rotate(0, RotSpeed * Time.deltaTime, 0);
         }
-        else if(ws !=0 || ad != 0)
+        else if (ws != 0 || ad != 0)
         {
-            animationController.SetWalk();
+            //animationController.SetWalk();
         }
         else if (Input.GetKeyDown(KeyCode.Z))
         {
-            animationController.SetRoar(true);
+            animationController.SetBiteAttack();
         }
-        else
+        else if (Input.GetKeyDown(KeyCode.X))
         {
-            animationController.SetRoar(true);
+            animationController.SetClawsAttack();
         }
-    }
-
-    void EndRoar()
-    {
-        animationController.SetRoar(false);
+        else if (Input.GetKeyDown(KeyCode.C))
+        {
+            animationController.SetSpitVenom();
+        }
+        else if (Input.GetKeyDown(KeyCode.V))
+        {
+            animationController.SetRoar();
+        }
     }
 }

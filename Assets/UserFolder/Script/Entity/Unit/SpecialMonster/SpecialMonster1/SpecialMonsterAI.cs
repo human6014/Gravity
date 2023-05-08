@@ -10,13 +10,15 @@ using Contoller.Floor;
 public class SpecialMonsterAI : MonoBehaviour
 {
     private WaitUntil waitUntil;
-    private new Rigidbody rigidbody;
-    private Transform cachedTransform;
-    private NavMeshAgent navMeshAgent;
-    private LegController legController;
-    private AnimationController animationController;
+    private Rigidbody m_Rigidbody;
+    private NavMeshAgent m_NavMeshAgent;
+    private LegController m_LegController;
+    private SP1AnimationController m_AnimationController;
 
+    private const float m_StateChangeThreshold = 0.2f;
+    private float m_IsCloseToTargetTime;
     private bool isInit;
+    
     #region Adjustment factor
     [Tooltip("회전 강도")]
     private readonly float rotAdjustRatio = 0.3f;
@@ -40,33 +42,36 @@ public class SpecialMonsterAI : MonoBehaviour
     public Vector3 ProceduralPosition { get; set; }
     #endregion
 
-    public bool GetIsOnOffMeshLink() => navMeshAgent.isOnOffMeshLink;
+    public bool GetIsOnOffMeshLink() => m_NavMeshAgent.isOnOffMeshLink;
 
-    public void SetNavMeshEnable(bool isOn) => navMeshAgent.enabled = isOn;
+    public void SetNavMeshEnable(bool isOn) => m_NavMeshAgent.enabled = isOn;
 
-    public void SetNavMeshPos(Vector3 pos) => navMeshAgent.Warp(pos);
+    public void SetNavMeshPos(Vector3 pos) => m_NavMeshAgent.Warp(pos);
     
     private void Awake()
     {
-        rigidbody = GetComponent<Rigidbody>();
-        cachedTransform = GetComponent<Transform>();
-        navMeshAgent = GetComponent<NavMeshAgent>();
-        animationController = GetComponent<AnimationController>();
-        legController = FindObjectOfType<LegController>();
+        m_Rigidbody = GetComponent<Rigidbody>();
+        m_NavMeshAgent = GetComponent<NavMeshAgent>();
+        m_AnimationController = GetComponent<SP1AnimationController>();
+        m_LegController = FindObjectOfType<LegController>();
 
-        navMeshAgent.updatePosition = false;
-        navMeshAgent.updateRotation = false;
-        navMeshAgent.updateUpAxis = false;
+        m_NavMeshAgent.updatePosition = false;
+        m_NavMeshAgent.updateRotation = false;
+        m_NavMeshAgent.updateUpAxis = false;
 
-        waitUntil = new WaitUntil(() => !navMeshAgent.isOnOffMeshLink);
+        waitUntil = new WaitUntil(() => !m_NavMeshAgent.isOnOffMeshLink);
     }
 
     public void Init(Quaternion roatation)
     {
         isInit = true;
         transform.rotation = roatation;
-        navMeshAgent.enabled = true;
-        Debug.Log("rotation : " + transform.rotation.eulerAngles);
+        m_NavMeshAgent.enabled = true;
+    }
+
+    public void Dispose()
+    {
+
     }
 
     /// <summary>
@@ -75,13 +80,13 @@ public class SpecialMonsterAI : MonoBehaviour
     public void OperateAIBehavior()
     {
         if (!isInit) return;
-        if (!legController.GetIsNavOn())
+        if (!m_LegController.GetIsNavOn())
         {
-            animationController.SetIdle();
+            m_AnimationController.SetIdle(true);
             return;
         }
 
-        if (!navMeshAgent.isActiveAndEnabled) //점프 끝날 때 작동
+        if (!m_NavMeshAgent.isActiveAndEnabled) //점프 끝날 때 작동
         {
             //navMeshAgent.Warp(aiController.GetPosition());
             return;
@@ -91,7 +96,7 @@ public class SpecialMonsterAI : MonoBehaviour
 
         SetDestination();
 
-        if (navMeshAgent.isOnOffMeshLink)
+        if (m_NavMeshAgent.isOnOffMeshLink)
         {
             //navMeshAgent.speed = minSpeed;
             //NavMeshLink link = (NavMeshLink)navMeshAgent.navMeshOwner;
@@ -103,41 +108,46 @@ public class SpecialMonsterAI : MonoBehaviour
             //navMeshAgent.speed = normalSpeed;
             //navMeshAgent.updateUpAxis = true;
         }
-        Vector3 targetDirection = (navMeshAgent.steeringTarget - cachedTransform.position).normalized;
+
+        Vector3 targetDirection = (m_NavMeshAgent.steeringTarget - transform.position).normalized;
         //targetForward = IsOnMeshLink == true ? ProceduralForwardAngle : targetDirection;
         Vector3 targetForward = ProceduralForwardAngle + targetDirection;
 
         Quaternion navRotation = Quaternion.LookRotation(targetForward, ProceduralUpAngle);
-        cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, navRotation, rotAdjustRatio);
+        transform.rotation = Quaternion.Lerp(transform.rotation, navRotation, rotAdjustRatio);
+        
 
-        if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+        if (m_NavMeshAgent.remainingDistance <= m_NavMeshAgent.stoppingDistance)
         {
-            navMeshAgent.nextPosition = transform.position;
-            animationController.SetIdle();
+            m_NavMeshAgent.nextPosition = transform.position;
+
+            m_AnimationController.SetIdle(false);
+            m_IsCloseToTargetTime = 0;
         }
         else
         {
-            animationController.SetWalk();
-            navMeshAgent.nextPosition = ProceduralPosition + Time.deltaTime * navMeshAgent.speed * targetDirection;
-            cachedTransform.position = navMeshAgent.nextPosition;
+            m_IsCloseToTargetTime += Time.deltaTime;
+            
+            m_AnimationController.SetWalk();
+            m_NavMeshAgent.nextPosition = ProceduralPosition + Time.deltaTime * m_NavMeshAgent.speed * targetDirection;
+            transform.position = m_NavMeshAgent.nextPosition;
         }
-
     }
 
     private void SetDestination()
     {
         if (AIManager.PlayerRerversePosition != Vector3.zero)
         {
-            float reversedDistance = Vector3.Distance(cachedTransform.position, AIManager.PlayerRerversePosition);
-            float normalDistance = Vector3.Distance(cachedTransform.position, AIManager.PlayerTransform.position);
+            float reversedDistance = (transform.position - AIManager.PlayerRerversePosition).sqrMagnitude;
+            float normalDistance = (transform.position - AIManager.PlayerTransform.position).sqrMagnitude;
 
             if (reversedDistance < normalDistance)
             {
-                navMeshAgent.SetDestination(AIManager.PlayerRerversePosition);
+                m_NavMeshAgent.SetDestination(AIManager.PlayerRerversePosition);
                 return;
             }
         }
-        navMeshAgent.SetDestination(AIManager.PlayerTransform.position);
+        m_NavMeshAgent.SetDestination(AIManager.PlayerTransform.position);
     }
 
     //public bool IsSameFloor() => navMeshAgent.navMeshOwner.name == floorDetector.GetNowFloor().name;

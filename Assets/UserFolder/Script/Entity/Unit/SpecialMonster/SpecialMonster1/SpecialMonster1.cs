@@ -9,7 +9,7 @@ namespace Entity.Unit.Special
     public class SpecialMonster1 : MonoBehaviour, IMonster
     {
         [Header("Stat")]
-        [SerializeField] private Scriptable.Monster.SpecialMonsterScriptable m_NormalMonsterScriptable;
+        [SerializeField] private Scriptable.Monster.SpecialMonsterScriptable m_settings;
 
         [Header("Parabola")]
         [SerializeField] private float _step = 0.01f;
@@ -18,40 +18,59 @@ namespace Entity.Unit.Special
         //[SerializeField] float height = 10;
 
         [Header("Code")]
-        [SerializeField] private Transform navObject;
-        [SerializeField] private LegController legController;
         [SerializeField] private Transform aiTransform;
+        [SerializeField] private LegController legController;
+
+        [SerializeField] private Transform m_GrabPoint;
+        [SerializeField] private Transform m_ThrowingPoint;
+
+        [Header("Animation")]
+        [SerializeField] private SP1AnimationController m_AnimationController;
 
         private Transform m_Target;
         private SpecialMonsterAI m_SpecialMonsterAI;
+        private PlayerData m_PlayerData;
 
         private Vector3 m_GroundDirection;
         private Vector3 m_TargetPos;
         private Vector3 m_Direction;
 
+        private float m_TargetDist;
         private float m_CurrentHP;
+        private float m_AttackTimer;
 
         private bool m_IsAlive;
         private bool m_IsPreJump;
 
+        private bool CanAttack() => CanBiteAttack() || CanCrawsAttack();
+
+        private bool CanBiteAttack() => m_AttackTimer >= m_settings.m_AttackSpeed &&
+            m_TargetDist <= m_settings.m_AttackRange;
+
+        private bool CanCrawsAttack() => m_AttackTimer >= m_settings.m_AttackSpeed &&
+            m_TargetDist <= m_settings.HeavyAttackRange;
+
         private void Awake()
         {
-            //aiTransform = GetComponent<Transform>();
             m_SpecialMonsterAI = aiTransform.GetComponent<SpecialMonsterAI>();
         }
 
         public void Init(Quaternion rotation)
         {
             m_Target = Manager.AI.AIManager.PlayerTransform;
+            m_PlayerData = m_Target.GetComponent<PlayerData>();
             m_SpecialMonsterAI.Init(rotation);
-            m_CurrentHP = m_NormalMonsterScriptable.m_HP;
+            m_CurrentHP = m_settings.m_HP;
             m_IsAlive = true;
         }
 
         private void FixedUpdate()
         {
             if (!m_IsAlive) return;
-            m_SpecialMonsterAI.OperateAIBehavior();
+            m_AttackTimer += Time.deltaTime;
+            m_TargetDist = Vector3.Distance(Manager.AI.AIManager.PlayerTransform.position, aiTransform.position);
+            if (CanAttack()) Attack();
+            else if(m_AnimationController.CanMoving()) m_SpecialMonsterAI.OperateAIBehavior();
         }
 
         public void Move()
@@ -61,24 +80,46 @@ namespace Entity.Unit.Special
 
         public void Attack()
         {
-            
+            if (CanCrawsAttack()) BiteAttack();
+            else if (CanBiteAttack()) CrawsAttack();
         }
+
+        public async void BiteAttack()
+        {
+            m_AttackTimer = 0;
+
+            m_PlayerData.PlayerHit(m_GrabPoint, m_settings.m_Damage, m_settings.m_GrabAttack);
+            await m_AnimationController.SetBiteAttack();
+
+            m_PlayerData.EndGrab(m_ThrowingPoint);
+        }
+
+        public void CrawsAttack()
+        {
+            m_AttackTimer = 0;
+
+            m_PlayerData.PlayerHit(aiTransform, m_settings.m_Damage, m_settings.m_NoramlAttackType);
+            m_AnimationController.SetClawsAttack();
+        }
+
 
         public void Hit(int damage, AttackType bulletType)
         {
             if (!m_IsAlive) return;
-            if (bulletType == AttackType.Explosion) m_CurrentHP -= (damage / m_NormalMonsterScriptable.m_ExplosionResistance);
-            else m_CurrentHP -= (damage - m_NormalMonsterScriptable.m_Def);
-            Debug.Log(m_CurrentHP);
+
+            if (bulletType == AttackType.Explosion) m_CurrentHP -= (damage / m_settings.m_ExplosionResistance);
+            else m_CurrentHP -= (damage - m_settings.m_Def);
+
             if (m_CurrentHP <= 0) Die();
         }
 
         public void Die()
         {
             m_IsAlive = false;
+            m_AnimationController.SetDie();
         }
 
-        void Update()
+        private void Update()
         {
             if (!m_Target || !m_IsAlive) return;
 

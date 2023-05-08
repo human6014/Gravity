@@ -11,5 +11,8 @@ namespace Scriptable.Monster
         [Header("Script info")]
         [Tooltip("몬스터 타입")]
         public EnumType.SpecialMonsterType m_MonsterType;
+
+        [Tooltip("근접 강공격 사거리")]
+        public float HeavyAttackRange;
     }
 }

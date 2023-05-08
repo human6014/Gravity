@@ -32,6 +32,9 @@ namespace Scriptable.Monster
         public int m_ExplosionResistance = 1;
 
         [Tooltip("공격 타입")]
-        public AttackType m_AttackType = AttackType.None;
+        public AttackType m_NoramlAttackType = AttackType.None;
+
+        [Tooltip("특수 공격 타입")]
+        public AttackType m_GrabAttack = AttackType.Grab;
     }
 }

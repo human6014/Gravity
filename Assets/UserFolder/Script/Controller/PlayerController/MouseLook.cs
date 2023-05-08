@@ -15,9 +15,9 @@ namespace Contoller.Player.Utility
         public float smoothTime = 5f;
         public bool lockCursor = true;
 
-        private float rightAxisRecoil;
-        private float upAxisRecoil;
-        private float recoilSpeed = 5f;
+        private float m_RightAxisRecoil;
+        private float m_UpAxisRecoil;
+        private float m_RecoilSpeed = 5f;
 
         private Quaternion m_CharacterTargetRot;
         private Quaternion m_CameraTargetRot;
@@ -36,14 +36,14 @@ namespace Contoller.Player.Utility
 
         public void LookRotation(float mouseHorizontal, float mouseVertical)
         {
-            float yRot = rightAxisRecoil + mouseHorizontal * XSensitivity;
-            float xRot = upAxisRecoil + mouseVertical * YSensitivity;
+            float yRot = m_RightAxisRecoil + mouseHorizontal * XSensitivity;
+            float xRot = m_UpAxisRecoil + mouseVertical * YSensitivity;
 
-            rightAxisRecoil -= recoilSpeed * Time.deltaTime;
-            upAxisRecoil -= recoilSpeed * Time.deltaTime;
+            m_RightAxisRecoil -= m_RecoilSpeed * Time.deltaTime;
+            m_UpAxisRecoil -= m_RecoilSpeed * Time.deltaTime;
 
-            if (rightAxisRecoil < 0) rightAxisRecoil = 0;
-            if (upAxisRecoil < 0) upAxisRecoil = 0;
+            if (m_RightAxisRecoil < 0) m_RightAxisRecoil = 0;
+            if (m_UpAxisRecoil < 0) m_UpAxisRecoil = 0;
 
             m_CharacterTargetRot *= Quaternion.Euler(0f, yRot, 0f);
             m_CameraTargetRot *= Quaternion.Euler(-xRot, 0f, 0f);
@@ -81,8 +81,8 @@ namespace Contoller.Player.Utility
 
         public void AddRecoil(float up, float right)
         {
-            upAxisRecoil += up;
-            rightAxisRecoil += right;
+            m_UpAxisRecoil += up;
+            m_RightAxisRecoil += right;
         }
     }
 }

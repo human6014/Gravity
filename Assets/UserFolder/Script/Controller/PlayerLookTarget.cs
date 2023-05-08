@@ -14,42 +14,42 @@ namespace Contoller.AI
 		[SerializeField] private float velocityDirectionContribution = 0.5f;
 		[SerializeField] private float maxDistanceToTrigger = 4;
 
-		private Vector3 lastPos;
-		private CharacterController characterController;
-		private float lastDistanceTravelled;
-		private float distanceTravelled;
-		private bool isWalking;
-		private int randomDir;
+		private Vector3 m_LastPos;
+		private Rigidbody m_PlayerRigidBody;
+		private float m_LastDistanceTravelled;
+		private float m_DistanceTravelled;
+		private bool m_IsWalking;
+		private int m_RandomDir;
 
 		private void Awake()
 		{
-			characterController = GetComponent<CharacterController>();
+			m_PlayerRigidBody = GetComponent<Rigidbody>();
 			Manager.AI.AIManager.PlayerSupportTargetTransform = supportTarget;
 		}
 
 		private void Update()
 		{
-			distanceTravelled += (transform.position - lastPos).magnitude;
+			m_DistanceTravelled += (transform.position - m_LastPos).magnitude;
 
-			if (Mathf.Abs(distanceTravelled - lastDistanceTravelled) > maxDistanceToTrigger)
+			if (Mathf.Abs(m_DistanceTravelled - m_LastDistanceTravelled) > maxDistanceToTrigger)
 			{
-				if (!isWalking)
+				if (!m_IsWalking)
 				{
-					randomDir = (int)Mathf.Sign(Random.Range(-1f, 1f));
-					isWalking = true;
+					m_RandomDir = (int)Mathf.Sign(Random.Range(-1f, 1f));
+					m_IsWalking = true;
 				}
 
-				lastDistanceTravelled = distanceTravelled;
-				Vector3 velocity = Vector3.Normalize(transform.TransformVector(characterController.velocity * randomDir).normalized * velocityDirectionContribution + transform.forward);
+				m_LastDistanceTravelled = m_DistanceTravelled;
+				Vector3 velocity = Vector3.Normalize(transform.TransformVector(m_PlayerRigidBody.velocity * m_RandomDir).normalized * velocityDirectionContribution + transform.forward);
 				if (Physics.Raycast(transform.position, velocity, out RaycastHit hit, maxPointDistance, pointLayerMask))
 					supportTarget.position = hit.point + hit.normal * distnaceFromSurface + transform.up * 3;
 				else
 					supportTarget.position = transform.position + velocity * maxPointDistance + transform.up * 3;
 			}
-			else isWalking = false;
+			else m_IsWalking = false;
 
 
-			lastPos = transform.position;
+			m_LastPos = transform.position;
 		}
 	}
 }

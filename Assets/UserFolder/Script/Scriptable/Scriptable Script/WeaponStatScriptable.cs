@@ -16,7 +16,9 @@ public enum AttackType
     HandGun = 2,
     ShotGun = 3,
     Sinper = 4,
-    Explosion = 5
+    Explosion = 5,
+
+    Grab = 6
 }
 
 namespace Scriptable.Equipment
