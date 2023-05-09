@@ -22,8 +22,8 @@ namespace Contoller.Player.Utility
         private Quaternion m_CharacterTargetRot;
         private Quaternion m_CameraTargetRot;
 
-        private Transform m_TargetCharacter;
-        private Transform m_TargetCamera;
+        private Transform m_TargetCharacter;    //y
+        private Transform m_TargetCamera;       //x
 
         public void Setup(Transform character, Transform camera)
         {
@@ -61,6 +61,16 @@ namespace Contoller.Player.Utility
                 m_TargetCharacter.localRotation = m_CharacterTargetRot;
                 m_TargetCamera.localRotation = m_CameraTargetRot;
             }
+        }
+
+        public void LookRotation(Transform lookPoint, Transform player)
+        {
+            m_TargetCharacter.localRotation = Quaternion.identity;
+            m_TargetCamera.localRotation = Quaternion.identity;
+
+            Vector3 dir = lookPoint.position - player.position;
+
+            player.rotation = Quaternion.LookRotation(dir);
         }
 
         private Quaternion ClampRotationAroundXAxis(Quaternion q)

@@ -31,13 +31,16 @@ public class PlayerData : MonoBehaviour
     [Tooltip("MP 회복 할 시간")]
     [SerializeField] private float m_AutoMPHealTime = 0.1f;
 
+    [Tooltip("달리기를 시작할 최소 MP")]
+    [SerializeField] private int m_StartRunningMP = 100;
+
     [Tooltip("달리기 MP 소모량")]
     [SerializeField] private int m_RunningMP = 4;
 
     [Tooltip("점프 MP 소모량")]
     [SerializeField] private int m_JumpingMP = 180;
 
-    
+
     private bool m_IsAlive = true;
 
     private int m_CurrentPlayerHP;
@@ -55,7 +58,9 @@ public class PlayerData : MonoBehaviour
     private WeaponInfo m_CurrentWeaponInfo;
 
     public PlayerState m_PlayerState { get; } = new PlayerState();
-    public System.Action<Transform,bool> GrabAction { get; set; }
+    public System.Action<bool> GrabAction { get; set; }
+
+    public System.Action<Transform, Transform, Transform> GrabPoint {get;set;}
     public Inventory GetInventory() => m_Inventory;
 
     public int PlayerMaxHP { get; } = 1000;
@@ -242,6 +247,9 @@ public class PlayerData : MonoBehaviour
         m_PlayerUIManager.UpdatePlayerMP(m_AmountPlayerMP);
     }
 
+    public bool CanStartRunning() => PlayerMP > m_StartRunningMP;
+    
+
     public bool CanRunning()
     {
         if (PlayerMP < m_RunningMP) return false;
@@ -260,7 +268,7 @@ public class PlayerData : MonoBehaviour
     {
         if(attackType == AttackType.Grab)
         {
-            GrabAction?.Invoke(target, true);
+            GrabAction?.Invoke(true);
         }
         else if (attackType == AttackType.Explosion) damage = (int)(damage * 0.5f);
         UpdatePlayerHP(damage);
@@ -274,8 +282,6 @@ public class PlayerData : MonoBehaviour
         UpdatePlayerHP(damage);
     }
 
-    public void EndGrab(Transform target)
-    {
-        GrabAction?.Invoke(target, false);
-    }
+    public void EndGrab() => GrabAction?.Invoke(false);
+    
 }

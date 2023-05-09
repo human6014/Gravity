@@ -23,6 +23,7 @@ namespace Entity.Unit.Special
 
         [SerializeField] private Transform m_GrabPoint;
         [SerializeField] private Transform m_ThrowingPoint;
+        [SerializeField] private Transform m_LookPoint;
 
         [Header("Animation")]
         [SerializeField] private SP1AnimationController m_AnimationController;
@@ -62,6 +63,8 @@ namespace Entity.Unit.Special
             m_SpecialMonsterAI.Init(rotation);
             m_CurrentHP = m_settings.m_HP;
             m_IsAlive = true;
+
+            m_PlayerData.GrabPoint(m_GrabPoint, m_LookPoint, m_ThrowingPoint);
         }
 
         private void FixedUpdate()
@@ -89,9 +92,10 @@ namespace Entity.Unit.Special
             m_AttackTimer = 0;
 
             m_PlayerData.PlayerHit(m_GrabPoint, m_settings.m_Damage, m_settings.m_GrabAttack);
+            
             await m_AnimationController.SetBiteAttack();
 
-            m_PlayerData.EndGrab(m_ThrowingPoint);
+            m_PlayerData.EndGrab();
         }
 
         public void CrawsAttack()
@@ -116,6 +120,7 @@ namespace Entity.Unit.Special
         public void Die()
         {
             m_IsAlive = false;
+            m_PlayerData.EndGrab();
             m_AnimationController.SetDie();
         }
 
