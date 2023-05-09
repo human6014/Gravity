@@ -1767,6 +1767,7 @@ MonoBehaviour:
   legController: {fileID: 2851243572512173295}
   m_GrabPoint: {fileID: 952444041814510326}
   m_ThrowingPoint: {fileID: 2477478181235482701}
+  m_LookPoint: {fileID: 1958754861215564204}
   m_AnimationController: {fileID: 2851243573218337996}
 --- !u!1 &2851243572220859027
 GameObject:

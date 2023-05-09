@@ -95,12 +95,14 @@ namespace Contoller.Player
 
         #endregion
         private PlayerInputController m_PlayerInputController;
-        private CharacterController m_CharacterController;
         private AudioSource m_AudioSource;
         private PlayerData m_PlayerData;
         private Camera m_Camera;
-        private Transform m_GrabTransform;
         private Rigidbody m_RigidBody;
+
+        private Transform m_GrabPosition;
+        private Transform m_GrabRotation;
+        private Transform m_ThrowingPosition;
 
         private Vector3 m_IdlePos;                                //일어난 상태 원래 위치
         private Vector3 m_CrouchPos;                              //앉은 상태 위치
@@ -109,15 +111,15 @@ namespace Contoller.Player
         private Vector3 m_DesiredMove;
         private Vector2 m_Input;
 
-        private readonly float m_InterporationDist = -0.1f;
+        private readonly float m_InterporationDist = 0.3f;
         private float m_MovementSpeed;
         private float m_StepCycle;
         private float m_NextStep;
 
         private bool m_IsGrabed;
         private bool m_IsThrowing;
-
-        private bool m_Jumping;             //점프하고 있는지
+        private bool m_IsJumping;             //점프하고 있는지
+        private bool m_IsMoving;
 
         private bool m_WasGround;           //이전 프레임에서 지상이었는지
         private bool m_IsGround;            //현재 프레임에서 지상인지
@@ -125,16 +127,9 @@ namespace Contoller.Player
         private bool m_WasWalking;
         private bool m_IsWalking;
 
-        
-
-        public bool m_IsIdle { get; private set; }
-        public bool m_IsCrouch { get; private set; }
-        
-
         private void Awake()
         {
             m_PlayerInputController = GetComponent<PlayerInputController>();
-            //m_CharacterController = GetComponent<CharacterController>();
             m_Camera = m_RightAxisTransform.GetComponentInChildren<Camera>();
             m_PlayerData = GetComponent<PlayerData>();
             m_AudioSource = GetComponent<AudioSource>();
@@ -145,17 +140,27 @@ namespace Contoller.Player
             m_FovKick.Setup(m_Camera);
             m_HeadBob.Setup(m_UpAxisTransfrom, m_StepInterval);
             m_MouseLook.Setup(m_RightAxisTransform, m_UpAxisTransfrom);
+
             m_PlayerData.GrabAction += GrabAction;
+            m_PlayerData.GrabPoint += GrabActionPoint;
 
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
             m_StepCycle = 0f;
             m_NextStep = m_StepCycle / 2f;
-            m_Jumping = false;
+            m_IsJumping = false;
 
             AssignKeyAction();
 
             m_IdlePos = m_RightAxisTransform.localPosition;
             m_CrouchPos = m_RightAxisTransform.localPosition - m_CrouchInterporatePos;
+        }
+
+
+        private void GrabActionPoint(Transform grabPosition, Transform grabRotation, Transform throwingPosition)
+        {
+            m_GrabPosition = grabPosition;
+            m_GrabRotation = grabRotation;
+            m_ThrowingPosition = throwingPosition;
         }
 
         private void AssignKeyAction()
@@ -173,74 +178,73 @@ namespace Contoller.Player
         {
             if (m_IsGrabed)
             {
-                transform.position = m_GrabTransform.position;
+                transform.position = m_GrabPosition.position;
+                m_MouseLook.LookRotation(m_GrabRotation, m_Camera.transform);
                 return;
             }
-            if (m_IsThrowing && !m_WasGround && m_IsGround)
+            if (m_IsGround && !m_WasGround)
             {
+                if (m_IsJumping)
+                {
+                    ApplyToGravity(false, 0);
+                    m_IsJumping = false;
+                    m_PlayerData.m_PlayerState.SetBehaviorJumping(false);
+                }
                 StartCoroutine(m_JumpBob.DoBobCycle());
                 PlayLandingSound();
-                m_IsThrowing = false;
-            }
-            if (!m_WasGround && m_IsGround && m_Jumping)
-            {
-                StartCoroutine(m_JumpBob.DoBobCycle());
-                PlayLandingSound();
-                ApplyToGravity(false, 0);
-                m_Jumping = false;
-                m_PlayerData.m_PlayerState.SetBehaviorJumping(false);
-            }
-            if (!m_IsGround && !m_Jumping && m_WasGround)
-            {
-                ApplyToGravity(false, 0);
             }
 
+            if (!m_IsGround && !m_IsJumping && m_WasGround) ApplyToGravity(false, 0);
+            
             m_WasGround = m_IsGround;
 
             PositionRay();
         }
 
-        private void GrabAction(Transform target, bool isActive)
+        private void GrabAction(bool isActive)
         {
             m_IsGrabed = isActive;
-            m_GrabTransform = target;
 
-            if (!isActive) PlayerThrowing(target);
-            //else m_Camera.transform.rotation = Quaternion.LookRotation(target.position);
+            if (!isActive) PlayerThrowing();
         }
 
-        private void PlayerThrowing(Transform target)
+        private void PlayerThrowing()
         {
+            m_Camera.transform.rotation = Quaternion.identity;
             m_IsThrowing = true;
-            Vector3 throwingVector = (transform.position - target.position).normalized;
-            m_RigidBody.AddForce(throwingVector * 100, ForceMode.Impulse);
+            Vector3 throwingVector = (transform.position - m_ThrowingPosition.position).normalized;
+            m_RigidBody.AddForce(throwingVector * 60, ForceMode.Impulse);
+            m_RigidBody.useGravity = true;
         }
 
         private void FixedUpdate()
         {
             if (m_IsGrabed) return;
-
             m_IsGround = GroundCheck(out RaycastHit hitInfo);
 
             if (m_IsThrowing)
             {
-                m_RigidBody.useGravity = true;
+                if (m_IsGround)
+                {
+                    m_RigidBody.useGravity = false;
+                    m_IsThrowing = false;
+                }
                 return;
             }
 
             if (m_IsGround)
             {
-                if (!m_Jumping)
+                if (!m_IsJumping)
                     ApplyToGravity(false, m_StickToGroundForce * GravityManager.GravityDirectionValue);
             }
             else m_MoveDir += Physics.gravity * Time.fixedDeltaTime;
+            
 
             m_DesiredMove = m_RightAxisTransform.forward * m_Input.y + m_RightAxisTransform.right * m_Input.x;
             m_DesiredMove = Vector3.ProjectOnPlane(m_DesiredMove, hitInfo.normal).normalized;
 
             ApplyToGravity(true, m_MovementSpeed);
 
-            m_RigidBody.useGravity = false;
             m_RigidBody.velocity = m_MoveDir;
 
             ProgressStepCycle(m_MovementSpeed);
@@ -248,7 +252,7 @@ namespace Contoller.Player
         }
 
         private bool GroundCheck(out RaycastHit hitInfo)
-           => Physics.Raycast(transform.position, GravityManager.GravityVector, out hitInfo, m_CapsuleCollider.height * 0.5f + 0.3f, m_GroundLayer);
+           => Physics.Raycast(transform.position, GravityManager.GravityVector, out hitInfo, m_CapsuleCollider.height * 0.5f + m_InterporationDist, m_GroundLayer);
 
         private void ApplyToGravity(bool isDuple, float value)
         {
@@ -288,13 +292,13 @@ namespace Contoller.Player
 
         private void TryJump()
         {
-            if (!m_IsGround || m_Jumping || !m_PlayerData.CanJumping()) return;
+            if (!m_IsGround || m_IsJumping || !m_PlayerData.CanJumping()) return;
 
             ApplyToGravity(false, m_JumpSpeed * -GravityManager.GravityDirectionValue);
             m_PlayerData.m_PlayerState.SetBehaviorJumping(true);
             PlayJumpSound();
 
-            m_Jumping = true;
+            m_IsJumping = true;
         }
 
         private void PlayLandingSound()
@@ -312,7 +316,7 @@ namespace Contoller.Player
 
         private void ProgressStepCycle(float speed)
         {
-            if (m_RigidBody.velocity.sqrMagnitude > 0 && (m_Input.x != 0 || m_Input.y != 0))
+            if (m_IsMoving)
                 m_StepCycle += (m_RigidBody.velocity.magnitude + (speed * (m_IsWalking ? m_WalkStepLenghten : m_RunStepLenghten))) * Time.fixedDeltaTime;
             
             if (m_StepCycle <= m_NextStep) return;
@@ -338,20 +342,16 @@ namespace Contoller.Player
         {
             if (!m_UseHeadBob) return;
             Vector3 newCameraPosition = m_UpAxisTransfrom.localPosition;
-            Debug.Log(m_RigidBody.velocity.sqrMagnitude);
-            if (m_RigidBody.velocity.sqrMagnitude > 0 && m_IsGround && 
+
+            if (m_IsMoving && m_IsGround && 
                 m_PlayerData.m_PlayerState.PlayerWeaponState != PlayerWeaponState.Aiming)
             {
-                Debug.Log("흔들흔들");
                 m_UpAxisTransfrom.localPosition = m_HeadBob.DoHeadBob(m_RigidBody.velocity.magnitude +
                                       (speed * (m_IsWalking ? m_WalkStepLenghten : m_RunStepLenghten)));
                 newCameraPosition.y = m_UpAxisTransfrom.localPosition.y - m_JumpBob.Offset();
             }
-            else
-            {
-                Debug.Log("점프 흔들흔들");
-                newCameraPosition.y = m_OriginalCameraPosition.y - m_JumpBob.Offset();
-            }
+            else newCameraPosition.y = m_OriginalCameraPosition.y - m_JumpBob.Offset();
+            
             m_UpAxisTransfrom.localPosition = newCameraPosition;
         }
         
@@ -362,10 +362,11 @@ namespace Contoller.Player
 
             if (m_Input == Vector2.zero) m_PlayerData.m_PlayerState.SetBehaviorIdle();
             else m_PlayerData.m_PlayerState.SetBehaviorWalking();
+            m_IsMoving = m_Input != Vector2.zero;
 
             if (m_Input.sqrMagnitude > 1) m_Input.Normalize();
 
-            if (m_IsWalking != m_WasWalking && m_UseFovKick && m_RigidBody.velocity.sqrMagnitude > 0)
+            if (m_IsWalking != m_WasWalking && m_UseFovKick && m_IsMoving)
             {
                 StopAllCoroutines();
                 StartCoroutine(!m_IsWalking ? m_FovKick.FOVKickUp() : m_FovKick.FOVKickDown());
@@ -376,14 +377,13 @@ namespace Contoller.Player
         {
             m_WasWalking = m_IsWalking;
 
-            if (isRunning && !m_PlayerData.CanRunning())
-            {
-                m_IsWalking = true;
-                return;
-            }
+            bool canRunning = true;
+            if (m_IsWalking) canRunning = m_PlayerData.CanStartRunning();
 
-            m_IsWalking = !isRunning;
-            m_PlayerData.m_PlayerState.SetBehaviorRunning(isRunning);
+            if (canRunning && isRunning && m_PlayerData.CanRunning()) m_IsWalking = false;
+            else m_IsWalking = true;
+
+            m_PlayerData.m_PlayerState.SetBehaviorRunning(!m_IsWalking);
         }
 
         private void PositionRay()
@@ -395,7 +395,6 @@ namespace Contoller.Player
         #region Crouch
         private void TryCrouch(bool isCrouch)
         {
-            m_IsCrouch = isCrouch;
             m_PlayerData.m_PlayerState.SetBehaviorCrouching(isCrouch);
 
             Vector3 posture = isCrouch ? m_CrouchPos : m_IdlePos;
@@ -406,15 +405,13 @@ namespace Contoller.Player
         private IEnumerator CrouchPos(float runTotalTime, Transform target, Vector3 endLocalPosition)
         {
             float currentTime = 0;
-            float elapsedTime;
             Vector3 startLocalPosition = target.localPosition;
             while (currentTime < runTotalTime)
             {
                 currentTime += Time.deltaTime;
 
-                elapsedTime = currentTime / runTotalTime;
-                target.localPosition = Vector3.Lerp(startLocalPosition, endLocalPosition, elapsedTime);
-                yield return elapsedTime;
+                target.localPosition = Vector3.Lerp(startLocalPosition, endLocalPosition, currentTime / runTotalTime);
+                yield return null;
             }
         }
         #endregion
