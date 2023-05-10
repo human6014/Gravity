@@ -112,6 +112,7 @@ namespace Entity.Unit.Special
             if (!m_IsAlive) return;
 
             if (bulletType == AttackType.Explosion) m_CurrentHP -= (damage / m_settings.m_ExplosionResistance);
+            else if (bulletType == AttackType.Melee) m_CurrentHP -= (damage / m_settings.m_MeleeResistance);
             else m_CurrentHP -= (damage - m_settings.m_Def);
 
             if (m_CurrentHP <= 0) Die();
