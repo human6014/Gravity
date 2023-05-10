@@ -15,5 +15,15 @@ namespace Scriptable.Equipment
 
         [Tooltip("강공격 속도")]
         public float m_HeavyFireTime = 1.5f;
+
+        [Header("SphereCast")]
+        [Tooltip("공격 범위")]
+        public float m_SwingRadius;
+
+        [Tooltip("최대 사거리")]
+        public float m_MaxDistance;
+
+        [Tooltip("평타 캔슬 여부")]
+        public bool m_CanComboAttack;
     }
 }

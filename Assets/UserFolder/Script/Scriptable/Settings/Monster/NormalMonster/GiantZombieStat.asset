@@ -19,5 +19,7 @@ MonoBehaviour:
   m_AttackSpeed: 1.2
   m_AttackRange: 2
   m_ExplosionResistance: 10
-  m_AttackType: 0
+  m_MeleeResistance: 10
+  m_NoramlAttackType: 0
+  m_GrabAttack: 7
   m_MonsterType: 4

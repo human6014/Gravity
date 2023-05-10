@@ -204,13 +204,12 @@ namespace Contoller.Player
         private void GrabAction(bool isActive)
         {
             m_IsGrabed = isActive;
-
             if (!isActive) PlayerThrowing();
         }
 
         private void PlayerThrowing()
         {
-            m_Camera.transform.rotation = Quaternion.identity;
+            m_Camera.transform.localRotation = Quaternion.identity;
             m_IsThrowing = true;
             Vector3 throwingVector = (transform.position - m_ThrowingPosition.position).normalized;
             m_RigidBody.AddForce(throwingVector * 60, ForceMode.Impulse);

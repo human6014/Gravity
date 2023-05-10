@@ -25,7 +25,7 @@ public class Octree : MonoBehaviour
     private int currentIndex;
 
 
-
+    private List<OctreeElement> gizmoMap = new();
     public Vector3 GetRandomSpawnableArea() => spawnableArea[UnityEngine.Random.Range(0, currentIndex)];
     private void Awake()
     {
@@ -60,7 +60,7 @@ public class Octree : MonoBehaviour
     #region Only unity editor
 #if UNITY_EDITOR
     //임시용
-    private List<OctreeElement> gizmoMap = new();
+    
     private void OnDrawGizmosSelected()
     {
         if (cellCount == 0) return;
