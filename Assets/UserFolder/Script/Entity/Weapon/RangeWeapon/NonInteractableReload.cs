@@ -34,11 +34,11 @@ namespace Entity.Object.Weapon
             m_ArmAnimator.SetTrigger(animParamName);
 
             yield return base.DelaySound(soundClips, 1, 0.2f);
+
+            m_PlayerData.RangeWeaponReload();
             base.InstanceMagazine();
             m_IsReloading = false;
         }
-
-        public override void StopReload() { }
 
         public override bool CanFire() => !m_IsReloading;
     }

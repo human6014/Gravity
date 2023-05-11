@@ -20,6 +20,9 @@ namespace Entity.Object.Weapon
         [Header("Appear")]
         [SerializeField] private SkinnedMeshRenderer m_RendererObject;
 
+        [SerializeField] private bool m_HasParticle;
+        [SerializeField] private GameObject m_ParticleObject;
+
         private ThrowingWeaponSoundScriptable m_ThrowingWeaponSound;
         private ThrowingWeaponStatScriptable m_ThrowingWeaponStat;
         private Transform m_CameraTransform;
@@ -56,12 +59,11 @@ namespace Entity.Object.Weapon
 
         protected override void DoAppearObject()
         {
-            if (m_WeaponInfo.m_CurrentRemainBullet <= 0)
-            {
-                m_RendererObject.enabled = false;
-                m_ArmController.AppearArms(false);
-            }
-            else m_RendererObject.enabled = true;
+            bool isActive = m_WeaponInfo.m_CurrentRemainBullet > 0;
+
+            m_RendererObject.enabled = isActive;
+            m_ArmController.AppearArms(isActive);
+            if(m_HasParticle) m_ParticleObject.SetActive(isActive);
         }
 
         private void ReInit()
@@ -145,7 +147,7 @@ namespace Entity.Object.Weapon
 
         private IEnumerator PlayThrowSound(bool isLong)
         {
-            m_PlayerData.RangeWeaponFire(m_MaxBullet);
+            m_PlayerData.RangeWeaponFire();
             m_IsThrowing = true;
             WeaponSoundScriptable.DelaySoundClip[] playingSound = m_ThrowingWeaponSound.throwSound;
             for (int i = 0; i < playingSound.Length; i++)
@@ -184,10 +186,9 @@ namespace Entity.Object.Weapon
             }
             else
             {
-                m_PlayerData.RangeWeaponReload(1);
+                m_PlayerData.RangeWeaponCountingReload();
                 Invoke(nameof(ReInit), m_ReInitTime);
             }
-
         }
 
         private void SetThrowVector(bool isLong, Vector3 hitPoint, out Vector3 forceToAdd, out Vector3 TorquToAdd)
@@ -207,19 +208,6 @@ namespace Entity.Object.Weapon
             forceToAdd = (hitPoint - m_SpawnPos.position).normalized * forwardForce + m_CameraTransform.up * upwardForce;
             TorquToAdd = new Vector3(Random.Range(-5, 5), Random.Range(-5, 5), Random.Range(-5, 5));
         }
-
-        //public override Task UnEquip()
-        //{
-        //    return base.UnEquip();
-        //}
-
-        /*
-        public override void Dispose()
-        {
-            m_RendererObject.SetActive(true);
-            base.Dispose();
-        }
-        */
 
         protected override void DischargeKeyAction()
         {

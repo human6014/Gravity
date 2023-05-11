@@ -35,17 +35,19 @@ namespace Entity.Object.Weapon
         private ObjectPoolManager.PoolingObject m_MagazinePoolingObject;
         private AudioSource m_AudioSource;
 
+        protected PlayerData m_PlayerData;
         protected RangeWeaponSoundScriptable m_RangeWeaponSound;
         protected Animator m_ArmAnimator;
         protected Animator m_EquipmentAnimator;
 
+        [SerializeField] private float m_TestAcceleration = 0;
+
         public bool m_IsReloading { get; protected set; }
         public bool m_IsNonEmptyReloading { get; protected set; }
         public bool m_IsEmptyReloading { get; protected set; }
-
         public Interactabe m_HowInteratable { get; protected set; }
 
-        [SerializeField] private float m_TestAcceleration = 0;
+
         protected virtual void Awake() => m_AudioSource = GetComponentInParent<AudioSource>();
 
         public void Setup(RangeWeaponSoundScriptable m_RangeWeaponSound, Animator m_ArmAnimator)
@@ -53,6 +55,7 @@ namespace Entity.Object.Weapon
             this.m_RangeWeaponSound = m_RangeWeaponSound;
             this.m_ArmAnimator = m_ArmAnimator;
             m_EquipmentAnimator = GetComponent<Animator>();
+            m_PlayerData = FindObjectOfType<PlayerData>();
 
             if (!m_HasMagazine) return;
             m_MagazinePoolingObject = ObjectPoolManager.Register(m_MagazineObject, m_ActiveObjectPool);
@@ -81,7 +84,7 @@ namespace Entity.Object.Weapon
             {
                 m_ArmAnimator.SetTrigger("Reload");
                 m_EquipmentAnimator.SetTrigger("Reload");
-
+                
                 for (int i = 0; i < reloadSoundClip.Length; i++)
                 {
                     delayTime = reloadSoundClip[i].delayTime;
@@ -92,6 +95,7 @@ namespace Entity.Object.Weapon
 
                     m_AudioSource.PlayOneShot(reloadSoundClip[i].audioClip);
                 }
+                m_PlayerData.RangeWeaponCountingReload();
             }
 
             yield return new WaitForSeconds(lastDelay);
@@ -113,13 +117,15 @@ namespace Entity.Object.Weapon
                     //delayTime -= delayTime * (m_TestAcceleration / 100);
                     //Debug.Log("가속된 시간 : \t" + delayTime);
                     yield return new WaitForSeconds(delayTime);
+
                     m_AudioSource.PlayOneShot(reloadSoundClip[i].audioClip);
                 }
             }
+            
             yield return new WaitForSeconds(lastDelay);
         }
 
-        public abstract void StopReload();
+        public virtual void StopReload() { }
 
         public abstract bool CanFire();
 

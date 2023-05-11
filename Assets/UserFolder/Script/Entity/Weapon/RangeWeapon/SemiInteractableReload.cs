@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Entity.Object.Weapon
 {
     [RequireComponent(typeof(RangeWeapon))]
-    public class InteractableNonRepeatReload : Reloadable
+    public class SemiInteractableReload : Reloadable
     {
         protected override void Awake()
         {
@@ -18,11 +18,11 @@ namespace Entity.Object.Weapon
 
         public override void DoReload(bool m_IsEmpty, int difference)
         {
-            if (m_IsEmpty) StartCoroutine(NonRepeatableEmptyReload());
-            else StartCoroutine(NonRepeatableNonEmptyReload(difference));
+            if (m_IsEmpty) StartCoroutine(NonInteractableEmptyReload());
+            else StartCoroutine(InteractableNonEmptyReload(difference));
         }
 
-        private IEnumerator NonRepeatableNonEmptyReload(int difference)
+        private IEnumerator InteractableNonEmptyReload(int difference)
         {
             m_IsReloading = true;
             m_IsNonEmptyReloading = true;
@@ -40,7 +40,7 @@ namespace Entity.Object.Weapon
             m_IsReloading = false;
         }
 
-        private IEnumerator NonRepeatableEmptyReload()
+        private IEnumerator NonInteractableEmptyReload()
         {
             m_IsReloading = true;
             m_IsEmptyReloading = true;
@@ -50,7 +50,9 @@ namespace Entity.Object.Weapon
 
             yield return base.DelaySound(m_RangeWeaponSound.emptyReloadSoundClips, 1);
 
+            m_PlayerData.RangeWeaponReload();
             base.InstanceMagazine();
+
             m_IsEmptyReloading = false;
             m_IsReloading = false;
         }

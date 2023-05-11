@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Entity.Object.Weapon;
 
-    [System.Serializable]
+[System.Serializable]
 public class WeaponInfo
 {
     public int m_HavingWeaponIndex;
@@ -16,6 +16,19 @@ public class WeaponInfo
         m_CurrentRemainBullet = remainBullet;
         m_MagazineRemainBullet = magazineBullet;
         m_MaxBullet = maxBullet;
+    }
+
+    public bool CanReload()
+    {
+        if (m_MagazineRemainBullet == 0 || m_CurrentRemainBullet == m_MaxBullet) return false;
+        return true;
+    }
+
+    public void GetDifferenceValue(out int difference)
+    {
+        int totalBullet = m_CurrentRemainBullet + m_MagazineRemainBullet;
+        if (totalBullet > m_MaxBullet) difference = m_MaxBullet - m_CurrentRemainBullet;
+        else difference = totalBullet - m_CurrentRemainBullet;
     }
 }
 [System.Serializable]
