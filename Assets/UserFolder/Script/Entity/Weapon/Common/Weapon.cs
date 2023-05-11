@@ -52,7 +52,7 @@ namespace Entity.Object.Weapon
         [Header("Weapon Sway")]
         [SerializeField] private WeaponSway m_WeaponSway;
 
-
+        [Header("Arm")]
         [SerializeField] protected ArmController m_ArmController;
 
         #endregion
@@ -131,7 +131,7 @@ namespace Entity.Object.Weapon
             m_AudioSource = parentTransform.GetComponent<AudioSource>();
             m_WeaponManager = parentTransform.GetComponent<WeaponManager>();
 
-            m_WeaponInfo = m_PlayerData.GetInventory().WeaponInfo[(int)m_EquipingWeaponType];
+            m_WeaponInfo = m_PlayerData.Inventory.WeaponInfo[(int)m_EquipingWeaponType];
             m_MainCamera = Camera.main;
         }
 

@@ -7,7 +7,8 @@ using Scriptable;
 
 namespace Entity.Object.Weapon
 {
-    public class InteractableRepeatReload : Reloadable
+    [RequireComponent(typeof(RangeWeapon))]
+    public class FullInteractableReload : Reloadable
     {
         protected override void Awake()
         {
@@ -17,11 +18,11 @@ namespace Entity.Object.Weapon
 
         public override void DoReload(bool m_IsEmpty, int difference)
         {
-            if (m_IsEmpty) StartCoroutine(ReapeatableEmptyReload(difference));
-            else StartCoroutine(ReapeatableNonEmptyReload(difference));
+            if (m_IsEmpty) StartCoroutine(InteractableEmptyReload(difference));
+            else StartCoroutine(InteractableNonEmptyReload(difference));
         }
 
-        private IEnumerator ReapeatableNonEmptyReload(int difference)
+        private IEnumerator InteractableNonEmptyReload(int difference)
         {
             m_IsReloading = true;
             m_IsNonEmptyReloading = true;
@@ -32,7 +33,7 @@ namespace Entity.Object.Weapon
             m_IsReloading = false;
         }
 
-        private IEnumerator ReapeatableEmptyReload(int difference)
+        private IEnumerator InteractableEmptyReload(int difference)
         {
             m_IsReloading = true;
             m_IsEmptyReloading = true;
@@ -41,7 +42,7 @@ namespace Entity.Object.Weapon
             m_EquipmentAnimator.SetTrigger("Empty Reload");
 
             yield return base.DelaySound(m_RangeWeaponSound.emptyReloadSoundClips, 1, 0.4f);
-
+            m_PlayerData.RangeWeaponCountingReload();
             if (difference != 1)
             {
                 m_ArmAnimator.SetTrigger("Start Reload");

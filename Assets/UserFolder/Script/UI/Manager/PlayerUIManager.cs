@@ -64,11 +64,6 @@ namespace UI.Manager
             m_ItemSlotDisplayer.UpdateWeaponSlotIcon(equipingWeaponType, sprite);
         }
 
-        public void UpdateRemainThrowingWeapon(int remainThrowingWeapon)
-        {
-
-        }
-
         public void UsingHealKit(int value, float hpAmount)
         {
             m_HealDisplayer.UpdateRemainHeal(value);
@@ -93,8 +88,7 @@ namespace UI.Manager
 
         private void DisplayHealImage(float hpAmount)
         {
-            if (hpAmount <= 0.5f) m_HealDisplayer.DisplayHealNotification(true);
-            else m_HealDisplayer.DisplayHealNotification(false);
+            m_HealDisplayer.DisplayHealNotification(hpAmount <= 0.5f);
         }
     }
 }

@@ -58,10 +58,10 @@ public class PlayerData : MonoBehaviour
     private WeaponInfo m_CurrentWeaponInfo;
 
     public PlayerState m_PlayerState { get; } = new PlayerState();
+    public Inventory Inventory { get => m_Inventory; }
     public System.Action<bool> GrabAction { get; set; }
-
     public System.Action<Transform, Transform, Transform> GrabPoint {get;set;}
-    public Inventory GetInventory() => m_Inventory;
+    
 
     public int PlayerMaxHP { get; } = 1000;
 
@@ -123,9 +123,7 @@ public class PlayerData : MonoBehaviour
     {
         m_CurrentWeaponInfo = m_Inventory.WeaponInfo[equipingWeaponType];
         m_PlayerUIManager.ChangeWeapon(equipingWeaponType, (int)attackType, GetBitPosition((int)fireMode), m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, weaponImage);
-
-        bool isActive = IsActiveReloadImage(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, 30);
-        m_PlayerUIManager.DisplayReloadImage(isActive);
+        m_PlayerUIManager.DisplayReloadImage(IsActiveReloadImage());
     }
 
     /// <summary>
@@ -156,38 +154,43 @@ public class PlayerData : MonoBehaviour
     /// <summary>
     /// 원거리 무기 사격 시
     /// </summary>
-    public void RangeWeaponFire(int maxBullet)
+    public void RangeWeaponFire()
     {
         //m_Inventory.GetCurrentRemainBullet((int)m_CurrentEquipingWeaponType)
-        int currentRemainBullet = --m_CurrentWeaponInfo.m_CurrentRemainBullet;
-        bool isActiveReloadImage = IsActiveReloadImage(currentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, maxBullet);
+        m_CurrentWeaponInfo.m_CurrentRemainBullet--;
 
-        m_PlayerUIManager.RangeWeaponFire(currentRemainBullet, isActiveReloadImage);
+        m_PlayerUIManager.RangeWeaponFire(m_CurrentWeaponInfo.m_CurrentRemainBullet, IsActiveReloadImage());
     }
 
-    public void RangeWeaponReload(int maxBullet)
+    public void RangeWeaponCountingReload()
+    {
+        m_CurrentWeaponInfo.m_MagazineRemainBullet--;
+        m_CurrentWeaponInfo.m_CurrentRemainBullet++;
+
+        m_PlayerUIManager.RangeWeaponReload(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, IsActiveReloadImage());
+    }
+
+    public void RangeWeaponReload()
     {
         int totalBullet = m_CurrentWeaponInfo.m_CurrentRemainBullet + m_CurrentWeaponInfo.m_MagazineRemainBullet;
         
-        if (totalBullet > maxBullet)
+        if (totalBullet > m_CurrentWeaponInfo.m_MaxBullet)
         {
-            m_CurrentWeaponInfo.m_MagazineRemainBullet -= maxBullet - m_CurrentWeaponInfo.m_CurrentRemainBullet;
-            m_CurrentWeaponInfo.m_CurrentRemainBullet = maxBullet;
+            m_CurrentWeaponInfo.m_MagazineRemainBullet -= m_CurrentWeaponInfo.m_MaxBullet - m_CurrentWeaponInfo.m_CurrentRemainBullet;
+            m_CurrentWeaponInfo.m_CurrentRemainBullet = m_CurrentWeaponInfo.m_MaxBullet;
         }
         else
         {
             m_CurrentWeaponInfo.m_MagazineRemainBullet = 0;
             m_CurrentWeaponInfo.m_CurrentRemainBullet = totalBullet;
         }
-        bool isActiveReloadImage = IsActiveReloadImage(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, maxBullet);
-        m_PlayerUIManager.RangeWeaponReload(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, isActiveReloadImage);
+        m_PlayerUIManager.RangeWeaponReload(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, IsActiveReloadImage());
     }
 
-    private bool IsActiveReloadImage(int currentRemainBullet, int currentMagazineBullet, int maxBullet)
-    {
-        if (maxBullet != 0 && currentRemainBullet < maxBullet * 0.5f && currentMagazineBullet != 0) return true;
-        return false;
-    }
+    private bool IsActiveReloadImage() 
+        => m_CurrentWeaponInfo.m_CurrentRemainBullet < m_CurrentWeaponInfo.m_MaxBullet * 0.5f && 
+           m_CurrentWeaponInfo.m_MaxBullet != 0 && m_CurrentWeaponInfo.m_MagazineRemainBullet != 0;
+    
 
     /// <summary>
     /// 무기를 얻었을 때
@@ -198,18 +201,6 @@ public class PlayerData : MonoBehaviour
         m_Inventory.WeaponInfo[equipingWeaponType].m_HavingWeaponIndex = weaponIndex;
         m_PlayerUIManager.UpdateWeaponSlot(equipingWeaponType, sprite);
     }
-
-
-    /// <summary>
-    /// 투척 무기를 사용하거나 얻었을 때
-    /// </summary>
-    /// <param name="value">사용하거나 얻은 개수 (음수 가능)</param>
-    public void UpdateRemainThrowingWeapon(int value)
-    {
-        int remainThrowingWeapon = m_Inventory.AddThrowingWeapon(value);
-        m_PlayerUIManager.UpdateRemainThrowingWeapon(remainThrowingWeapon);
-    }
-
 
     /// <summary>
     /// 힐킷을 사용하거나 얻었을 때
@@ -266,10 +257,7 @@ public class PlayerData : MonoBehaviour
 
     public void PlayerHit(Transform target, int damage, AttackType attackType)
     {
-        if(attackType == AttackType.Grab)
-        {
-            GrabAction?.Invoke(true);
-        }
+        if(attackType == AttackType.Grab) GrabAction?.Invoke(true);
         else if (attackType == AttackType.Explosion) damage = (int)(damage * 0.5f);
         UpdatePlayerHP(damage);
         m_PlayerUIManager.DisplayHitDirection(target);

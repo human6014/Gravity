@@ -100,6 +100,7 @@ namespace Entity.Object.Weapon
         }
         #endregion
 
+        #region Running & Walking
         private void Update()
         {
             m_CurrentFireTime += Time.deltaTime;
@@ -133,11 +134,12 @@ namespace Entity.Object.Weapon
                 m_Pivot.localPosition = Vector3.Lerp(startLocalPosition, EndPosition, elapsedTime);
                 m_Pivot.localRotation = Quaternion.Lerp(startLocalRotation, EndRotation, elapsedTime);
 
-                yield return elapsedTime;
+                yield return null;
             }
         }
+        #endregion
 
-        
+        #region Aiming
         private void TryAiming(bool isAiming)
         {
             if (m_PlayerData.m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
@@ -165,7 +167,9 @@ namespace Entity.Object.Weapon
             m_Pivot.localRotation = Quaternion.Lerp(m_Pivot.localRotation, endRotation, m_RangeWeaponStat.m_AimingPosTimeRatio * Time.deltaTime);
             m_MainCamera.fieldOfView = Mathf.Lerp(m_MainCamera.fieldOfView, endFOV, m_RangeWeaponStat.m_FOVMultiplier * Time.deltaTime);
         }
+        #endregion
 
+        #region FireMode
         private void TryChangeFireMode()
         {
             if (!ChangeFlag()) return;
@@ -203,24 +207,22 @@ namespace Entity.Object.Weapon
             m_EquipmentAnimator.SetInteger("Idle Index", idleIndex);
             m_ArmAnimator.SetInteger("Idle Index", idleIndex);
         }
+        #endregion
 
+        #region Reload
         private void TryReload()
         {
             if (base.IsEquiping || base.IsUnequiping) return;
             if (m_Reloadable.m_IsReloading || m_IsFiring) return;
-            if (m_WeaponInfo.m_MagazineRemainBullet == 0) return;
-            if (m_WeaponInfo.m_CurrentRemainBullet == m_RangeWeaponStat.m_MaxBullets) return;
+            if (!m_WeaponInfo.CanReload()) return;
 
             bool isEmpty = m_WeaponInfo.m_CurrentRemainBullet <= 0;
-            int totalBullet = m_WeaponInfo.m_CurrentRemainBullet + m_WeaponInfo.m_MagazineRemainBullet;
 
-            int difference;
-            if (totalBullet > m_RangeWeaponStat.m_MaxBullets) difference = m_RangeWeaponStat.m_MaxBullets - m_WeaponInfo.m_CurrentRemainBullet;
-            else difference = totalBullet - m_WeaponInfo.m_CurrentRemainBullet;
-            
+            m_WeaponInfo.GetDifferenceValue(out int difference);
             m_Reloadable.DoReload(isEmpty, difference);
-            m_PlayerData.RangeWeaponReload(m_RangeWeaponStat.m_MaxBullets);
+            //m_PlayerData.RangeWeaponReload();
         }
+        #endregion
 
         #region Fire
         private bool CanFire() => m_CurrentFireTime >= m_RangeWeaponStat.m_AttackTime  &&
@@ -273,7 +275,7 @@ namespace Entity.Object.Weapon
             m_CurrentFireTime = 0;
 
             m_Reloadable.StopReload();
-            m_PlayerData.RangeWeaponFire(m_RangeWeaponStat.m_MaxBullets);
+            m_PlayerData.RangeWeaponFire();
             m_PlayerData.m_PlayerState.SetWeaponFiring();
 
             AudioClip audioClip = m_RangeWeaponSound.fireSound[Random.Range(0, m_RangeWeaponSound.fireSound.Length)];

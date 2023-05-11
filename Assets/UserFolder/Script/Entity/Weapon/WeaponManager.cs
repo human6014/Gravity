@@ -73,12 +73,12 @@ namespace Manager.Weapon
         }
 
         public void RegisterWeapon(int slotNumber, int index)
-            => m_PlayerData.GetInventory().WeaponInfo[slotNumber].m_HavingWeaponIndex = index;
+            => m_PlayerData.Inventory.WeaponInfo[slotNumber].m_HavingWeaponIndex = index;
 
         private async void TryWeaponChange(int slotNumber)
         {
             if (IsInteracting) return;
-            int index = m_PlayerData.GetInventory().WeaponInfo[slotNumber].m_HavingWeaponIndex;
+            int index = m_PlayerData.Inventory.WeaponInfo[slotNumber].m_HavingWeaponIndex;
             if (m_CurrentWeapon != null)
             {
                 if (m_CurrentEquipIndex == slotNumber) return;
@@ -105,7 +105,7 @@ namespace Manager.Weapon
 
         private async void TryHealInteract()
         {
-            if (m_PlayerData.GetInventory().HealKitHavingCount < 1) return;
+            if (m_PlayerData.Inventory.HealKitHavingCount < 1) return;
             if (m_PlayerData.PlayerMaxHP <= m_PlayerData.PlayerHP) return;
             if (IsInteracting) return;
 
