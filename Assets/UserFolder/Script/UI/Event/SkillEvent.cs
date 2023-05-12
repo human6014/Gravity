@@ -14,8 +14,8 @@ namespace UI.Event
         Defense,
         Special
     }
-
-    public class SkillEvent : MonoBehaviour, IPointerDownHandler
+    [ExecuteInEditMode]
+    public class SkillEvent : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private EventType m_EventType;
         [SerializeField] private int m_Index;
@@ -23,11 +23,24 @@ namespace UI.Event
         [SerializeField] private int m_Level;
 
         public UnityAction PointerDownAction { get; set; }
-
+        public UnityAction PointerEnterAction { get; set; }
+        public UnityAction PointerExitAction { get; set; }
+        
         public void OnPointerDown(PointerEventData eventData)
         {
             PointerDownAction?.Invoke();
-            Debug.Log("Clicked");
+            Debug.Log("Click");
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            PointerEnterAction?.Invoke();
+            Debug.Log("Enter");
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            Debug.Log("Exit");
         }
     }
 }

@@ -210,10 +210,10 @@ public class NormalMonsterAI : MonoBehaviour
     }
     */
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, castRadius);
-        Gizmos.DrawSphere(transform.position + transform.up * castHeight, castRadius);
-    }
+    //private void OnDrawGizmosSelected()
+    //{
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawSphere(transform.position, castRadius);
+    //    Gizmos.DrawSphere(transform.position + transform.up * castHeight, castRadius);
+    //}
 }

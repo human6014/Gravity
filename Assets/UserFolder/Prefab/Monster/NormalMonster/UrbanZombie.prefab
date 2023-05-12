@@ -7643,6 +7643,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2167bba7ead3c0a46aa068b52e5b6b4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hoodieT: {fileID: 5360244360952091085}
+  tanktopT: {fileID: 5535160726635486584}
+  bodyToHideT: {fileID: 4054387559384614368}
+  bodyExposedHandT: {fileID: 6610856538860892248}
+  bodyExposedTrouserT: {fileID: 6254056022397512096}
+  headT_A: {fileID: 832860404109663347}
+  headT_B: {fileID: 634017762914191130}
+  hoodieT_Doll: {fileID: 0}
+  tanktopT_Doll: {fileID: 0}
+  bodyToHideT_Doll: {fileID: 0}
+  bodyExposedHandT_Doll: {fileID: 0}
+  bodyExposedTrouserT_Doll: {fileID: 0}
+  headT_A_Doll: {fileID: 0}
+  headT_B_Doll: {fileID: 0}
 --- !u!1 &8466638729159488321
 GameObject:
   m_ObjectHideFlags: 0
