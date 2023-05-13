@@ -14,13 +14,13 @@ namespace Entity.Unit
         private int shirtType;
         private int trouserType;
 
-        Transform bodyT;
-        Transform shirtT;
-        private void Awake()
-        {
-            bodyT = transform.Find("Geo/BigZombie");
-            shirtT = transform.Find("Geo/BigZombieShirt");
-        }
+        [Header("Original Model")]
+        [SerializeField] private Transform bodyT;
+        [SerializeField] private Transform shirtT;
+
+        [Header("RagDoll Model")]
+        [SerializeField] private Transform bodyT_RagDoll;
+        [SerializeField] private Transform shirtT_RagDoll;
 
         protected override void RandNum()
         {
@@ -29,28 +29,36 @@ namespace Entity.Unit
             trouserType = Random.Range(0, trouserTypeLength);
         }
 
-        public override void Customizing(ref CustomizingAssetList.MaterialsStruct[] materialsStructs)
+        public override void Customizing(ref CustomizingAssetList.MaterialsStruct[] materialStructs)
         {
             RandNum();
-            Material[] mat = new Material[2];
+
+            ChangeParts(ref materialStructs, bodyT, shirtT);
+            ChangeParts(ref materialStructs, bodyT_RagDoll, shirtT_RagDoll);
+        }
+
+        private void ChangeParts(ref CustomizingAssetList.MaterialsStruct[] materialStructs, Transform body, Transform shirt)
+        {
             Renderer skinRend;
-            foreach (Transform child in bodyT)
+            Material[] mat = new Material[2];
+            
+            foreach (Transform child in body)
             {
                 skinRend = child.GetComponent<Renderer>();
 
-                mat[0] = materialsStructs[1].partMaterials[trouserType];
-                mat[1] = materialsStructs[0].partMaterials[bodyType];
+                mat[0] = materialStructs[1].partMaterials[trouserType];
+                mat[1] = materialStructs[0].partMaterials[bodyType];
                 skinRend.materials = mat;
             }
 
-            if (shirtType < 1) shirtT.gameObject.SetActive(false);
+            if (shirtType < 1) shirt.gameObject.SetActive(false);
             else
             {
-                shirtT.gameObject.SetActive(true);
-                foreach (Transform child in shirtT)
+                shirt.gameObject.SetActive(true);
+                foreach (Transform child in shirt)
                 {
                     skinRend = child.GetComponent<Renderer>();
-                    skinRend.material = materialsStructs[0].partMaterials[shirtType - 1];
+                    skinRend.material = materialStructs[0].partMaterials[shirtType - 1];
                 }
             }
         }

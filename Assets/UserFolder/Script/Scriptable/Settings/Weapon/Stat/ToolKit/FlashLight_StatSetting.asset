@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e13b64bed565f37478a9c1e4b96cd568, type: 3}
   m_Name: FlashLight_StatSetting
   m_EditorClassIdentifier: 
-  m_AttackTime: 0.15
+  m_AttackTime: 0.1
   m_Damage: 0
   m_AttackableLayer:
     serializedVersion: 2

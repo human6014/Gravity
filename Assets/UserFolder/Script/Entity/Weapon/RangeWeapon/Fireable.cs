@@ -111,7 +111,8 @@ namespace Entity.Object.Weapon
         {
             if (hit.transform.TryGetComponent(out IDamageable damageable))
             {
-                damageable.Hit(m_RangeWeaponStat.m_Damage, m_RangeWeaponStat.m_BulletType);
+                Vector3 dir = (hit.point - transform.position).normalized * m_RangeWeaponStat.m_AttackForce;
+                damageable.Hit(m_RangeWeaponStat.m_Damage, m_RangeWeaponStat.m_BulletType, dir);
                 return true;
             }
 

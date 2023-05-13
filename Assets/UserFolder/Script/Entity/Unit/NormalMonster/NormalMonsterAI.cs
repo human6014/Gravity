@@ -12,7 +12,6 @@ public class NormalMonsterAI : MonoBehaviour
     private WaitForSeconds waitForSeconds = new(0.2f);
     private NavMeshAgent navMeshAgent;
     private NavMeshPath path;
-    private Transform cachedTransform;
     private Rigidbody cachedRigidbody;
 
     private Quaternion climbingLookRot;
@@ -38,8 +37,7 @@ public class NormalMonsterAI : MonoBehaviour
     private void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-        cachedTransform = GetComponent<Transform>();
-        cachedRigidbody = GetComponent<Rigidbody>();
+        cachedRigidbody = GetComponentInChildren<Rigidbody>();
 
         stopDistance = navMeshAgent.stoppingDistance;
         currentSpeed = navMeshAgent.speed;
@@ -53,7 +51,7 @@ public class NormalMonsterAI : MonoBehaviour
         IsBatch = true;
         navMeshAgent.enabled = true;
         navMeshAgent.Warp(pos);
-        cachedTransform.rotation = Quaternion.LookRotation(cachedTransform.forward, -GravityManager.GravityVector);
+        transform.rotation = Quaternion.LookRotation(transform.forward, -GravityManager.GravityVector);
     }
 
     public void Move()
@@ -112,7 +110,11 @@ public class NormalMonsterAI : MonoBehaviour
     private void DetectMalfunction()
     {
         fallingTimer += Time.deltaTime;
-        if (fallingTimer >= maximumFallingTime) IsMalfunction = true;
+        if (fallingTimer >= maximumFallingTime)
+        {
+            IsMalfunction = true;
+            Dispose();
+        }
     }
 
     private void AutoMode()
@@ -132,7 +134,7 @@ public class NormalMonsterAI : MonoBehaviour
         if (IsClimbing) autoTargetRot = climbingLookRot;
         else
         {
-            autoTargetDir = (navMeshAgent.steeringTarget - cachedTransform.position).normalized;
+            autoTargetDir = (navMeshAgent.steeringTarget - transform.position).normalized;
 
             switch (GravityManager.gravityDirection)
             {
@@ -153,13 +155,13 @@ public class NormalMonsterAI : MonoBehaviour
         }
         //cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, autoTargetRot, 0.2f);
         //ㄴ 이동중에 뒤집힐듯 말듯 하는 현상 원인
-        cachedTransform.rotation = autoTargetRot;
+        transform.rotation = autoTargetRot;
     }
 
     public void Dispose()
     {
-        IsBatch = false;
         navMeshAgent.enabled = false;
+        IsBatch = false;
     }
     /*
     private Coroutine navDetect = null;

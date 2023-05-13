@@ -19,6 +19,7 @@ public enum AttackType
     Explosion = 5,
     Melee = 6,
 
+    //Monster only
     Grab = 7
 }
 
@@ -36,16 +37,9 @@ namespace Scriptable.Equipment
         [Tooltip("공격에 걸릴 레이어")]
         public LayerMask m_AttackableLayer;
 
-
         [Header("Pos")]
         [Tooltip("달리기 전환 시간")]
         public float m_RunningPosTime = 0.5f;
-        
-
-        [Header("UI")]
-        [Tooltip("크로스 헤어 UI 종류")]
-        public CrossHair m_DefaultCrossHair = 0;
-
 
         [Header("RunningAnimPos")]
         [Tooltip("달릴 때 피봇 위치")]
@@ -57,8 +51,14 @@ namespace Scriptable.Equipment
         [Tooltip("달릴 때 FOV 가감 속도")]
         public float m_FOVMultiplier = 4;
 
+        [Tooltip("공격 힘")]
+        public float m_AttackForce = 50;
+
         [Space(10)]
         [Header("UI")]
+        [Tooltip("크로스 헤어 UI 종류")]
+        public CrossHair m_DefaultCrossHair = 0;
+
         [Tooltip("Weapon Icon")]
         public Sprite m_WeaponIcon;
 

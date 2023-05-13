@@ -144,7 +144,6 @@ namespace Entity.Object.Weapon
 
             m_AudioSource.PlayOneShot(playingAudio[Random.Range(0, playingAudio.Length)]);
             if (m_Attackable.SwingCast()) m_PlayerData.HitEnemy();
-            //SwingCastAll();
         }
 
         private void EndAnimation()
@@ -154,74 +153,6 @@ namespace Entity.Object.Weapon
             m_IsAttacking = false;
         }
         #endregion
-
-        private void SwingCast()
-        {
-            bool doEffect = false;
-            if (Physics.SphereCast(m_CameraTransform.position, m_SwingRadius, m_CameraTransform.forward, out RaycastHit hit, m_MaxDistance, m_MeleeWeaponStat.m_AttackableLayer, QueryTriggerInteraction.Ignore))
-            {
-                // Apply an impact impulse
-                //if (hitInfo.rigidbody != null)
-                //    hitInfo.rigidbody.AddForceAtPosition(itemUseRays.direction * swing.HitImpact, hitInfo.point, ForceMode.Impulse);
-                ProcessEffect(hit, ref doEffect);
-            }
-        }
-
-        private void SwingCastAll()
-        {
-            RaycastHit[] hitInfo = Physics.SphereCastAll(m_CameraTransform.position, m_SwingRadius, m_CameraTransform.forward, m_MaxDistance, m_MeleeWeaponStat.m_AttackableLayer, QueryTriggerInteraction.Ignore);
-
-            bool doEffect = false;
-            for(int i = 0; i < hitInfo.Length; i++)
-            {
-                // Apply an impact impulse
-                //if (hitInfo.rigidbody != null)
-                //    hitInfo.rigidbody.AddForceAtPosition(itemUseRays.direction * swing.HitImpact, hitInfo.point, ForceMode.Impulse);
-
-                RaycastHit hit = hitInfo[i];
-                ProcessEffect(hit, ref doEffect);
-            }
-        }
-
-        private void ProcessEffect(RaycastHit hit, ref bool doEffect)
-        {
-            if (hit.transform.TryGetComponent(out IDamageable damageable))
-            {
-                damageable.Hit(m_MeleeWeaponStat.m_Damage, m_BulletType);
-                m_PlayerData.HitEnemy();
-                return;
-            }
-
-            if (!doEffect)
-            {
-                int hitEffectNumber;
-                int hitLayer = hit.transform.gameObject.layer;
-                if (hitLayer == 14) hitEffectNumber = 0;
-                else if (hitLayer == 17) hitEffectNumber = 1;
-                else
-                {
-                    if (!hit.transform.TryGetComponent(out MeshRenderer meshRenderer)) return;
-                    if ((hitEffectNumber = m_SurfaceManager.IsInMaterial(meshRenderer.sharedMaterial)) == -1) return;
-                }
-                hitEffectNumber += 3;
-                EffectSet(out AudioClip audioClip, out DefaultPoolingScript effectObj, hitEffectNumber);
-
-                m_AudioSource.PlayOneShot(audioClip);
-
-                effectObj.Init(hit.point, Quaternion.LookRotation(hit.normal), m_EffectPoolingObject[hitEffectNumber]);
-                effectObj.gameObject.SetActive(true);
-                doEffect = true;
-            }
-        }
-
-        private void EffectSet(out AudioClip audioClip, out DefaultPoolingScript effectObj, int hitEffectNumber)
-        {
-            AudioClip[] audioClips;
-
-            effectObj = (DefaultPoolingScript)m_EffectPoolingObject[hitEffectNumber].GetObject(false);
-            audioClips = m_SurfaceManager.GetSlashHitEffectSounds(hitEffectNumber - 3);
-            audioClip = audioClips[Random.Range(0, audioClips.Length)];
-        }
 
         protected override void DischargeKeyAction()
         {
