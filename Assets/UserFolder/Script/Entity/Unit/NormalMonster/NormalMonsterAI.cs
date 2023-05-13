@@ -5,7 +5,6 @@ using UnityEngine.AI;
 using Manager.AI;
 using Manager;
 
-[RequireComponent(typeof(NavMeshAgent))]
 public class NormalMonsterAI : MonoBehaviour
 {
     [SerializeField] private LayerMask climbingDetectLayer;

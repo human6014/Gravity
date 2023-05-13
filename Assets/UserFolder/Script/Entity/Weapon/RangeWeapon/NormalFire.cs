@@ -7,7 +7,7 @@ namespace Entity.Object.Weapon
     {
         protected override bool FireRay()
         {
-            if (Physics.Raycast(m_CameraTransform.position, m_CameraTransform.forward + base.GetCurrentAccuracy(), out RaycastHit hit, m_RangeWeaponStat.m_MaxRange, m_RangeWeaponStat.m_AttackableLayer, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(m_CameraTransform.position, m_CameraTransform.forward + base.GetCurrentAccuracy(), out RaycastHit hit, m_RangeWeaponStat.m_MaxRange, m_RangeWeaponStat.m_AttackableLayer))
                 return base.ProcessingRay(hit, 0);
             return false;
         }

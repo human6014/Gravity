@@ -9,6 +9,7 @@ namespace Entity.Unit.Normal
     {
         [SerializeField] private Scriptable.Monster.NormalMonsterScriptable settings;
 
+        private RagDollChanger m_RagDollChanger;
         private PlayerData m_PlayerData;
         private Animator m_Animator;
         private NormalMonsterAI m_NormalMonsterAI;
@@ -20,6 +21,7 @@ namespace Entity.Unit.Normal
 
         private void Awake()
         {
+            m_RagDollChanger = GetComponent<RagDollChanger>();
             m_Animator = GetComponent<Animator>();
             m_NormalMonsterAI = GetComponent<NormalMonsterAI>();
         }
@@ -42,7 +44,11 @@ namespace Entity.Unit.Normal
 
             if (CanAttack()) Attack();
 
-            if (m_NormalMonsterAI.IsMalfunction) ReturnObject();
+            if (m_NormalMonsterAI.IsMalfunction)
+            {
+                m_IsAlive = false;
+                ReturnObject();
+            }
         }
 
         private bool CanAttack()
@@ -85,10 +91,11 @@ namespace Entity.Unit.Normal
         public void Die()
         {
             Debug.Log("Die");
-            m_IsAlive = false;
-            Debug.Log(m_CurrentHP);
             m_CurrentHP = 0;
-            ReturnObject();
+            if(m_RagDollChanger != null) m_RagDollChanger.ChangeToRagDoll();
+            m_IsAlive = false;
+            Invoke(nameof(ReturnObject),10);
+            //ReturnObject();
         }
 
         [ContextMenu("ReturnObject")]
