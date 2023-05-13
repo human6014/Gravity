@@ -28,7 +28,7 @@ namespace UI.Manager
             PauseMode(IsActiveSettingUI);
         }
 
-        private void PauseMode(bool isActive)
+        public void PauseMode(bool isActive)
         {
             Cursor.visible = isActive;
             Cursor.lockState = isActive ? CursorLockMode.None : CursorLockMode.Locked;

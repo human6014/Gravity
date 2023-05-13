@@ -5,7 +5,6 @@ using UnityEngine.AI;
 using Manager.AI;
 using Manager;
 
-[RequireComponent(typeof(NavMeshAgent))]
 public class NormalMonsterAI : MonoBehaviour
 {
     [SerializeField] private LayerMask climbingDetectLayer;
@@ -210,10 +209,10 @@ public class NormalMonsterAI : MonoBehaviour
     }
     */
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, castRadius);
-        Gizmos.DrawSphere(transform.position + transform.up * castHeight, castRadius);
-    }
+    //private void OnDrawGizmosSelected()
+    //{
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawSphere(transform.position, castRadius);
+    //    Gizmos.DrawSphere(transform.position + transform.up * castHeight, castRadius);
+    //}
 }
