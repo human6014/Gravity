@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using EnumType;
+using Entity.Unit;
 
 [RequireComponent(typeof(CustomizingAssetList))]
 public class Customization : MonoBehaviour

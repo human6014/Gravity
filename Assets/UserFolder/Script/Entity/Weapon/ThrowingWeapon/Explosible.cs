@@ -73,7 +73,11 @@ public class Explosible : PoolableScript
 
         for (int i = 0; i < col.Length; i++)
         {
-            if (col[i].TryGetComponent(out IDamageable damageable)) damageable.Hit(m_Damage, m_BulletType);
+            if (col[i].TryGetComponent(out IDamageable damageable))
+            {
+                //일단 보류
+                damageable.Hit(m_Damage, m_BulletType, Vector3.zero);
+            }
         }
     }
 

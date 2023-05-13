@@ -36,6 +36,7 @@ namespace Entity.Unit
         {
             Renderer skinnedRenderer;
             Material[] mat = new Material[2];
+
             foreach (Transform child in bodyT)
             {
                 skinnedRenderer = child.GetComponent<Renderer>();

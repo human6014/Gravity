@@ -6,18 +6,17 @@ namespace Entity.Unit
 {
     public class WomenZombieCustomize : CustomizableScript
     {
-        private Transform bodyT;
+        [Header("Original Model")]
+        [SerializeField] private Transform bodyT;
+
+        [Header("RagDoll Model")]
+        [SerializeField] private Transform bodyT_RagDoll;
 
         private readonly int bodyTypeLength = 2;
         private readonly int hairTypeLength = 2;
 
         private int bodyType;
         private int hairType;
-
-        private void Awake()
-        {
-            bodyT = transform.Find("Geo/WomenZombie");
-        }
 
         protected override void RandNum()
         {
@@ -28,10 +27,17 @@ namespace Entity.Unit
         public override void Customizing(ref CustomizingAssetList.MaterialsStruct[] materialsStructs)
         {
             RandNum();
-            Material[] mat = new Material[2];
-            Renderer skinnedRenderer;
 
-            foreach (Transform child in bodyT)
+            ChangeParts(ref materialsStructs, bodyT);
+            ChangeParts(ref materialsStructs, bodyT_RagDoll);
+        }
+
+        private void ChangeParts(ref CustomizingAssetList.MaterialsStruct[] materialsStructs, Transform body)
+        {
+            Renderer skinnedRenderer;
+            Material[] mat = new Material[2];
+
+            foreach (Transform child in body)
             {
                 skinnedRenderer = child.GetComponent<Renderer>();
 

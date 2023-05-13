@@ -6,13 +6,23 @@ namespace Entity.Unit
 {
     public class GiantZombieCustomize : CustomizableScript
     {
-        private Transform tshirtT;
-        private Transform tanktopT;
-        private Transform bodyToHideT;
-        private Transform bodyExposedT;
-        private Transform trousersT;
-        private Transform footL_T;
-        private Transform faceT;
+        [Header("Original Model")]
+        [SerializeField] private Transform tshirtT;
+        [SerializeField] private Transform tanktopT;
+        [SerializeField] private Transform torsoT;
+        [SerializeField] private Transform armT;
+        [SerializeField] private Transform trousersT;
+        [SerializeField] private Transform footL_T;
+        [SerializeField] private Transform headsT;
+
+        [Header("RagDoll Model")]
+        [SerializeField] private Transform tshirtT_RagDoll;
+        [SerializeField] private Transform tanktopT_RagDoll;
+        [SerializeField] private Transform torsoT_RagDoll;
+        [SerializeField] private Transform armT_RagDoll;
+        [SerializeField] private Transform trousersT_RagDoll;
+        [SerializeField] private Transform footL_T_RagDoll;
+        [SerializeField] private Transform headsT_RagDoll;
 
         private readonly int faceTypeLength = 4;
         private readonly int bodyTypeLength = 4;
@@ -25,18 +35,6 @@ namespace Entity.Unit
         private int trouserType;
         private int tanktopType;
         private int tshirtType;
-        private void Awake()
-        {
-            tshirtT = transform.Find("Geo/Tshirt");
-            tanktopT = transform.Find("Geo/TankTop");
-            trousersT = transform.Find("Geo/Trousers");
-            bodyToHideT = transform.Find("Geo/Torso");
-            bodyExposedT = transform.Find("Geo/Arms");
-            footL_T = transform.Find("Geo/Foot_L");
-
-            faceT = transform.Find("Geo/Heads");
-            //이거 아님
-        }
 
         protected override void RandNum()
         {
@@ -47,13 +45,22 @@ namespace Entity.Unit
             tshirtType = Random.Range(0, tshirtTypeLength);
         }
 
-        public override void Customizing(ref CustomizingAssetList.MaterialsStruct[] materialsStructs)
+        public override void Customizing(ref CustomizingAssetList.MaterialsStruct[] materialStructs)
         {
             RandNum();
+
+            ChangeParts(ref materialStructs, headsT, armT, torsoT, footL_T, trousersT, tshirtT);
+            ChangeParts(ref materialStructs, headsT_RagDoll, armT_RagDoll, torsoT_RagDoll, footL_T_RagDoll, trousersT_RagDoll, tshirtT_RagDoll);
+
+        }
+
+        private void ChangeParts(ref CustomizingAssetList.MaterialsStruct[] materialStructs, Transform heads, 
+            Transform arm, Transform torso, Transform footL, Transform trousers, Transform tshirt)
+        {
             Renderer skinRend;
             Transform activeHead = null;
             int i = 0;
-            foreach (Transform child in faceT)
+            foreach (Transform child in heads)
             {
                 if (i == faceType)
                 {
@@ -64,57 +71,57 @@ namespace Entity.Unit
                 i++;
             }
 
-            
+
             foreach (Transform child in activeHead)
             {
                 skinRend = child.GetComponent<Renderer>();
-                skinRend.material = materialsStructs[0].partMaterials[bodyType];
+                skinRend.material = materialStructs[0].partMaterials[bodyType];
             }
-            
+
             // Body_Exposed arms
-            foreach (Transform child in bodyExposedT)
+            foreach (Transform child in arm)
             {
                 skinRend = child.GetComponent<Renderer>();
-                skinRend.material = materialsStructs[0].partMaterials[bodyType];
+                skinRend.material = materialStructs[0].partMaterials[bodyType];
             }
 
 
             //Torso to hide
-            foreach (Transform child in bodyToHideT)
+            foreach (Transform child in torso)
             {
                 skinRend = child.GetComponent<Renderer>();
-                skinRend.material = materialsStructs[0].partMaterials[bodyType];
+                skinRend.material = materialStructs[0].partMaterials[bodyType];
             }
 
-            foreach (Transform child in footL_T)
+            foreach (Transform child in footL)
             {
                 skinRend = child.GetComponent<Renderer>();
-                skinRend.material = materialsStructs[0].partMaterials[bodyType];
+                skinRend.material = materialStructs[0].partMaterials[bodyType];
             }
 
             //Trousers
-            foreach (Transform child in trousersT)
+            foreach (Transform child in trousers)
             {
                 skinRend = child.GetComponent<Renderer>();
-                skinRend.material = materialsStructs[1].partMaterials[trouserType];
+                skinRend.material = materialStructs[1].partMaterials[trouserType];
             }
 
 
             // Tshirt
             if (tshirtType < 1)
             {
-                tshirtT.gameObject.SetActive(false);
-                bodyToHideT.gameObject.SetActive(true);
+                tshirt.gameObject.SetActive(false);
+                torso.gameObject.SetActive(true);
             }
             else
             {
-                tshirtT.gameObject.SetActive(true);
-                bodyToHideT.gameObject.SetActive(false);
+                tshirt.gameObject.SetActive(true);
+                torso.gameObject.SetActive(false);
 
-                foreach (Transform child in tshirtT)
+                foreach (Transform child in tshirt)
                 {
                     skinRend = child.GetComponent<Renderer>();
-                    skinRend.material = materialsStructs[2].partMaterials[tshirtType - 1];
+                    skinRend.material = materialStructs[2].partMaterials[tshirtType - 1];
                 }
             }
 
@@ -127,12 +134,12 @@ namespace Entity.Unit
             else
             {
                 tanktopT.gameObject.SetActive(true);
-                bodyToHideT.gameObject.SetActive(true);
+                torso.gameObject.SetActive(true);
 
                 foreach (Transform child in tanktopT)
                 {
                     skinRend = child.GetComponent<Renderer>();
-                    skinRend.material = materialsStructs[3].partMaterials[tanktopType - 1];
+                    skinRend.material = materialStructs[3].partMaterials[tanktopType - 1];
                 }
             }
         }

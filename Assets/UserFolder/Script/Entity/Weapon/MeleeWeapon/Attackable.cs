@@ -9,6 +9,7 @@ namespace Entity.Object.Weapon
     [RequireComponent(typeof(MeleeWeapon))]
     public abstract class Attackable : MonoBehaviour
     {
+        [SerializeField] private Transform m_ForcePoint;
         protected Transform m_CameraTransform;
         protected MeleeWeaponStatScriptable m_MeleeWeaponStat;
 
@@ -31,8 +32,8 @@ namespace Entity.Object.Weapon
         {
             if (hit.transform.TryGetComponent(out IDamageable damageable))
             {
-                damageable.Hit(m_MeleeWeaponStat.m_Damage, m_MeleeWeaponStat.m_BulletType);
-                //m_PlayerData.HitEnemy();
+                Vector3 dir = (hit.point - m_ForcePoint.position).normalized * m_MeleeWeaponStat.m_AttackForce;
+                damageable.Hit(m_MeleeWeaponStat.m_Damage, m_MeleeWeaponStat.m_BulletType, dir);
                 return true;
             }
 

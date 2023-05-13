@@ -18,10 +18,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 268886016
   m_RunningPosTime: 0.5
-  m_DefaultCrossHair: 3
   m_RunningPivotPosition: {x: 0.073, y: -0.006, z: 0.398}
   m_RunningPivotDirection: {x: -45, y: 13.151, z: -14.659}
   m_FOVMultiplier: 4
+  m_AttackForce: 250
+  m_DefaultCrossHair: 3
   m_WeaponIcon: {fileID: 21300000, guid: 02a1fea55352de144af0b9ea6add8823, type: 3}
   m_BulletType: 3
   m_BurstAttackTime: 0.1
