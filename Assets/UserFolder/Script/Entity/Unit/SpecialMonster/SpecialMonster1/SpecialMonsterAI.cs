@@ -15,19 +15,21 @@ public class SpecialMonsterAI : MonoBehaviour
     private LegController m_LegController;
     private SP1AnimationController m_AnimationController;
 
-    private const float m_StateChangeThreshold = 0.2f;
-    private float m_IsCloseToTargetTime;
     private bool isInit;
+    private bool m_DoingJumpBiteAttacking;
     
     #region Adjustment factor
     [Tooltip("회전 강도")]
-    private readonly float rotAdjustRatio = 0.3f;
+    private readonly float m_RotAdjustRatio = 0.3f;
+
+    [Tooltip("기본 이동 속도")]
+    private float m_OriginalSpeed = 9;
 
     [Tooltip("최대 이동 속도")]
-    private readonly float maxSpeed = 15f;
+    private readonly float m_MaxSpeed = 50f;
 
     [Tooltip("최소 이동 속도")]
-    private readonly float minSpeed = 5f;
+    private readonly float m_MinSpeed = 5f;
     #endregion
 
     #region Property
@@ -67,11 +69,19 @@ public class SpecialMonsterAI : MonoBehaviour
         isInit = true;
         transform.rotation = roatation;
         m_NavMeshAgent.enabled = true;
+        //m_OriginalSpeed = m_NavMeshAgent.speed;
     }
 
     public void Dispose()
     {
+        m_NavMeshAgent.enabled = false;
+    }
 
+    public void JumpBiteAttack(bool isActive)
+    {
+        m_DoingJumpBiteAttacking = isActive;
+        m_NavMeshAgent.speed = isActive ? m_MaxSpeed : m_OriginalSpeed;
+        m_NavMeshAgent.autoTraverseOffMeshLink = !isActive;
     }
 
     /// <summary>
@@ -92,7 +102,7 @@ public class SpecialMonsterAI : MonoBehaviour
             return;
         }
 
-        //if (navMeshAgent.pathPending == true) return;
+        //if (m_NavMeshAgent.pathPending) return;
 
         SetDestination();
 
@@ -114,21 +124,16 @@ public class SpecialMonsterAI : MonoBehaviour
         Vector3 targetForward = ProceduralForwardAngle + targetDirection;
 
         Quaternion navRotation = Quaternion.LookRotation(targetForward, ProceduralUpAngle);
-        transform.rotation = Quaternion.Lerp(transform.rotation, navRotation, rotAdjustRatio);
+        transform.rotation = Quaternion.Lerp(transform.rotation, navRotation, m_RotAdjustRatio);
         
-
         if (m_NavMeshAgent.remainingDistance <= m_NavMeshAgent.stoppingDistance)
         {
+            if(!m_DoingJumpBiteAttacking) m_AnimationController.SetIdle(false);
             m_NavMeshAgent.nextPosition = transform.position;
-
-            m_AnimationController.SetIdle(false);
-            m_IsCloseToTargetTime = 0;
         }
         else
         {
-            m_IsCloseToTargetTime += Time.deltaTime;
-            
-            m_AnimationController.SetWalk();
+            if(!m_DoingJumpBiteAttacking) m_AnimationController.SetIdle(true);
             m_NavMeshAgent.nextPosition = ProceduralPosition + Time.deltaTime * m_NavMeshAgent.speed * targetDirection;
             transform.position = m_NavMeshAgent.nextPosition;
         }

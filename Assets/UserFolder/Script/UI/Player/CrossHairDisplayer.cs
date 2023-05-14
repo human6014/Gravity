@@ -95,7 +95,7 @@ namespace UI.Player
         public void CrossHairSetBool(string state)
         {
             if (state == m_CurrentAnimState) return;
-            if(m_CurrentAnimState != m_IdleState) m_Animator.SetBool(m_CurrentAnimState, false);
+            if (m_CurrentAnimState != m_IdleState) m_Animator.SetBool(m_CurrentAnimState, false);
             if (state != m_IdleState) m_Animator.SetBool(state, true);
             m_CurrentAnimState = state;
         }
