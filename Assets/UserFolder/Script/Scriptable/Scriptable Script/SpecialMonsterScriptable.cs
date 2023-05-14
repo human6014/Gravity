@@ -14,5 +14,12 @@ namespace Scriptable.Monster
 
         [Tooltip("근접 강공격 사거리")]
         public float HeavyAttackRange;
+
+        [Tooltip("도약 공격 속도")]
+        public float JumpBiteAttackSpeed;
+
+        [Tooltip("도약 공격 사거리")]
+        public float JumpBiteAttackRange;
+
     }
 }

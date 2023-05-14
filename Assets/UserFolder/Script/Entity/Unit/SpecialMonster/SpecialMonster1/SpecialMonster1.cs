@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Manager;
 using EnumType;
+using Manager.AI;
 
 namespace Entity.Unit.Special
 {
@@ -39,6 +40,8 @@ namespace Entity.Unit.Special
         private float m_TargetDist;
         private float m_CurrentHP;
         private float m_AttackTimer;
+        private float m_JumpBiteAttackTimer;
+        private const float m_PreJumpingTime = 1f;
 
         private bool m_IsAlive;
         private bool m_IsPreJump;
@@ -51,19 +54,41 @@ namespace Entity.Unit.Special
         private bool CanCrawsAttack() => m_AttackTimer >= m_settings.m_AttackSpeed &&
             m_TargetDist <= m_settings.HeavyAttackRange;
 
-        private void Awake()
+        private bool CanSpitVenom()
         {
-            m_SpecialMonsterAI = aiTransform.GetComponent<SpecialMonsterAI>();
+            return DetectObstacle(int.MaxValue);
+        }
+
+        private bool CanJumpBiteAttack()
+        {
+            return DetectObstacle(m_settings.JumpBiteAttackRange);
+        }
+
+        private bool DetectObstacle(float maxRange)
+        {
+            Vector3 currentPos = m_SpecialMonsterAI.transform.position;
+            Vector3 dir = (AIManager.PlayerTransform.position - currentPos).normalized;
+            bool isDetectObstacle = Physics.Raycast(currentPos, dir, maxRange, layerMask);
+            if (isDetectObstacle) return false;
+
+            //bool isDetectCliff = Physics.Raycast(currentPos + (dir * maxRange), layerMask);
+
+            return true;
         }
 
         public void Init(Quaternion rotation)
         {
-            m_Target = Manager.AI.AIManager.PlayerTransform;
+            m_Target = AIManager.PlayerTransform;
             m_PlayerData = m_Target.GetComponent<PlayerData>();
+            m_SpecialMonsterAI = aiTransform.GetComponent<SpecialMonsterAI>();
+
             m_SpecialMonsterAI.Init(rotation);
+            m_AnimationController.Init();
+
             m_CurrentHP = m_settings.m_HP;
             m_IsAlive = true;
 
+            m_AnimationController.SetIdle(true);
             m_PlayerData.GrabPoint(m_GrabPoint, m_LookPoint, m_ThrowingPoint);
         }
 
@@ -71,14 +96,17 @@ namespace Entity.Unit.Special
         {
             if (!m_IsAlive) return;
             m_AttackTimer += Time.deltaTime;
-            m_TargetDist = Vector3.Distance(Manager.AI.AIManager.PlayerTransform.position, aiTransform.position);
-            if (CanAttack()) Attack();
-            else if(m_AnimationController.CanMoving()) m_SpecialMonsterAI.OperateAIBehavior();
+            m_TargetDist = Vector3.Distance(AIManager.PlayerTransform.position, aiTransform.position);
+            //if (CanAttack()) Attack();
+            //else if (m_AnimationController.CanMoving()) Move(); 
+            if (m_AnimationController.CanMoving()) Move();
+
+            
         }
 
         public void Move()
         {
-            
+            m_SpecialMonsterAI.OperateAIBehavior();
         }
 
         public void Attack()
@@ -87,25 +115,38 @@ namespace Entity.Unit.Special
             else if (CanBiteAttack()) CrawsAttack();
         }
 
+        public void CrawsAttack()
+        {
+            m_AttackTimer = 0;
+            Debug.Log("CrawsAttack");
+            m_PlayerData.PlayerHit(aiTransform, m_settings.m_Damage, m_settings.m_NoramlAttackType);
+            m_AnimationController.SetClawsAttack();
+        }
         public async void BiteAttack()
         {
             m_AttackTimer = 0;
-
+            Debug.Log("BiteAttack");
             m_PlayerData.PlayerHit(m_GrabPoint, m_settings.m_Damage, m_settings.m_GrabAttack);
-            
+
             await m_AnimationController.SetBiteAttack();
 
             m_PlayerData.EndGrab();
         }
 
-        public void CrawsAttack()
+        [ContextMenu("JumpBiteAttack")]
+        public async void JumpBiteAttack()
         {
-            m_AttackTimer = 0;
+            m_JumpBiteAttackTimer = 0;
+            Debug.Log("StartJumpBiteAttack");
 
-            m_PlayerData.PlayerHit(aiTransform, m_settings.m_Damage, m_settings.m_NoramlAttackType);
-            m_AnimationController.SetClawsAttack();
+            m_SpecialMonsterAI.JumpBiteAttack(true);
+
+            await m_AnimationController.SetJumpBiteAttack();
+
+            m_SpecialMonsterAI.JumpBiteAttack(false);
+            Debug.Log("EndJumpBiteAttack");
         }
-
+        
 
         public void Hit(int damage, AttackType bulletType)
         {
@@ -121,6 +162,8 @@ namespace Entity.Unit.Special
         public void Die()
         {
             m_IsAlive = false;
+            //StopAllCoroutines();
+            m_SpecialMonsterAI.Dispose();
             m_PlayerData.EndGrab();
             m_AnimationController.SetDie();
         }
@@ -219,10 +262,9 @@ namespace Entity.Unit.Special
 
             float tplus = QuadraticEquation(a, b, c, 1);
             float tmin = QuadraticEquation(a, b, c, -1);
+
             time = tplus > tmin ? tplus : tmin;
-
             angle = Mathf.Atan(b * time / targetPos.x);
-
             v0 = b / Mathf.Sin(angle);
         }
 
@@ -232,33 +274,35 @@ namespace Entity.Unit.Special
             m_IsPreJump = true;
             legController.SetPreJump(true);
 
-            float beforeJumpingTime = 1f;
             float elapsedTime = 0;
             Vector3 startPos = aiTransform.position;
-            while (elapsedTime < beforeJumpingTime)
+            while (elapsedTime < m_PreJumpingTime)
             {
-                aiTransform.position = Vector3.Lerp(startPos, startPos - aiTransform.up, elapsedTime / beforeJumpingTime);
                 elapsedTime += Time.deltaTime;
+                aiTransform.position = Vector3.Lerp(startPos, startPos - aiTransform.up, elapsedTime / m_PreJumpingTime);
+                
                 yield return null;
             }
 
             legController.SetPreJump(false);
             legController.Jump(true);
-            Debug.Log("Coroutine target : " + m_Target);
+
             elapsedTime = 0;
             startPos = aiTransform.position;
             Quaternion startRotation = aiTransform.rotation;
             Quaternion targetRot = Quaternion.LookRotation(m_GroundDirection, m_Target.up);
-            Debug.Log("time : " + time);
+            //Debug.Log("time : " + time);
             while (elapsedTime < time)
             {
+                elapsedTime += Time.deltaTime * 2.5f;
+
                 float x = v0 * elapsedTime * Mathf.Cos(angle);
                 float y = v0 * elapsedTime * Mathf.Sin(angle) - 0.5f * Physics.gravity.magnitude * Mathf.Pow(elapsedTime, 2);
                 aiTransform.SetPositionAndRotation(startPos + direction * x - GravityManager.GravityVector * y,
                                  Quaternion.Lerp(startRotation, targetRot, elapsedTime / time));
                 //elapsedTime += Time.deltaTime * (time / 1.5f);
                 //elapsedTime += Time.deltaTime;
-                elapsedTime += Time.deltaTime * 2.5f;
+                
                 yield return null;
             }
             legController.Jump(false);

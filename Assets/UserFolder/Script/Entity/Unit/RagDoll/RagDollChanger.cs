@@ -9,6 +9,10 @@ public class RagDollChanger : MonoBehaviour
 
     private Transform m_OriginalRoot;
     private Transform m_RagDollRoot;
+    private Transform m_RagChild;
+    private Transform m_OriginalChild;
+
+    private const int m_MaxDepth = 8;
 
     private void Awake()
     {
@@ -25,22 +29,23 @@ public class RagDollChanger : MonoBehaviour
     [ContextMenu("ChangeToRagDoll")]
     public void ChangeToRagDoll()
     {
-        CopyToRagDoll(m_OriginalRoot, m_RagDollRoot);
-        Debug.Log("Comp Copy");
+        CopyToRagDoll(m_OriginalRoot, m_RagDollRoot, 0);
+
         m_OriginalObject.SetActive(false);
         m_RagDollObject.SetActive(true);
     }
-
-
     
-    public void CopyToRagDoll(Transform original, Transform ragDoll)
+    public void CopyToRagDoll(Transform original, Transform ragDoll, int depth)
     {
         for(int i = 0; i < original.childCount; i++)
         {
-            if (original.childCount != 0) CopyToRagDoll(original.GetChild(i), ragDoll.GetChild(i));
+            if (depth <= m_MaxDepth && original.childCount != 0) CopyToRagDoll(original.GetChild(i), ragDoll.GetChild(i), depth + 1);
+            
+            m_RagChild = ragDoll.GetChild(i);
+            m_OriginalChild = original.GetChild(i);
 
-            ragDoll.GetChild(i).localPosition = original.GetChild(i).localPosition;
-            ragDoll.GetChild(i).localRotation = original.GetChild(i).localRotation;
+            m_RagChild.localPosition = m_OriginalChild.localPosition;
+            m_RagChild.localRotation = m_OriginalChild.localRotation;
         }
     }
 }

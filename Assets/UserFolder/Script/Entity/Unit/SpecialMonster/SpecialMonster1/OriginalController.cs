@@ -47,5 +47,9 @@ public class OriginalController : MonoBehaviour
         {
             animationController.SetRoar();
         }
+        else if (Input.GetKeyDown(KeyCode.B))
+        {
+            animationController.SetJumpBiteAttack();
+        }
     }
 }
