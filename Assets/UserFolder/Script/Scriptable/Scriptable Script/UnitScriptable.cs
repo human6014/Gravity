@@ -35,10 +35,7 @@ namespace Scriptable.Monster
         [Range(1, 50)]
         public int m_MeleeResistance = 1;
 
-        [Tooltip("공격 타입")]
+        [Tooltip("일반 공격 타입")]
         public AttackType m_NoramlAttackType = AttackType.None;
-
-        [Tooltip("특수 공격 타입")]
-        public AttackType m_GrabAttack = AttackType.Grab;
     }
 }

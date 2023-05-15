@@ -34,24 +34,31 @@ namespace Entity.Unit.Special
         private PlayerData m_PlayerData;
 
         private Vector3 m_GroundDirection;
-        private Vector3 m_TargetPos;
-        private Vector3 m_Direction;
+
+        private const float m_PreJumpingTime = 1.5f;
+        private const float m_PreJumpAttackTime = 0.3f;
+
+        private const float m_JumpHeightRatio = 2;
+        private const float m_JumpAttackHeightRatio = 12;
+        private const float m_DestinationDist = 4;
 
         private float m_TargetDist;
         private float m_CurrentHP;
-        private float m_AttackTimer;
-        private float m_JumpBiteAttackTimer;
-        private const float m_PreJumpingTime = 1f;
+
+        private float m_NormalAttackTimer;
+        private float m_GrabAttackTimer;
+        private float m_JumpAttackTimer;
+        private float m_RangeAttackTimer;
 
         private bool m_IsAlive;
-        private bool m_IsPreJump;
+        private bool m_IsJumping;
 
-        private bool CanAttack() => CanBiteAttack() || CanCrawsAttack();
+        private bool CanAttack() => (CanGrabAttack() || CanCrawsAttack() || CanJumpBiteAttack()) && !m_IsJumping;
 
-        private bool CanBiteAttack() => m_AttackTimer >= m_settings.m_AttackSpeed &&
+        private bool CanGrabAttack() => m_NormalAttackTimer >= m_settings.m_AttackSpeed &&
             m_TargetDist <= m_settings.m_AttackRange;
 
-        private bool CanCrawsAttack() => m_AttackTimer >= m_settings.m_AttackSpeed &&
+        private bool CanCrawsAttack() => m_GrabAttackTimer >= m_settings.m_AttackSpeed &&
             m_TargetDist <= m_settings.HeavyAttackRange;
 
         private bool CanSpitVenom()
@@ -61,7 +68,14 @@ namespace Entity.Unit.Special
 
         private bool CanJumpBiteAttack()
         {
-            return DetectObstacle(m_settings.JumpBiteAttackRange);
+            return m_TargetDist > m_settings.m_JumpBittAttackMinRange && m_TargetDist < m_settings.m_JumpBiteAttackMaxRange &&
+                   DetectObstacle(m_settings.m_JumpBiteAttackMaxRange) &&  m_settings.JumpBiteAttackSpeed < m_JumpAttackTimer && 
+                   !m_SpecialMonsterAI.GetIsOnOffMeshLink() && !m_IsJumping;
+        }
+
+        private bool CanJump()
+        {
+            return true;
         }
 
         private bool DetectObstacle(float maxRange)
@@ -95,13 +109,19 @@ namespace Entity.Unit.Special
         private void FixedUpdate()
         {
             if (!m_IsAlive) return;
-            m_AttackTimer += Time.deltaTime;
-            m_TargetDist = Vector3.Distance(AIManager.PlayerTransform.position, aiTransform.position);
-            //if (CanAttack()) Attack();
-            //else if (m_AnimationController.CanMoving()) Move(); 
-            if (m_AnimationController.CanMoving()) Move();
 
-            
+            UpdateTimer();
+            m_TargetDist = Vector3.Distance(AIManager.PlayerTransform.position, aiTransform.position);
+            if (CanAttack()) Attack();
+            else if (m_AnimationController.CanMoving()) Move(); 
+        }
+
+        private void UpdateTimer()
+        {
+            m_NormalAttackTimer += Time.deltaTime;
+            m_GrabAttackTimer += Time.deltaTime;
+            m_JumpAttackTimer += Time.deltaTime;
+            m_RangeAttackTimer += Time.deltaTime;
         }
 
         public void Move()
@@ -111,42 +131,31 @@ namespace Entity.Unit.Special
 
         public void Attack()
         {
-            if (CanCrawsAttack()) BiteAttack();
-            else if (CanBiteAttack()) CrawsAttack();
+            if (CanJumpBiteAttack()) JumpBiteAttack();
+            else if (CanCrawsAttack()) GrabAttack();
+            else if (CanGrabAttack()) CrawsAttack();
         }
 
-        public void CrawsAttack()
+        private void CrawsAttack()
         {
-            m_AttackTimer = 0;
-            Debug.Log("CrawsAttack");
+            m_NormalAttackTimer = 0;
+            m_GrabAttackTimer = 0;
+            
             m_PlayerData.PlayerHit(aiTransform, m_settings.m_Damage, m_settings.m_NoramlAttackType);
             m_AnimationController.SetClawsAttack();
         }
-        public async void BiteAttack()
+
+        private async void GrabAttack()
         {
-            m_AttackTimer = 0;
-            Debug.Log("BiteAttack");
+            m_GrabAttackTimer = 0;
+            m_NormalAttackTimer = 0;
+            
             m_PlayerData.PlayerHit(m_GrabPoint, m_settings.m_Damage, m_settings.m_GrabAttack);
 
-            await m_AnimationController.SetBiteAttack();
+            await m_AnimationController.SetGrabAttack();
 
             m_PlayerData.EndGrab();
-        }
-
-        [ContextMenu("JumpBiteAttack")]
-        public async void JumpBiteAttack()
-        {
-            m_JumpBiteAttackTimer = 0;
-            Debug.Log("StartJumpBiteAttack");
-
-            m_SpecialMonsterAI.JumpBiteAttack(true);
-
-            await m_AnimationController.SetJumpBiteAttack();
-
-            m_SpecialMonsterAI.JumpBiteAttack(false);
-            Debug.Log("EndJumpBiteAttack");
-        }
-        
+        }        
 
         public void Hit(int damage, AttackType bulletType)
         {
@@ -172,7 +181,34 @@ namespace Entity.Unit.Special
         {
             if (!m_Target || !m_IsAlive) return;
 
-            m_Direction = m_Target.position - aiTransform.position;
+            if (Input.GetKeyDown(KeyCode.Backspace) && !m_IsJumping && !m_SpecialMonsterAI.GetIsOnOffMeshLink())
+                Jump();
+
+            if (Input.GetKeyDown(KeyCode.B) && !m_IsJumping && !m_SpecialMonsterAI.GetIsOnOffMeshLink())
+                JumpBiteAttack();
+
+        }
+
+        private void Jump()
+        {
+            float height = GetHeight(m_JumpHeightRatio, out Vector3 targetVector);
+
+            CalculatePathWithHeight(targetVector, height, out float v0, out float angle, out float time);
+            StartCoroutine(ParabolaMovement(m_GroundDirection.normalized, v0, angle, time));
+        }
+
+        private void JumpBiteAttack()
+        {
+            m_JumpAttackTimer = 0;
+            float height = GetHeight(m_JumpAttackHeightRatio, out Vector3 targetVector, m_DestinationDist);
+
+            CalculatePathWithHeight(targetVector, height, out float v0, out float angle, out float time);
+            StartCoroutine(JumpAttackMovement(m_GroundDirection.normalized, v0, angle, time));
+        }
+
+        private float GetHeight(float heightRatio, out Vector3 targetVector, float destinationDist = 0)
+        {
+            Vector3 m_Direction = m_Target.position - aiTransform.position;
             float dir = 0;
             switch (GravityManager.currentGravityType)
             {
@@ -194,38 +230,9 @@ namespace Entity.Unit.Special
                     dir = m_Direction.z;
                     break;
             }
-            m_TargetPos = new(m_GroundDirection.magnitude, dir * -GravityManager.GravityDirectionValue, 0);
-            float height = Mathf.Max(0.01f, m_TargetPos.y + m_TargetPos.magnitude / 2f);
-
-            CalculatePathWithHeight(m_TargetPos, height, out float v0, out float angle, out float time);
-            t_v0 = v0;
-            t_angle = angle;
-            t_time = time;
-            //DrawPath(groundDirection.normalized, v0, angle, time, _step); //경로 그리기
-
-            if (Input.GetKeyDown(KeyCode.Backspace) && !m_IsPreJump && !m_SpecialMonsterAI.GetIsOnOffMeshLink())
-                StartCoroutine(Coroutine_Movement(m_GroundDirection.normalized, v0, angle, time));
+            targetVector = new(m_GroundDirection.magnitude - destinationDist, dir * -GravityManager.GravityDirectionValue, 0);
+            return Mathf.Max(0.01f, targetVector.y + targetVector.magnitude / heightRatio);
         }
-
-
-        float t_v0;
-        float t_angle;
-        float t_time;
-        [ContextMenu("ExcuteJump")]
-        public void ExcuteJump()
-        {
-            if (!m_IsPreJump && !m_SpecialMonsterAI.GetIsOnOffMeshLink())
-            {
-                StartCoroutine(Coroutine_Movement(m_GroundDirection.normalized, t_v0, t_angle, t_time));
-            }
-        }
-
-        public void StartJumpCoroutine()
-        {
-            //StartCoroutine(Jump(0.9f));
-        }
-
-
 
         #region 포물선 테스트중
 
@@ -268,10 +275,10 @@ namespace Entity.Unit.Special
             v0 = b / Mathf.Sin(angle);
         }
 
-        IEnumerator Coroutine_Movement(Vector3 direction, float v0, float angle, float time)
+        private IEnumerator ParabolaMovement(Vector3 direction, float v0, float angle, float time)
         {
             m_SpecialMonsterAI.SetNavMeshEnable(false);
-            m_IsPreJump = true;
+            m_IsJumping = true;
             legController.SetPreJump(true);
 
             float elapsedTime = 0;
@@ -291,13 +298,15 @@ namespace Entity.Unit.Special
             startPos = aiTransform.position;
             Quaternion startRotation = aiTransform.rotation;
             Quaternion targetRot = Quaternion.LookRotation(m_GroundDirection, m_Target.up);
-            //Debug.Log("time : " + time);
+            float xAngle = Mathf.Cos(angle);
+            float yAngle = Mathf.Sin(angle);
+
             while (elapsedTime < time)
             {
-                elapsedTime += Time.deltaTime * 2.5f;
+                elapsedTime += Time.deltaTime * 2f;
 
-                float x = v0 * elapsedTime * Mathf.Cos(angle);
-                float y = v0 * elapsedTime * Mathf.Sin(angle) - 0.5f * Physics.gravity.magnitude * Mathf.Pow(elapsedTime, 2);
+                float x = v0 * elapsedTime * xAngle;
+                float y = v0 * elapsedTime * yAngle - 0.5f * Physics.gravity.magnitude * Mathf.Pow(elapsedTime, 2);
                 aiTransform.SetPositionAndRotation(startPos + direction * x - GravityManager.GravityVector * y,
                                  Quaternion.Lerp(startRotation, targetRot, elapsedTime / time));
                 //elapsedTime += Time.deltaTime * (time / 1.5f);
@@ -306,9 +315,63 @@ namespace Entity.Unit.Special
                 yield return null;
             }
             legController.Jump(false);
-            m_IsPreJump = false;
+            m_IsJumping = false;
             m_SpecialMonsterAI.SetNavMeshEnable(true);
-            //specialMonsterAI.SetNavMeshPos(transform.position);
+        }
+
+
+        private IEnumerator JumpAttackMovement(Vector3 direction, float v0, float angle, float time)
+        {
+            m_SpecialMonsterAI.SetNavMeshEnable(false);
+            m_IsJumping = true;
+            legController.SetPreJump(true);
+
+            float elapsedTime = 0;
+            Vector3 startPos = aiTransform.position;
+            while (elapsedTime < m_PreJumpAttackTime)
+            {
+                elapsedTime += Time.deltaTime;
+                aiTransform.position = Vector3.Lerp(startPos, startPos - aiTransform.up * 0.5f, elapsedTime / m_PreJumpAttackTime);
+
+                yield return null;
+            }
+
+            legController.SetPreJump(false);
+            legController.Jump(true);
+            m_AnimationController.SetJumpBiteAttack();
+
+            elapsedTime = 0;
+            startPos = aiTransform.position;
+            bool isPlayEndAnimation = false;
+            Quaternion startRotation = aiTransform.rotation;
+            Quaternion targetRot = Quaternion.LookRotation(m_GroundDirection, m_Target.up);
+
+            float xAngle = Mathf.Cos(angle);
+            float yAngle = Mathf.Sin(angle);
+            while (elapsedTime < time)
+            {
+                elapsedTime += Time.deltaTime * 2;
+
+                float x = v0 * elapsedTime * xAngle;
+                float y = v0 * elapsedTime * yAngle - 0.5f * Physics.gravity.magnitude * Mathf.Pow(elapsedTime, 2);
+                aiTransform.SetPositionAndRotation(startPos + direction * x - GravityManager.GravityVector * y,
+                                 Quaternion.Lerp(startRotation, targetRot, elapsedTime / time));
+                //elapsedTime += Time.deltaTime * (time / 1.5f);
+                //elapsedTime += Time.deltaTime;
+                if (time - elapsedTime <= 0.3f && !isPlayEndAnimation)
+                {
+                    isPlayEndAnimation = true;
+                    m_AnimationController.EndJumpBiteAttack();
+                }
+
+                yield return null;
+            }
+            legController.Jump(false);
+            m_IsJumping = false;
+            m_SpecialMonsterAI.SetNavMeshEnable(true);
+
+            m_GrabAttackTimer = 2;
+            m_NormalAttackTimer = 2;
         }
         #endregion
     }

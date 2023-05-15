@@ -33,7 +33,7 @@ public class OriginalController : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Z))
         {
-            animationController.SetBiteAttack();
+            animationController.SetGrabAttack();
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
