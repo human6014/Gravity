@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Leg : MonoBehaviour
 {
-    // Self-explanatory variable names
+    // Self
     [SerializeField] private LegController legController;
 
     [Header("Rays")]

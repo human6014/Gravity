@@ -13,6 +13,7 @@ public class SP1AnimationController : MonoBehaviour
     private Animator m_Animator;
 
 
+
     private bool m_DoCrawsAttacking;
     private bool m_DoGrabAttacking;
     private bool m_DoGrabAttackingReverse;
@@ -26,12 +27,14 @@ public class SP1AnimationController : MonoBehaviour
     private const string m_ClawsAttack = "ClawsAttack";
     private const string m_GrabAttack = "BiteAttack";
     private const string m_SpitVenom = "SpitVenom";
-    private const string m_JumpAttack = "JumpBiteAttack";
 
     private const string m_Walk = "Walk";
     private const string m_Roar = "Roar";
     private const string m_Hit = "GetHit";
     private const string m_Die = "Die";
+
+    private const string m_StartJumpAttack = "StartJump";
+    private const string m_EndJumpAttack = "EndJump";
     #endregion
 
     public bool CanMoving() => !m_DoCrawsAttacking && !m_DoGrabAttacking && !m_DoGrabAttackingReverse &&
@@ -61,6 +64,15 @@ public class SP1AnimationController : MonoBehaviour
         }
     }
 
+    public void SetIKEnableExceptNeck(bool _value)
+    {
+        for (int i = 0; i < rigAnimators.Length - 1; i++)
+        {
+            rigAnimators[i].enabled = _value;
+            rigBuilders[i].enabled = _value;
+        }
+    }
+
     public void SetIdle(bool isActiveIK)
     {
         m_Animator.SetBool(m_Walk, isActiveIK);
@@ -73,14 +85,21 @@ public class SP1AnimationController : MonoBehaviour
         m_Animator.SetTrigger(name);
     }
 
-    #region Animation Attack
+    #region Normal Attack Set
     public void SetClawsAttack()
     {
         m_DoCrawsAttacking = true;
         SetTriggerAnimation(m_ClawsAttack);
     }
+    public void SetSpitVenom()
+    {
+        m_DoSpiting = true;
+        SetTriggerAnimation(m_SpitVenom);
+    }
+    #endregion
+    #region Special Attack Set
 
-    public Task SetBiteAttack()
+    public Task SetGrabAttack()
     {
         TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
         
@@ -99,32 +118,22 @@ public class SP1AnimationController : MonoBehaviour
         tcs.SetResult(true);
     }
 
-    public Task SetJumpBiteAttack()
+    public void SetJumpBiteAttack()
     {
-        TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
-
         m_DoJumpBiteAttacking = true;
-
-        SetTriggerAnimation(m_JumpAttack);
-        StartCoroutine(CheckForEndJumpBiteAttack(tcs));
-
-        return tcs.Task;
+        SetIKEnableExceptNeck(false);
+        m_Animator.SetTrigger(m_StartJumpAttack);
     }
 
-    private IEnumerator CheckForEndJumpBiteAttack(TaskCompletionSource<bool> tcs)
+    public void EndJumpBiteAttack()
     {
-        while (m_DoJumpBiteAttacking) yield return null;
-        tcs.SetResult(true);
-    }
-    //위 4개 함수 통합
-
-    public void SetSpitVenom()
-    {
-        m_DoSpiting = true;
-        SetTriggerAnimation(m_SpitVenom);
+        m_Animator.SetTrigger(m_EndJumpAttack);
+        SetIKEnableExceptNeck(true);
+        m_DoJumpBiteAttacking = false;
     }
 
     #endregion
+    #region ETC
     public void SetRoar()
     {
         m_DoRoaring = true;
@@ -141,22 +150,18 @@ public class SP1AnimationController : MonoBehaviour
     {
         SetTriggerAnimation(m_Die);
     }
+    #endregion
 
     #region Animation End Event
-//#pragma warning disable IDE0051 // 사용되지 않는 private 멤버 제거
+#pragma warning disable IDE0051 // 사용되지 않는 private 멤버 제거
     private void EndCrawsAttack() => m_DoCrawsAttacking = false;
     private void EndBiteAttack() => m_DoGrabAttacking = false;
     private void EndBiteAttackReverse() => m_DoGrabAttackingReverse = false;
-    private void EndJumpBiteAttack()
-    {
-        Debug.Log("EndJumpBiteAttack");
-        m_DoJumpBiteAttacking = false;
-    }
     private void EndSpitVenom() => m_DoSpiting = false;     //n
     private void EndRoar() => m_DoRoaring = false;
     private void EndHit() => m_DoHitting = false;   //n
     
 
-//#pragma warning restore IDE0051
+#pragma warning restore IDE0051
     #endregion
 }

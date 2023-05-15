@@ -77,13 +77,6 @@ public class SpecialMonsterAI : MonoBehaviour
         m_NavMeshAgent.enabled = false;
     }
 
-    public void JumpBiteAttack(bool isActive)
-    {
-        m_DoingJumpBiteAttacking = isActive;
-        m_NavMeshAgent.speed = isActive ? m_MaxSpeed : m_OriginalSpeed;
-        m_NavMeshAgent.autoTraverseOffMeshLink = !isActive;
-    }
-
     /// <summary>
     /// AI 행동 실시 (Recommended calling from FixedUpdate())
     /// </summary>
