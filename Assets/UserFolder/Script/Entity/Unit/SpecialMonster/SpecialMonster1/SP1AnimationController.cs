@@ -86,11 +86,24 @@ public class SP1AnimationController : MonoBehaviour
     }
 
     #region Normal Attack Set
-    public void SetClawsAttack()
+    public Task SetClawsAttack()
     {
+        TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+
         m_DoCrawsAttacking = true;
+
         SetTriggerAnimation(m_ClawsAttack);
+        StartCoroutine(CheckForEndClawsAttack(tcs));
+
+        return tcs.Task;
     }
+
+    private IEnumerator CheckForEndClawsAttack(TaskCompletionSource<bool> tcs)
+    {
+        while (m_DoCrawsAttacking) yield return null;
+        tcs.SetResult(true);
+    }
+
     public void SetSpitVenom()
     {
         m_DoSpiting = true;

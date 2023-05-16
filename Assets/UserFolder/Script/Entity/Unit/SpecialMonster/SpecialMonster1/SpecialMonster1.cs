@@ -10,7 +10,7 @@ namespace Entity.Unit.Special
     public class SpecialMonster1 : MonoBehaviour, IMonster
     {
         [Header("Stat")]
-        [SerializeField] private Scriptable.Monster.SpecialMonsterScriptable m_settings;
+        [SerializeField] private Scriptable.Monster.SpecialMonsterScriptable m_Settings;
 
         [Header("Parabola")]
         [SerializeField] private float _step = 0.01f;
@@ -19,12 +19,14 @@ namespace Entity.Unit.Special
         //[SerializeField] float height = 10;
 
         [Header("Code")]
-        [SerializeField] private Transform aiTransform;
         [SerializeField] private LegController legController;
+        [SerializeField] private Transform aiTransform;
 
         [SerializeField] private Transform m_GrabPoint;
         [SerializeField] private Transform m_ThrowingPoint;
         [SerializeField] private Transform m_LookPoint;
+
+        [SerializeField] private LayerMask m_AttackableLayer;
 
         [Header("Animation")]
         [SerializeField] private SP1AnimationController m_AnimationController;
@@ -35,12 +37,20 @@ namespace Entity.Unit.Special
 
         private Vector3 m_GroundDirection;
 
-        private const float m_PreJumpingTime = 1.5f;
-        private const float m_PreJumpAttackTime = 0.3f;
+        private const float m_PreJumpingTime = 2f;
+        private const float m_PreJumpAttackTime = 0.6f;
 
         private const float m_JumpHeightRatio = 2;
         private const float m_JumpAttackHeightRatio = 12;
-        private const float m_DestinationDist = 4;
+        private const float m_DestinationDist = 2;
+
+        private float m_JumpPercentage = 60;                //행동을 수행할 확률 
+        private float m_JumpAttackPercentage = 70;          //ex) 70퍼 확률로 점프 공격 수행
+
+        private float m_AttackBetweenTime = 2;
+
+        //private float m_DefaultAttackCoolTime = 3;
+        //private float m_DefaultAttackTimer;
 
         private float m_TargetDist;
         private float m_CurrentHP;
@@ -49,45 +59,30 @@ namespace Entity.Unit.Special
         private float m_GrabAttackTimer;
         private float m_JumpAttackTimer;
         private float m_RangeAttackTimer;
+        private float m_JumpTimer;
 
         private bool m_IsAlive;
-        private bool m_IsJumping;
+        private bool m_DoingBehaviour;
 
-        private bool CanAttack() => (CanGrabAttack() || CanCrawsAttack() || CanJumpBiteAttack()) && !m_IsJumping;
+        private bool CanGrabAttack() => m_GrabAttackTimer >= m_Settings.m_GrabAttackSpeed &&
+            m_TargetDist <= m_Settings.m_GrabAttackRange;
 
-        private bool CanGrabAttack() => m_NormalAttackTimer >= m_settings.m_AttackSpeed &&
-            m_TargetDist <= m_settings.m_AttackRange;
+        private bool CanNormalAttack() => m_NormalAttackTimer >= m_Settings.m_AttackSpeed &&
+            m_TargetDist <= m_Settings.m_AttackRange;
 
-        private bool CanCrawsAttack() => m_GrabAttackTimer >= m_settings.m_AttackSpeed &&
-            m_TargetDist <= m_settings.HeavyAttackRange;
-
-        private bool CanSpitVenom()
-        {
-            return DetectObstacle(int.MaxValue);
-        }
-
-        private bool CanJumpBiteAttack()
-        {
-            return m_TargetDist > m_settings.m_JumpBittAttackMinRange && m_TargetDist < m_settings.m_JumpBiteAttackMaxRange &&
-                   DetectObstacle(m_settings.m_JumpBiteAttackMaxRange) &&  m_settings.JumpBiteAttackSpeed < m_JumpAttackTimer && 
-                   !m_SpecialMonsterAI.GetIsOnOffMeshLink() && !m_IsJumping;
-        }
-
-        private bool CanJump()
-        {
-            return true;
-        }
-
-        private bool DetectObstacle(float maxRange)
+        //private bool CanSpitVenom() => !IsDetectObstacle(int.MaxValue);
+        
+        private bool CanJumpBiteAttack() => m_Settings.CanJumpBiteAttack(m_TargetDist, m_JumpAttackTimer) && 
+            !IsDetectObstacle(m_Settings.m_JumpAttackMaxRange) && AIManager.PlayerIsGround;
+        
+        private bool CanJump() => m_Settings.CanJump(m_TargetDist, m_JumpTimer) &&
+                 !IsDetectObstacle(m_Settings.m_JumpMaxRange) && AIManager.PlayerIsGround;
+        
+        private bool IsDetectObstacle(float maxRange)
         {
             Vector3 currentPos = m_SpecialMonsterAI.transform.position;
             Vector3 dir = (AIManager.PlayerTransform.position - currentPos).normalized;
-            bool isDetectObstacle = Physics.Raycast(currentPos, dir, maxRange, layerMask);
-            if (isDetectObstacle) return false;
-
-            //bool isDetectCliff = Physics.Raycast(currentPos + (dir * maxRange), layerMask);
-
-            return true;
+            return Physics.Raycast(currentPos, dir, maxRange, layerMask);
         }
 
         public void Init(Quaternion rotation)
@@ -99,7 +94,7 @@ namespace Entity.Unit.Special
             m_SpecialMonsterAI.Init(rotation);
             m_AnimationController.Init();
 
-            m_CurrentHP = m_settings.m_HP;
+            m_CurrentHP = m_Settings.m_HP;
             m_IsAlive = true;
 
             m_AnimationController.SetIdle(true);
@@ -110,18 +105,23 @@ namespace Entity.Unit.Special
         {
             if (!m_IsAlive) return;
 
+            Attack();
+            if (!m_DoingBehaviour) Move(); 
+        }
+
+        private void Update()
+        {
+            if (!m_IsAlive) return;
             UpdateTimer();
-            m_TargetDist = Vector3.Distance(AIManager.PlayerTransform.position, aiTransform.position);
-            if (CanAttack()) Attack();
-            else if (m_AnimationController.CanMoving()) Move(); 
         }
 
         private void UpdateTimer()
         {
             m_NormalAttackTimer += Time.deltaTime;
-            m_GrabAttackTimer += Time.deltaTime;
+            m_GrabAttackTimer += Time.deltaTime; 
+            //m_RangeAttackTimer += Time.deltaTime;
             m_JumpAttackTimer += Time.deltaTime;
-            m_RangeAttackTimer += Time.deltaTime;
+            m_JumpTimer += Time.deltaTime;
         }
 
         public void Move()
@@ -131,39 +131,66 @@ namespace Entity.Unit.Special
 
         public void Attack()
         {
-            if (CanJumpBiteAttack()) JumpBiteAttack();
-            else if (CanCrawsAttack()) GrabAttack();
-            else if (CanGrabAttack()) CrawsAttack();
+            if (m_DoingBehaviour || m_SpecialMonsterAI.GetIsOnOffMeshLink()) return;
+
+            m_TargetDist = Vector3.Distance(AIManager.PlayerTransform.position, aiTransform.position);
+            if (CanJumpBiteAttack())
+            {
+                if (Random.Range(0, 100) > m_JumpAttackPercentage)
+                {
+                    m_JumpAttackTimer = 0;
+                    Debug.Log("점프 공격 실패");
+                }
+                else JumpBiteAttack();
+            }
+            else if (CanJump())
+            {
+                if (Random.Range(0, 100) > m_JumpPercentage)
+                {
+                    m_JumpTimer = 0;
+                    Debug.Log("점프 실패");
+                }
+                else Jump();
+            }
+            else if (CanGrabAttack()) GrabAttack();
+            else if (CanNormalAttack()) NormalAttack();
+            
         }
 
-        private void CrawsAttack()
+        private async void NormalAttack()
         {
+            m_DoingBehaviour = true;
             m_NormalAttackTimer = 0;
-            m_GrabAttackTimer = 0;
             
-            m_PlayerData.PlayerHit(aiTransform, m_settings.m_Damage, m_settings.m_NoramlAttackType);
-            m_AnimationController.SetClawsAttack();
+            m_PlayerData.PlayerHit(aiTransform, m_Settings.m_Damage, m_Settings.m_NoramlAttackType);
+            await m_AnimationController.SetClawsAttack();
+
+            m_DoingBehaviour = false;
         }
 
         private async void GrabAttack()
         {
-            m_GrabAttackTimer = 0;
-            m_NormalAttackTimer = 0;
-            
-            m_PlayerData.PlayerHit(m_GrabPoint, m_settings.m_Damage, m_settings.m_GrabAttack);
+            m_DoingBehaviour = true;
+
+            m_PlayerData.PlayerHit(m_GrabPoint, 0, m_Settings.m_GrabAttack);
 
             await m_AnimationController.SetGrabAttack();
 
+            m_PlayerData.PlayerHit(m_GrabPoint, m_Settings.m_GrabAttackDamage, m_Settings.m_NoramlAttackType);
+
+            m_GrabAttackTimer = 0;
+            m_NormalAttackTimer = m_Settings.m_AttackSpeed - m_AttackBetweenTime;
             m_PlayerData.EndGrab();
+            m_DoingBehaviour = false;
         }        
 
         public void Hit(int damage, AttackType bulletType)
         {
             if (!m_IsAlive) return;
 
-            if (bulletType == AttackType.Explosion) m_CurrentHP -= (damage / m_settings.m_ExplosionResistance);
-            else if (bulletType == AttackType.Melee) m_CurrentHP -= (damage / m_settings.m_MeleeResistance);
-            else m_CurrentHP -= (damage - m_settings.m_Def);
+            if (bulletType == AttackType.Explosion) m_CurrentHP -= (damage / m_Settings.m_ExplosionResistance);
+            else if (bulletType == AttackType.Melee) m_CurrentHP -= (damage / m_Settings.m_MeleeResistance);
+            else m_CurrentHP -= (damage - m_Settings.m_Def);
 
             if (m_CurrentHP <= 0) Die();
         }
@@ -177,20 +204,11 @@ namespace Entity.Unit.Special
             m_AnimationController.SetDie();
         }
 
-        private void Update()
-        {
-            if (!m_Target || !m_IsAlive) return;
-
-            if (Input.GetKeyDown(KeyCode.Backspace) && !m_IsJumping && !m_SpecialMonsterAI.GetIsOnOffMeshLink())
-                Jump();
-
-            if (Input.GetKeyDown(KeyCode.B) && !m_IsJumping && !m_SpecialMonsterAI.GetIsOnOffMeshLink())
-                JumpBiteAttack();
-
-        }
-
         private void Jump()
         {
+            m_DoingBehaviour = true;
+            m_JumpTimer = 0;
+
             float height = GetHeight(m_JumpHeightRatio, out Vector3 targetVector);
 
             CalculatePathWithHeight(targetVector, height, out float v0, out float angle, out float time);
@@ -199,7 +217,9 @@ namespace Entity.Unit.Special
 
         private void JumpBiteAttack()
         {
+            m_DoingBehaviour = true;
             m_JumpAttackTimer = 0;
+
             float height = GetHeight(m_JumpAttackHeightRatio, out Vector3 targetVector, m_DestinationDist);
 
             CalculatePathWithHeight(targetVector, height, out float v0, out float angle, out float time);
@@ -278,7 +298,6 @@ namespace Entity.Unit.Special
         private IEnumerator ParabolaMovement(Vector3 direction, float v0, float angle, float time)
         {
             m_SpecialMonsterAI.SetNavMeshEnable(false);
-            m_IsJumping = true;
             legController.SetPreJump(true);
 
             float elapsedTime = 0;
@@ -315,7 +334,7 @@ namespace Entity.Unit.Special
                 yield return null;
             }
             legController.Jump(false);
-            m_IsJumping = false;
+            m_DoingBehaviour = false;
             m_SpecialMonsterAI.SetNavMeshEnable(true);
         }
 
@@ -323,7 +342,6 @@ namespace Entity.Unit.Special
         private IEnumerator JumpAttackMovement(Vector3 direction, float v0, float angle, float time)
         {
             m_SpecialMonsterAI.SetNavMeshEnable(false);
-            m_IsJumping = true;
             legController.SetPreJump(true);
 
             float elapsedTime = 0;
@@ -367,11 +385,30 @@ namespace Entity.Unit.Special
                 yield return null;
             }
             legController.Jump(false);
-            m_IsJumping = false;
+            m_DoingBehaviour = false;
             m_SpecialMonsterAI.SetNavMeshEnable(true);
 
-            m_GrabAttackTimer = 2;
-            m_NormalAttackTimer = 2;
+            m_GrabAttackTimer = 8;
+            m_NormalAttackTimer = 3;
+
+            CheckJumpAttackToPlayer();
+        }
+
+        private void CheckJumpAttackToPlayer()
+        {
+            //왜 안되냐고
+            Debug.Log("CheckCollider");
+            if (Physics.CheckSphere(m_GrabPoint.position, 5, m_AttackableLayer, QueryTriggerInteraction.Ignore))
+            {
+                Debug.Log("Hit");
+                m_PlayerData.PlayerHit(aiTransform, m_Settings.m_JumpAttackDamage, m_Settings.m_NoramlAttackType);
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(m_GrabPoint.position,m_Settings.m_JumpAttackRange);
         }
         #endregion
     }

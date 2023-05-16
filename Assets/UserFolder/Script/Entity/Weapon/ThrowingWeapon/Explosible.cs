@@ -19,9 +19,10 @@ public class Explosible : PoolableScript
     [SerializeField] protected float m_StopDuration = 5;
 
     [Header("Stat")]
-    [SerializeField] protected int m_Damage;
-    [SerializeField] protected float m_AttackRadius;
-    [SerializeField] protected LayerMask m_Layer;
+    [SerializeField] private int m_Damage;
+    [SerializeField] private float m_AttackRadius;
+    [SerializeField] private float m_AttackForce;
+    [SerializeField] private LayerMask m_Layer;
 
     private Rigidbody m_Rigidbody;
     private MeshRenderer m_MeshRenderer;
@@ -58,7 +59,6 @@ public class Explosible : PoolableScript
 
         for (int i = 0; i < m_ActivatingEffectObject.Length; i++)
             m_ActivatingEffectObject[i].SetActive(true);
-        Damage();
     }
 
     protected void EndExplosion()
@@ -67,16 +67,17 @@ public class Explosible : PoolableScript
             m_ActivatingEffectObject[i].SetActive(false);
     }
 
-    protected void Damage()
+    protected void Damage(bool usePhysics)
     {
         Collider[] col = Physics.OverlapSphere(transform.position, m_AttackRadius, m_Layer);
-
+        Vector3 dir = Vector3.zero;
         for (int i = 0; i < col.Length; i++)
         {
             if (col[i].TryGetComponent(out IDamageable damageable))
             {
                 //일단 보류
-                damageable.Hit(m_Damage, m_BulletType, Vector3.zero);
+                if (usePhysics) dir = (col[i].transform.position - transform.position).normalized * m_AttackForce;
+                damageable.Hit(m_Damage, m_BulletType, dir);
             }
         }
     }

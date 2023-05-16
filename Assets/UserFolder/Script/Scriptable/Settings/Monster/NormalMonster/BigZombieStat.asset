@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7c789772375c3e4f90f6ba1a8339401, type: 3}
   m_Name: BigZombieStat
   m_EditorClassIdentifier: 
-  m_HP: 2200
+  m_HP: 2600
   m_Def: 0
   m_Damage: 100
   m_MovementSpeed: 0
@@ -21,5 +21,4 @@ MonoBehaviour:
   m_ExplosionResistance: 10
   m_MeleeResistance: 10
   m_NoramlAttackType: 0
-  m_GrabAttack: 7
   m_MonsterType: 3

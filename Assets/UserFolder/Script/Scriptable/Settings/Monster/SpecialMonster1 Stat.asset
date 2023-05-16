@@ -14,16 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HP: 30000
   m_Def: 75
-  m_Damage: 0
+  m_Damage: 350
   m_MovementSpeed: 0
-  m_AttackSpeed: 2.5
+  m_AttackSpeed: 5
   m_AttackRange: 7.5
   m_ExplosionResistance: 6
   m_MeleeResistance: 6
   m_NoramlAttackType: 0
   m_MonsterType: 0
   m_GrabAttack: 7
-  HeavyAttackRange: 7
-  JumpBiteAttackSpeed: 12
-  m_JumpBittAttackMinRange: 10
-  m_JumpBiteAttackMaxRange: 30
+  m_GrabAttackDamage: 500
+  m_GrabAttackSpeed: 9
+  m_GrabAttackRange: 7
+  m_JumpAttackDamage: 350
+  m_JumpAttackRange: 5
+  m_JumpAttackSpeed: 15
+  m_JumpAttackMinRange: 15
+  m_JumpAttackMaxRange: 35
+  m_DestinationDist: 2.5
+  m_JumpSpeed: 30
+  m_JumpMinRange: 40
+  m_JumpMaxRange: 120
