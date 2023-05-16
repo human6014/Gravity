@@ -220,6 +220,7 @@ namespace Contoller.Player
         {
             if (m_IsGrabed) return;
             m_IsGround = GroundCheck(out RaycastHit hitInfo);
+            AIManager.PlayerIsGround = m_IsGround;
 
             if (m_IsThrowing)
             {

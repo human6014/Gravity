@@ -62,7 +62,7 @@ public class PersistenceExplosive : Explosible
         while(elapsedTime < m_EffectDuration)
         {
             elapsedTime = Time.realtimeSinceStartup - startTime;
-            base.Damage();
+            base.Damage(false);
             yield return PersistenceExplosionTime;
         }
 
@@ -81,7 +81,7 @@ public class PersistenceExplosive : Explosible
         while (elapsedTime < m_StopDuration)
         {
             elapsedTime += Time.deltaTime;
-            if (elapsedTime * 2 < m_StopDuration) base.Damage();
+            if (elapsedTime * 2 < m_StopDuration) base.Damage(false);
             float t = Mathf.Clamp01(elapsedTime / m_StopDuration); 
 
             m_AudioSource.volume = Mathf.Lerp(m_InitialAudioSourceVolume, 0, t);

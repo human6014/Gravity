@@ -9,13 +9,13 @@ using Contoller.Floor;
 [RequireComponent(typeof(NavMeshAgent))]
 public class SpecialMonsterAI : MonoBehaviour
 {
-    private WaitUntil waitUntil;
+    private WaitUntil m_WaitUntil;
     private Rigidbody m_Rigidbody;
     private NavMeshAgent m_NavMeshAgent;
     private LegController m_LegController;
     private SP1AnimationController m_AnimationController;
 
-    private bool isInit;
+    private bool m_IsInit;
     private bool m_DoingJumpBiteAttacking;
     
     #region Adjustment factor
@@ -26,7 +26,7 @@ public class SpecialMonsterAI : MonoBehaviour
     private float m_OriginalSpeed = 9;
 
     [Tooltip("최대 이동 속도")]
-    private readonly float m_MaxSpeed = 50f;
+    private readonly float m_MaxSpeed = 10f;
 
     [Tooltip("최소 이동 속도")]
     private readonly float m_MinSpeed = 5f;
@@ -61,12 +61,12 @@ public class SpecialMonsterAI : MonoBehaviour
         m_NavMeshAgent.updateRotation = false;
         m_NavMeshAgent.updateUpAxis = false;
 
-        waitUntil = new WaitUntil(() => !m_NavMeshAgent.isOnOffMeshLink);
+        m_WaitUntil = new WaitUntil(() => !m_NavMeshAgent.isOnOffMeshLink);
     }
 
     public void Init(Quaternion roatation)
     {
-        isInit = true;
+        m_IsInit = true;
         transform.rotation = roatation;
         m_NavMeshAgent.enabled = true;
         //m_OriginalSpeed = m_NavMeshAgent.speed;
@@ -82,7 +82,7 @@ public class SpecialMonsterAI : MonoBehaviour
     /// </summary>
     public void OperateAIBehavior()
     {
-        if (!isInit) return;
+        if (!m_IsInit) return;
         if (!m_LegController.GetIsNavOn())
         {
             m_AnimationController.SetIdle(true);

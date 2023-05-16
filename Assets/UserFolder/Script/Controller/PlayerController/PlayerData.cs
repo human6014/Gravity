@@ -61,7 +61,6 @@ public class PlayerData : MonoBehaviour
     public Inventory Inventory { get => m_Inventory; }
     public System.Action<bool> GrabAction { get; set; }
     public System.Action<Transform, Transform, Transform> GrabPoint {get;set;}
-    
 
     public int PlayerMaxHP { get; } = 1000;
 
@@ -259,6 +258,8 @@ public class PlayerData : MonoBehaviour
     {
         if(attackType == AttackType.Grab) GrabAction?.Invoke(true);
         else if (attackType == AttackType.Explosion) damage = (int)(damage * 0.5f);
+
+        Debug.Log(damage);
         UpdatePlayerHP(damage);
         m_PlayerUIManager.DisplayHitDirection(target);
     }

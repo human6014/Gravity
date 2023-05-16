@@ -14,6 +14,7 @@ public class InstantExplosive : Explosible
     private IEnumerator InstantExplosion()
     {
         yield return base.Explosion();
+        base.Damage(true);
         yield return m_DestroyObjectSecond;
 
         base.EndExplosion();

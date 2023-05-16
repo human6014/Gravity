@@ -52,13 +52,14 @@ namespace Manager
         {
             m_PlayerInputController.DoGravityChange += GravityChange;
         }
+
         public void GravityChange(int gravityKeyInput, float mouseScroll)
         {
             if (IsGravityChanging) return;
 
             gravityDirection = (GravityDirection)gravityKeyInput;
             GravityChange(Mathf.FloorToInt(mouseScroll * 10));
-            StartCoroutine(GravityRotate());
+            if(!IsGravityDupleicated) StartCoroutine(GravityRotate());
         }
 
         /// <summary>
@@ -84,6 +85,7 @@ namespace Manager
                     GravityVector = new Vector3(0, 0, direct);
                     break;
             }
+
             if (beforeGravityType == currentGravityType) IsGravityDupleicated = true;
             else
             {
@@ -94,8 +96,6 @@ namespace Manager
                 IsGravityDupleicated = false;
             }
         }
-
-        public static void CompleteGravityChanging() => IsGravityChanging = false;
 
         public static Vector3Int GetCurrentGravityNoramlDirection() => gravityRotation[(int)currentGravityType];
 
@@ -109,13 +109,13 @@ namespace Manager
         {
             Quaternion currentRotation = transform.rotation;
             float t = 0;
-            while (t < 1)
+            while (t < ROTATETIME)
             {
                 t += Time.deltaTime / ROTATETIME;
-                transform.rotation = Quaternion.Lerp(currentRotation, GravityManager.GetCurrentGravityNormalRotation(), t);
+                transform.rotation = Quaternion.Lerp(currentRotation, GetCurrentGravityNormalRotation(), t);
                 yield return null;
             }
-            CompleteGravityChanging();
+            IsGravityChanging = false;
         }
     }
 }

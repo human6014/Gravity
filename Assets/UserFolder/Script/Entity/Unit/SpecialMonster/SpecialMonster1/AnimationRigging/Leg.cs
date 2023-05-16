@@ -8,12 +8,21 @@ public class Leg : MonoBehaviour
     [SerializeField] private LegController legController;
 
     [Header("Rays")]
+
+    [SerializeField] private bool m_HasDownRay;
     [Tooltip("몸체 -> 하단 감지 레이")]
     [SerializeField] private Transform downRayOrigin;
+
+
+    [SerializeField] private bool m_HasForwardRay;
     [Tooltip("몸체 -> 정면 감지 레이")]
     [SerializeField] private Transform forwardRayOrigin;//rayOrigin : 감지용 위치(붉은 구)
+
+
+    [SerializeField] private bool m_HasBackRay;
     [Tooltip("정면 -> 몸체 감지 레이")]
     [SerializeField] private Transform backRayOrigin;
+
 
     [Header("ikTarget")]
     [SerializeField] private Transform ikTarget;        //ikTarget : 발 바로 위 관절(이동 전)
@@ -21,10 +30,13 @@ public class Leg : MonoBehaviour
     [Header("Details")]
     [Tooltip("한 걸음 길이")]
     [SerializeField] private float tipMoveDist = 2;
+
     [Tooltip("한 걸음 애니메이션 이동 시간")]
     [SerializeField] private float tipAnimationTime = 0.25f; //발 움직임 시간 0.15f
+
     [Tooltip("지면과 발 위치 높이")]
     [SerializeField] private float ikOffset = 2f;  // 발 위 관절 1.0f
+
     [Tooltip("정면 레이 길이")]
     [SerializeField] private float maxFowardRayDist = 2f; //정면 레이     3
 
@@ -34,25 +46,37 @@ public class Leg : MonoBehaviour
     private readonly float tipAnimationFrameTime = 0.02f;    // 1 / 60.0f
     private readonly float tipPassOver = 0.55f / 2.0f;   //0.55f/2.0f
 
-    private float interporation;
+    private float m_Interporation;
     private bool isJump;
 
-    Vector3 right;
-    Vector3 tipDirVec;
-    //발에서 진행방향 벡터
-
     public void SetIsJump(bool _isJump) => isJump = _isJump;
+
+    /// <summary>
+    /// 발 위치
+    /// </summary>
     public Vector3 TipPos { get; private set; }
-    //TipPos : 발 위치
+
     public Vector3 TipUpDir { get; private set; }
+
     public Vector3 RaycastTipPos { get; private set; }
-    //RaycastTipPos : 발이 찍을 수 있는 감지된 땅 위치
+
+    /// <summary>
+    /// 발이 찍을 수 있는 감지된 땅 위치
+    /// </summary>
     public Vector3 RaycastTipNormal { get; private set; }
-    //RaycastTipNormal : 해당 땅 오브젝트의 법선 벡터
+
+    /// <summary>
+    /// 해당 땅 오브젝트의 법선 벡터
+    /// </summary>
     public bool Animating { get; private set; } = false;
+
     public bool Movable { get; set; } = false;
+
+    /// <summary>
+    /// 자기 발 위치와 ray에서 걸린 발 위치의 거리
+    /// </summary>
     public float TipDistance { get; private set; }
-    //자기 발 위치와 ray에서 걸린 발 위치의 거리
+
 
     private void Awake() => TipPos = ikTarget.position;
 
@@ -64,28 +88,28 @@ public class Leg : MonoBehaviour
     {
         // Calculate the tip target position
         //if (!IsIKEnable) return;
-        if (forwardRayOrigin && Physics.Raycast(forwardRayOrigin.position, forwardRayOrigin.forward.normalized, out hit, maxFowardRayDist, legController.LayerMask))
+        if (m_HasForwardRay && Physics.Raycast(forwardRayOrigin.position, forwardRayOrigin.forward.normalized, out hit, maxFowardRayDist, legController.LayerMask))
         {
             RaycastTipPos = hit.point;
             RaycastTipNormal = hit.normal;
-            interporation = ikOffset - 3;
+            m_Interporation = ikOffset - 3;
         }
-        else if (backRayOrigin && Physics.Raycast(backRayOrigin.position, backRayOrigin.forward.normalized * -1, out hit, maxBackRayDist, legController.LayerMaskBack))
+        else if (m_HasBackRay && Physics.Raycast(backRayOrigin.position, backRayOrigin.forward.normalized * -1, out hit, maxBackRayDist, legController.LayerMaskBack))
         {
             RaycastTipPos = hit.point;
             RaycastTipNormal = hit.normal;
-            interporation = 0;
+            m_Interporation = 0;
         }
-        else if (downRayOrigin && Physics.Raycast(downRayOrigin.position, downRayOrigin.up.normalized * -1, out hit, maxDownRayDist, legController.LayerMask))
+        else if (m_HasDownRay && Physics.Raycast(downRayOrigin.position, downRayOrigin.up.normalized * -1, out hit, maxDownRayDist, legController.LayerMask))
         {
             RaycastTipPos = hit.point;
             RaycastTipNormal = hit.normal;
-            interporation = 0;
+            m_Interporation = 0;
         }
         else
         {
-            TipPos = RaycastTipPos = downRayOrigin.position + -maxDownRayDist * legController.BodyTransform.up.normalized;
-            interporation = 0;
+            TipPos = RaycastTipPos = downRayOrigin.position + maxDownRayDist * -legController.BodyTransform.up.normalized;
+            m_Interporation = 0;
             UpdateIKTargetTransform();
             return;
         }
@@ -94,9 +118,7 @@ public class Leg : MonoBehaviour
 
         // If the distance gets too far, animate and move the tip to new position
         if (!Animating && (TipDistance > tipMoveDist && Movable))
-        {
             StartCoroutine(AnimateLeg()); //실질적인 다리(발) 애니메이팅(움직임)
-        }
     }
 
     private IEnumerator AnimateLeg()
@@ -107,11 +129,11 @@ public class Leg : MonoBehaviour
         float animTime, tipAcceleration;
 
         Vector3 startingTipPos = TipPos;
-        tipDirVec = RaycastTipPos - TipPos;
+        Vector3 tipDirVec = RaycastTipPos - TipPos;
         tipDirVec += tipDirVec.normalized * tipPassOver;
-        
+        //발에서 진행방향
 
-        right = Vector3.Cross(legController.BodyTransform.up, tipDirVec.normalized).normalized;
+        Vector3 right = Vector3.Cross(legController.BodyTransform.up, tipDirVec.normalized).normalized;
         TipUpDir = Vector3.Cross(tipDirVec.normalized, right);
         //tipUpVec : 진행방향에서의 발에서 위 백터
         
@@ -134,7 +156,7 @@ public class Leg : MonoBehaviour
     }
 
     private void UpdateIKTargetTransform() =>
-        ikTarget.SetPositionAndRotation(TipPos + legController.BodyTransform.up * ikOffset + legController.BodyTransform.forward * -interporation,
+        ikTarget.SetPositionAndRotation(TipPos + legController.BodyTransform.up * ikOffset + legController.BodyTransform.forward * -m_Interporation,
         Quaternion.LookRotation(TipPos - ikTarget.position) * Quaternion.Euler(90, 0, 0));
 
 
