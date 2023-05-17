@@ -521,6 +521,14 @@ MonoBehaviour:
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     m_Visible: 1
+  - m_Transform: {fileID: 6227005574889745218}
+    m_Style:
+      shape: {fileID: 4300000, guid: c6793350c150f456688e39a81f97364a, type: 2}
+      color: {r: 1, g: 0, b: 0, a: 0.5}
+      size: 0.1
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+    m_Visible: 1
 --- !u!1 &2393011421113086818
 GameObject:
   m_ObjectHideFlags: 0
@@ -1726,6 +1734,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2851243572195015963}
   - component: {fileID: 2851243572195015962}
+  - component: {fileID: 7583163245340328897}
   m_Layer: 0
   m_Name: SpecialMonster1
   m_TagString: Untagged
@@ -1764,20 +1773,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Settings: {fileID: 11400000, guid: 84a066f648ef34840967e7627c04ef0e, type: 2}
-  _step: 0.01
-  lineRenderer: {fileID: 0}
   layerMask:
     serializedVersion: 2
     m_Bits: 409600
   legController: {fileID: 2851243572512173295}
-  aiTransform: {fileID: 4332540135787782581}
   m_GrabPoint: {fileID: 952444041814510326}
   m_ThrowingPoint: {fileID: 2477478181235482701}
   m_LookPoint: {fileID: 1958754861215564204}
   m_AttackableLayer:
     serializedVersion: 2
     m_Bits: 128
-  m_AnimationController: {fileID: 2851243573218337996}
+--- !u!114 &7583163245340328897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2851243572195015960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbcf2f341635f94409e1f36ad5a4a88d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_LineRenderer: {fileID: 0}
 --- !u!1 &2851243572220859027
 GameObject:
   m_ObjectHideFlags: 0
@@ -3612,7 +3630,7 @@ MonoBehaviour:
     m_Tip: {fileID: 2103518769664009202}
     m_Target: {fileID: 2851243573450156525}
     m_Hint: {fileID: 2851243572220859026}
-    m_TargetPositionWeight: 1
+    m_TargetPositionWeight: 0.6
     m_TargetRotationWeight: 0
     m_HintWeight: 0
     m_MaintainTargetPositionOffset: 0
@@ -5279,8 +5297,8 @@ GameObject:
   - component: {fileID: 2851243573218338002}
   - component: {fileID: 2851243573218337996}
   - component: {fileID: 2851243573218338000}
-  - component: {fileID: 2851243573218338001}
   - component: {fileID: 2851243573218338006}
+  - component: {fileID: 2851243573218338001}
   m_Layer: 10
   m_Name: Horridomorph
   m_TagString: Untagged
@@ -5401,6 +5419,18 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2851243573218338006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3993451387209956111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2336000a1c92d34ba122944f27e6636, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!195 &2851243573218338001
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -5423,18 +5453,6 @@ NavMeshAgent:
   m_BaseOffset: -0.02
   m_WalkableMask: 29
   m_ObstacleAvoidanceType: 0
---- !u!114 &2851243573218338006
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3993451387209956111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2336000a1c92d34ba122944f27e6636, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3995316664101280692
 GameObject:
   m_ObjectHideFlags: 0
@@ -6745,7 +6763,7 @@ MonoBehaviour:
   ikTarget: {fileID: 2851243572658227724}
   tipMoveDist: 3.9
   tipAnimationTime: 0.6
-  ikOffset: 5
+  ikOffset: 4.5
   maxFowardRayDist: 4
 --- !u!1 &8163713388281536244
 GameObject:
@@ -7113,5 +7131,5 @@ MonoBehaviour:
   ikTarget: {fileID: 2851243572659539946}
   tipMoveDist: 3.9
   tipAnimationTime: 0.6
-  ikOffset: 5
+  ikOffset: 4.5
   maxFowardRayDist: 4

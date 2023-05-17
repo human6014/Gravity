@@ -13,7 +13,6 @@ public class SP1AnimationController : MonoBehaviour
     private Animator m_Animator;
 
 
-
     private bool m_DoCrawsAttacking;
     private bool m_DoGrabAttacking;
     private bool m_DoGrabAttackingReverse;
@@ -73,7 +72,7 @@ public class SP1AnimationController : MonoBehaviour
         }
     }
 
-    public void SetIdle(bool isActiveIK)
+    public void SetWalk(bool isActiveIK)
     {
         m_Animator.SetBool(m_Walk, isActiveIK);
         SetIKEnable(isActiveIK);
@@ -81,7 +80,7 @@ public class SP1AnimationController : MonoBehaviour
 
     private void SetTriggerAnimation(string name)
     {
-        SetIdle(false);
+        SetWalk(false);
         m_Animator.SetTrigger(name);
     }
 
@@ -134,14 +133,14 @@ public class SP1AnimationController : MonoBehaviour
     public void SetJumpBiteAttack()
     {
         m_DoJumpBiteAttacking = true;
-        SetIKEnableExceptNeck(false);
+        SetIKEnable(false);
         m_Animator.SetTrigger(m_StartJumpAttack);
     }
 
     public void EndJumpBiteAttack()
     {
         m_Animator.SetTrigger(m_EndJumpAttack);
-        SetIKEnableExceptNeck(true);
+        SetIKEnable(true);
         m_DoJumpBiteAttacking = false;
     }
 

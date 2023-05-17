@@ -16,7 +16,7 @@ MonoBehaviour:
   m_Def: 75
   m_Damage: 350
   m_MovementSpeed: 0
-  m_AttackSpeed: 5
+  m_AttackSpeed: 4
   m_AttackRange: 7.5
   m_ExplosionResistance: 6
   m_MeleeResistance: 6
@@ -27,11 +27,17 @@ MonoBehaviour:
   m_GrabAttackSpeed: 9
   m_GrabAttackRange: 7
   m_JumpAttackDamage: 350
-  m_JumpAttackRange: 5
+  m_JumpAttackRange: 4
   m_JumpAttackSpeed: 15
-  m_JumpAttackMinRange: 15
-  m_JumpAttackMaxRange: 35
-  m_DestinationDist: 2.5
+  m_JumpAttackMinRange: 25
+  m_JumpAttackMaxRange: 40
+  m_DestinationDist: 3.5
+  m_PreJumpAttackTime: 0.7
+  m_JumpAttackHeightRatio: 12
+  m_JumpAttackPercentage: 70
   m_JumpSpeed: 30
-  m_JumpMinRange: 40
+  m_JumpMinRange: 50
   m_JumpMaxRange: 120
+  m_PreJumpTime: 2
+  m_JumpHeightRatio: 2
+  m_JumpPercentage: 60

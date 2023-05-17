@@ -85,7 +85,7 @@ public class SpecialMonsterAI : MonoBehaviour
         if (!m_IsInit) return;
         if (!m_LegController.GetIsNavOn())
         {
-            m_AnimationController.SetIdle(true);
+            m_AnimationController.SetWalk(true);
             return;
         }
 
@@ -121,12 +121,12 @@ public class SpecialMonsterAI : MonoBehaviour
         
         if (m_NavMeshAgent.remainingDistance <= m_NavMeshAgent.stoppingDistance)
         {
-            if(!m_DoingJumpBiteAttacking) m_AnimationController.SetIdle(false);
+            if(!m_DoingJumpBiteAttacking) m_AnimationController.SetWalk(false);
             m_NavMeshAgent.nextPosition = transform.position;
         }
         else
         {
-            if(!m_DoingJumpBiteAttacking) m_AnimationController.SetIdle(true);
+            if(!m_DoingJumpBiteAttacking) m_AnimationController.SetWalk(true);
             m_NavMeshAgent.nextPosition = ProceduralPosition + Time.deltaTime * m_NavMeshAgent.speed * targetDirection;
             transform.position = m_NavMeshAgent.nextPosition;
         }
