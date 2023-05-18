@@ -13,34 +13,27 @@ namespace Entity.Unit.Special
         [Header("Stat")]
         [SerializeField] private Scriptable.Monster.SpecialMonsterScriptable m_Settings;
 
-        [Header("Parabola")]
-        [SerializeField] private LayerMask layerMask;
-
+        [Header("Model")]
+        [SerializeField] private SkinnedMeshRenderer m_SkinnedMeshRenderer;
 
         [Header("Code")]
-        [SerializeField] private LegController legController;
-
         [SerializeField] private Transform m_GrabPoint;
         [SerializeField] private Transform m_ThrowingPoint;
         [SerializeField] private Transform m_LookPoint;
-
-        [SerializeField] private LayerMask m_AttackableLayer;
 
         private Transform m_NavMeshTransform;
         private SpecialMonsterAI m_SpecialMonsterAI;
         private SP1AnimationController m_SP1AnimationController;
 
+        private MaterialPropertyBlock m_MaterialPropertyBlock;
+        private LegController m_LegController;
         private Transform m_Target;
         private PlayerData m_PlayerData;
         private Parabola m_Parabola;
 
         private Vector3 m_GroundDirection;
 
-        private const float m_JumpHeightRatio = 2;
-        private const float m_JumpAttackHeightRatio = 12;
-
         private float m_AttackBetweenTime = 2;
-
         private float m_TargetDist;
         private float m_CurrentHP;
 
@@ -61,29 +54,35 @@ namespace Entity.Unit.Special
 
         //private bool CanSpitVenom() => !IsDetectObstacle(int.MaxValue);
         
-        private bool CanJumpBiteAttack() => m_Settings.CanJumpBiteAttack(m_TargetDist, m_JumpAttackTimer) && 
+        private bool CanJumpAttack() => m_Settings.CanJumpAttack(m_TargetDist, m_JumpAttackTimer) && 
             !IsDetectObstacle(m_Settings.m_JumpAttackMaxRange) && AIManager.PlayerIsGround;
         
         private bool CanJump() => m_Settings.CanJump(m_TargetDist, m_JumpTimer) &&
                  !IsDetectObstacle(m_Settings.m_JumpMaxRange) && AIManager.PlayerIsGround;
-        
+
+        private bool CanCriticalHit(int realDamage) => realDamage >= m_Settings.m_HitDamage && !m_DoingBehaviour &&
+            m_CurrentHP <= m_Settings.m_HitHP && Random.Range(0, 100) <= m_Settings.m_HitPercentage;
+
         private bool IsDetectObstacle(float maxRange)
         {
-            Vector3 currentPos = m_SpecialMonsterAI.transform.position;
+            Vector3 currentPos = m_NavMeshTransform.position + m_NavMeshTransform.up * 4;
             Vector3 dir = (AIManager.PlayerTransform.position - currentPos).normalized;
-            return Physics.Raycast(currentPos, dir, maxRange, layerMask);
+            return Physics.Raycast(currentPos, dir, maxRange, m_Settings.m_ObstacleDetectLayer);
         }
 
+        private void Awake() => m_LegController = GetComponentInChildren<LegController>();
+        
         public void Init(Quaternion rotation)
         {
             m_Target = AIManager.PlayerTransform;
             m_PlayerData = m_Target.GetComponent<PlayerData>();
+            m_Parabola = GetComponent<Parabola>();
 
             m_NavMeshTransform = transform.GetChild(0);
             m_SpecialMonsterAI = m_NavMeshTransform.GetComponent<SpecialMonsterAI>();
             m_SP1AnimationController = m_NavMeshTransform.GetComponent<SP1AnimationController>();
 
-            m_Parabola = GetComponent<Parabola>();
+            m_MaterialPropertyBlock = new MaterialPropertyBlock();
 
             m_SpecialMonsterAI.Init(rotation);
             m_SP1AnimationController.Init();
@@ -128,7 +127,7 @@ namespace Entity.Unit.Special
             if (m_DoingBehaviour || m_SpecialMonsterAI.GetIsOnOffMeshLink()) return;
 
             m_TargetDist = Vector3.Distance(AIManager.PlayerTransform.position, m_NavMeshTransform.position);
-            if (CanJumpBiteAttack())
+            if (CanJumpAttack())
             {
                 if (Random.Range(0, 100) > m_Settings.m_JumpAttackPercentage) m_JumpAttackTimer = 0;
                 else JumpAttack();
@@ -157,7 +156,7 @@ namespace Entity.Unit.Special
         {
             m_DoingBehaviour = true;
 
-            m_PlayerData.PlayerHit(m_GrabPoint, 0, m_Settings.m_GrabAttack);
+            m_PlayerData.PlayerHit(m_GrabPoint, 0, m_Settings.m_GrabAttackType);
 
             await m_SP1AnimationController.SetGrabAttack();
 
@@ -173,12 +172,26 @@ namespace Entity.Unit.Special
         public void Hit(int damage, AttackType bulletType)
         {
             if (!m_IsAlive) return;
+            int realDamage;
+            if (bulletType == AttackType.Explosion) realDamage = damage / m_Settings.m_ExplosionResistance;
+            else if (bulletType == AttackType.Melee) realDamage = damage / m_Settings.m_MeleeResistance;
+            else realDamage = damage - m_Settings.m_Def;
 
-            if (bulletType == AttackType.Explosion) m_CurrentHP -= (damage / m_Settings.m_ExplosionResistance);
-            else if (bulletType == AttackType.Melee) m_CurrentHP -= (damage / m_Settings.m_MeleeResistance);
-            else m_CurrentHP -= (damage - m_Settings.m_Def);
+            m_CurrentHP -= realDamage;
 
+            ChangeBaseColor();
             if (m_CurrentHP <= 0) Die();
+            else if (CanCriticalHit(realDamage)) CriticalHit();
+        }
+
+        private void ChangeBaseColor()
+        {
+            float ratio = Mathf.Clamp01(m_CurrentHP / m_Settings.m_HP);
+            Color newColor = Color.Lerp(m_Settings.m_MaxInjuryColor, Color.white, ratio);
+
+            m_SkinnedMeshRenderer.GetPropertyBlock(m_MaterialPropertyBlock);
+            m_MaterialPropertyBlock.SetColor("_BaseColor", newColor);
+            m_SkinnedMeshRenderer.SetPropertyBlock(m_MaterialPropertyBlock);
         }
 
         public void Die()
@@ -190,10 +203,18 @@ namespace Entity.Unit.Special
             m_SP1AnimationController.SetDie();
         }
 
+        private async void CriticalHit()
+        {
+            m_DoingBehaviour = true;
+
+            await m_SP1AnimationController.SetHit();
+
+            m_DoingBehaviour = false;
+        }
+
         #region Parabola Related
         private void Jump()
         {
-            Debug.Log("Jump");
             m_DoingBehaviour = true;
             m_JumpTimer = 0;
 
@@ -207,7 +228,6 @@ namespace Entity.Unit.Special
 
         private void JumpAttack()
         {
-            Debug.Log("JumpAttack");
             m_DoingBehaviour = true;
             m_JumpAttackTimer = 0;
 
@@ -229,10 +249,9 @@ namespace Entity.Unit.Special
             if(hasAnimation) m_SP1AnimationController.SetJumpBiteAttack();
             await DoJump(direction, v0, angle, jumpTime, hasAnimation);
 
-            
             if (hasAnimation)
             {
-                m_GrabAttackTimer = 8;
+                m_GrabAttackTimer = m_Settings.m_GrabAttackSpeed - 1.5f;
                 m_NormalAttackTimer = 3;
 
                 CheckJumpAttackToPlayer();
@@ -243,7 +262,7 @@ namespace Entity.Unit.Special
         private async Task PreJump(float preJumpTime, float upDist)
         {
             m_SpecialMonsterAI.SetNavMeshEnable(false);
-            legController.SetPreJump(true);
+            m_LegController.SetPreJump(true);
 
             float elapsedTime = 0;
             Vector3 startPos = m_NavMeshTransform.position;
@@ -255,8 +274,8 @@ namespace Entity.Unit.Special
 
                 await Task.Yield();
             }
-            legController.SetPreJump(false);
-            legController.Jump(true);
+            m_LegController.SetPreJump(false);
+            m_LegController.Jump(true);
         }
 
         private async Task DoJump(Vector3 direction, float v0, float angle, float time, bool hasAnimation)
@@ -268,8 +287,6 @@ namespace Entity.Unit.Special
             float xAngle = Mathf.Cos(angle);
             float yAngle = Mathf.Sin(angle);
             bool isPlayEndAnimation = false;
-
-            await Task.Yield();
 
             while (elapsedTime < time)
             {
@@ -289,18 +306,18 @@ namespace Entity.Unit.Special
                 await Task.Yield();
             }
 
-            legController.Jump(false);
-            m_DoingBehaviour = false;
+            m_LegController.Jump(false);
             m_SpecialMonsterAI.SetNavMeshEnable(true);
         }
 
         #endregion
 
+        #region 포물선 이동 원본
         private IEnumerator JumpMovement(Vector3 direction, float v0, float angle, float time)
         {
             //m_SP1AnimationController.SetWalk(false);
             m_SpecialMonsterAI.SetNavMeshEnable(false);
-            legController.SetPreJump(true);
+            m_LegController.SetPreJump(true);
 
             float elapsedTime = 0;
             Vector3 startPos = m_NavMeshTransform.position;
@@ -312,8 +329,8 @@ namespace Entity.Unit.Special
                 yield return null;
             }
 
-            legController.SetPreJump(false);
-            legController.Jump(true);
+            m_LegController.SetPreJump(false);
+            m_LegController.Jump(true);
 
             elapsedTime = 0;
             startPos = m_NavMeshTransform.position;
@@ -335,15 +352,14 @@ namespace Entity.Unit.Special
                 
                 yield return null;
             }
-            legController.Jump(false);
-            m_DoingBehaviour = false;
+            m_LegController.Jump(false);
             m_SpecialMonsterAI.SetNavMeshEnable(true);
         }
 
         private IEnumerator JumpAttackMovement(Vector3 direction, float v0, float angle, float time)
         {
             m_SpecialMonsterAI.SetNavMeshEnable(false);
-            legController.SetPreJump(true);
+            m_LegController.SetPreJump(true);
 
             float elapsedTime = 0;
             Vector3 startPos = m_NavMeshTransform.position;
@@ -355,8 +371,8 @@ namespace Entity.Unit.Special
                 yield return null;
             }
 
-            legController.SetPreJump(false);
-            legController.Jump(true);
+            m_LegController.SetPreJump(false);
+            m_LegController.Jump(true);
             m_SP1AnimationController.SetJumpBiteAttack();
 
             elapsedTime = 0;
@@ -386,7 +402,7 @@ namespace Entity.Unit.Special
 
                 yield return null;
             }
-            legController.Jump(false);
+            m_LegController.Jump(false);
             m_DoingBehaviour = false;
             m_SpecialMonsterAI.SetNavMeshEnable(true);
 
@@ -395,17 +411,22 @@ namespace Entity.Unit.Special
 
             CheckJumpAttackToPlayer();
         }
+        #endregion
 
         private void CheckJumpAttackToPlayer()
         {
-            if (Physics.CheckSphere(m_GrabPoint.position, m_Settings.m_JumpAttackRange, m_AttackableLayer, QueryTriggerInteraction.Ignore))
+            if (Physics.CheckSphere(m_GrabPoint.position, m_Settings.m_JumpAttackRange, m_Settings.m_AttackableLayer, QueryTriggerInteraction.Ignore))
                 m_PlayerData.PlayerHit(m_NavMeshTransform, m_Settings.m_JumpAttackDamage, m_Settings.m_NoramlAttackType);
         }
 
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(m_GrabPoint.position,m_Settings.m_JumpAttackRange);
+            if (!m_IsAlive) return;
+            Vector3 currentPos = m_NavMeshTransform.position + m_NavMeshTransform.up * 4;
+            Vector3 dir = (AIManager.PlayerTransform.position - currentPos).normalized;
+
+            Gizmos.color = Color.white;
+            Gizmos.DrawRay(currentPos, dir * m_Settings.m_JumpAttackMaxRange);
         }
         #endregion
     }

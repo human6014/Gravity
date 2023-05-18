@@ -212,7 +212,7 @@ namespace Contoller.Player
             m_Camera.transform.localRotation = Quaternion.identity;
             m_IsThrowing = true;
             Vector3 throwingVector = (transform.position - m_ThrowingPosition.position).normalized;
-            m_RigidBody.AddForce(throwingVector * 60, ForceMode.Impulse);
+            m_RigidBody.AddForce(throwingVector * 50, ForceMode.Impulse);
             m_RigidBody.useGravity = true;
         }
 

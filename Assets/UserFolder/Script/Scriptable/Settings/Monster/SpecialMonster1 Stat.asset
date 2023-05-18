@@ -15,29 +15,39 @@ MonoBehaviour:
   m_HP: 30000
   m_Def: 75
   m_Damage: 350
-  m_MovementSpeed: 0
+  m_MovementSpeed: 10
   m_AttackSpeed: 4
   m_AttackRange: 7.5
   m_ExplosionResistance: 6
   m_MeleeResistance: 6
   m_NoramlAttackType: 0
   m_MonsterType: 0
-  m_GrabAttack: 7
+  m_AttackableLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  m_ObstacleDetectLayer:
+    serializedVersion: 2
+    m_Bits: 409600
+  m_GrabAttackType: 7
   m_GrabAttackDamage: 500
   m_GrabAttackSpeed: 9
   m_GrabAttackRange: 7
   m_JumpAttackDamage: 350
   m_JumpAttackRange: 4
-  m_JumpAttackSpeed: 15
+  m_JumpAttackSpeed: 12
   m_JumpAttackMinRange: 25
-  m_JumpAttackMaxRange: 40
+  m_JumpAttackMaxRange: 50
   m_DestinationDist: 3.5
   m_PreJumpAttackTime: 0.7
-  m_JumpAttackHeightRatio: 12
+  m_JumpAttackHeightRatio: 11
   m_JumpAttackPercentage: 70
   m_JumpSpeed: 30
-  m_JumpMinRange: 50
-  m_JumpMaxRange: 120
+  m_JumpMinRange: 60
+  m_JumpMaxRange: 130
   m_PreJumpTime: 2
   m_JumpHeightRatio: 2
   m_JumpPercentage: 60
+  m_HitHP: 15000
+  m_HitDamage: 900
+  m_HitPercentage: 25
+  m_MaxInjuryColor: {r: 1, g: 0.7058824, b: 0.7058824, a: 1}
