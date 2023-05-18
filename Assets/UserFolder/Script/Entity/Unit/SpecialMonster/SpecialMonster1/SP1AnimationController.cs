@@ -148,16 +148,39 @@ public class SP1AnimationController : MonoBehaviour
     #region ETC
     public void SetRoar()
     {
+        TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
         m_DoRoaring = true;
         SetTriggerAnimation(m_Roar);
+        StartCoroutine(CheckForEndRoar(tcs));
     }
 
-    public void SetHit()
+    private IEnumerator CheckForEndRoar(TaskCompletionSource<bool> tcs)
     {
+        while (m_DoRoaring) yield return null;
+        tcs.SetResult(true);
+    }
+
+    public Task SetHit()
+    {
+        TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
         m_DoHitting = true;
         SetTriggerAnimation(m_Hit);
+        StartCoroutine(CheckForEndHit(tcs));
+
+        return tcs.Task;
     }
 
+    private IEnumerator CheckForEndHit(TaskCompletionSource<bool> tcs)
+    {
+        while (m_DoHitting) yield return null;
+        tcs.SetResult(true);
+    }
+
+    // 어떤 함수를 쓸까용???
+    private async void WaitFor(bool state)
+    {
+        while (state) await Task.Yield();
+    }
     public void SetDie()
     {
         SetTriggerAnimation(m_Die);
@@ -169,9 +192,9 @@ public class SP1AnimationController : MonoBehaviour
     private void EndCrawsAttack() => m_DoCrawsAttacking = false;
     private void EndBiteAttack() => m_DoGrabAttacking = false;
     private void EndBiteAttackReverse() => m_DoGrabAttackingReverse = false;
-    private void EndSpitVenom() => m_DoSpiting = false;     //n
+    private void EndSpitVenom() => m_DoSpiting = false;
     private void EndRoar() => m_DoRoaring = false;
-    private void EndHit() => m_DoHitting = false;   //n
+    private void EndHit() => m_DoHitting = false;
     
 
 #pragma warning restore IDE0051

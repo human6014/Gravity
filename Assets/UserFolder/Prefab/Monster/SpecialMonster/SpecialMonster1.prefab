@@ -1773,16 +1773,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Settings: {fileID: 11400000, guid: 84a066f648ef34840967e7627c04ef0e, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 409600
-  legController: {fileID: 2851243572512173295}
+  m_SkinnedMeshRenderer: {fileID: 3727072887363546305}
   m_GrabPoint: {fileID: 952444041814510326}
   m_ThrowingPoint: {fileID: 2477478181235482701}
   m_LookPoint: {fileID: 1958754861215564204}
-  m_AttackableLayer:
-    serializedVersion: 2
-    m_Bits: 128
+  m_MaxInjuryColor: {r: 1, g: 0.7058824, b: 0.7058824, a: 1}
 --- !u!114 &7583163245340328897
 MonoBehaviour:
   m_ObjectHideFlags: 0

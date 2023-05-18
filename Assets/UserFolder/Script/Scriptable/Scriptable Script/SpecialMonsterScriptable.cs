@@ -12,9 +12,16 @@ namespace Scriptable.Monster
         [Tooltip("몬스터 타입")]
         public EnumType.SpecialMonsterType m_MonsterType;
 
+        [Tooltip("공격 가능 레이어")]
+        public LayerMask m_AttackableLayer;
+
+        [Tooltip("직선 장애물 감지 레이어")]
+        public LayerMask m_ObstacleDetectLayer;
+
+
         [Header("Grab Attack")]
         [Tooltip("잡기 공격 타입")]
-        public AttackType m_GrabAttack = AttackType.Grab;
+        public AttackType m_GrabAttackType = AttackType.Grab;
 
         [Tooltip("잡기 공격 데미지")]
         public int m_GrabAttackDamage = 500;
@@ -54,6 +61,7 @@ namespace Scriptable.Monster
         [Tooltip("도약 공격 발동 확률")][Range(0, 100)]
         public float m_JumpAttackPercentage = 70;           //ex) 70퍼 확률로 점프 공격 수행
 
+
         [Header("Jump")]
         [Tooltip("일반 도약 속도")]
         public float m_JumpSpeed = 30;
@@ -73,7 +81,21 @@ namespace Scriptable.Monster
         [Tooltip("일반 도약 발동 확률")][Range(0, 100)]
         public float m_JumpPercentage = 60;
 
-        public bool CanJumpBiteAttack(float dist, float curTimer)
+
+        [Header("Hit")]
+        [Tooltip("피격 시 경직이 가능한 체력")]
+        public float m_HitHP = 15000;
+
+        [Tooltip("피격 시 경직을 일으킬 수 있는 데미지")]
+        public float m_HitDamage = 900;
+
+        [Tooltip("피격 시 경직 발동 확률")] [Range(0,100)]
+        public float m_HitPercentage = 25;
+
+        [Tooltip("체력별 BaseColor")]
+        public Color m_MaxInjuryColor = new Color(255, 180, 180);
+
+        public bool CanJumpAttack(float dist, float curTimer)
             => dist > m_JumpAttackMinRange && dist < m_JumpAttackMaxRange && curTimer >= m_JumpAttackSpeed;
 
         public bool CanJump(float dist, float curTimer)

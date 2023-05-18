@@ -29,7 +29,7 @@ public class SpecialMonsterAI : MonoBehaviour
     private readonly float m_MaxSpeed = 10f;
 
     [Tooltip("최소 이동 속도")]
-    private readonly float m_MinSpeed = 5f;
+    private readonly float m_MinSpeed = 3f;
     #endregion
 
     #region Property
@@ -69,7 +69,7 @@ public class SpecialMonsterAI : MonoBehaviour
         m_IsInit = true;
         transform.rotation = roatation;
         m_NavMeshAgent.enabled = true;
-        //m_OriginalSpeed = m_NavMeshAgent.speed;
+        m_OriginalSpeed = m_NavMeshAgent.speed;
     }
 
     public void Dispose()
@@ -101,14 +101,14 @@ public class SpecialMonsterAI : MonoBehaviour
 
         if (m_NavMeshAgent.isOnOffMeshLink)
         {
-            //navMeshAgent.speed = minSpeed;
+            m_NavMeshAgent.speed = m_MinSpeed;
             //NavMeshLink link = (NavMeshLink)navMeshAgent.navMeshOwner;
             //navMeshAgent.updateUpAxis = false;
             //여기서 NavMeshLink 감지 가능
         }
         else
         {
-            //navMeshAgent.speed = normalSpeed;
+            m_NavMeshAgent.speed = m_OriginalSpeed;
             //navMeshAgent.updateUpAxis = true;
         }
 
@@ -121,12 +121,12 @@ public class SpecialMonsterAI : MonoBehaviour
         
         if (m_NavMeshAgent.remainingDistance <= m_NavMeshAgent.stoppingDistance)
         {
-            if(!m_DoingJumpBiteAttacking) m_AnimationController.SetWalk(false);
+            if (!m_DoingJumpBiteAttacking) m_AnimationController.SetWalk(false);
             m_NavMeshAgent.nextPosition = transform.position;
         }
         else
         {
-            if(!m_DoingJumpBiteAttacking) m_AnimationController.SetWalk(true);
+            if (!m_DoingJumpBiteAttacking) m_AnimationController.SetWalk(true);
             m_NavMeshAgent.nextPosition = ProceduralPosition + Time.deltaTime * m_NavMeshAgent.speed * targetDirection;
             transform.position = m_NavMeshAgent.nextPosition;
         }
