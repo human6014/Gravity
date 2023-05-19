@@ -17,7 +17,8 @@ namespace Entity.Unit.Special
         [SerializeField] private SkinnedMeshRenderer m_SkinnedMeshRenderer;
 
         [Header("Code")]
-        [SerializeField] private Transform m_GrabPoint;
+        [SerializeField] private Transform m_GrabCameraPoint;
+        [SerializeField] private Transform m_GrabBodyPoint;
         [SerializeField] private Transform m_ThrowingPoint;
         [SerializeField] private Transform m_LookPoint;
 
@@ -45,6 +46,8 @@ namespace Entity.Unit.Special
 
         private bool m_IsAlive;
         private bool m_DoingBehaviour;
+
+        private bool m_IsGrabbing;
 
         private bool CanGrabAttack() => m_GrabAttackTimer >= m_Settings.m_GrabAttackSpeed &&
             m_TargetDist <= m_Settings.m_GrabAttackRange;
@@ -91,7 +94,7 @@ namespace Entity.Unit.Special
             m_IsAlive = true;
 
             m_SP1AnimationController.SetWalk(true);
-            m_PlayerData.GrabPoint(m_GrabPoint, m_LookPoint, m_ThrowingPoint);
+            m_PlayerData.GrabPoint(m_GrabCameraPoint, m_GrabBodyPoint, m_LookPoint, m_ThrowingPoint);
         }
 
         private void FixedUpdate()
@@ -129,12 +132,12 @@ namespace Entity.Unit.Special
             m_TargetDist = Vector3.Distance(AIManager.PlayerTransform.position, m_NavMeshTransform.position);
             if (CanJumpAttack())
             {
-                if (Random.Range(0, 100) > m_Settings.m_JumpAttackPercentage) m_JumpAttackTimer = 0;
+                if (!m_Settings.CanJumpAttackPercentage()) m_JumpAttackTimer = 0;
                 else JumpAttack();
             }
             else if (CanJump())
             {
-                if (Random.Range(0, 100) > m_Settings.m_JumpPercentage) m_JumpTimer = 0;
+                if (!m_Settings.CanJumpPercentage()) m_JumpTimer = 0;
                 else Jump();
             }
             else if (CanGrabAttack()) GrabAttack();
@@ -155,15 +158,17 @@ namespace Entity.Unit.Special
         private async void GrabAttack()
         {
             m_DoingBehaviour = true;
+            m_IsGrabbing = true;
 
-            m_PlayerData.PlayerHit(m_GrabPoint, 0, m_Settings.m_GrabAttackType);
+            m_PlayerData.PlayerHit(m_GrabCameraPoint, 0, m_Settings.m_GrabAttackType);
 
             await m_SP1AnimationController.SetGrabAttack();
 
-            m_PlayerData.PlayerHit(m_GrabPoint, m_Settings.m_GrabAttackDamage, m_Settings.m_NoramlAttackType);
+            m_PlayerData.PlayerHit(m_GrabCameraPoint, m_Settings.m_GrabAttackDamage, m_Settings.m_NoramlAttackType);
 
             m_GrabAttackTimer = 0;
             m_NormalAttackTimer = m_Settings.m_AttackSpeed - m_AttackBetweenTime;
+            m_IsGrabbing = false;
             m_PlayerData.EndGrab();
             m_DoingBehaviour = false;
         }
@@ -199,7 +204,7 @@ namespace Entity.Unit.Special
             m_IsAlive = false;
             //StopAllCoroutines();
             m_SpecialMonsterAI.Dispose();
-            m_PlayerData.EndGrab();
+            if(m_IsGrabbing) m_PlayerData.EndGrab();
             m_SP1AnimationController.SetDie();
         }
 
@@ -415,7 +420,7 @@ namespace Entity.Unit.Special
 
         private void CheckJumpAttackToPlayer()
         {
-            if (Physics.CheckSphere(m_GrabPoint.position, m_Settings.m_JumpAttackRange, m_Settings.m_AttackableLayer, QueryTriggerInteraction.Ignore))
+            if (Physics.CheckSphere(m_GrabCameraPoint.position, m_Settings.m_JumpAttackRange, m_Settings.m_AttackableLayer, QueryTriggerInteraction.Ignore))
                 m_PlayerData.PlayerHit(m_NavMeshTransform, m_Settings.m_JumpAttackDamage, m_Settings.m_NoramlAttackType);
         }
 
@@ -427,6 +432,13 @@ namespace Entity.Unit.Special
 
             Gizmos.color = Color.white;
             Gizmos.DrawRay(currentPos, dir * m_Settings.m_JumpAttackMaxRange);
+
+            
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawRay(m_ThrowingPoint.position, m_GrabCameraPoint.position - m_ThrowingPoint.position);
         }
         #endregion
     }

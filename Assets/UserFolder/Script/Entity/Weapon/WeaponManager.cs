@@ -109,9 +109,14 @@ namespace Manager.Weapon
             if (m_PlayerData.PlayerMaxHP <= m_PlayerData.PlayerHP) return;
             if (IsInteracting) return;
 
+            bool isNull = m_CurrentWeapon == null;
+            bool canChangeWeapon = false;
+
+            if (!isNull && !(canChangeWeapon = m_CurrentWeapon.CanChangeWeapon)) return;
+
             IsInteracting = true;
-            if (m_CurrentWeapon == null) await m_Syringe.TryHeal();
-            else if (m_CurrentWeapon.CanChangeWeapon)
+            if (isNull) await m_Syringe.TryHeal();
+            else if (canChangeWeapon)
             {
                 await m_CurrentWeapon.UnEquip();
                 await m_Syringe.TryHeal();

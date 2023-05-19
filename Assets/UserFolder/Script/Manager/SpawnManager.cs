@@ -4,7 +4,6 @@ using UnityEngine;
 using Entity.Unit.Flying;
 using Entity.Unit.Normal;
 using Entity.Unit.Special;
-using Entity.Object;
 using System.Linq;
 
 
@@ -67,7 +66,7 @@ namespace Manager
         #endregion
 
         #region Normal Value
-        private EnumType.GravityType currentGravityType = EnumType.GravityType.yUp;
+        private EnumType.GravityType currentGravityType = EnumType.GravityType.yDown;
         private readonly float[] m_Probs = new float[] { 52, 21, 21, 4, 2 };
         //private readonly float[] m_Probs = new float[] { 50, 0, 0, 0, 50 };
         private float m_Total = 0;
@@ -163,10 +162,10 @@ namespace Manager
 
             float rangeX = Random.Range(
                 -boxCollider.bounds.size.x * 0.5f + interporateRadius,
-                boxCollider.bounds.size.x * 0.5f - interporateRadius);
+                 boxCollider.bounds.size.x * 0.5f - interporateRadius);
             float rangeZ = Random.Range(
                 -boxCollider.bounds.size.z * 0.5f + interporateRadius, 
-                boxCollider.bounds.size.z * 0.5f - interporateRadius);
+                 boxCollider.bounds.size.z * 0.5f - interporateRadius);
 
             return boxCollider.transform.position + new Vector3(rangeX, 0, rangeZ);
         }
@@ -197,10 +196,10 @@ namespace Manager
         {
             HashSet<int> exclude = new() { excludeIndex };
             IEnumerable<int> range = Enumerable.Range(0, m_SpawnAreaCollider.Length).Where(i => !exclude.Contains(i));
-            
-            int index = Random.Range(0,m_SpawnAreaCollider.Length - exclude.Count);
+
+            int index = Random.Range(0, m_SpawnAreaCollider.Length - exclude.Count);
             specificIndex = range.ElementAt(index);
-            return m_SpawnAreaCollider[range.ElementAt(index)];
+            return m_SpawnAreaCollider[specificIndex];
         }
         #endregion
 
@@ -246,8 +245,9 @@ namespace Manager
         [ContextMenu("SpawnSpecialMonster")]
         private void SpawnSpecialMonster1()
         {
-            BoxCollider[] initColliders = ExcludeRandomIndex((int)currentGravityType,out int specificIndex);
+            BoxCollider[] initColliders = ExcludeRandomIndex((int)currentGravityType, out int specificIndex);
             BoxCollider initCollider = GetClosetArea(initColliders);
+
             Vector3 initPosition = GetRandomPos(initCollider, 4);
             Quaternion initRotation = GravityManager.GetSpecificGravityNormalRotation(specificIndex);
 

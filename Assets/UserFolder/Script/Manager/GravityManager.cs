@@ -97,14 +97,6 @@ namespace Manager
             }
         }
 
-        public static Vector3Int GetCurrentGravityNoramlDirection() => gravityRotation[(int)currentGravityType];
-
-        public static Quaternion GetSpecificGravityNormalRotation(int index) => Quaternion.Euler(gravityRotation[index]);
-        
-        public static Quaternion GetCurrentGravityNormalRotation() => Quaternion.Euler(gravityRotation[(int)currentGravityType]);
-
-
-
         private IEnumerator GravityRotate()
         {
             Quaternion currentRotation = transform.rotation;
@@ -117,5 +109,11 @@ namespace Manager
             }
             IsGravityChanging = false;
         }
+
+        public static Vector3Int GetCurrentGravityNoramlDirection() => gravityRotation[(int)currentGravityType];
+
+        public static Quaternion GetSpecificGravityNormalRotation(int index) => Quaternion.Euler(gravityRotation[index]);
+        
+        public static Quaternion GetCurrentGravityNormalRotation() => Quaternion.Euler(gravityRotation[(int)currentGravityType]);
     }
 }

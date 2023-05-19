@@ -220,7 +220,6 @@ namespace Entity.Object.Weapon
 
             m_WeaponInfo.GetDifferenceValue(out int difference);
             m_Reloadable.DoReload(isEmpty, difference);
-            //m_PlayerData.RangeWeaponReload();
         }
         #endregion
 

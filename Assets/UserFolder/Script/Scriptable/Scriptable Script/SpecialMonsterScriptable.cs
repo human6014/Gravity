@@ -41,22 +41,22 @@ namespace Scriptable.Monster
         public float m_JumpAttackRange = 2;
 
         [Tooltip("도약 공격 속도")]
-        public float m_JumpAttackSpeed = 15;
+        public float m_JumpAttackSpeed = 12;
 
         [Tooltip("도약 공격 최소 사거리")]
-        public float m_JumpAttackMinRange = 15;
+        public float m_JumpAttackMinRange = 25;
 
         [Tooltip("도약 공격 최대 사거리")]
-        public float m_JumpAttackMaxRange = 35;
+        public float m_JumpAttackMaxRange = 50;
 
         [Tooltip("도약 공격 목표지점에서 차이값")]
-        public float m_DestinationDist = 2.5f;
+        public float m_DestinationDist = 3.5f;
 
         [Tooltip("도약 공격 준비 시간")]
         public float m_PreJumpAttackTime = 0.7f;
 
         [Tooltip("도약 공격 높이 보정 값")][Range(1,20)]     //클수록 더 낮게 점프함
-        public float m_JumpAttackHeightRatio = 12;
+        public float m_JumpAttackHeightRatio = 11;
 
         [Tooltip("도약 공격 발동 확률")][Range(0, 100)]
         public float m_JumpAttackPercentage = 70;           //ex) 70퍼 확률로 점프 공격 수행
@@ -67,10 +67,10 @@ namespace Scriptable.Monster
         public float m_JumpSpeed = 30;
 
         [Tooltip("일반 도약 최소 사거리")]
-        public float m_JumpMinRange = 40;
+        public float m_JumpMinRange = 60;
 
         [Tooltip("일반 도약 최대 사거리")]
-        public float m_JumpMaxRange = 120;
+        public float m_JumpMaxRange = 130;
 
         [Tooltip("일반 도약 준비 시간")]
         public float m_PreJumpTime = 2;
@@ -100,5 +100,9 @@ namespace Scriptable.Monster
 
         public bool CanJump(float dist, float curTimer)
             => dist > m_JumpMinRange && dist < m_JumpMaxRange && curTimer >= m_JumpSpeed;
+
+        public bool CanJumpPercentage() => Random.Range(0, 100) <= m_JumpPercentage;
+
+        public bool CanJumpAttackPercentage() => Random.Range(0, 100) <= m_JumpAttackPercentage;
     }
 }

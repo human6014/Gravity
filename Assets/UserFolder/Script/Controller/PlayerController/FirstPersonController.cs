@@ -100,7 +100,8 @@ namespace Contoller.Player
         private Camera m_Camera;
         private Rigidbody m_RigidBody;
 
-        private Transform m_GrabPosition;
+        private Transform m_GrabCameraPosition;
+        private Transform m_GrabBodyPosition;
         private Transform m_GrabRotation;
         private Transform m_ThrowingPosition;
 
@@ -156,9 +157,10 @@ namespace Contoller.Player
         }
 
 
-        private void GrabActionPoint(Transform grabPosition, Transform grabRotation, Transform throwingPosition)
+        private void GrabActionPoint(Transform grabCameraPosition,Transform grabBodyPosition, Transform grabRotation, Transform throwingPosition)
         {
-            m_GrabPosition = grabPosition;
+            m_GrabCameraPosition = grabCameraPosition;
+            m_GrabBodyPosition = grabBodyPosition;
             m_GrabRotation = grabRotation;
             m_ThrowingPosition = throwingPosition;
         }
@@ -178,7 +180,7 @@ namespace Contoller.Player
         {
             if (m_IsGrabed)
             {
-                transform.position = m_GrabPosition.position;
+                transform.position = m_GrabCameraPosition.position;
                 m_MouseLook.LookRotation(m_GrabRotation, m_Camera.transform);
                 return;
             }
@@ -209,9 +211,10 @@ namespace Contoller.Player
 
         private void PlayerThrowing()
         {
+            transform.position = m_GrabBodyPosition.position;
             m_Camera.transform.localRotation = Quaternion.identity;
             m_IsThrowing = true;
-            Vector3 throwingVector = (transform.position - m_ThrowingPosition.position).normalized;
+            Vector3 throwingVector = (m_GrabCameraPosition.position - m_ThrowingPosition.position).normalized;
             m_RigidBody.AddForce(throwingVector * 50, ForceMode.Impulse);
             m_RigidBody.useGravity = true;
         }

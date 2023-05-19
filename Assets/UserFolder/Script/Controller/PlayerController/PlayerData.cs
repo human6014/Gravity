@@ -40,9 +40,6 @@ public class PlayerData : MonoBehaviour
     [Tooltip("점프 MP 소모량")]
     [SerializeField] private int m_JumpingMP = 180;
 
-
-    private bool m_IsAlive = true;
-
     private int m_CurrentPlayerHP;
     private int m_CurrentPlayerMP;
 
@@ -60,8 +57,9 @@ public class PlayerData : MonoBehaviour
     public PlayerState m_PlayerState { get; } = new PlayerState();
     public Inventory Inventory { get => m_Inventory; }
     public System.Action<bool> GrabAction { get; set; }
-    public System.Action<Transform, Transform, Transform> GrabPoint {get;set;}
+    public System.Action<Transform, Transform, Transform, Transform> GrabPoint {get;set;}
 
+    public bool IsAlive { get; set; } = true;
     public int PlayerMaxHP { get; } = 1000;
 
     public int PlayerMaxMP { get; } = 1000;
@@ -95,7 +93,7 @@ public class PlayerData : MonoBehaviour
 
     private void Update()
     {
-        if (!m_IsAlive) return;
+        if (!IsAlive) return;
 
         if ((m_HPTimer += Time.deltaTime) >= m_AutoHPHealTime)
         {
