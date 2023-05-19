@@ -529,6 +529,37 @@ MonoBehaviour:
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     m_Visible: 1
+--- !u!1 &2371650801063653608
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2625138608177390118}
+  m_Layer: 0
+  m_Name: BodyCameraPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2625138608177390118
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2371650801063653608}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.129, y: 0.488, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6955781161939879596}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2393011421113086818
 GameObject:
   m_ObjectHideFlags: 0
@@ -1774,10 +1805,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Settings: {fileID: 11400000, guid: 84a066f648ef34840967e7627c04ef0e, type: 2}
   m_SkinnedMeshRenderer: {fileID: 3727072887363546305}
-  m_GrabPoint: {fileID: 952444041814510326}
+  m_GrabCameraPoint: {fileID: 952444041814510326}
+  m_GrabBodyPoint: {fileID: 2625138608177390118}
   m_ThrowingPoint: {fileID: 2477478181235482701}
   m_LookPoint: {fileID: 1958754861215564204}
-  m_MaxInjuryColor: {r: 1, g: 0.7058824, b: 0.7058824, a: 1}
 --- !u!114 &7583163245340328897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5472,12 +5503,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3995316664101280692}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.352, y: -0.214, z: 0.056}
+  m_LocalPosition: {x: -0.468, y: -0.1677, z: 0.019}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6955781161939879596}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4209352004385344389
 GameObject:
@@ -5607,7 +5638,7 @@ GameObject:
   m_Component:
   - component: {fileID: 952444041814510326}
   m_Layer: 0
-  m_Name: GrabPoint
+  m_Name: GrabCameraPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5621,12 +5652,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4736272555810916104}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.435, y: -0.103, z: -0.006}
+  m_LocalPosition: {x: -0.415, y: -0.103, z: -0.006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6955781161939879596}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4904537358766173610
 GameObject:
@@ -7064,8 +7095,9 @@ Transform:
   - {fileID: 5347104948151910533}
   - {fileID: 8468432944086569295}
   - {fileID: 2851243573187513060}
-  - {fileID: 952444041814510326}
   - {fileID: 2477478181235482701}
+  - {fileID: 952444041814510326}
+  - {fileID: 2625138608177390118}
   m_Father: {fileID: 7783702727333663469}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

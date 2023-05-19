@@ -34,19 +34,19 @@ MonoBehaviour:
   m_GrabAttackRange: 7
   m_JumpAttackDamage: 350
   m_JumpAttackRange: 4
-  m_JumpAttackSpeed: 12
+  m_JumpAttackSpeed: 6
   m_JumpAttackMinRange: 25
   m_JumpAttackMaxRange: 50
   m_DestinationDist: 3.5
   m_PreJumpAttackTime: 0.7
   m_JumpAttackHeightRatio: 11
-  m_JumpAttackPercentage: 70
-  m_JumpSpeed: 30
+  m_JumpAttackPercentage: 100
+  m_JumpSpeed: 15
   m_JumpMinRange: 60
   m_JumpMaxRange: 130
   m_PreJumpTime: 2
   m_JumpHeightRatio: 2
-  m_JumpPercentage: 60
+  m_JumpPercentage: 100
   m_HitHP: 15000
   m_HitDamage: 900
   m_HitPercentage: 25
