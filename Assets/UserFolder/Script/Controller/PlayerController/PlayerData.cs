@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerData : MonoBehaviour
 {
-    //데이터 처리하는건 여기서
-    //UIManager한테 보낼 껀 다 계산된 데이터임
     [SerializeField] private UI.Manager.PlayerUIManager m_PlayerUIManager;
     [SerializeField] private Inventory m_Inventory;
 
@@ -192,11 +190,11 @@ public class PlayerData : MonoBehaviour
     /// <summary>
     /// 무기를 얻었을 때
     /// </summary>
-    /// <param name="equipingWeaponType">무기 타입 (슬롯 번호랑 일치)</param>
-    public void GetWeapon(int equipingWeaponType, Sprite sprite, int weaponIndex, int maxBullet)    //아직 안댐
+    /// <param name="slotNumber">무기 타입 (슬롯 번호랑 일치)</param>
+    public void GetWeapon(int slotNumber, Sprite sprite, int weaponIndex, int maxBullet)    //아직 안댐
     {
-        m_Inventory.WeaponInfo[equipingWeaponType].m_HavingWeaponIndex = weaponIndex;
-        m_PlayerUIManager.UpdateWeaponSlot(equipingWeaponType, sprite);
+        m_Inventory.WeaponInfo[slotNumber].m_HavingWeaponIndex = weaponIndex;
+        m_PlayerUIManager.UpdateWeaponSlot(slotNumber, sprite);
     }
 
     /// <summary>
@@ -269,5 +267,4 @@ public class PlayerData : MonoBehaviour
     }
 
     public void EndGrab() => GrabAction?.Invoke(false);
-    
 }

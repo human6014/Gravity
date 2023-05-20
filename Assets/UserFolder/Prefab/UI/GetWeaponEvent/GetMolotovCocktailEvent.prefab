@@ -9,7 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7713809631616430121}
-  - component: {fileID: 7713809631616430122}
+  - component: {fileID: 2166061266864352713}
+  - component: {fileID: 7540155320752030245}
+  - component: {fileID: -3459639018569938724}
   m_Layer: 5
   m_Name: GetMolotovCocktailEvent
   m_TagString: Untagged
@@ -39,7 +41,15 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 390, y: 720}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &7713809631616430122
+--- !u!222 &2166061266864352713
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7713809631616430120}
+  m_CullTransparentMesh: 1
+--- !u!114 &7540155320752030245
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -48,13 +58,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 7713809631616430120}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02a8ef17b65d97d40a362ab801404d09, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EventType: 0
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &-3459639018569938724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7713809631616430120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ce35a39244c99746ae4143957dcfa50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SkillEventScriptable: {fileID: 0}
   m_Index: 0
-  m_Rating: 0
-  m_Level: 0
+  m_PlayerData: {fileID: 0}
+  m_SlotNumber: 0
+  m_WeaponIndex: 0
 --- !u!1 &7713809632041445041
 GameObject:
   m_ObjectHideFlags: 0
