@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerData : MonoBehaviour
 {
+    #region SerializeField
     [SerializeField] private UI.Manager.PlayerUIManager m_PlayerUIManager;
     [SerializeField] private Inventory m_Inventory;
 
@@ -37,6 +38,7 @@ public class PlayerData : MonoBehaviour
 
     [Tooltip("점프 MP 소모량")]
     [SerializeField] private int m_JumpingMP = 180;
+    #endregion
 
     private int m_CurrentPlayerHP;
     private int m_CurrentPlayerMP;
@@ -52,8 +54,9 @@ public class PlayerData : MonoBehaviour
 
     private WeaponInfo m_CurrentWeaponInfo;
 
-    public PlayerState m_PlayerState { get; } = new PlayerState();
+    #region Property
     public Inventory Inventory { get => m_Inventory; }
+    public PlayerState m_PlayerState { get; } = new PlayerState();
     public System.Action<bool> GrabAction { get; set; }
     public System.Action<Transform, Transform, Transform, Transform> GrabPoint {get;set;}
 
@@ -81,7 +84,9 @@ public class PlayerData : MonoBehaviour
             m_AmountPlayerMP = m_CurrentPlayerMP * m_RealToAmountConst;
         }
     }
+    #endregion
 
+    #region UnityFuction
     private void Awake()
     {
         PlayerHP = m_MaxPlayerHP;
@@ -107,6 +112,25 @@ public class PlayerData : MonoBehaviour
             m_PlayerUIManager.UpdatePlayerMP(m_AmountPlayerMP);
         }
     }
+    #endregion
+
+    #region CheckBehaviour
+    public bool CanStartRunning() => PlayerMP > m_StartRunningMP;
+
+    public bool CanRunning()
+    {
+        if (PlayerMP < m_RunningMP) return false;
+        UpdatePlayerMP(m_RunningMP);
+        return true;
+    }
+
+    public bool CanJumping()
+    {
+        if (PlayerMP < m_JumpingMP) return false;
+        UpdatePlayerMP(m_JumpingMP);
+        return true;
+    }
+    #endregion
 
     /// <summary>
     /// 무기 변경 시
@@ -233,22 +257,7 @@ public class PlayerData : MonoBehaviour
         m_PlayerUIManager.UpdatePlayerMP(m_AmountPlayerMP);
     }
 
-    public bool CanStartRunning() => PlayerMP > m_StartRunningMP;
-    
 
-    public bool CanRunning()
-    {
-        if (PlayerMP < m_RunningMP) return false;
-        UpdatePlayerMP(m_RunningMP);
-        return true;
-    }
-
-    public bool CanJumping()
-    {
-        if (PlayerMP < m_JumpingMP) return false;
-        UpdatePlayerMP(m_JumpingMP);
-        return true;
-    }
 
     public void PlayerHit(Transform target, int damage, AttackType attackType)
     {

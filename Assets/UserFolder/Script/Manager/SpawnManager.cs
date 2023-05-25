@@ -243,7 +243,7 @@ namespace Manager
         }
 
         [ContextMenu("SpawnSpecialMonster")]
-        private void SpawnSpecialMonster1()
+        public void SpawnSpecialMonster1()
         {
             BoxCollider[] initColliders = ExcludeRandomIndex((int)currentGravityType, out int specificIndex);
             BoxCollider initCollider = GetClosetArea(initColliders);

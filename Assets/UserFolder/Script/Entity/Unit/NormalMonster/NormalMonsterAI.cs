@@ -148,9 +148,9 @@ public class NormalMonsterAI : MonoBehaviour
                     autoTargetDir.z = 0;
                     break;
             }
-            //if (autoTargetDir == Vector3.zero)
-            //    autoTargetRot = Quaternion.LookRotation(AIManager.PlayerTransform.position, -GravityManager.GravityVector);
-            //else
+            if (autoTargetDir == Vector3.zero)
+                autoTargetRot = Quaternion.LookRotation(AIManager.PlayerTransform.position, -GravityManager.GravityVector);
+            else
                 autoTargetRot = Quaternion.LookRotation(autoTargetDir, -GravityManager.GravityVector);
         }
         //cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, autoTargetRot, 0.2f);

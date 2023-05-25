@@ -10,9 +10,7 @@ namespace Entity.Unit.Special
 {
     public class SpecialMonster1 : MonoBehaviour, IMonster
     {
-        [Header("Stat")]
         [SerializeField] private Scriptable.Monster.SpecialMonsterScriptable m_Settings;
-
         [Header("Model")]
         [SerializeField] private SkinnedMeshRenderer m_SkinnedMeshRenderer;
 
