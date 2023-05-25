@@ -26,11 +26,8 @@ namespace Manager
         public AudioClip[] GetSlashHitEffectSounds(int index) => surfaceInfo[index].m_SlashHitSounds;
 
 
-        private void Awake()
-        {
-            HasingSurfaceMaterials();
-        }
-
+        private void Awake() => HasingSurfaceMaterials();
+        
         private void HasingSurfaceMaterials()
         {
             for (int i = 0; i < surfaceInfo.Length; i++)

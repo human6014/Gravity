@@ -10,7 +10,7 @@ namespace UI.Event
     {
         [SerializeField] protected Scriptable.UI.SkillEventScriptable m_SkillEventScriptable;
         [SerializeField] private int m_Index;
-
+        private int m_Level { get; set; }
         public UnityAction PointerDownAction { get; set; }
         public UnityAction PointerEnterAction { get; set; }
         public UnityAction PointerExitAction { get; set; }
@@ -40,6 +40,11 @@ namespace UI.Event
         }
 
         public virtual void DoSkill()
+        {
+
+        }
+
+        public virtual void Dispose()
         {
 
         }
