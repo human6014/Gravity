@@ -10,22 +10,22 @@ namespace UI.Event
     {
         [SerializeField] protected Scriptable.UI.SkillEventScriptable m_SkillEventScriptable;
         [SerializeField] private int m_Index;
+
+        private int m_CallingCount;
+        private int m_PickCount;
         private int m_Level { get; set; }
         public UnityAction PointerDownAction { get; set; }
-        public UnityAction PointerEnterAction { get; set; }
-        public UnityAction PointerExitAction { get; set; }
 
         public void OnPointerDown(PointerEventData eventData)
         {
             PointerDownAction?.Invoke();
-            
+
+            m_PickCount++;
             Debug.Log("Click");
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            PointerEnterAction?.Invoke();
-            Init();
             Debug.Log("Enter");
         }
 
@@ -36,7 +36,8 @@ namespace UI.Event
 
         public virtual void Init()
         {
-
+            m_CallingCount++;
+            gameObject.SetActive(true);
         }
 
         public virtual void DoSkill()
@@ -46,7 +47,7 @@ namespace UI.Event
 
         public virtual void Dispose()
         {
-
+            gameObject.SetActive(false);
         }
     }
 }

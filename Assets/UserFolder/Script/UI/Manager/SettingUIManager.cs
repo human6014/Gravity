@@ -9,23 +9,21 @@ namespace UI.Manager
     {
         [SerializeField] private Game.SettingPanel m_SettingPanel;
 
-        public bool IsActiveSettingUI { get; private set; }
+        public bool IsActivePauseUI { get; set; }
+        //버그 있음
 
         private void Awake() => PauseMode(false);
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                DoChangePanel();
-            }
+            if (Input.GetKeyDown(KeyCode.Escape)) DoChangePanel();
         }
 
         private void DoChangePanel()
         {
-            IsActiveSettingUI = !IsActiveSettingUI;
-            m_SettingPanel.TryActive(IsActiveSettingUI);
-            PauseMode(IsActiveSettingUI);
+            IsActivePauseUI = !IsActivePauseUI;
+            m_SettingPanel.TryActive(IsActivePauseUI);
+            PauseMode(IsActivePauseUI);
         }
 
         public void PauseMode(bool isActive)

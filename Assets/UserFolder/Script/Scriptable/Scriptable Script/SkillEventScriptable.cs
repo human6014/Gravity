@@ -10,9 +10,9 @@ namespace Scriptable.UI
         GetWeapon,
         GetSupply,
         Attack,
-        Specific,
         Defense,
         Support,
+        Specific,
         Special
     }
 
@@ -33,11 +33,9 @@ namespace Scriptable.UI
         public EventType m_EventType;
 
         [Tooltip("등급")]
-        public int m_Rating;
+        public int m_Rating = 1;
 
         [Tooltip("레벨")]
-        public int m_Level;
-
-
+        public int m_Level = 1;
     }
 }
