@@ -10,6 +10,7 @@ namespace Manager
         [SerializeField] private UI.Manager.SkillEventManager m_SkillEventManager;
 
         [SerializeField] private float m_SP1SpawnTiming = 10;
+        [SerializeField] private float m_SkillEventTiming = 30; 
         //스킬 발동 조건
         //유닛 능력치 업 + 소환 주기 제어 명령
         //특수몹 생성 조건 + 명령
@@ -17,7 +18,8 @@ namespace Manager
         private SpawnManager m_SpawnManager;
 
         private float m_GameTime;
-
+        private float m_SkillEventTimer;
+        private const float m_SkillEventWaitTime = 3;
         public static bool IsGameEnd { get; private set; } = false;
 
         private void Awake()
@@ -33,8 +35,15 @@ namespace Manager
         private void Update()
         {
             m_GameTime += Time.deltaTime;
+            if(!m_SkillEventManager.m_IsOnEvent) m_SkillEventTimer += Time.deltaTime;
 
             if (!m_SpawnManager.IsSP1MonsterSpawned && m_GameTime >= m_SP1SpawnTiming) m_SpawnManager.SpawnSpecialMonster1();
+
+            if (m_SkillEventTimer >= m_SkillEventTiming)
+            {
+                m_SkillEventTimer = 0;
+                m_SkillEventManager.OccurSkillEvent();
+            }
         }
     }
 }

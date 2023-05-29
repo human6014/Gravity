@@ -31,7 +31,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.8333333
-        value: 1200
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -96,7 +96,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.8333333
-        value: 1200
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -115,9 +115,9 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.8333333
-    functionName: EndHideAnimation
+    functionName: EndAnimation
     data: 
-    objectReferenceParameter: {fileID: 11500000, guid: 00caefc8a4e8c88499eda9e8b90da347,
+    objectReferenceParameter: {fileID: 11500000, guid: 5fbf74d198bfc874498dc195d029826c,
       type: 3}
     floatParameter: 0
     intParameter: 0
