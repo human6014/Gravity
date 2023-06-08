@@ -6,6 +6,8 @@ namespace UI.Event
 {
     public class SpecificEvent : SkillEvent
     {
-
+        public override void DoSkill()
+        {
+        }
     }
 }

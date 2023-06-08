@@ -91,11 +91,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 287e0c3693152bd4e9f2de959efb258a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SkillEventScriptable: {fileID: 0}
-  m_Index: 0
-  m_PlayerData: {fileID: 0}
+  m_EventType: 0
+  m_Rating: 1
+  m_Index: 16
+  m_MaxLevel: 3
   m_SlotNumber: 0
-  m_WeaponIndex: 0
+  m_BulletAmount: 0
 --- !u!1 &7713809632041445041
 GameObject:
   m_ObjectHideFlags: 0

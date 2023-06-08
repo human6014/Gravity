@@ -3,35 +3,60 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using Manager.AI;
 
 namespace UI.Event
 {
-    public class SkillEvent : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
+    public abstract class SkillEvent : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] protected Scriptable.UI.SkillEventScriptable m_SkillEventScriptable;
+        [Header("Parent")]
+
+        [Tooltip("스킬 타입")]
+        [SerializeField] private Scriptable.UI.EventType m_EventType;
+
+        [Tooltip("등급")]
+        [SerializeField] private int m_Rating = 1;
+
+        [Tooltip("스킬 번호")]
         [SerializeField] private int m_Index;
 
+        [Tooltip("최대 레벨")]
+        [SerializeField] private int m_MaxLevel = 3;
+
+        private int m_CurrentLevel = 1;
         private int m_CallingCount;
-        private int m_PickCount;
-        private int m_Level { get; set; }
+
+        public int Level 
+        {
+            get => m_CurrentLevel;
+            private set { m_CurrentLevel = Mathf.Clamp(value, 1, m_MaxLevel); }
+        }
+        public Scriptable.UI.EventType EventType { get; }
+        protected PlayerSkillReceiver m_PlayerSkillReceiver { get; private set; }
         public UnityAction PointerDownAction { get; set; }
 
         public void OnPointerDown(PointerEventData eventData)
         {
             PointerDownAction?.Invoke();
-
-            m_PickCount++;
-            Debug.Log("Click");
+            Level = m_CurrentLevel + 1;
+            //Debug.Log(Level);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            Debug.Log("Enter");
+            //Debug.Log("Enter");
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            Debug.Log("Exit");
+            //Debug.Log("Exit");
+        }
+
+        private void Awake() => PointerDownAction += DoSkill;
+        
+        private void Start()
+        {
+            m_PlayerSkillReceiver = AIManager.PlayerTransform.GetComponent<PlayerSkillReceiver>();
         }
 
         public virtual void Init()
@@ -40,10 +65,7 @@ namespace UI.Event
             gameObject.SetActive(true);
         }
 
-        public virtual void DoSkill()
-        {
-
-        }
+        public abstract void DoSkill();
 
         public virtual void Dispose()
         {

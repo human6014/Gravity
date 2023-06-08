@@ -9,14 +9,35 @@ namespace UI.Manager
     {
         [SerializeField] private Game.SettingPanel m_SettingPanel;
 
-        public bool IsActivePauseUI { get; set; }
+        bool m_IsPause;
+        bool m_IsActivePauseUI;
+        public bool IsPause 
+        {
+            get =>  m_IsPause;
+            set
+            {
+                m_IsPause = value;
+                PauseMode(value);
+            }
+        }
+
+        public bool IsActivePauseUI 
+        {
+            get => m_IsActivePauseUI;
+            set
+            {
+                m_IsActivePauseUI = value;
+                m_SettingPanel.TryActive(value);
+                IsPause = value;      
+            }
+        }
         //버그 있음
 
         private void Awake() => PauseMode(false);
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape)) DoChangePanel();
+            if (Input.GetKeyDown(KeyCode.Escape)) IsActivePauseUI = !IsActivePauseUI;
         }
 
         private void DoChangePanel()
@@ -35,7 +56,7 @@ namespace UI.Manager
 
         public void Resume()
         {
-            DoChangePanel();
+            //DoChangePanel();
         }
 
         public void ReturnLobby()

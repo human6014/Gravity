@@ -6,24 +6,13 @@ namespace UI.Event
 {
     public class GetWeaponEvent : SkillEvent
     {
-        [SerializeField] private PlayerData m_PlayerData;
-
+        [Header("Child")]
         [SerializeField] private int m_SlotNumber;
         [SerializeField] private int m_WeaponIndex;
 
-
-        public override void Init()
-        {
-            base.Init();
-
-
-        }
-
         public override void DoSkill()
         {
-            base.DoSkill();
-
-
+            m_PlayerSkillReceiver.GetWeaponEvent(m_SlotNumber, m_WeaponIndex);
         }
     }
 }

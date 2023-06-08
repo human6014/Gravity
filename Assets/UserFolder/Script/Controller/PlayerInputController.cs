@@ -83,7 +83,7 @@ namespace Contoller
 
         private void Update()
         {
-            if (m_SettingUIManager.IsActivePauseUI) return;
+            if (m_SettingUIManager.IsPause || m_SettingUIManager.IsActivePauseUI) return;
 
             m_MouseX = Input.GetAxis("Mouse X");
             m_MouseY = Input.GetAxis("Mouse Y");

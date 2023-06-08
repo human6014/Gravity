@@ -91,8 +91,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f129a7bc3484c042be06760923d512a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SkillEventScriptable: {fileID: 0}
-  m_Index: 0
+  m_EventType: 0
+  m_Rating: 1
+  m_Index: 20
+  m_MaxLevel: 3
+  m_AttackEventType: 0
+  m_Amount: 0
 --- !u!1 &7713809632041445041
 GameObject:
   m_ObjectHideFlags: 0
