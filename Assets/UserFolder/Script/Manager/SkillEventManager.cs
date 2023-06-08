@@ -58,7 +58,9 @@ namespace UI.Manager
         private readonly List<SkillEvent> m_CurrentVisibleSkillEvents = new ();
 
         private const int m_DefaultDisplayCount = 3;
-        private int m_EventCount = 0;
+        private int m_GameEventCount = 0;
+
+        private int[] m_EventCounts = new int[7];
         public bool m_IsOnEvent { get; private set; }
 
         private void Awake()
@@ -82,9 +84,12 @@ namespace UI.Manager
             m_IsOnEvent = true;
             m_SkillPos.gameObject.SetActive(true);
             m_Animator.SetTrigger("Show");
+
             m_SettingUIManager.PauseMode(true);
-            m_SettingUIManager.IsActivePauseUI = true; //수정할것
-            m_EventCount++;
+            //m_SettingUIManager.IsActivePauseUI = true; 
+
+            //수정할것 버그 있음
+            m_GameEventCount++;
 
             BatchSkillUI();
         }
@@ -92,80 +97,86 @@ namespace UI.Manager
         #region UI Batch
         private void BatchSkillUI()
         {
-            if (m_FixedNonSpecificDict.ContainsKey(m_EventCount)) BatchFixedNonSpecific();
-            else if (m_FixedSpecificDict.ContainsKey(m_EventCount)) BatchFixedSpecific();
-            else BatchRandom();
+            int eventType;
+            if (m_FixedNonSpecificDict.ContainsKey(m_GameEventCount)) eventType = BatchFixedNonSpecific();
+            else if (m_FixedSpecificDict.ContainsKey(m_GameEventCount)) eventType = BatchFixedSpecific();
+            else eventType = BatchRandom();
 
-            for(int i = 0; i < m_CurrentVisibleSkillEvents.Count; i++)
+            m_EventCounts[eventType]++;
+
+            for (int i = 0; i < m_CurrentVisibleSkillEvents.Count; i++)
                 m_CurrentVisibleSkillEvents[i].PointerDownAction += OnPointerDown;
         }
 
         /// <summary>
         /// 타입만 정해지고 스킬은 랜덤
         /// </summary>
-        private void BatchFixedNonSpecific()
+        private int BatchFixedNonSpecific()
         {
             Debug.Log("BatchFixedNonSpecificRandom");
-            FixedNonSpecificEvent fnse = m_FixedNonSpecificDict[m_EventCount];
-            SkillEventSet skillEventSet = m_SkillEvent[(int)fnse.m_EventType];
-
+            FixedNonSpecificEvent fnse = m_FixedNonSpecificDict[m_GameEventCount];
+            int eventType = (int)fnse.m_EventType;
+            SkillEventSet skillEventSet = m_SkillEvent[eventType];
+            
             int[] randomNumber = GetRandomNumber(0, skillEventSet.m_SkillEvent.Length);
-
             foreach(int i in randomNumber)
             {
+                
                 m_CurrentVisibleSkillEvents.Add(skillEventSet.m_SkillEvent[i]);
                 skillEventSet.m_SkillEvent[i].Init();
             }
-        }
-
-        /// <summary>
-        /// min부터 max까지 랜덤한 값 count개수만큼 반환
-        /// </summary>
-        /// <param name="min">가장 작은 값</param>
-        /// <param name="max">가장 큰 값</param>
-        /// <param name="count">랜덤으로 고를 개수</param>
-        /// <returns>int 배열</returns>
-        private int[] GetRandomNumber(int min, int max, int count = m_DefaultDisplayCount)
-        {
-            if (min + count >= max - min + 1) Debug.LogError("max값은 min보다 최소 count만큼 커야합니다.");
-            System.Random random = new System.Random();
-            int[] randomElements = Enumerable.Range(min, max - min + 1)
-                                             .OrderBy(x => random.Next())
-                                             .Take(count)
-                                             .ToArray();
-            return randomElements;
+            return eventType;
         }
 
         /// <summary>
         /// 타입, 스킬 모두 정해짐
         /// </summary>
-        private void BatchFixedSpecific()
+        private int BatchFixedSpecific()
         {
             Debug.Log("BatchFixedSpecificRandom");
-            FixedSpecificEvent fse = m_FixedSpecificDict[m_EventCount];
-
+            FixedSpecificEvent fse = m_FixedSpecificDict[m_GameEventCount];
+            int eventType = (int)fse.m_SkillEvent[0].EventType;
             for (int i = 0; i < fse.m_SkillEvent.Length; i++)
             {
                 m_CurrentVisibleSkillEvents.Add(fse.m_SkillEvent[i]);
                 fse.m_SkillEvent[i].Init();
             }
+            return eventType;
         }
 
         /// <summary>
         /// 완전한 랜덤
         /// </summary>
-        private void BatchRandom()
+        private int BatchRandom()
         {
             //GetWeapon 제외를 위해서 0번은 생략
-            Debug.Log("BatchRandom");
-            int randomType = Random.Range(1, (int)Scriptable.UI.EventType.Support);
-            int randomSkill;
-            for (int i = 0; i < m_DefaultDisplayCount; i++)
+            int randomType = Random.Range(1, (int)Scriptable.UI.EventType.Specific);
+            SkillEventSet skillEventSet = m_SkillEvent[randomType];
+            int[] randomNumber = GetRandomNumber(0, skillEventSet.m_SkillEvent.Length);
+
+            foreach (int i in randomNumber)
             {
-                randomSkill = Random.Range(0, m_SkillEvent[randomType].m_SkillEvent.Length);
-                m_CurrentVisibleSkillEvents.Add(m_SkillEvent[randomType].m_SkillEvent[randomSkill]);
-                m_CurrentVisibleSkillEvents[i].Init();
+                m_CurrentVisibleSkillEvents.Add(skillEventSet.m_SkillEvent[i]);
+                skillEventSet.m_SkillEvent[i].Init();
             }
+            return randomType;
+        }
+
+        /// <summary>
+        /// min부터 max까지 랜덤한 값 count개수만큼 반환
+        /// </summary>
+        /// <param name="min">min값을 포함해서 부터</param>
+        /// <param name="max">max값을 제외까지</param>
+        /// <param name="count">랜덤으로 추출할 개수</param>
+        /// <returns>int 배열</returns>
+        private int[] GetRandomNumber(int min, int max, int count = m_DefaultDisplayCount)
+        {
+            System.Random random = new System.Random();
+            int[] randomElements = Enumerable.Range(min, max - min)
+                                             .OrderBy(x => random.Next())
+                                             .Take(count)
+                                             .ToArray();
+            return randomElements;
         }
         #endregion
 
@@ -182,7 +193,7 @@ namespace UI.Manager
         {
             m_Animator.SetTrigger("Hide");
             m_SettingUIManager.PauseMode(false);
-            m_SettingUIManager.IsActivePauseUI = false; //수정할것
+            //m_SettingUIManager.IsActivePauseUI = false; //수정할것
 
             for (int i = 0; i < m_CurrentVisibleSkillEvents.Count; i++)
             {

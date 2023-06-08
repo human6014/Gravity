@@ -8,7 +8,6 @@ namespace UI.Event
     {
         public override void DoSkill()
         {
-            base.DoSkill();
         }
     }
 }

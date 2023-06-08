@@ -10,7 +10,7 @@ public class PersistenceExplosive : Explosible
     private AudioSource m_AudioSource;
     private Light m_Light;
     private SphereCollider m_SphereCollider;
-    private WaitForSecondsRealtime PersistenceExplosionTime;
+    private WaitForSeconds PersistenceExplosionTime;
 
     private float m_InitialAudioSourceVolume;
     private float m_InitialLightIntensity;
@@ -26,7 +26,7 @@ public class PersistenceExplosive : Explosible
         m_AudioSource = m_ControllingParticle[0].GetComponent<AudioSource>();
         m_Light = m_ControllingParticle[0].GetComponent<Light>();
         m_SphereCollider = m_ControllingParticle[0].GetComponent<SphereCollider>();
-        PersistenceExplosionTime = new WaitForSecondsRealtime(0.1f);
+        PersistenceExplosionTime = new WaitForSeconds(0.1f);
 
         m_InitialAudioSourceVolume = m_AudioSource.volume;
         m_InitialLightIntensity = m_Light.intensity;
@@ -57,11 +57,10 @@ public class PersistenceExplosive : Explosible
     {
         yield return base.Explosion();
 
-        float startTime = Time.realtimeSinceStartup;
         float elapsedTime = 0;
         while(elapsedTime < m_EffectDuration)
         {
-            elapsedTime = Time.realtimeSinceStartup - startTime;
+            elapsedTime += Time.deltaTime;
             base.Damage(false);
             yield return PersistenceExplosionTime;
         }

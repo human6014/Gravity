@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Entity.Object.Weapon;
 
 [System.Serializable]
 public class WeaponInfo

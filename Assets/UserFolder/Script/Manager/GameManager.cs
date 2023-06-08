@@ -17,7 +17,7 @@ namespace Manager
 
         private SpawnManager m_SpawnManager;
 
-        private float m_GameTime;
+        private float m_GameTime;   //Pause °É¸é Stop
         private float m_SkillEventTimer;
         private const float m_SkillEventWaitTime = 3;
         public static bool IsGameEnd { get; private set; } = false;
