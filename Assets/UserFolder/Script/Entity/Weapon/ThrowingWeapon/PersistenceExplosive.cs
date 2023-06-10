@@ -12,12 +12,11 @@ public class PersistenceExplosive : Explosible
     private SphereCollider m_SphereCollider;
     private WaitForSeconds PersistenceExplosionTime;
 
+    private const float m_DamageTick = 0.1f;
     private float m_InitialAudioSourceVolume;
     private float m_InitialLightIntensity;
     private float m_InitialLightRange;
     private float m_InitialColliderRadius;
-
-    private bool m_WasInside;
 
     protected override void Awake()
     {
@@ -60,7 +59,8 @@ public class PersistenceExplosive : Explosible
         float elapsedTime = 0;
         while(elapsedTime < m_EffectDuration)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += m_DamageTick;
+            Debug.Log(elapsedTime);
             base.Damage(false);
             yield return PersistenceExplosionTime;
         }
@@ -79,7 +79,7 @@ public class PersistenceExplosive : Explosible
         float elapsedTime = 0.0f;
         while (elapsedTime < m_StopDuration)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += m_DamageTick;
             if (elapsedTime * 2 < m_StopDuration) base.Damage(false);
             float t = Mathf.Clamp01(elapsedTime / m_StopDuration); 
 
@@ -88,7 +88,7 @@ public class PersistenceExplosive : Explosible
             m_Light.range = Mathf.Lerp(m_InitialLightRange, 0, t);
             m_SphereCollider.radius = Mathf.Lerp(m_InitialColliderRadius, 0, t);
 
-            yield return null;
+            yield return PersistenceExplosionTime;
         }
     }
 }
