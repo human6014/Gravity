@@ -15,6 +15,7 @@ namespace UI.Event
     {
         [SerializeField] private AttackEventType m_AttackEventType;
         [SerializeField] private float m_Amount;
+
         public override void DoSkill()
         {
             m_PlayerSkillReceiver.AttackSkillEvent(m_AttackEventType, m_Amount);

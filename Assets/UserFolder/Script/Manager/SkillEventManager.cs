@@ -121,7 +121,6 @@ namespace UI.Manager
             int[] randomNumber = GetRandomNumber(0, skillEventSet.m_SkillEvent.Length);
             foreach(int i in randomNumber)
             {
-                
                 m_CurrentVisibleSkillEvents.Add(skillEventSet.m_SkillEvent[i]);
                 skillEventSet.m_SkillEvent[i].Init();
             }
@@ -149,6 +148,7 @@ namespace UI.Manager
         /// </summary>
         private int BatchRandom()
         {
+            Debug.Log("BatchRandom");
             //GetWeapon 제외를 위해서 0번은 생략
             int randomType = Random.Range(1, (int)Scriptable.UI.EventType.Specific);
             SkillEventSet skillEventSet = m_SkillEvent[randomType];
@@ -181,7 +181,6 @@ namespace UI.Manager
         #endregion
 
         #region PointerAction
-
         private void OnPointerDown()
         {
             EndSkillEvent();

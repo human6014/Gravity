@@ -15,6 +15,7 @@ namespace UI.Event
     {
         [SerializeField] private SupportEventType m_SupportEventType;
         [SerializeField] private int m_Amount;
+
         public override void DoSkill()
         {
             m_PlayerSkillReceiver.SupportSkillEvent(m_SupportEventType, m_Amount);
