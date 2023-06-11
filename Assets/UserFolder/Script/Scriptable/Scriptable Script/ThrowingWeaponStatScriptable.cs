@@ -17,5 +17,7 @@ namespace Scriptable.Equipment
         [Header("Short throw force")]
         public float shortThrowForwardForce;
         public float shortThrowUpwardForce;
+
+        public int initHavingBullet;
     }
 }

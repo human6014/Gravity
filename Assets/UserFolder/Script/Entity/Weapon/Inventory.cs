@@ -2,6 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct WeaponData
+{
+    public readonly Sprite m_Icon;
+    public readonly int m_MaxBullet;
+    public readonly int m_MagazineRemainBullet;
+
+    public WeaponData(Sprite icon, int maxBullet, int magazineBullet)
+    {
+        m_Icon = icon; 
+        m_MaxBullet = maxBullet;
+        m_MagazineRemainBullet = magazineBullet;
+    }
+}
 [System.Serializable]
 public class WeaponInfo
 {
