@@ -100,11 +100,11 @@ namespace Entity.Object.Weapon
         /// 무기 아이콘
         /// </summary>
         public Sprite WeaponIcon { get => m_WeaponStatScriptable.m_WeaponIcon; }
+        public virtual int MaxBullet { get => 0; }
 
-
+        public virtual bool CanChangeWeapon { get => !IsEquiping && !IsUnequiping; }
         public bool IsEquiping { get; private set; }
         public bool IsUnequiping { get; private set; }
-        public virtual bool CanChangeWeapon { get => !IsEquiping && !IsUnequiping; }
 
         public FireMode m_CurrentFireMode { get; protected set; } = FireMode.None;
         //이거 이상한데?
@@ -114,6 +114,11 @@ namespace Entity.Object.Weapon
         public int GetItemIndex { get => ItemIndex; }
 
         #endregion
+
+        public virtual void PreAwake()
+        {
+            m_PlayerData = transform.root.GetComponent<PlayerData>();
+        }
 
         protected virtual void Awake()
         {
@@ -126,7 +131,7 @@ namespace Entity.Object.Weapon
             Transform parentTransform = transform.parent;
 
             m_PlayerInputController = rootTransform.GetComponent<Contoller.PlayerInputController>();
-            m_PlayerData = rootTransform.GetComponent<PlayerData>();
+            //m_PlayerData = rootTransform.GetComponent<PlayerData>();
 
             m_AudioSource = parentTransform.GetComponent<AudioSource>();
             m_WeaponManager = parentTransform.GetComponent<WeaponManager>();

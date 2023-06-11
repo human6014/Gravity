@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PlayerData : MonoBehaviour
 {
     #region SerializeField
@@ -59,6 +60,7 @@ public class PlayerData : MonoBehaviour
     public PlayerState m_PlayerState { get; } = new PlayerState();
     public System.Action<bool> GrabAction { get; set; }
     public System.Action<Transform, Transform, Transform, Transform> GrabPoint {get;set;}
+    public System.Func<int, int, WeaponData> WeaponDataFunc { get; set; }
 
     public bool IsAlive { get; set; } = true;
     public int PlayerMaxHP { get; } = 1000;
@@ -281,13 +283,21 @@ public class PlayerData : MonoBehaviour
 
     #region SkillEvent related
     /// <summary>
-    /// 무기를 얻었을 때
+    /// UnityEvent로 호출
+    /// UI로 무기 획득 이벤트 클릭시 발동
     /// </summary>
     /// <param name="slotNumber">무기 타입 (슬롯 번호랑 일치)</param>
-    public void GetWeapon(int slotNumber, Sprite sprite, int weaponIndex)    //아직 안댐
+    /// <param name="weaponIndex">타입 내의 무기 인덱스</param>
+    public void GetWeapon(int slotNumber, int weaponIndex)
     {
+        WeaponData weaponData = (WeaponData)(WeaponDataFunc?.Invoke(slotNumber, weaponIndex));
+        m_PlayerUIManager.UpdateWeaponSlot(slotNumber, weaponData.m_Icon);
+
+        // 형태만 변경 대기
         m_Inventory.WeaponInfo[slotNumber].m_HavingWeaponIndex = weaponIndex;
-        m_PlayerUIManager.UpdateWeaponSlot(slotNumber, sprite);
+        m_Inventory.WeaponInfo[slotNumber].m_CurrentRemainBullet = weaponData.m_MaxBullet;
+        m_Inventory.WeaponInfo[slotNumber].m_MaxBullet = weaponData.m_MaxBullet;
+        m_Inventory.WeaponInfo[slotNumber].m_MagazineRemainBullet = weaponData.m_MagazineRemainBullet;
     }
 
     public void GetSupply(int slotNumber, int amount)

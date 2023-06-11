@@ -44,15 +44,21 @@ namespace Entity.Object.Weapon
         private bool m_IsFiring;
         private bool m_IsRunning;
 
-        
+
+        public override int MaxBullet => m_RangeWeaponStat.m_MaxBullets;
         public override bool CanChangeWeapon => base.CanChangeWeapon && !m_IsFiring && !IsReloading;
-        private bool IsReloading => m_Reloadable.m_IsReloading; 
+        private bool IsReloading => m_Reloadable.m_IsReloading;
+
+        public override void PreAwake()
+        {
+            base.PreAwake();
+            m_RangeWeaponStat = (RangeWeaponStatScriptable)base.m_WeaponStatScriptable;
+        }
 
         protected override void Awake()
         {
             base.Awake();
 
-            m_RangeWeaponStat = (RangeWeaponStatScriptable)base.m_WeaponStatScriptable;
             m_RangeWeaponSound = (RangeWeaponSoundScriptable)base.m_WeaponSoundScriptable;
             m_BurstFireTime = new WaitForSeconds(m_RangeWeaponStat.m_BurstAttackTime);
 

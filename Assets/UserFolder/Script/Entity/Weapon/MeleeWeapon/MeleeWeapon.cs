@@ -34,12 +34,18 @@ namespace Entity.Object.Weapon
         public override bool CanChangeWeapon => base.CanChangeWeapon && !m_IsAttacking;
         private bool CanComboAttacking() => m_CanComboAttack && (m_IsLightAttacking && !m_IsHeavyAttacking);
 
+
+        public override void PreAwake()
+        {
+            base.PreAwake();
+            m_MeleeWeaponStat = (MeleeWeaponStatScriptable)base.m_WeaponStatScriptable;
+        }
+
         protected override void Awake()
         {
             base.Awake();
 
             m_MeleeWeaponSound = (MeleeWeaponSoundScripatble)base.m_WeaponSoundScriptable;
-            m_MeleeWeaponStat = (MeleeWeaponStatScriptable)base.m_WeaponStatScriptable;
 
             m_Attackable = GetComponent<Attackable>();
             m_SurfaceManager = FindObjectOfType<SurfaceManager>();

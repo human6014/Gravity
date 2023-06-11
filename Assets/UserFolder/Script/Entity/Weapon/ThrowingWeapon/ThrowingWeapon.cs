@@ -37,12 +37,20 @@ namespace Entity.Object.Weapon
         private Coroutine m_RunningCoroutine;
         private Quaternion m_RunningPivotRotation;
 
+        public override int MaxBullet => m_MaxBullet;
         public override bool CanChangeWeapon => base.CanChangeWeapon && !m_IsThrowing;
+
+
+        public override void PreAwake()
+        {
+            base.PreAwake();
+            m_ThrowingWeaponStat = (ThrowingWeaponStatScriptable)base.m_WeaponStatScriptable;
+        }
+
         protected override void Awake()
         {
             base.Awake();
             m_ThrowingWeaponSound = (ThrowingWeaponSoundScriptable)base.m_WeaponSoundScriptable;
-            m_ThrowingWeaponStat = (ThrowingWeaponStatScriptable)base.m_WeaponStatScriptable;
 
             m_RunningPivotRotation = Quaternion.Euler(m_ThrowingWeaponStat.m_RunningPivotDirection);
 

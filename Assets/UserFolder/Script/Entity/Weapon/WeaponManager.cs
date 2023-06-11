@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-using Entity.Object.Weapon;
 using EntityWeapon = Entity.Object.Weapon.Weapon;
 
 namespace Manager.Weapon
@@ -26,7 +25,7 @@ namespace Manager.Weapon
         [SerializeField] private Contoller.PlayerInputController m_PlayerInputController;
         [SerializeField] private Transform m_Pivot;
         [SerializeField] private Entity.Object.Util.Syringe m_Syringe;
-        [SerializeField] private FlashLight m_FlashLight; 
+        [SerializeField] private Entity.Object.Weapon.FlashLight m_FlashLight; 
 
         [Header("Pooling")]
         [SerializeField] private Transform m_ActiveObjectPool;
@@ -36,6 +35,7 @@ namespace Manager.Weapon
 
         private readonly Dictionary<CustomKey, EntityWeapon> m_WeaponDictionary = new();
         private EntityWeapon m_CurrentWeapon = null;
+
         private int m_CurrentEquipIndex = -1; //현재 장착하고 있는 무기 슬롯 번호
         private const int m_ToolKitToEquipIndex = 5;
         private bool IsInteracting;
@@ -55,11 +55,13 @@ namespace Manager.Weapon
             {
                 if(!child.TryGetComponent(out Entity.Object.Weapon.Weapon weapon)) continue;
                 m_WeaponDictionary.Add(new (weapon.EquipingType, weapon.GetItemIndex), weapon);
+                weapon.PreAwake();
             }
 
             m_PlayerInputController.ChangeEquipment += TryWeaponChange;
             m_PlayerInputController.Heal += TryHealInteract;
             m_PlayerInputController.Light += () => TryWeaponChange(m_ToolKitToEquipIndex);
+            m_PlayerData.WeaponDataFunc += RegisterWeapon;
         }
 
         private void Start()
@@ -72,13 +74,21 @@ namespace Manager.Weapon
             }
         }
 
-        public void RegisterWeapon(int slotNumber, int index)
-            => m_PlayerData.Inventory.WeaponInfo[slotNumber].m_HavingWeaponIndex = index;
+        public WeaponData RegisterWeapon(int slotNumber, int weaponIndex)
+        {
+            m_WeaponDictionary.TryGetValue(new (slotNumber, weaponIndex), out EntityWeapon weapon);
+            Sprite spriteIcon = weapon.WeaponIcon;
+            int maxBullet = weapon.MaxBullet;
+            int magazineBullet = maxBullet * 3;
+            return new WeaponData(spriteIcon,maxBullet,magazineBullet);
+        }
+            //=> m_PlayerData.Inventory.WeaponInfo[slotNumber].m_HavingWeaponIndex = index;
 
         private async void TryWeaponChange(int slotNumber)
         {
             if (IsInteracting) return;
             int index = m_PlayerData.Inventory.WeaponInfo[slotNumber].m_HavingWeaponIndex;
+            if (index < 0) return;
             if (m_CurrentWeapon != null)
             {
                 if (m_CurrentEquipIndex == slotNumber) return;
