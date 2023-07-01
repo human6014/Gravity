@@ -299,7 +299,7 @@ MonoBehaviour:
   m_Index: 24
   m_MaxLevel: 3
   m_DefenseEventType: 2
-  m_Amount: 0
+  m_Amount: 1
 --- !u!1 &7713809632041445041
 GameObject:
   m_ObjectHideFlags: 0

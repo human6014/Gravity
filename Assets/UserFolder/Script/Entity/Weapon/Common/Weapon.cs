@@ -64,65 +64,63 @@ namespace Entity.Object.Weapon
 
 
         #region Property
-        protected PlayerData m_PlayerData { get; private set; }
+        protected PlayerData PlayerData { get; private set; }
 
         /// <summary>
         /// 인벤토리의 Weapon들을 담는 클래스
         /// </summary>
-        protected WeaponInfo m_WeaponInfo { get; private set; }
+        protected WeaponInfo WeaponInfo { get; private set; }
 
         /// <summary>
         /// 사용자의 입력을 받는 스크립트
         /// </summary>
-        protected Contoller.PlayerInputController m_PlayerInputController { get; private set; }
+        protected Contoller.PlayerInputController PlayerInputController { get; private set; }
 
         /// <summary>
         /// 현재 자신의 무기 에니메이터
         /// </summary>
-        protected Animator m_EquipmentAnimator { get; private set; }
+        protected Animator EquipmentAnimator { get; private set; }
 
         /// <summary>
         /// 모든 Equipment의 공통 AudioSource
         /// </summary>
-        protected AudioSource m_AudioSource { get; private set; }
+        protected AudioSource AudioSource { get; private set; }
 
         /// <summary>
         /// Weapon들을 관리하는 매니저 클래스
         /// </summary>
-        protected WeaponManager m_WeaponManager { get; private set; }
+        protected WeaponManager WeaponManager { get; private set; }
 
         /// <summary>
         /// 메인 카메라
         /// </summary>
-        protected Camera m_MainCamera { get; private set; }
+        protected Camera MainCamera { get; private set; }
 
         /// <summary>
         /// 무기 아이콘
         /// </summary>
         public Sprite WeaponIcon { get => m_WeaponStatScriptable.m_WeaponIcon; }
         public virtual int MaxBullet { get => 0; }
-
         public virtual bool CanChangeWeapon { get => !IsEquiping && !IsUnequiping; }
         public bool IsEquiping { get; private set; }
         public bool IsUnequiping { get; private set; }
 
-        public FireMode m_CurrentFireMode { get; protected set; } = FireMode.None;
-        //이거 이상한데?
-        public AttackType m_BulletType { get => m_WeaponStatScriptable.m_BulletType; }
+        public FireMode CurrentFireMode { get; protected set; } = FireMode.None;
+        public AttackType BulletType { get => m_WeaponStatScriptable.m_BulletType; }
 
         public int EquipingType { get => (int)m_EquipingWeaponType; }
         public int GetItemIndex { get => ItemIndex; }
-
+        
         #endregion
 
         public virtual void PreAwake()
         {
-            m_PlayerData = transform.root.GetComponent<PlayerData>();
+            PlayerData = transform.root.GetComponent<PlayerData>();
         }
 
         protected virtual void Awake()
         {
-            m_EquipmentAnimator = GetComponent<Animator>();
+            EquipmentAnimator = GetComponent<Animator>();
             m_CrossHairDisplayer = FindObjectOfType<UI.Player.CrossHairDisplayer>();
 
             m_WaitEquipingTime = new WaitForSeconds(0.35f);
@@ -130,14 +128,13 @@ namespace Entity.Object.Weapon
             Transform rootTransform = transform.root;
             Transform parentTransform = transform.parent;
 
-            m_PlayerInputController = rootTransform.GetComponent<Contoller.PlayerInputController>();
-            //m_PlayerData = rootTransform.GetComponent<PlayerData>();
+            PlayerInputController = rootTransform.GetComponent<Contoller.PlayerInputController>();
 
-            m_AudioSource = parentTransform.GetComponent<AudioSource>();
-            m_WeaponManager = parentTransform.GetComponent<WeaponManager>();
+            AudioSource = parentTransform.GetComponent<AudioSource>();
+            WeaponManager = parentTransform.GetComponent<WeaponManager>();
 
-            m_WeaponInfo = m_PlayerData.Inventory.WeaponInfo[(int)m_EquipingWeaponType];
-            m_MainCamera = Camera.main;
+            WeaponInfo = PlayerData.Inventory.WeaponInfo[(int)m_EquipingWeaponType];
+            MainCamera = Camera.main;
         }
 
         public virtual void Init()
@@ -157,11 +154,11 @@ namespace Entity.Object.Weapon
 
         protected virtual void AssignKeyAction()
         {
-            m_PlayerInputController.MouseMovement += m_WeaponSway.Sway;
+            PlayerInputController.MouseMovement += m_WeaponSway.Sway;
         }
         protected virtual void DischargeKeyAction()
         {
-            m_PlayerInputController.MouseMovement -= m_WeaponSway.Sway;
+            PlayerInputController.MouseMovement -= m_WeaponSway.Sway;
         }
 
         public virtual void Dispose()
@@ -173,10 +170,10 @@ namespace Entity.Object.Weapon
         {
             DischargeKeyAction();
             IsUnequiping = true;
-            m_PlayerData.m_PlayerState.SetWeaponChanging(true);
+            PlayerData.m_PlayerState.SetWeaponChanging(true);
             m_ArmAnimator.SetTrigger("Unequip");
-            m_EquipmentAnimator.SetTrigger("Unequip");
-            m_AudioSource.PlayOneShot(m_WeaponSoundScriptable.unequipSound);
+            EquipmentAnimator.SetTrigger("Unequip");
+            AudioSource.PlayOneShot(m_WeaponSoundScriptable.unequipSound);
 
             await Task.Delay(m_UnequipingTime);
 
@@ -188,12 +185,12 @@ namespace Entity.Object.Weapon
         {
             IsEquiping = true;
             m_ArmAnimator.SetTrigger("Equip");
-            m_EquipmentAnimator.SetTrigger("Equip");
-            m_AudioSource.PlayOneShot(m_WeaponSoundScriptable.equipSound);
+            EquipmentAnimator.SetTrigger("Equip");
+            AudioSource.PlayOneShot(m_WeaponSoundScriptable.equipSound);
             m_CrossHairDisplayer.SetCrossHair((int)m_WeaponStatScriptable.m_DefaultCrossHair);
 
             yield return m_WaitEquipingTime;
-            m_PlayerData.m_PlayerState.SetWeaponChanging(false);
+            PlayerData.m_PlayerState.SetWeaponChanging(false);
 
             IsEquiping = false;
         }

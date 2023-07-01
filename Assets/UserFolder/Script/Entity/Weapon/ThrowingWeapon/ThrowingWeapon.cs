@@ -54,7 +54,7 @@ namespace Entity.Object.Weapon
 
             m_RunningPivotRotation = Quaternion.Euler(m_ThrowingWeaponStat.m_RunningPivotDirection);
 
-            m_CameraTransform = m_MainCamera.transform;
+            m_CameraTransform = MainCamera.transform;
         }
 
         private void Start() => AssignPooling();
@@ -67,7 +67,7 @@ namespace Entity.Object.Weapon
 
         protected override void DoAppearObject()
         {
-            bool isActive = m_WeaponInfo.m_CurrentRemainBullet > 0;
+            bool isActive = WeaponInfo.m_CurrentRemainBullet > 0;
 
             m_RendererObject.enabled = isActive;
             m_ArmController.AppearArms(isActive);
@@ -79,7 +79,7 @@ namespace Entity.Object.Weapon
             m_IsThrowing = false;
             m_RendererObject.enabled = true;
             m_ArmAnimator.SetTrigger("Equip");
-            m_EquipmentAnimator.SetTrigger("Equip");
+            EquipmentAnimator.SetTrigger("Equip");
         }
 
         private void AssignPooling()
@@ -91,13 +91,13 @@ namespace Entity.Object.Weapon
         protected override void AssignKeyAction()
         {
             base.AssignKeyAction();
-            m_PlayerInputController.SemiFire += TryLongThrow;
-            m_PlayerInputController.HeavyFire += TryShortThrow;
+            PlayerInputController.SemiFire += TryLongThrow;
+            PlayerInputController.HeavyFire += TryShortThrow;
         }
 
         private void Update()
         {
-            if (m_PlayerData.m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
+            if (PlayerData.m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
             {
                 if (!m_IsRunning)
                 {
@@ -112,9 +112,9 @@ namespace Entity.Object.Weapon
                 {
                     m_IsRunning = false;
                     if (m_RunningCoroutine != null) StopCoroutine(m_RunningCoroutine);
-                    m_RunningCoroutine = StartCoroutine(PosChange(m_WeaponManager.m_OriginalPivotPosition, m_WeaponManager.m_OriginalPivotRotation));
+                    m_RunningCoroutine = StartCoroutine(PosChange(WeaponManager.OriginalPivotPosition, WeaponManager.OriginalPivotRotation));
                 }
-                m_MainCamera.fieldOfView = Mathf.Lerp(m_MainCamera.fieldOfView, m_WeaponManager.m_OriginalFOV, m_ThrowingWeaponStat.m_FOVMultiplier * Time.deltaTime);
+                MainCamera.fieldOfView = Mathf.Lerp(MainCamera.fieldOfView, WeaponManager.OriginalFOV, m_ThrowingWeaponStat.m_FOVMultiplier * Time.deltaTime);
             }
         }
 
@@ -136,12 +136,12 @@ namespace Entity.Object.Weapon
             }
         }
 
-        private bool CanThrowing() => !m_IsThrowing && m_PlayerData.m_PlayerState.PlayerBehaviorState != PlayerBehaviorState.Running && m_WeaponInfo.m_CurrentRemainBullet > 0;
+        private bool CanThrowing() => !m_IsThrowing && PlayerData.m_PlayerState.PlayerBehaviorState != PlayerBehaviorState.Running && WeaponInfo.m_CurrentRemainBullet > 0;
         private void TryLongThrow()
         {
             if (!CanThrowing()) return;
             m_ArmAnimator.SetTrigger("Long Throw");
-            m_EquipmentAnimator.SetTrigger("Long Throw");
+            EquipmentAnimator.SetTrigger("Long Throw");
             StartCoroutine(PlayThrowSound(true));
         }
 
@@ -149,19 +149,19 @@ namespace Entity.Object.Weapon
         {
             if (!CanThrowing()) return;
             m_ArmAnimator.SetTrigger("Short Throw");
-            m_EquipmentAnimator.SetTrigger("Short Throw");
+            EquipmentAnimator.SetTrigger("Short Throw");
             StartCoroutine(PlayThrowSound(false));
         }
 
         private IEnumerator PlayThrowSound(bool isLong)
         {
-            m_PlayerData.RangeWeaponFire();
+            PlayerData.RangeWeaponFire();
             m_IsThrowing = true;
             WeaponSoundScriptable.DelaySoundClip[] playingSound = m_ThrowingWeaponSound.throwSound;
             for (int i = 0; i < playingSound.Length; i++)
             {
                 yield return new WaitForSeconds(playingSound[i].delayTime);
-                m_AudioSource.PlayOneShot(playingSound[i].audioClip);
+                AudioSource.PlayOneShot(playingSound[i].audioClip);
             }
             m_RendererObject.enabled = false;
             Throw(isLong);
@@ -177,7 +177,7 @@ namespace Entity.Object.Weapon
                 Explosible poolable = (Explosible)m_PoolingObject.GetObject(false);
 
                 poolable.gameObject.SetActive(true);
-                poolable.Init(m_PoolingObject, m_SpawnPos.position, m_CameraTransform.rotation, m_BulletType);
+                poolable.Init(m_PoolingObject, m_SpawnPos.position, m_CameraTransform.rotation, BulletType);
                 poolable.TryGetComponent(out Rigidbody throwingRigid);
 
                 throwingRigid.AddForce(forceToAdd, ForceMode.Impulse);
@@ -187,14 +187,14 @@ namespace Entity.Object.Weapon
 
         private void EndThrow()
         {
-            if (m_WeaponInfo.m_MagazineRemainBullet <= 0)
+            if (WeaponInfo.m_MagazineRemainBullet <= 0)
             {
                 m_IsThrowing = false;
                 m_IsActiveState = false;
             }
             else
             {
-                m_PlayerData.RangeWeaponCountingReload();
+                PlayerData.RangeWeaponCountingReload();
                 Invoke(nameof(ReInit), m_ReInitTime);
             }
         }
@@ -220,8 +220,8 @@ namespace Entity.Object.Weapon
         protected override void DischargeKeyAction()
         {
             base.DischargeKeyAction();
-            m_PlayerInputController.SemiFire -= TryLongThrow;
-            m_PlayerInputController.HeavyFire -= TryShortThrow;
+            PlayerInputController.SemiFire -= TryLongThrow;
+            PlayerInputController.HeavyFire -= TryShortThrow;
         }
     }
 }

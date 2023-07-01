@@ -113,6 +113,7 @@ namespace Entity.Object.Weapon
             {
                 Vector3 dir = (hit.point - transform.position).normalized * m_RangeWeaponStat.m_AttackForce;
                 damageable.Hit(m_RangeWeaponStat.m_Damage, m_RangeWeaponStat.m_BulletType, dir);
+                //Damage°¡ÁßÄ¡
                 return true;
             }
 

@@ -68,14 +68,14 @@ namespace Entity.Object.Weapon
             m_AimingPivotRotation = Quaternion.Euler(m_RangeWeaponStat.m_AimingPivotDirection);
             m_RunningPivotRotation = Quaternion.Euler(m_RangeWeaponStat.m_RunningPivotDirection);
 
-            m_AimingFOV = m_WeaponManager.m_OriginalFOV - m_RangeWeaponStat.m_AimingFOV;
+            m_AimingFOV = WeaponManager.OriginalFOV - m_RangeWeaponStat.m_AimingFOV;
             
             AssignFireMode();
         }
 
         private void Start()
         {
-            m_Fireable.Setup(m_RangeWeaponStat, m_WeaponManager.m_EffectPoolingObjectArray, m_PlayerData.m_PlayerState);
+            m_Fireable.Setup(m_RangeWeaponStat, WeaponManager.EffectPoolingObjectArray, PlayerData.m_PlayerState);
             m_Reloadable.Setup(m_RangeWeaponSound, m_ArmAnimator);
         }
 
@@ -98,11 +98,11 @@ namespace Entity.Object.Weapon
         protected override void AssignKeyAction()
         {
             base.AssignKeyAction();
-            m_PlayerInputController.Reload += TryReload;
-            m_PlayerInputController.ChangeFireMode += TryChangeFireMode;
-            m_PlayerInputController.AutoFire += TryAutoFire;
-            m_PlayerInputController.SemiFire += TrySemiFire;
-            m_PlayerInputController.Aiming += TryAiming;
+            PlayerInputController.Reload += TryReload;
+            PlayerInputController.ChangeFireMode += TryChangeFireMode;
+            PlayerInputController.AutoFire += TryAutoFire;
+            PlayerInputController.SemiFire += TrySemiFire;
+            PlayerInputController.Aiming += TryAiming;
         }
         #endregion
 
@@ -110,7 +110,7 @@ namespace Entity.Object.Weapon
         private void Update()
         {
             m_CurrentFireTime += Time.deltaTime;
-            if (m_PlayerData.m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
+            if (PlayerData.m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
             {
                 if (!m_IsRunning)
                 {
@@ -148,21 +148,21 @@ namespace Entity.Object.Weapon
         #region Aiming
         private void TryAiming(bool isAiming)
         {
-            if (m_PlayerData.m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
+            if (PlayerData.m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
             {
-                m_PlayerData.m_PlayerState.SetWeaponIdle();
+                PlayerData.m_PlayerState.SetWeaponIdle();
                 return;
             }
 
             if (isAiming)
             {
-                m_PlayerData.m_PlayerState.SetWeaponAiming();
+                PlayerData.m_PlayerState.SetWeaponAiming();
                 AimingPosRot(m_RangeWeaponStat.m_AimingPivotPosition, m_AimingPivotRotation, m_AimingFOV);
             }
             else
             {
-                m_PlayerData.m_PlayerState.SetWeaponIdle();
-                AimingPosRot(m_WeaponManager.m_OriginalPivotPosition, m_WeaponManager.m_OriginalPivotRotation, m_WeaponManager.m_OriginalFOV);
+                PlayerData.m_PlayerState.SetWeaponIdle();
+                AimingPosRot(WeaponManager.OriginalPivotPosition, WeaponManager.OriginalPivotRotation, WeaponManager.OriginalFOV);
             }
             SetCurrentFireIndex(isAiming);
         }
@@ -171,7 +171,7 @@ namespace Entity.Object.Weapon
         {
             m_Pivot.localPosition = Vector3.Lerp(m_Pivot.localPosition, endPosition, m_RangeWeaponStat.m_AimingPosTimeRatio * Time.deltaTime);
             m_Pivot.localRotation = Quaternion.Lerp(m_Pivot.localRotation, endRotation, m_RangeWeaponStat.m_AimingPosTimeRatio * Time.deltaTime);
-            m_MainCamera.fieldOfView = Mathf.Lerp(m_MainCamera.fieldOfView, endFOV, m_RangeWeaponStat.m_FOVMultiplier * Time.deltaTime);
+            MainCamera.fieldOfView = Mathf.Lerp(MainCamera.fieldOfView, endFOV, m_RangeWeaponStat.m_FOVMultiplier * Time.deltaTime);
         }
         #endregion
 
@@ -180,11 +180,11 @@ namespace Entity.Object.Weapon
         {
             if (!ChangeFlag()) return;
 
-            m_EquipmentAnimator.SetTrigger("ChangeFireMode");
+            EquipmentAnimator.SetTrigger("ChangeFireMode");
             m_ArmAnimator.SetTrigger("ChangeFireMode");
 
-            m_AudioSource.PlayOneShot(m_RangeWeaponSound.changeModeSound[0]);
-            m_PlayerData.ChangeFireMode(m_CurrentFireMode);
+            AudioSource.PlayOneShot(m_RangeWeaponSound.changeModeSound[0]);
+            PlayerData.ChangeFireMode(CurrentFireMode);
         }
 
         private bool ChangeFlag()
@@ -198,7 +198,7 @@ namespace Entity.Object.Weapon
             int afterChangeIndex = m_FireModeIndex;
 
             if (beforeChangeIndex == afterChangeIndex) return false;
-            m_CurrentFireMode = (FireMode)m_FireModeIndex;
+            CurrentFireMode = (FireMode)m_FireModeIndex;
             return true;
         }
 
@@ -207,10 +207,10 @@ namespace Entity.Object.Weapon
             float fireIndex = isAiming ? 1 : 0;
             int idleIndex = isAiming ? 0 : 1;
 
-            m_EquipmentAnimator.SetFloat("Fire Index", fireIndex);
+            EquipmentAnimator.SetFloat("Fire Index", fireIndex);
             m_ArmAnimator.SetFloat("Fire Index", fireIndex);
 
-            m_EquipmentAnimator.SetInteger("Idle Index", idleIndex);
+            EquipmentAnimator.SetInteger("Idle Index", idleIndex);
             m_ArmAnimator.SetInteger("Idle Index", idleIndex);
         }
         #endregion
@@ -220,41 +220,41 @@ namespace Entity.Object.Weapon
         {
             if (base.IsEquiping || base.IsUnequiping) return;
             if (m_Reloadable.m_IsReloading || m_IsFiring) return;
-            if (!m_WeaponInfo.CanReload()) return;
+            if (!WeaponInfo.CanReload()) return;
 
-            bool isEmpty = m_WeaponInfo.m_CurrentRemainBullet <= 0;
+            bool isEmpty = WeaponInfo.m_CurrentRemainBullet <= 0;
 
-            m_WeaponInfo.GetDifferenceValue(out int difference);
+            WeaponInfo.GetDifferenceValue(out int difference);
             m_Reloadable.DoReload(isEmpty, difference);
         }
         #endregion
 
         #region Fire
         private bool CanFire() => m_CurrentFireTime >= m_RangeWeaponStat.m_AttackTime  &&
-            m_PlayerData.m_PlayerState.PlayerBehaviorState != PlayerBehaviorState.Running && m_Reloadable.CanFire() && !m_IsFiring;
+            PlayerData.m_PlayerState.PlayerBehaviorState != PlayerBehaviorState.Running && m_Reloadable.CanFire() && !m_IsFiring;
         
         private bool m_OnFireSound;
         private void TryAutoFire()
         {
             if (base.IsEquiping || base.IsUnequiping) return;
-            if (m_CurrentFireMode != FireMode.Auto) return;
+            if (CurrentFireMode != FireMode.Auto) return;
             if (!CanFire()) return;
 
-            if (m_WeaponInfo.m_CurrentRemainBullet <= 0 && !m_OnFireSound) PlayEmptySound();
+            if (WeaponInfo.m_CurrentRemainBullet <= 0 && !m_OnFireSound) PlayEmptySound();
             else DoFire();
         }
 
         private void TrySemiFire()
         {
             if (base.IsEquiping || base.IsUnequiping) return;
-            if (m_CurrentFireMode == FireMode.Auto) return;
+            if (CurrentFireMode == FireMode.Auto) return;
             if (!CanFire()) return;
 
-            if (m_WeaponInfo.m_CurrentRemainBullet <= 0) PlayEmptySound();
+            if (WeaponInfo.m_CurrentRemainBullet <= 0) PlayEmptySound();
             else
             {
-                if (m_CurrentFireMode == FireMode.Semi) DoFire();
-                else if (m_CurrentFireMode == FireMode.Burst) StartCoroutine(BurstFire());
+                if (CurrentFireMode == FireMode.Semi) DoFire();
+                else if (CurrentFireMode == FireMode.Burst) StartCoroutine(BurstFire());
             }
         }
 
@@ -263,7 +263,7 @@ namespace Entity.Object.Weapon
             for (int i = 0; i < 3; i++)
             {
                 DoFire();
-                if (m_WeaponInfo.m_CurrentRemainBullet <= 0) yield break;
+                if (WeaponInfo.m_CurrentRemainBullet <= 0) yield break;
                 yield return m_BurstFireTime;
             }
         }
@@ -271,7 +271,7 @@ namespace Entity.Object.Weapon
         private void PlayEmptySound()
         {
             m_CurrentFireTime = 0;
-            m_AudioSource.PlayOneShot(m_RangeWeaponSound.emptySound[0]);
+            AudioSource.PlayOneShot(m_RangeWeaponSound.emptySound[0]);
         }
 
         private void DoFire()
@@ -280,19 +280,19 @@ namespace Entity.Object.Weapon
             m_CurrentFireTime = 0;
 
             m_Reloadable.StopReload();
-            m_PlayerData.RangeWeaponFire();
-            m_PlayerData.m_PlayerState.SetWeaponFiring();
+            PlayerData.RangeWeaponFire();
+            PlayerData.m_PlayerState.SetWeaponFiring();
 
             AudioClip audioClip = m_RangeWeaponSound.fireSound[Random.Range(0, m_RangeWeaponSound.fireSound.Length)];
-            m_AudioSource.PlayOneShot(audioClip);
+            AudioSource.PlayOneShot(audioClip);
 
-            m_EquipmentAnimator.SetBool("Fire", true);
+            EquipmentAnimator.SetBool("Fire", true);
             m_ArmAnimator.SetBool("Fire", true);
 
-            if (m_Fireable.DoFire()) m_PlayerData.HitEnemy();
+            if (m_Fireable.DoFire()) PlayerData.HitEnemy();
 
             audioClip = m_RangeWeaponSound.fireTailSound[Random.Range(0, m_RangeWeaponSound.fireTailSound.Length)];
-            m_AudioSource.PlayOneShot(audioClip);
+            AudioSource.PlayOneShot(audioClip);
 
             if (m_IsInstantReload) StartCoroutine(InstantReload());
             else m_IsFiring = false;
@@ -304,7 +304,7 @@ namespace Entity.Object.Weapon
             for (int i=0; i< sounds.Length; i++)
             {
                 yield return new WaitForSeconds(sounds[i].delayTime);
-                m_AudioSource.PlayOneShot(sounds[i].audioClip);
+                AudioSource.PlayOneShot(sounds[i].audioClip);
             }
             m_IsFiring = false;
         }
@@ -314,11 +314,11 @@ namespace Entity.Object.Weapon
         protected override void DischargeKeyAction()
         {
             base.DischargeKeyAction();
-            m_PlayerInputController.Reload -= TryReload;
-            m_PlayerInputController.ChangeFireMode -= TryChangeFireMode;
-            m_PlayerInputController.AutoFire -= TryAutoFire;
-            m_PlayerInputController.SemiFire -= TrySemiFire;
-            m_PlayerInputController.Aiming -= TryAiming;
+            PlayerInputController.Reload -= TryReload;
+            PlayerInputController.ChangeFireMode -= TryChangeFireMode;
+            PlayerInputController.AutoFire -= TryAutoFire;
+            PlayerInputController.SemiFire -= TrySemiFire;
+            PlayerInputController.Aiming -= TryAiming;
         }
     }
 }

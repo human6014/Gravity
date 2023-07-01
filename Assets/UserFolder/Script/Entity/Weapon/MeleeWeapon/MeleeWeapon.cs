@@ -49,30 +49,30 @@ namespace Entity.Object.Weapon
 
             m_Attackable = GetComponent<Attackable>();
             m_SurfaceManager = FindObjectOfType<SurfaceManager>();
-            m_CameraTransform = m_MainCamera.transform;
+            m_CameraTransform = MainCamera.transform;
 
             m_RunningPivotRotation = Quaternion.Euler(m_MeleeWeaponStat.m_RunningPivotDirection);
         }
 
         private void Start() 
-            => m_Attackable.Setup(m_MeleeWeaponStat, m_WeaponManager.m_EffectPoolingObjectArray, m_MainCamera.transform);
+            => m_Attackable.Setup(m_MeleeWeaponStat, WeaponManager.EffectPoolingObjectArray, MainCamera.transform);
         
 
         private void AssignPoolingObject()
-            => m_EffectPoolingObject = m_WeaponManager.m_EffectPoolingObjectArray;
+            => m_EffectPoolingObject = WeaponManager.EffectPoolingObjectArray;
 
 
         protected override void AssignKeyAction()
         {
             base.AssignKeyAction();
-            m_PlayerInputController.SemiFire += TryLightAttack;
-            m_PlayerInputController.HeavyFire += TryHeavyAttack;
+            PlayerInputController.SemiFire += TryLightAttack;
+            PlayerInputController.HeavyFire += TryHeavyAttack;
         }
 
         private void Update()
         {
             m_CurrentFireTime += Time.deltaTime;
-            if (m_PlayerData.m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
+            if (PlayerData.m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
             {
                 if (!m_IsRunning)
                 {
@@ -87,9 +87,9 @@ namespace Entity.Object.Weapon
                 {
                     m_IsRunning = false;
                     if (m_RunningCoroutine != null) StopCoroutine(m_RunningCoroutine);
-                    m_RunningCoroutine = StartCoroutine(PosChange(m_WeaponManager.m_OriginalPivotPosition, m_WeaponManager.m_OriginalPivotRotation));
+                    m_RunningCoroutine = StartCoroutine(PosChange(WeaponManager.OriginalPivotPosition, WeaponManager.OriginalPivotRotation));
                 }
-                m_MainCamera.fieldOfView = Mathf.Lerp(m_MainCamera.fieldOfView, m_WeaponManager.m_OriginalFOV, m_MeleeWeaponStat.m_FOVMultiplier * Time.deltaTime);
+                MainCamera.fieldOfView = Mathf.Lerp(MainCamera.fieldOfView, WeaponManager.OriginalFOV, m_MeleeWeaponStat.m_FOVMultiplier * Time.deltaTime);
             }
         }
 
@@ -135,10 +135,10 @@ namespace Entity.Object.Weapon
         {
             m_SwingIndex = swingIndex;
             m_ArmAnimator.SetFloat("Swing Index", swingIndex);
-            m_EquipmentAnimator.SetFloat("Swing Index", swingIndex);
+            EquipmentAnimator.SetFloat("Swing Index", swingIndex);
 
             m_ArmAnimator.SetTrigger("Swing");
-            m_EquipmentAnimator.SetTrigger("Swing");
+            EquipmentAnimator.SetTrigger("Swing");
         }
 
         #region Animation Event
@@ -148,8 +148,8 @@ namespace Entity.Object.Weapon
 
             AudioClip[] playingAudio = m_SwingIndex == 1 ? m_MeleeWeaponSound.m_HeavyAttackSound : m_MeleeWeaponSound.m_LightAttackSound;
 
-            m_AudioSource.PlayOneShot(playingAudio[Random.Range(0, playingAudio.Length)]);
-            if (m_Attackable.SwingCast()) m_PlayerData.HitEnemy();
+            AudioSource.PlayOneShot(playingAudio[Random.Range(0, playingAudio.Length)]);
+            if (m_Attackable.SwingCast()) PlayerData.HitEnemy();
         }
 
         private void EndAnimation()
@@ -163,8 +163,8 @@ namespace Entity.Object.Weapon
         protected override void DischargeKeyAction()
         {
             base.DischargeKeyAction();
-            m_PlayerInputController.SemiFire -= TryLightAttack;
-            m_PlayerInputController.HeavyFire -= TryHeavyAttack;
+            PlayerInputController.SemiFire -= TryLightAttack;
+            PlayerInputController.HeavyFire -= TryHeavyAttack;
         }
     }
 }

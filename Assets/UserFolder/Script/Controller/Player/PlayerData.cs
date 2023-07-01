@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 
@@ -10,7 +11,7 @@ public class PlayerData : MonoBehaviour
     [SerializeField] private Inventory m_Inventory;
 
     [Tooltip("힐 킷 회복량")]
-    [SerializeField] private int HealKitAmount = 400;
+    [SerializeField] private int m_HealKitAmount = 400;
 
     [Tooltip("최대 HP")]
     [SerializeField] private int m_MaxPlayerHP = 1000;
@@ -43,6 +44,7 @@ public class PlayerData : MonoBehaviour
 
     private int m_CurrentPlayerHP;
     private int m_CurrentPlayerMP;
+    private int m_CallCount;
 
     private float m_AmountPlayerHP = 1;
     private float m_AmountPlayerMP = 1;
@@ -58,15 +60,13 @@ public class PlayerData : MonoBehaviour
     #region Property
     public Inventory Inventory { get => m_Inventory; }
     public PlayerState m_PlayerState { get; } = new PlayerState();
-    public System.Action<bool> GrabAction { get; set; }
-    public System.Action<Transform, Transform, Transform, Transform> GrabPoint {get;set;}
-    public System.Func<int, int, WeaponData> WeaponDataFunc { get; set; }
+    public Action<bool> GrabAction { get; set; }
+    public Action<Transform, Transform, Transform, Transform> GrabPoint {get;set;}
+    public Func<int, int, WeaponData> WeaponDataFunc { get; set; }
 
     public bool IsAlive { get; set; } = true;
     public int PlayerMaxHP { get; } = 1000;
-
     public int PlayerMaxMP { get; } = 1000;
-
     public int PlayerHP 
     {
         get => m_CurrentPlayerHP;
@@ -145,7 +145,7 @@ public class PlayerData : MonoBehaviour
     {
         m_CurrentWeaponInfo = m_Inventory.WeaponInfo[equipingWeaponType];
         m_PlayerUIManager.ChangeWeapon(equipingWeaponType, (int)attackType, GetBitPosition((int)fireMode), m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, weaponImage);
-        m_PlayerUIManager.DisplayReloadImage(IsActiveReloadImage());
+        m_PlayerUIManager.DisplayReloadImage(m_CurrentWeaponInfo.IsActiveReloadImage());
     }
 
     /// <summary>
@@ -169,6 +169,7 @@ public class PlayerData : MonoBehaviour
     }
     #endregion
 
+    #region Hit and Attack
     /// <summary>
     /// 공격 시 적에게 맞았을 때 발동
     /// </summary>
@@ -180,8 +181,9 @@ public class PlayerData : MonoBehaviour
     public void RangeWeaponFire()
     {
         m_CurrentWeaponInfo.m_CurrentRemainBullet--;
-        m_PlayerUIManager.RangeWeaponFire(m_CurrentWeaponInfo.m_CurrentRemainBullet, IsActiveReloadImage());
+        m_PlayerUIManager.RangeWeaponFire(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.IsActiveReloadImage());
     }
+    #endregion
 
     #region Reload related
     public void RangeWeaponCountingReload()
@@ -189,7 +191,7 @@ public class PlayerData : MonoBehaviour
         m_CurrentWeaponInfo.m_MagazineRemainBullet--;
         m_CurrentWeaponInfo.m_CurrentRemainBullet++;
 
-        m_PlayerUIManager.RangeWeaponReload(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, IsActiveReloadImage());
+        m_PlayerUIManager.RangeWeaponReload(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, m_CurrentWeaponInfo.IsActiveReloadImage());
     }
 
     public void RangeWeaponReload()
@@ -206,12 +208,12 @@ public class PlayerData : MonoBehaviour
             m_CurrentWeaponInfo.m_MagazineRemainBullet = 0;
             m_CurrentWeaponInfo.m_CurrentRemainBullet = totalBullet;
         }
-        m_PlayerUIManager.RangeWeaponReload(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, IsActiveReloadImage());
+        m_PlayerUIManager.RangeWeaponReload(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, m_CurrentWeaponInfo.IsActiveReloadImage());
     }
 
-    private bool IsActiveReloadImage() 
-        => m_CurrentWeaponInfo.m_CurrentRemainBullet < m_CurrentWeaponInfo.m_MaxBullet * 0.5f && 
-           m_CurrentWeaponInfo.m_MaxBullet != 0 && m_CurrentWeaponInfo.m_MagazineRemainBullet != 0;
+    //private bool IsActiveReloadImage() 
+    //    => m_CurrentWeaponInfo.m_CurrentRemainBullet < m_CurrentWeaponInfo.m_MaxBullet * 0.5f && 
+    //       m_CurrentWeaponInfo.m_MaxBullet != 0 && m_CurrentWeaponInfo.m_MagazineRemainBullet != 0;
     #endregion
 
     #region HP,MP related
@@ -222,8 +224,8 @@ public class PlayerData : MonoBehaviour
     public void UsingHealKit(int value)
     {
         int remainHealKit = m_Inventory.HealKitHavingCount += value;
-        m_PlayerUIManager.UsingHealKit(remainHealKit, m_AmountPlayerHP);
-        UpdatePlayerHP(-HealKitAmount);
+        m_PlayerUIManager.UsingHealKit(remainHealKit);
+        if (value < 0) UpdatePlayerHP(-m_HealKitAmount);
     }
 
     /// <summary>
@@ -281,7 +283,7 @@ public class PlayerData : MonoBehaviour
     public void EndGrab() => GrabAction?.Invoke(false);
     #endregion
 
-    #region SkillEvent related
+    #region SkillEventUI related
     /// <summary>
     /// UnityEvent로 호출
     /// UI로 무기 획득 이벤트 클릭시 발동
@@ -302,22 +304,59 @@ public class PlayerData : MonoBehaviour
 
     public void GetSupply(int slotNumber, int amount)
     {
-
+        m_Inventory.WeaponInfo[slotNumber].m_MagazineRemainBullet += amount;
     }
 
-    public void AttackEvent()
+    public void MaxBulletUp(float amount)
     {
-
+        //모든 무기들 순회
+        //or WeaponManager에서 순회
     }
 
-    public void DefenseEvent()
+    public void HealKitRateUp(int amount)
     {
-
+        m_HealKitAmount += amount;
     }
 
-    public void SupportEvent()
+    public void HealthRecoverUp(int amount)
     {
-
+        m_AutoHPHealAmount += amount;
     }
+
+    public void MaxHealthUp(int amount)
+    {
+        m_MaxPlayerHP += amount;
+    }
+
+    public void MaxStaminaUp(int amount)
+    {
+        m_MaxPlayerMP += amount;
+    }
+
+    public void StaminaConsumeDown(int amount)
+    {
+        m_CallCount++;
+        if (m_CallCount == 1)
+        {
+            m_RunningMP = 3;
+            m_JumpingMP = 150;
+        }
+        else if (m_CallCount == 2)
+        {
+            m_RunningMP = 2;
+            m_JumpingMP = 120;
+        }
+        else if(m_CallCount == 3)
+        {
+            m_RunningMP = 1;
+            m_JumpingMP = 90;
+        }
+    }
+
+    public void StaminaRecoverUp(int amount)
+    {
+        m_AutoMPHealAmount += amount;
+    }
+
     #endregion
 }

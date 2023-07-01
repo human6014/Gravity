@@ -186,12 +186,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_OutlineUI: {fileID: 8866949822234661672}
-  m_EventType: 0
+  m_EventType: 2
   m_Rating: 1
   m_Index: 19
   m_MaxLevel: 3
   m_AttackEventType: 1
-  m_Amount: 0
+  m_Amount: 0.1
 --- !u!1 &7713809632041445041
 GameObject:
   m_ObjectHideFlags: 0
