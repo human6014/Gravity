@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using EntityWeapon = Entity.Object.Weapon.Weapon;
 
@@ -40,20 +39,23 @@ namespace Manager.Weapon
         private const int m_ToolKitToEquipIndex = 5;
         private bool IsInteracting;
 
-        public Vector3 m_OriginalPivotPosition { get; private set; }            //위치 조정용 부모 오브젝트 원래 위치
-        public Quaternion m_OriginalPivotRotation { get; private set; }         //위치 조정용 부모 오브젝트 원래 각도
-        public float m_OriginalFOV { get; private set; }
-        public ObjectPoolManager.PoolingObject[] m_EffectPoolingObjectArray { get; private set; }
+        public Vector3 OriginalPivotPosition { get; private set; }            //위치 조정용 부모 오브젝트 원래 위치
+        public Quaternion OriginalPivotRotation { get; private set; }         //위치 조정용 부모 오브젝트 원래 각도
+        public float OriginalFOV { get; private set; }
+        public ObjectPoolManager.PoolingObject[] EffectPoolingObjectArray { get; private set; }
+        public float DamageUpPercentage { get; private set; } = 1;  //배수 표시 -> 1배
+        public float AttackSpeedUpPercentage { get; private set; } = 1;
+        public float ReloadSpeedUpPercentage { get; private set; } = 1;
 
         private void Awake()
         {
-            m_OriginalPivotPosition = m_Pivot.localPosition;
-            m_OriginalPivotRotation = m_Pivot.localRotation;
-            m_OriginalFOV = Camera.main.fieldOfView;
+            OriginalPivotPosition = m_Pivot.localPosition;
+            OriginalPivotRotation = m_Pivot.localRotation;
+            OriginalFOV = Camera.main.fieldOfView;
 
             foreach (Transform child in transform)
             {
-                if(!child.TryGetComponent(out Entity.Object.Weapon.Weapon weapon)) continue;
+                if(!child.TryGetComponent(out EntityWeapon weapon)) continue;
                 m_WeaponDictionary.Add(new (weapon.EquipingType, weapon.GetItemIndex), weapon);
                 weapon.PreAwake();
             }
@@ -66,11 +68,11 @@ namespace Manager.Weapon
 
         private void Start()
         {
-            m_EffectPoolingObjectArray = new ObjectPoolManager.PoolingObject[m_EffectPoolingObject.Length];
+            EffectPoolingObjectArray = new ObjectPoolManager.PoolingObject[m_EffectPoolingObject.Length];
             for (int i = 0; i < m_EffectPoolingObject.Length; i++)
             {
-                m_EffectPoolingObjectArray[i] = ObjectPoolManager.Register(m_EffectPoolingObject[i], m_ActiveObjectPool);
-                m_EffectPoolingObjectArray[i].GenerateObj(m_PoolingCount[i]);
+                EffectPoolingObjectArray[i] = ObjectPoolManager.Register(m_EffectPoolingObject[i], m_ActiveObjectPool);
+                EffectPoolingObjectArray[i].GenerateObj(m_PoolingCount[i]);
             }
         }
 
@@ -82,7 +84,6 @@ namespace Manager.Weapon
             int magazineBullet = maxBullet * 3;
             return new WeaponData(spriteIcon,maxBullet,magazineBullet);
         }
-            //=> m_PlayerData.Inventory.WeaponInfo[slotNumber].m_HavingWeaponIndex = index;
 
         private async void TryWeaponChange(int slotNumber)
         {
@@ -100,7 +101,7 @@ namespace Manager.Weapon
             {
                 m_WeaponDictionary.TryGetValue(new (slotNumber, index), out m_CurrentWeapon);
                 m_CurrentWeapon.Init();
-                m_PlayerData.ChangeWeapon(m_CurrentWeapon.EquipingType, m_CurrentWeapon.m_BulletType, m_CurrentWeapon.m_CurrentFireMode,m_CurrentWeapon.WeaponIcon);
+                m_PlayerData.ChangeWeapon(m_CurrentWeapon.EquipingType, m_CurrentWeapon.BulletType, m_CurrentWeapon.CurrentFireMode,m_CurrentWeapon.WeaponIcon);
             }
             m_CurrentEquipIndex = slotNumber;
         }
@@ -110,7 +111,7 @@ namespace Manager.Weapon
             m_WeaponDictionary.TryGetValue(new(slotNumber, index), out m_CurrentWeapon);
 
             m_CurrentWeapon.Init();
-            m_PlayerData.ChangeWeapon(m_CurrentWeapon.EquipingType, m_CurrentWeapon.m_BulletType, m_CurrentWeapon.m_CurrentFireMode, m_CurrentWeapon.WeaponIcon);
+            m_PlayerData.ChangeWeapon(m_CurrentWeapon.EquipingType, m_CurrentWeapon.BulletType, m_CurrentWeapon.CurrentFireMode, m_CurrentWeapon.WeaponIcon);
         }
 
         private async void TryHealInteract()
@@ -134,6 +135,21 @@ namespace Manager.Weapon
             }
             m_PlayerData.UsingHealKit(-1);
             IsInteracting = false;
+        }
+
+        public void DamageUp(float amount)
+        {
+            DamageUpPercentage += amount;
+        }
+
+        public void AttackSpeedUp(float amount)
+        {
+
+        }
+
+        public void ReloadSpeedUp(float amount)
+        {
+
         }
     }
 }

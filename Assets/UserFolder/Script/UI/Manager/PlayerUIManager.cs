@@ -64,7 +64,7 @@ namespace UI.Manager
             m_ItemSlotDisplayer.UpdateWeaponSlotIcon(equipingWeaponType, sprite);
         }
 
-        public void UsingHealKit(int value, float hpAmount)
+        public void UsingHealKit(int value)
         {
             m_HealDisplayer.UpdateRemainHeal(value);
         }

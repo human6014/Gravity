@@ -35,27 +35,27 @@ namespace Entity.Object.Weapon
         public override void Init()
         {
             base.Init();
-            m_Pivot.localPosition = m_WeaponManager.m_OriginalPivotPosition;
-            m_Pivot.localRotation = m_WeaponManager.m_OriginalPivotRotation;
-            m_MainCamera.fieldOfView = m_WeaponManager.m_OriginalFOV;
+            m_Pivot.localPosition = WeaponManager.OriginalPivotPosition;
+            m_Pivot.localRotation = WeaponManager.OriginalPivotRotation;
+            MainCamera.fieldOfView = WeaponManager.OriginalFOV;
         }
 
         protected override void AssignKeyAction()
         {
             base.AssignKeyAction();
-            m_PlayerInputController.SemiFire += TryLightOnOff;
-            m_PlayerInputController.HeavyFire += TryChangeLightMode;
+            PlayerInputController.SemiFire += TryLightOnOff;
+            PlayerInputController.HeavyFire += TryChangeLightMode;
         }
 
         private void TryLightOnOff()
         {
             m_ArmAnimator.SetTrigger("Use");
-            m_EquipmentAnimator.SetTrigger("Use");
+            EquipmentAnimator.SetTrigger("Use");
 
             m_IsLightOn = !m_IsLightOn;
             audioClip = m_IsLightOn ? m_FlashLightSoundScriptable.m_SwitchOnSound : m_FlashLightSoundScriptable.m_SwitchOffSound;
 
-            m_AudioSource.PlayOneShot(audioClip);
+            AudioSource.PlayOneShot(audioClip);
 
             m_Illuminant.LightOnOff(m_IsLightOn);
         }
@@ -63,11 +63,11 @@ namespace Entity.Object.Weapon
         private void TryChangeLightMode()
         {
             m_ArmAnimator.SetTrigger("Use");
-            m_EquipmentAnimator.SetTrigger("Use");
+            EquipmentAnimator.SetTrigger("Use");
 
             m_LightMode = (LightMode)(((int)m_LightMode + 1) % m_LightModeLength);
 
-            m_AudioSource.PlayOneShot(audioClip);
+            AudioSource.PlayOneShot(audioClip);
 
             m_Illuminant.ChangeLightMode(m_FlashLightStatScriptable.m_ZoomAngle[(int)m_LightMode]);
         }
@@ -81,8 +81,8 @@ namespace Entity.Object.Weapon
         protected override void DischargeKeyAction()
         {
             base.DischargeKeyAction();
-            m_PlayerInputController.SemiFire -= TryLightOnOff;
-            m_PlayerInputController.HeavyFire -= TryChangeLightMode;
+            PlayerInputController.SemiFire -= TryLightOnOff;
+            PlayerInputController.HeavyFire -= TryChangeLightMode;
         }
     }
 }

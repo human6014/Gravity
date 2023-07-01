@@ -14,26 +14,26 @@ namespace Contoller.Player
 
         #region SerializeField
         [Tooltip("걷기 속도")]
-        [SerializeField] private float m_WalkSpeed;
+        [SerializeField] private float m_WalkSpeed = 5;
 
         [Tooltip("달리기 속도")]
-        [SerializeField] private float m_RunSpeed;
+        [SerializeField] private float m_RunSpeed = 8;
 
         [Tooltip("점프 속도")]
-        [SerializeField] private float m_JumpSpeed;
+        [SerializeField] private float m_JumpSpeed = 4;
 
         [Tooltip("걸을 때 한 걸음의 속도 (클수록 더 많이 걸음)")]
-        [SerializeField] [Range(0f, 3f)] private float m_WalkStepLenghten = 1.2f;
+        [SerializeField] [Range(0f, 3f)] private float m_WalkStepLenghten = 0.8f;
 
         [Tooltip("달릴 때 한 걸음의 속도 (클수록 더 많이 걸음)")]
-        [SerializeField] [Range(0f, 3f)] private float m_RunStepLenghten = 2f;
+        [SerializeField] [Range(0f, 3f)] private float m_RunStepLenghten = 1.4f;
 
 
         [Tooltip("땅에 달라붙는 힘")]
-        [SerializeField] private float m_StickToGroundForce;
+        [SerializeField] private float m_StickToGroundForce = 1;
 
         [Tooltip("중력 값")]
-        [SerializeField] private float m_GravityMultiplier;
+        [SerializeField] private float m_GravityMultiplier = 1;
 
         [Space(15)]
         [Tooltip("마우스 입력 감지 클래스")]
@@ -60,7 +60,7 @@ namespace Contoller.Player
         [SerializeField] private LerpControlledBob m_JumpBob;// = new LerpControlledBob();
 
         [Tooltip("걸을 때 발 간격 보정치")]
-        [SerializeField] private float m_StepInterval;
+        [SerializeField] private float m_StepInterval = 5;
 
 
         [Space(15)]
@@ -113,6 +113,7 @@ namespace Contoller.Player
         private Vector2 m_Input;
 
         private readonly float m_InterporationDist = 0.3f;
+        private float m_MovementMultiplier = 1;
         private float m_MovementSpeed;
         private float m_StepCycle;
         private float m_NextStep;
@@ -127,6 +128,8 @@ namespace Contoller.Player
 
         private bool m_WasWalking;
         private bool m_IsWalking;
+
+
 
         #region Awake
         private void Awake()
@@ -363,7 +366,7 @@ namespace Contoller.Player
         
         private void TryMovement(float horizontal, float vertical)
         {
-            m_MovementSpeed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;
+            m_MovementSpeed = (m_IsWalking ? m_WalkSpeed : m_RunSpeed) * m_MovementMultiplier;
             m_Input = new Vector2(horizontal, vertical);
 
             if (m_Input == Vector2.zero) m_PlayerData.m_PlayerState.SetBehaviorIdle();
@@ -377,6 +380,11 @@ namespace Contoller.Player
                 StopAllCoroutines();
                 StartCoroutine(!m_IsWalking ? m_FovKick.FOVKickUp() : m_FovKick.FOVKickDown());
             }
+        }
+
+        public void MoveSpeedUp(int amount)
+        {
+            m_MovementMultiplier += amount * 0.01f;
         }
 
         private void TryRun(bool isRunning)

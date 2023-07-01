@@ -42,6 +42,10 @@ public class WeaponInfo
         if (totalBullet > m_MaxBullet) difference = m_MaxBullet - m_CurrentRemainBullet;
         else difference = totalBullet - m_CurrentRemainBullet;
     }
+
+    public bool IsActiveReloadImage()
+        => m_CurrentRemainBullet < m_MaxBullet * 0.5f && m_MaxBullet != 0 && m_MagazineRemainBullet != 0;
+    
 }
 [System.Serializable]
 public class Inventory

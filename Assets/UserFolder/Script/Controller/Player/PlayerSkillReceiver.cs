@@ -8,20 +8,16 @@ public class PlayerSkillReceiver : MonoBehaviour
     [SerializeField] private UnityEvent<int, int> m_GetWeaponEvent;
     [SerializeField] private UnityEvent<int, int> m_GetSupplyEvent;
 
-    [SerializeField] private UnityEvent<float> m_AttackEvent;
-    [SerializeField] private UnityEvent<int> m_DefenseEvent;
-    [SerializeField] private UnityEvent<int> m_SupportEvent;
+    [SerializeField] private UnityEvent<float>[] m_AttackEvents;
+    [SerializeField] private UnityEvent<int>[] m_DefenseEvents;
+    [SerializeField] private UnityEvent<int>[] m_SupportEvents;
 
     public void GetWeaponEvent(int slotNumber, int index)
-    {
-        m_GetWeaponEvent?.Invoke(slotNumber,index);
-    }
-
+        => m_GetWeaponEvent?.Invoke(slotNumber,index);
+    
     public void GetSupplyEvent(int slotNumber, int amount)
-    {
-        m_GetSupplyEvent?.Invoke(slotNumber, amount);
-    }
-
+        => m_GetSupplyEvent?.Invoke(slotNumber, amount);
+    
     public void AttackSkillEvent(UI.Event.AttackEventType eventType, float amount)
     {
         switch (eventType)
@@ -29,7 +25,7 @@ public class PlayerSkillReceiver : MonoBehaviour
             case UI.Event.AttackEventType.AttackDamageUp:
                 //WeaponStatScriptable
 
-                //int(float)     amount
+                //float         amount
                 break;
             case UI.Event.AttackEventType.AttackSpeedUp:
                 //WeaponStatScriptable
@@ -48,7 +44,7 @@ public class PlayerSkillReceiver : MonoBehaviour
                 break;
         }
 
-        m_AttackEvent?.Invoke(amount);
+        m_AttackEvents[(int)eventType]?.Invoke(amount);
     }
 
     public void DefenseSkillEvent(UI.Event.DefenseEventType eventType, int amount)
@@ -76,6 +72,8 @@ public class PlayerSkillReceiver : MonoBehaviour
                 //int   amount
                 break;
         }
+
+        m_DefenseEvents[(int)eventType]?.Invoke(amount);
     }
 
     public void SupportSkillEvent(UI.Event.SupportEventType eventType, int amount)
@@ -103,6 +101,7 @@ public class PlayerSkillReceiver : MonoBehaviour
                 //int   amount
                 break;
         }
+        m_SupportEvents[(int)eventType]?.Invoke(amount);
     }
 
     public void SpecificSkillEvent()
