@@ -52,6 +52,8 @@ namespace Entity.Object.Weapon
         private MouseLook m_MouseLook;
         private AudioClip[] audioClips;
 
+        private int m_RealDamage;
+
         private void Awake()
         {
             m_CameraTransform = Camera.main.transform;
@@ -112,8 +114,7 @@ namespace Entity.Object.Weapon
             if (hit.transform.TryGetComponent(out IDamageable damageable))
             {
                 Vector3 dir = (hit.point - transform.position).normalized * m_RangeWeaponStat.m_AttackForce;
-                damageable.Hit(m_RangeWeaponStat.m_Damage, m_RangeWeaponStat.m_BulletType, dir);
-                //Damage°¡ÁßÄ¡
+                damageable.Hit(m_RealDamage, m_RangeWeaponStat.m_BulletType, dir);
                 return true;
             }
 
@@ -164,6 +165,11 @@ namespace Entity.Object.Weapon
 
             yield return m_InstanceBulletSecond;
             InstanceBullet();
+        }
+
+        public void SetDamageUpPercentage(float DamageUpPercentage)
+        {
+            m_RealDamage = (int)(m_RangeWeaponStat.m_Damage * DamageUpPercentage);
         }
 
         protected Vector3 GetCurrentAccuracy()

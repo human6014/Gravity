@@ -13,7 +13,7 @@ namespace Entity.Object.Weapon
         protected override void Awake()
         {
             base.Awake();
-            m_HowInteratable = Interactabe.Semi;
+            HowInteratable = Interactabe.Semi;
         }
 
         public override void DoReload(bool m_IsEmpty, int difference)
@@ -24,8 +24,8 @@ namespace Entity.Object.Weapon
 
         private IEnumerator InteractableNonEmptyReload(int difference)
         {
-            m_IsReloading = true;
-            m_IsNonEmptyReloading = true;
+            IsReloading = true;
+            IsNonEmptyReloading = true;
 
             m_ArmAnimator.SetTrigger("Empty Reload");
             m_EquipmentAnimator.SetTrigger("Empty Reload");
@@ -36,14 +36,14 @@ namespace Entity.Object.Weapon
 
             yield return base.DelaySound(m_RangeWeaponSound.reloadEndSoundClips, 1);
 
-            m_IsNonEmptyReloading = false;
-            m_IsReloading = false;
+            IsNonEmptyReloading = false;
+            IsReloading = false;
         }
 
         private IEnumerator NonInteractableEmptyReload()
         {
-            m_IsReloading = true;
-            m_IsEmptyReloading = true;
+            IsReloading = true;
+            IsEmptyReloading = true;
 
             m_ArmAnimator.SetTrigger("Empty Reload");
             m_EquipmentAnimator.SetTrigger("Empty Reload");
@@ -53,21 +53,21 @@ namespace Entity.Object.Weapon
             m_PlayerData.RangeWeaponReload();
             base.InstanceMagazine();
 
-            m_IsEmptyReloading = false;
-            m_IsReloading = false;
+            IsEmptyReloading = false;
+            IsReloading = false;
         }
 
         public override void StopReload()
         {
-            if (m_IsNonEmptyReloading)
+            if (IsNonEmptyReloading)
             {
-                m_IsReloading = false;
-                m_IsNonEmptyReloading = false;
+                IsReloading = false;
+                IsNonEmptyReloading = false;
                 StopAllCoroutines();
             }
         }
 
-        public override bool CanFire() => !m_IsEmptyReloading;
+        public override bool CanFire() => !IsEmptyReloading;
 
     }
 }

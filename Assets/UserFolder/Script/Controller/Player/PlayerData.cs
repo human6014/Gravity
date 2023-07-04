@@ -44,7 +44,6 @@ public class PlayerData : MonoBehaviour
 
     private int m_CurrentPlayerHP;
     private int m_CurrentPlayerMP;
-    private int m_CallCount;
 
     private float m_AmountPlayerHP = 1;
     private float m_AmountPlayerMP = 1;
@@ -52,28 +51,31 @@ public class PlayerData : MonoBehaviour
     private float m_HPTimer;
     private float m_MPTimer;
 
-    private const float m_RealToAmountConst = 0.001f;
-    private const int m_AmountToRealConst = 1000;
+    private float m_RealToAmountHPConst = 0.001f;
+    private float m_RealToAmountMPConst = 0.001f;
 
-    private WeaponInfo m_CurrentWeaponInfo;
+    private int m_AmountToRealHPConst = 1000;
+    private int m_AmountToRealMPConst = 1000;
+
+    private int m_CallCount;
 
     #region Property
     public Inventory Inventory { get => m_Inventory; }
-    public PlayerState m_PlayerState { get; } = new PlayerState();
+    public PlayerState PlayerState { get; } = new PlayerState();
     public Action<bool> GrabAction { get; set; }
     public Action<Transform, Transform, Transform, Transform> GrabPoint {get;set;}
     public Func<int, int, WeaponData> WeaponDataFunc { get; set; }
+    private WeaponInfo m_CurrentWeaponInfo { get; set; }
 
     public bool IsAlive { get; set; } = true;
-    public int PlayerMaxHP { get; } = 1000;
-    public int PlayerMaxMP { get; } = 1000;
+    public bool IsSameMaxCurrentHP { get => PlayerHP == m_MaxPlayerHP; }
     public int PlayerHP 
     {
         get => m_CurrentPlayerHP;
         set
         {
             m_CurrentPlayerHP = Mathf.Clamp(value, 0, m_MaxPlayerHP);
-            m_AmountPlayerHP = m_CurrentPlayerHP * m_RealToAmountConst;
+            m_AmountPlayerHP = m_CurrentPlayerHP * m_RealToAmountHPConst;
         } 
     }
 
@@ -83,9 +85,32 @@ public class PlayerData : MonoBehaviour
         set
         {
             m_CurrentPlayerMP = Mathf.Clamp(value, 0, m_MaxPlayerMP);
-            m_AmountPlayerMP = m_CurrentPlayerMP * m_RealToAmountConst;
+            m_AmountPlayerMP = m_CurrentPlayerMP * m_RealToAmountMPConst;
         }
     }
+    
+    public int PlayerMaxHP
+    {
+        get => m_MaxPlayerHP;
+        set
+        {
+            m_MaxPlayerHP = value;
+            m_AmountToRealHPConst = m_MaxPlayerHP;
+            m_RealToAmountHPConst = 1 / (float)m_AmountToRealHPConst;
+        }
+    }
+
+    public int PlayerMaxMP
+    {
+        get => m_MaxPlayerMP;
+        set
+        {
+            m_MaxPlayerMP = value;
+            m_AmountToRealMPConst = m_MaxPlayerMP;
+            m_RealToAmountMPConst = 1 / (float)m_AmountToRealMPConst;
+        }
+    }
+
     #endregion
 
     #region UnityFuction
@@ -93,7 +118,7 @@ public class PlayerData : MonoBehaviour
     {
         PlayerHP = m_MaxPlayerHP;
         PlayerMP = m_MaxPlayerMP;
-        m_PlayerUIManager.Init(PlayerMaxHP, PlayerMaxMP, m_AmountToRealConst, m_RealToAmountConst, m_Inventory.HealKitHavingCount);
+        m_PlayerUIManager.Init(m_MaxPlayerHP, m_MaxPlayerMP, m_AmountToRealHPConst, m_RealToAmountHPConst, m_Inventory.HealKitHavingCount);
     }
 
     private void Update()
@@ -107,7 +132,9 @@ public class PlayerData : MonoBehaviour
             m_PlayerUIManager.UpdatePlayerHP(m_AmountPlayerHP);
         }
 
-        if ((m_MPTimer += Time.deltaTime) >= m_AutoMPHealTime)
+        if ((m_MPTimer += Time.deltaTime) >= m_AutoMPHealTime &&
+            PlayerState.PlayerBehaviorState != PlayerBehaviorState.Running &&
+            PlayerState.PlayerBehaviorState != PlayerBehaviorState.Jumping)
         {
             m_MPTimer = 0;
             PlayerMP += m_AutoMPHealAmount;
@@ -191,7 +218,8 @@ public class PlayerData : MonoBehaviour
         m_CurrentWeaponInfo.m_MagazineRemainBullet--;
         m_CurrentWeaponInfo.m_CurrentRemainBullet++;
 
-        m_PlayerUIManager.RangeWeaponReload(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, m_CurrentWeaponInfo.IsActiveReloadImage());
+        m_PlayerUIManager.RangeWeaponReload(m_CurrentWeaponInfo.m_MagazineRemainBullet);
+        m_PlayerUIManager.RangeWeaponFire(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.IsActiveReloadImage());
     }
 
     public void RangeWeaponReload()
@@ -208,7 +236,8 @@ public class PlayerData : MonoBehaviour
             m_CurrentWeaponInfo.m_MagazineRemainBullet = 0;
             m_CurrentWeaponInfo.m_CurrentRemainBullet = totalBullet;
         }
-        m_PlayerUIManager.RangeWeaponReload(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, m_CurrentWeaponInfo.IsActiveReloadImage());
+        m_PlayerUIManager.RangeWeaponReload(m_CurrentWeaponInfo.m_MagazineRemainBullet);
+        m_PlayerUIManager.RangeWeaponFire(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.IsActiveReloadImage());
     }
 
     //private bool IsActiveReloadImage() 
@@ -305,6 +334,7 @@ public class PlayerData : MonoBehaviour
     public void GetSupply(int slotNumber, int amount)
     {
         m_Inventory.WeaponInfo[slotNumber].m_MagazineRemainBullet += amount;
+        m_PlayerUIManager.RangeWeaponReload(m_CurrentWeaponInfo.m_MagazineRemainBullet);
     }
 
     public void MaxBulletUp(float amount)
@@ -325,12 +355,17 @@ public class PlayerData : MonoBehaviour
 
     public void MaxHealthUp(int amount)
     {
-        m_MaxPlayerHP += amount;
+        PlayerMaxHP += amount;
+        PlayerHP += amount;
+        m_PlayerUIManager.UpdatePlayerMaxHP(m_MaxPlayerHP, m_AmountToRealHPConst);
+        m_PlayerUIManager.UpdatePlayerHP(m_AmountPlayerHP);
     }
 
     public void MaxStaminaUp(int amount)
     {
-        m_MaxPlayerMP += amount;
+        PlayerMaxMP += amount;
+        PlayerMP += amount;
+        m_PlayerUIManager.UpdatePlayerMP(m_AmountPlayerMP);
     }
 
     public void StaminaConsumeDown(int amount)

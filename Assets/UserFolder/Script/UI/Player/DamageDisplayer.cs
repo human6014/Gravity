@@ -28,6 +28,10 @@ namespace UI.Player
             m_Indicator.gameObject.SetActive(false);
         }
 
+        public void ReCalcScreenAlpha(int maxHP, int amountToRealConst)
+            => m_HPToScreenAlpha = amountToRealConst / maxHP * m_MaxAlpha;
+        
+
         public void DisplayBloodScreen(float HPAmount)
         {
             float healthRatio = HPAmount * m_HPToScreenAlpha;

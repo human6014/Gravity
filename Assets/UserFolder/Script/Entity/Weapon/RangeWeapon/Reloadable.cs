@@ -25,6 +25,8 @@ namespace Entity.Object.Weapon
         [Tooltip("탄알집 오브젝트")]
         [SerializeField] private PoolableScript m_MagazineObject;
 
+        [SerializeField] private AnimationClip[] m_ReloadAnimationClips;
+
         [Header("Pooling")]
         [Tooltip("풀링 오브젝트 하이라키 위치")]
         [SerializeField] private Transform m_ActiveObjectPool;
@@ -40,12 +42,12 @@ namespace Entity.Object.Weapon
         protected Animator m_ArmAnimator;
         protected Animator m_EquipmentAnimator;
 
-        [SerializeField] private float m_TestAcceleration = 0;
+        private float m_ReloadSpeedUpPercentage;
 
-        public bool m_IsReloading { get; protected set; }
-        public bool m_IsNonEmptyReloading { get; protected set; }
-        public bool m_IsEmptyReloading { get; protected set; }
-        public Interactabe m_HowInteratable { get; protected set; }
+        public bool IsReloading { get; protected set; }
+        public bool IsNonEmptyReloading { get; protected set; }
+        public bool IsEmptyReloading { get; protected set; }
+        public Interactabe HowInteratable { get; protected set; }
 
 
         protected virtual void Awake() => m_AudioSource = GetComponentInParent<AudioSource>();
@@ -60,9 +62,17 @@ namespace Entity.Object.Weapon
             if (!m_HasMagazine) return;
             m_MagazinePoolingObject = ObjectPoolManager.Register(m_MagazineObject, m_ActiveObjectPool);
             m_MagazinePoolingObject.GenerateObj(m_PoolingCount);
+        }
 
-            //this.m_EquipmentAnimator.speed += m_TestAcceleration / 100;
-            //this.m_ArmAnimator.speed += m_TestAcceleration / 100;
+        public void SetReloadSpeedPercentage(float ReloadSpeedUpPercentage)
+        {
+            m_ReloadSpeedUpPercentage = ReloadSpeedUpPercentage;
+
+            m_EquipmentAnimator.SetFloat("Reload Speed", ReloadSpeedUpPercentage);
+            m_EquipmentAnimator.SetFloat("Empty Reload Speed", ReloadSpeedUpPercentage);
+
+            m_ArmAnimator.SetFloat("Reload Speed", ReloadSpeedUpPercentage);
+            m_ArmAnimator.SetFloat("Empty Reload Speed", ReloadSpeedUpPercentage);
         }
 
         public abstract void DoReload(bool m_IsEmpty, int difference);
@@ -88,9 +98,7 @@ namespace Entity.Object.Weapon
                 for (int i = 0; i < reloadSoundClip.Length; i++)
                 {
                     delayTime = reloadSoundClip[i].delayTime;
-                    //Debug.Log("기존 시간 : \t" + delayTime);
-                    //delayTime -= delayTime * (m_TestAcceleration / 100);
-                    //Debug.Log("가속된 시간 : \t" + delayTime);
+                    delayTime = Mathf.Max(delayTime - (delayTime * (m_ReloadSpeedUpPercentage - 1)), 0.05f);
                     yield return new WaitForSeconds(delayTime);
 
                     m_AudioSource.PlayOneShot(reloadSoundClip[i].audioClip);
@@ -113,9 +121,7 @@ namespace Entity.Object.Weapon
                 for (int i = 0; i < reloadSoundClip.Length; i++)
                 {
                     delayTime = reloadSoundClip[i].delayTime;
-                    //Debug.Log("기존 시간 : \t" + delayTime);
-                    //delayTime -= delayTime * (m_TestAcceleration / 100);
-                    //Debug.Log("가속된 시간 : \t" + delayTime);
+                    delayTime = Mathf.Max(delayTime - (delayTime * (m_ReloadSpeedUpPercentage - 1)), 0.05f);
                     yield return new WaitForSeconds(delayTime);
 
                     m_AudioSource.PlayOneShot(reloadSoundClip[i].audioClip);

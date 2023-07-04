@@ -97,7 +97,7 @@ namespace Entity.Object.Weapon
 
         private void Update()
         {
-            if (PlayerData.m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
+            if (PlayerData.PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
             {
                 if (!m_IsRunning)
                 {
@@ -136,7 +136,7 @@ namespace Entity.Object.Weapon
             }
         }
 
-        private bool CanThrowing() => !m_IsThrowing && PlayerData.m_PlayerState.PlayerBehaviorState != PlayerBehaviorState.Running && WeaponInfo.m_CurrentRemainBullet > 0;
+        private bool CanThrowing() => !m_IsThrowing && PlayerData.PlayerState.PlayerBehaviorState != PlayerBehaviorState.Running && WeaponInfo.m_CurrentRemainBullet > 0;
         private void TryLongThrow()
         {
             if (!CanThrowing()) return;

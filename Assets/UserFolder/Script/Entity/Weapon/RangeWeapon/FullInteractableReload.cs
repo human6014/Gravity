@@ -13,7 +13,7 @@ namespace Entity.Object.Weapon
         protected override void Awake()
         {
             base.Awake();
-            m_HowInteratable = Interactabe.Full;
+            HowInteratable = Interactabe.Full;
         }
 
         public override void DoReload(bool m_IsEmpty, int difference)
@@ -24,19 +24,19 @@ namespace Entity.Object.Weapon
 
         private IEnumerator InteractableNonEmptyReload(int difference)
         {
-            m_IsReloading = true;
-            m_IsNonEmptyReloading = true;
+            IsReloading = true;
+            IsNonEmptyReloading = true;
 
             yield return base.DelaySoundWithAnimation(m_RangeWeaponSound.reloadSoundClips, difference);
 
-            m_IsNonEmptyReloading = false;
-            m_IsReloading = false;
+            IsNonEmptyReloading = false;
+            IsReloading = false;
         }
 
         private IEnumerator InteractableEmptyReload(int difference)
         {
-            m_IsReloading = true;
-            m_IsEmptyReloading = true;
+            IsReloading = true;
+            IsEmptyReloading = true;
 
             m_ArmAnimator.SetTrigger("Empty Reload");
             m_EquipmentAnimator.SetTrigger("Empty Reload");
@@ -50,16 +50,16 @@ namespace Entity.Object.Weapon
 
                 yield return base.DelaySoundWithAnimation(m_RangeWeaponSound.reloadSoundClips, difference - 1, 0.3f);
             }
-            m_IsEmptyReloading = false;
-            m_IsReloading = false;
+            IsEmptyReloading = false;
+            IsReloading = false;
         }
 
 
         public override void StopReload()
         {
-            m_IsReloading = false;
-            m_IsEmptyReloading = false;
-            m_IsNonEmptyReloading = false;
+            IsReloading = false;
+            IsEmptyReloading = false;
+            IsNonEmptyReloading = false;
             StopAllCoroutines();
         }
 

@@ -14,7 +14,7 @@ namespace Entity.Object.Weapon
         protected override void Awake()
         {
             base.Awake();
-            m_HowInteratable = Interactabe.Non;
+            HowInteratable = Interactabe.Non;
         }
 
         public override void DoReload(bool m_IsEmpty, int difference)
@@ -23,7 +23,7 @@ namespace Entity.Object.Weapon
 
         private IEnumerator Reload(bool m_IsEmpty)
         {
-            m_IsReloading = true;
+            IsReloading = true;
             string animParamName = m_IsEmpty == true ? "Empty Reload" : "Reload";
 
             WeaponSoundScriptable.DelaySoundClip[] soundClips;
@@ -37,9 +37,9 @@ namespace Entity.Object.Weapon
 
             m_PlayerData.RangeWeaponReload();
             base.InstanceMagazine();
-            m_IsReloading = false;
+            IsReloading = false;
         }
 
-        public override bool CanFire() => !m_IsReloading;
+        public override bool CanFire() => !IsReloading;
     }
 }

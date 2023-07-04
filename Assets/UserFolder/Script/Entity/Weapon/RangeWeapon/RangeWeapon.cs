@@ -47,7 +47,7 @@ namespace Entity.Object.Weapon
 
         public override int MaxBullet => m_RangeWeaponStat.m_MaxBullets;
         public override bool CanChangeWeapon => base.CanChangeWeapon && !m_IsFiring && !IsReloading;
-        private bool IsReloading => m_Reloadable.m_IsReloading;
+        private bool IsReloading => m_Reloadable.IsReloading;
 
         public override void PreAwake()
         {
@@ -75,7 +75,7 @@ namespace Entity.Object.Weapon
 
         private void Start()
         {
-            m_Fireable.Setup(m_RangeWeaponStat, WeaponManager.EffectPoolingObjectArray, PlayerData.m_PlayerState);
+            m_Fireable.Setup(m_RangeWeaponStat, WeaponManager.EffectPoolingObjectArray, PlayerData.PlayerState);
             m_Reloadable.Setup(m_RangeWeaponSound, m_ArmAnimator);
         }
 
@@ -109,8 +109,8 @@ namespace Entity.Object.Weapon
         #region Running & Walking
         private void Update()
         {
-            m_CurrentFireTime += Time.deltaTime;
-            if (PlayerData.m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
+            m_CurrentFireTime += Time.deltaTime * WeaponManager.AttackSpeedUpPercentage;
+            if (PlayerData.PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
             {
                 if (!m_IsRunning)
                 {
@@ -148,20 +148,20 @@ namespace Entity.Object.Weapon
         #region Aiming
         private void TryAiming(bool isAiming)
         {
-            if (PlayerData.m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
+            if (PlayerData.PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
             {
-                PlayerData.m_PlayerState.SetWeaponIdle();
+                PlayerData.PlayerState.SetWeaponIdle();
                 return;
             }
 
             if (isAiming)
             {
-                PlayerData.m_PlayerState.SetWeaponAiming();
+                PlayerData.PlayerState.SetWeaponAiming();
                 AimingPosRot(m_RangeWeaponStat.m_AimingPivotPosition, m_AimingPivotRotation, m_AimingFOV);
             }
             else
             {
-                PlayerData.m_PlayerState.SetWeaponIdle();
+                PlayerData.PlayerState.SetWeaponIdle();
                 AimingPosRot(WeaponManager.OriginalPivotPosition, WeaponManager.OriginalPivotRotation, WeaponManager.OriginalFOV);
             }
             SetCurrentFireIndex(isAiming);
@@ -219,19 +219,20 @@ namespace Entity.Object.Weapon
         private void TryReload()
         {
             if (base.IsEquiping || base.IsUnequiping) return;
-            if (m_Reloadable.m_IsReloading || m_IsFiring) return;
+            if (m_Reloadable.IsReloading || m_IsFiring) return;
             if (!WeaponInfo.CanReload()) return;
 
             bool isEmpty = WeaponInfo.m_CurrentRemainBullet <= 0;
 
             WeaponInfo.GetDifferenceValue(out int difference);
+            m_Reloadable.SetReloadSpeedPercentage(WeaponManager.ReloadSpeedUpPercentage);
             m_Reloadable.DoReload(isEmpty, difference);
         }
         #endregion
 
         #region Fire
         private bool CanFire() => m_CurrentFireTime >= m_RangeWeaponStat.m_AttackTime  &&
-            PlayerData.m_PlayerState.PlayerBehaviorState != PlayerBehaviorState.Running && m_Reloadable.CanFire() && !m_IsFiring;
+            PlayerData.PlayerState.PlayerBehaviorState != PlayerBehaviorState.Running && m_Reloadable.CanFire() && !m_IsFiring;
         
         private bool m_OnFireSound;
         private void TryAutoFire()
@@ -281,7 +282,7 @@ namespace Entity.Object.Weapon
 
             m_Reloadable.StopReload();
             PlayerData.RangeWeaponFire();
-            PlayerData.m_PlayerState.SetWeaponFiring();
+            PlayerData.PlayerState.SetWeaponFiring();
 
             AudioClip audioClip = m_RangeWeaponSound.fireSound[Random.Range(0, m_RangeWeaponSound.fireSound.Length)];
             AudioSource.PlayOneShot(audioClip);
@@ -289,6 +290,7 @@ namespace Entity.Object.Weapon
             EquipmentAnimator.SetBool("Fire", true);
             m_ArmAnimator.SetBool("Fire", true);
 
+            m_Fireable.SetDamageUpPercentage(WeaponManager.DamageUpPercentage);
             if (m_Fireable.DoFire()) PlayerData.HitEnemy();
 
             audioClip = m_RangeWeaponSound.fireTailSound[Random.Range(0, m_RangeWeaponSound.fireTailSound.Length)];

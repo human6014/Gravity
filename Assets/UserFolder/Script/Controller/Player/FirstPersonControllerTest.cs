@@ -259,7 +259,7 @@ namespace Contoller.Player
         private void TryCrouch(bool isCrouch)
         {
             m_IsCrouch = isCrouch;
-            m_PlayerData.m_PlayerState.SetBehaviorCrouching(isCrouch);
+            m_PlayerData.PlayerState.SetBehaviorCrouching(isCrouch);
 
             Vector3 posture = isCrouch ? m_CrouchPos : m_IdlePos;
             StopAllCoroutines();

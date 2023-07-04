@@ -22,6 +22,7 @@ public class WeaponInfo
     public int m_CurrentRemainBullet;
     public int m_MagazineRemainBullet;
     public int m_MaxBullet;
+
     public WeaponInfo(int index, int remainBullet, int magazineBullet, int maxBullet)
     {
         m_HavingWeaponIndex = index;
@@ -45,7 +46,6 @@ public class WeaponInfo
 
     public bool IsActiveReloadImage()
         => m_CurrentRemainBullet < m_MaxBullet * 0.5f && m_MaxBullet != 0 && m_MagazineRemainBullet != 0;
-    
 }
 [System.Serializable]
 public class Inventory

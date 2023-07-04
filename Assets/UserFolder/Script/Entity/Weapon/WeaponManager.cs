@@ -117,7 +117,7 @@ namespace Manager.Weapon
         private async void TryHealInteract()
         {
             if (m_PlayerData.Inventory.HealKitHavingCount < 1) return;
-            if (m_PlayerData.PlayerMaxHP <= m_PlayerData.PlayerHP) return;
+            if (m_PlayerData.IsSameMaxCurrentHP) return;
             if (IsInteracting) return;
 
             bool isNull = m_CurrentWeapon == null;
@@ -144,12 +144,12 @@ namespace Manager.Weapon
 
         public void AttackSpeedUp(float amount)
         {
-
+            AttackSpeedUpPercentage += amount;
         }
 
         public void ReloadSpeedUp(float amount)
         {
-
+            ReloadSpeedUpPercentage += amount;
         }
     }
 }
