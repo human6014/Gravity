@@ -17,9 +17,6 @@ namespace Entity.Object.Weapon
         private MeleeWeaponSoundScripatble m_MeleeWeaponSound;
         private MeleeWeaponStatScriptable m_MeleeWeaponStat;
 
-        private ObjectPoolManager.PoolingObject[] m_EffectPoolingObject;
-        private SurfaceManager m_SurfaceManager;
-        private Transform m_CameraTransform;
         private Coroutine m_RunningCoroutine;
         private Attackable m_Attackable;
 
@@ -34,7 +31,6 @@ namespace Entity.Object.Weapon
         public override bool CanChangeWeapon => base.CanChangeWeapon && !m_IsAttacking;
         private bool CanComboAttacking() => m_CanComboAttack && (m_IsLightAttacking && !m_IsHeavyAttacking);
 
-
         public override void PreAwake()
         {
             base.PreAwake();
@@ -48,19 +44,12 @@ namespace Entity.Object.Weapon
             m_MeleeWeaponSound = (MeleeWeaponSoundScripatble)base.m_WeaponSoundScriptable;
 
             m_Attackable = GetComponent<Attackable>();
-            m_SurfaceManager = FindObjectOfType<SurfaceManager>();
-            m_CameraTransform = MainCamera.transform;
 
             m_RunningPivotRotation = Quaternion.Euler(m_MeleeWeaponStat.m_RunningPivotDirection);
         }
 
         private void Start() 
             => m_Attackable.Setup(m_MeleeWeaponStat, WeaponManager.EffectPoolingObjectArray, MainCamera.transform);
-        
-
-        private void AssignPoolingObject()
-            => m_EffectPoolingObject = WeaponManager.EffectPoolingObjectArray;
-
 
         protected override void AssignKeyAction()
         {
@@ -71,8 +60,8 @@ namespace Entity.Object.Weapon
 
         private void Update()
         {
-            m_CurrentFireTime += Time.deltaTime;
-            if (PlayerData.m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
+            m_CurrentFireTime += Time.deltaTime * WeaponManager.AttackSpeedUpPercentage;
+            if (PlayerData.PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
             {
                 if (!m_IsRunning)
                 {
@@ -107,7 +96,7 @@ namespace Entity.Object.Weapon
                 m_Pivot.localPosition = Vector3.Lerp(startLocalPosition, EndPosition, elapsedTime);
                 m_Pivot.localRotation = Quaternion.Lerp(startLocalRotation, EndRotation, elapsedTime);
 
-                yield return elapsedTime;
+                yield return null;
             }
         }
 
@@ -149,6 +138,7 @@ namespace Entity.Object.Weapon
             AudioClip[] playingAudio = m_SwingIndex == 1 ? m_MeleeWeaponSound.m_HeavyAttackSound : m_MeleeWeaponSound.m_LightAttackSound;
 
             AudioSource.PlayOneShot(playingAudio[Random.Range(0, playingAudio.Length)]);
+            m_Attackable.SetDamageUpPercentage(WeaponManager.DamageUpPercentage);
             if (m_Attackable.SwingCast()) PlayerData.HitEnemy();
         }
 

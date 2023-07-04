@@ -170,7 +170,7 @@ namespace Entity.Object.Weapon
         {
             DischargeKeyAction();
             IsUnequiping = true;
-            PlayerData.m_PlayerState.SetWeaponChanging(true);
+            PlayerData.PlayerState.SetWeaponChanging(true);
             m_ArmAnimator.SetTrigger("Unequip");
             EquipmentAnimator.SetTrigger("Unequip");
             AudioSource.PlayOneShot(m_WeaponSoundScriptable.unequipSound);
@@ -190,7 +190,7 @@ namespace Entity.Object.Weapon
             m_CrossHairDisplayer.SetCrossHair((int)m_WeaponStatScriptable.m_DefaultCrossHair);
 
             yield return m_WaitEquipingTime;
-            PlayerData.m_PlayerState.SetWeaponChanging(false);
+            PlayerData.PlayerState.SetWeaponChanging(false);
 
             IsEquiping = false;
         }

@@ -32,7 +32,7 @@ namespace UI.Player
 
         private void Awake()
         {
-            m_PlayerState = FindObjectOfType<PlayerData>().m_PlayerState;
+            m_PlayerState = FindObjectOfType<PlayerData>().PlayerState;
             m_Animator = GetComponent<Animator>();
             crossHairImage = GetComponentsInChildren<Image>();
         }

@@ -130,8 +130,8 @@ namespace Contoller.Player
         private bool m_IsWalking;
 
 
-
-        #region Awake
+        #region UnityFunction
+        #region Init
         private void Awake()
         {
             m_PlayerInputController = GetComponent<PlayerInputController>();
@@ -186,7 +186,7 @@ namespace Contoller.Player
                 {
                     ApplyToGravity(false, 0);
                     m_IsJumping = false;
-                    m_PlayerData.m_PlayerState.SetBehaviorJumping(false);
+                    m_PlayerData.PlayerState.SetBehaviorJumping(false);
                 }
                 StartCoroutine(m_JumpBob.DoBobCycle());
                 PlayLandingSound();
@@ -195,10 +195,44 @@ namespace Contoller.Player
             if (!m_IsGround && !m_IsJumping && m_WasGround) ApplyToGravity(false, 0);
             
             m_WasGround = m_IsGround;
+        }
+        private void FixedUpdate()
+        {
+            if (m_IsGrabed) return;
+            m_IsGround = GroundCheck(out RaycastHit hitInfo);
+            AIManager.PlayerIsGround = m_IsGround;
 
+            if (m_IsThrowing)
+            {
+                if (m_IsGround)
+                {
+                    m_RigidBody.useGravity = false;
+                    m_IsThrowing = false;
+                }
+                return;
+            }
+
+            if (m_IsGround)
+            {
+                if (!m_IsJumping)
+                    ApplyToGravity(false, m_StickToGroundForce * GravityManager.GravityDirectionValue);
+            }
+            else m_MoveDir += Physics.gravity * Time.fixedDeltaTime;
+
+
+            m_DesiredMove = m_RightAxisTransform.forward * m_Input.y + m_RightAxisTransform.right * m_Input.x;
+            m_DesiredMove = Vector3.ProjectOnPlane(m_DesiredMove, hitInfo.normal).normalized;
+
+            ApplyToGravity(true, m_MovementSpeed);
+
+            m_RigidBody.velocity = m_MoveDir;
+
+            ProgressStepCycle(m_MovementSpeed);
+            UpdateCameraPosition(m_MovementSpeed);
             ReversePosCheck();
         }
 
+        #endregion
         #region Grab
         private void GrabActionPoint(Transform grabCameraPosition, Transform grabBodyPosition, Transform grabRotation, Transform throwingPosition)
         {
@@ -225,43 +259,14 @@ namespace Contoller.Player
         }
         #endregion
 
-        private void FixedUpdate()
-        {
-            if (m_IsGrabed) return;
-            m_IsGround = GroundCheck(out RaycastHit hitInfo);
-            AIManager.PlayerIsGround = m_IsGround;
-
-            if (m_IsThrowing)
-            {
-                if (m_IsGround)
-                {
-                    m_RigidBody.useGravity = false;
-                    m_IsThrowing = false;
-                }
-                return;
-            }
-
-            if (m_IsGround)
-            {
-                if (!m_IsJumping)
-                    ApplyToGravity(false, m_StickToGroundForce * GravityManager.GravityDirectionValue);
-            }
-            else m_MoveDir += Physics.gravity * Time.fixedDeltaTime;
-            
-
-            m_DesiredMove = m_RightAxisTransform.forward * m_Input.y + m_RightAxisTransform.right * m_Input.x;
-            m_DesiredMove = Vector3.ProjectOnPlane(m_DesiredMove, hitInfo.normal).normalized;
-
-            ApplyToGravity(true, m_MovementSpeed);
-
-            m_RigidBody.velocity = m_MoveDir;
-
-            ProgressStepCycle(m_MovementSpeed);
-            UpdateCameraPosition(m_MovementSpeed);
-        }
-
         private bool GroundCheck(out RaycastHit hitInfo)
            => Physics.Raycast(transform.position, GravityManager.GravityVector, out hitInfo, m_CapsuleCollider.height * 0.5f + m_InterporationDist, m_GroundLayer);
+        
+        private void ReversePosCheck()
+        {
+            bool isHitReverseGround = Physics.Raycast(transform.position, transform.up, out RaycastHit hit, 10, reversePosLayer);
+            AIManager.PlayerRerversePosition = isHitReverseGround ? hit.point : Vector3.zero;
+        }
 
         private void ApplyToGravity(bool isDuple, float value)
         {
@@ -304,12 +309,43 @@ namespace Contoller.Player
             if (!m_IsGround || m_IsJumping || !m_PlayerData.CanJumping()) return;
 
             ApplyToGravity(false, m_JumpSpeed * -GravityManager.GravityDirectionValue);
-            m_PlayerData.m_PlayerState.SetBehaviorJumping(true);
+            m_PlayerData.PlayerState.SetBehaviorJumping(true);
             PlayJumpSound();
 
             m_IsJumping = true;
         }
 
+        #region Add Detail
+        private void ProgressStepCycle(float speed)
+        {
+            if (m_IsMoving)
+                m_StepCycle += (m_RigidBody.velocity.magnitude + (speed * (m_IsWalking ? m_WalkStepLenghten : m_RunStepLenghten))) * Time.fixedDeltaTime;
+            
+            if (m_StepCycle <= m_NextStep) return;
+            
+            m_NextStep = m_StepCycle + m_StepInterval;
+
+            PlayFootStepAudio();
+        }
+        private void UpdateCameraPosition(float speed)
+        {
+            if (!m_UseHeadBob) return;
+            Vector3 newCameraPosition = m_UpAxisTransfrom.localPosition;
+
+            if (m_IsMoving && m_IsGround &&
+                m_PlayerData.PlayerState.PlayerWeaponState != PlayerWeaponState.Aiming)
+            {
+                m_UpAxisTransfrom.localPosition = m_HeadBob.DoHeadBob(m_RigidBody.velocity.magnitude +
+                                      (speed * (m_IsWalking ? m_WalkStepLenghten : m_RunStepLenghten)));
+                newCameraPosition.y = m_UpAxisTransfrom.localPosition.y - m_JumpBob.Offset();
+            }
+            else newCameraPosition.y = m_OriginalCameraPosition.y - m_JumpBob.Offset();
+
+            m_UpAxisTransfrom.localPosition = newCameraPosition;
+        }
+        #endregion
+
+        #region PlaySound
         private void PlayLandingSound()
         {
             m_AudioSource.clip = m_LandSound;
@@ -323,18 +359,6 @@ namespace Contoller.Player
             m_AudioSource.Play();
         }
 
-        private void ProgressStepCycle(float speed)
-        {
-            if (m_IsMoving)
-                m_StepCycle += (m_RigidBody.velocity.magnitude + (speed * (m_IsWalking ? m_WalkStepLenghten : m_RunStepLenghten))) * Time.fixedDeltaTime;
-            
-            if (m_StepCycle <= m_NextStep) return;
-            
-            m_NextStep = m_StepCycle + m_StepInterval;
-
-            PlayFootStepAudio();
-        }
-
         private void PlayFootStepAudio()
         {
             if (!m_IsGround) return;
@@ -346,31 +370,16 @@ namespace Contoller.Player
             m_FootstepSounds[n] = m_FootstepSounds[0];
             m_FootstepSounds[0] = m_AudioSource.clip;
         }
+        #endregion
 
-        private void UpdateCameraPosition(float speed)
-        {
-            if (!m_UseHeadBob) return;
-            Vector3 newCameraPosition = m_UpAxisTransfrom.localPosition;
-
-            if (m_IsMoving && m_IsGround && 
-                m_PlayerData.m_PlayerState.PlayerWeaponState != PlayerWeaponState.Aiming)
-            {
-                m_UpAxisTransfrom.localPosition = m_HeadBob.DoHeadBob(m_RigidBody.velocity.magnitude +
-                                      (speed * (m_IsWalking ? m_WalkStepLenghten : m_RunStepLenghten)));
-                newCameraPosition.y = m_UpAxisTransfrom.localPosition.y - m_JumpBob.Offset();
-            }
-            else newCameraPosition.y = m_OriginalCameraPosition.y - m_JumpBob.Offset();
-            
-            m_UpAxisTransfrom.localPosition = newCameraPosition;
-        }
-        
+        #region Movement
         private void TryMovement(float horizontal, float vertical)
         {
             m_MovementSpeed = (m_IsWalking ? m_WalkSpeed : m_RunSpeed) * m_MovementMultiplier;
             m_Input = new Vector2(horizontal, vertical);
 
-            if (m_Input == Vector2.zero) m_PlayerData.m_PlayerState.SetBehaviorIdle();
-            else m_PlayerData.m_PlayerState.SetBehaviorWalking();
+            if (m_Input == Vector2.zero) m_PlayerData.PlayerState.SetBehaviorIdle();
+            else m_PlayerData.PlayerState.SetBehaviorWalking();
             m_IsMoving = m_Input != Vector2.zero;
 
             if (m_Input.sqrMagnitude > 1) m_Input.Normalize();
@@ -381,12 +390,6 @@ namespace Contoller.Player
                 StartCoroutine(!m_IsWalking ? m_FovKick.FOVKickUp() : m_FovKick.FOVKickDown());
             }
         }
-
-        public void MoveSpeedUp(int amount)
-        {
-            m_MovementMultiplier += amount * 0.01f;
-        }
-
         private void TryRun(bool isRunning)
         {
             m_WasWalking = m_IsWalking;
@@ -397,19 +400,19 @@ namespace Contoller.Player
             if (canRunning && isRunning && m_PlayerData.CanRunning()) m_IsWalking = false;
             else m_IsWalking = true;
 
-            m_PlayerData.m_PlayerState.SetBehaviorRunning(!m_IsWalking);
+            m_PlayerData.PlayerState.SetBehaviorRunning(!m_IsWalking);
         }
 
-        private void ReversePosCheck()
+        public void MoveSpeedUp(int amount)
         {
-            bool isHitReverseGround = Physics.Raycast(transform.position, transform.up, out RaycastHit hit, 10, reversePosLayer);
-            AIManager.PlayerRerversePosition = isHitReverseGround ? hit.point : Vector3.zero;
+            m_MovementMultiplier += amount * 0.01f;
         }
+        #endregion
 
         #region Crouch
         private void TryCrouch(bool isCrouch)
         {
-            m_PlayerData.m_PlayerState.SetBehaviorCrouching(isCrouch);
+            m_PlayerData.PlayerState.SetBehaviorCrouching(isCrouch);
 
             Vector3 posture = isCrouch ? m_CrouchPos : m_IdlePos;
             StopAllCoroutines();

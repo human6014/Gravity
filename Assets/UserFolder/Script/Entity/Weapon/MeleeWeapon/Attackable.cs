@@ -16,8 +16,9 @@ namespace Entity.Object.Weapon
         private ObjectPoolManager.PoolingObject[] m_EffectPoolingObject;
         private SurfaceManager m_SurfaceManager;
         private AudioSource m_AudioSource;
+        private AudioClip[] m_AudioClips;
 
-        private AudioClip[] audioClips;
+        private int m_RealDamage;
         public void Setup(MeleeWeaponStatScriptable meleeWeaponStatScriptable, ObjectPoolManager.PoolingObject[] effectPoolingObject, Transform cameraTransform)
         {
             m_MeleeWeaponStat = meleeWeaponStatScriptable;
@@ -33,7 +34,8 @@ namespace Entity.Object.Weapon
             if (hit.transform.TryGetComponent(out IDamageable damageable))
             {
                 Vector3 dir = (hit.point - m_ForcePoint.position).normalized * m_MeleeWeaponStat.m_AttackForce;
-                damageable.Hit(m_MeleeWeaponStat.m_Damage, m_MeleeWeaponStat.m_BulletType, dir);
+                damageable.Hit(m_RealDamage, m_MeleeWeaponStat.m_BulletType, dir);
+                Debug.Log(m_RealDamage);
                 return true;
             }
 
@@ -63,8 +65,13 @@ namespace Entity.Object.Weapon
         private void EffectSet(out AudioClip audioClip, out DefaultPoolingScript effectObj, int hitEffectNumber)
         {
             effectObj = (DefaultPoolingScript)m_EffectPoolingObject[hitEffectNumber].GetObject(false);
-            audioClips = m_SurfaceManager.GetSlashHitEffectSounds(hitEffectNumber - 3);
-            audioClip = audioClips[Random.Range(0, audioClips.Length)];
+            m_AudioClips = m_SurfaceManager.GetSlashHitEffectSounds(hitEffectNumber - 3);
+            audioClip = m_AudioClips[Random.Range(0, m_AudioClips.Length)];
+        }
+
+        public void SetDamageUpPercentage(float DamageUpPercentage)
+        {
+            m_RealDamage = (int)(m_MeleeWeaponStat.m_Damage * DamageUpPercentage);
         }
 
         public abstract bool SwingCast();
