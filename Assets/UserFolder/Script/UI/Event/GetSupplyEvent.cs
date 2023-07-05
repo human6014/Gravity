@@ -12,7 +12,7 @@ namespace UI.Event
 
         public override void DoSkill()
         {
-            m_PlayerSkillReceiver.GetSupplyEvent(m_SlotNumber, m_BulletAmount);
+            PlayerSkillReceiver.GetSupplyEvent(m_SlotNumber, m_BulletAmount);
         }
     }
 }

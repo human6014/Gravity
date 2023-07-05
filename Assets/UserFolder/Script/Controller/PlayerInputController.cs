@@ -14,16 +14,16 @@ namespace Contoller
             KeyCode.Z,
             KeyCode.X,
             KeyCode.C
-    };
+        };
 
         private readonly KeyCode[] m_EquipmentChangeInput =
         {
-        KeyCode.Alpha1,
-        KeyCode.Alpha2,
-        KeyCode.Alpha3,
-        KeyCode.Alpha4,
-        KeyCode.Alpha5
-    };
+            KeyCode.Alpha1,
+            KeyCode.Alpha2,
+            KeyCode.Alpha3,
+            KeyCode.Alpha4,
+            KeyCode.Alpha5
+        };
 
         private int m_GravityKeyInput = 1;  //중력 조절       Z,X,C             누르기
         private int m_EquipmentKeyInput = 1;//아이템 선택     1,2,3,4,5         누르기
@@ -73,17 +73,17 @@ namespace Contoller
         public Action Light { get; set; }
 
         //key
-        public Action<bool> Aiming { get; set; }          //Down
-        public Action AutoFire { get; set; }        //Down, + @
+        public Action<bool> Aiming { get; set; }        //Down
+        public Action AutoFire { get; set; }            //Down, + @
         public Action SemiFire { get; set; }
         public Action HeavyFire { get; set; }
-        public Action<bool> Run { get; set; }             //Down
+        public Action<bool> Run { get; set; }           //Down
 
         public Action ChangeFireMode { get; set; }
 
         private void Update()
         {
-            if (m_SettingUIManager.IsPause || m_SettingUIManager.IsActivePauseUI) return;
+            if (m_SettingUIManager.IsPause) return;
 
             m_MouseX = Input.GetAxis("Mouse X");
             m_MouseY = Input.GetAxis("Mouse Y");
@@ -127,10 +127,6 @@ namespace Contoller
 
 
             // FixedUpdate 에서 넘어옴
-
-
-
-
             m_IsAutoFiring = Input.GetKey(KeyCode.Mouse0);
             if (m_IsAutoFiring) AutoFire?.Invoke();
 
@@ -147,6 +143,8 @@ namespace Contoller
 
         private void FixedUpdate()
         {
+            if (m_SettingUIManager.IsPause) return;
+
             m_Horizontal = Input.GetAxis("Horizontal");
             m_Vertical = Input.GetAxis("Vertical");
             PlayerMovement?.Invoke(m_Horizontal, m_Vertical);

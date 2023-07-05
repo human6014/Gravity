@@ -100,7 +100,7 @@ namespace Entity.Object.Weapon
         /// 무기 아이콘
         /// </summary>
         public Sprite WeaponIcon { get => m_WeaponStatScriptable.m_WeaponIcon; }
-        public virtual int MaxBullet { get => 0; }
+        public virtual int MaxBullet { get => 0; set => MaxBullet = value; }
         public virtual bool CanChangeWeapon { get => !IsEquiping && !IsUnequiping; }
         public bool IsEquiping { get; private set; }
         public bool IsUnequiping { get; private set; }

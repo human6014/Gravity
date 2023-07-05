@@ -18,7 +18,7 @@ namespace UI.Event
 
         public override void DoSkill()
         {
-            m_PlayerSkillReceiver.SupportSkillEvent(m_SupportEventType, m_Amount);
+            PlayerSkillReceiver.SupportSkillEvent(m_SupportEventType, m_Amount);
         }
     }
 }

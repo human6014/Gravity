@@ -18,7 +18,7 @@ namespace UI.Event
 
         public override void DoSkill()
         {
-            m_PlayerSkillReceiver.DefenseSkillEvent(m_DefenseEventType, m_Amount);
+            PlayerSkillReceiver.DefenseSkillEvent(m_DefenseEventType, m_Amount);
         }
     }
 }

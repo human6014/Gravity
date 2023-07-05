@@ -35,7 +35,7 @@ namespace Manager
         private void Update()
         {
             m_GameTime += Time.deltaTime;
-            if(!m_SkillEventManager.m_IsOnEvent) m_SkillEventTimer += Time.deltaTime;
+            if(!m_SkillEventManager.IsOnEvent) m_SkillEventTimer += Time.deltaTime;
 
             if (!m_SpawnManager.IsSP1MonsterSpawned && m_GameTime >= m_SP1SpawnTiming) m_SpawnManager.SpawnSpecialMonster1();
 

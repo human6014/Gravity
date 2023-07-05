@@ -60,8 +60,8 @@ namespace UI.Manager
         private const int m_DefaultDisplayCount = 3;
         private int m_GameEventCount = 0;
 
-        private int[] m_EventCounts = new int[7];
-        public bool m_IsOnEvent { get; private set; }
+        private readonly int[] m_EventTypeCounts = new int[7];
+        public bool IsOnEvent { get; private set; }
 
         private void Awake()
         {
@@ -78,17 +78,14 @@ namespace UI.Manager
                 m_FixedSpecificDict.Add(fse.m_EventCount, fse);
         }
 
-        [ContextMenu("OccurSkillEvent")]
         public void OccurSkillEvent()
         {
-            m_IsOnEvent = true;
+            IsOnEvent = true;
             m_SkillPos.gameObject.SetActive(true);
             m_Animator.SetTrigger("Show");
 
-            m_SettingUIManager.PauseMode(true);
-            //m_SettingUIManager.IsActivePauseUI = true; 
+            m_SettingUIManager.IsActiveSkillEventUI = true;
 
-            //수정할것 버그 있음
             m_GameEventCount++;
 
             BatchSkillUI();
@@ -102,10 +99,10 @@ namespace UI.Manager
             else if (m_FixedSpecificDict.ContainsKey(m_GameEventCount)) eventType = BatchFixedSpecific();
             else eventType = BatchRandom();
 
-            m_EventCounts[eventType]++;
+            m_EventTypeCounts[eventType]++;
 
             for (int i = 0; i < m_CurrentVisibleSkillEvents.Count; i++)
-                m_CurrentVisibleSkillEvents[i].PointerDownAction += OnPointerDown;
+                m_CurrentVisibleSkillEvents[i].PointerClickAction += OnPointerDown;
         }
 
         /// <summary>
@@ -187,24 +184,21 @@ namespace UI.Manager
         }
 
         #endregion
-        [ContextMenu("EndSkillEvent")]
         public void EndSkillEvent()
         {
             m_Animator.SetTrigger("Hide");
-            m_SettingUIManager.PauseMode(false);
-            //m_SettingUIManager.IsActivePauseUI = false; //수정할것
-
+            
             for (int i = 0; i < m_CurrentVisibleSkillEvents.Count; i++)
-            {
                 m_CurrentVisibleSkillEvents[i].Dispose();
-            }
             m_CurrentVisibleSkillEvents.Clear();
+
+            m_SettingUIManager.IsActiveSkillEventUI = false;
         }
 
         #region Animation Event
         public void EndHideAnimation()
         {
-            m_IsOnEvent = false; 
+            IsOnEvent = false; 
             m_SkillPos.gameObject.SetActive(false);
         }
         #endregion

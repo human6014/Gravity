@@ -37,6 +37,8 @@ namespace Entity.Object.Weapon
         private int m_FireModeLength;
         private int m_FireModeIndex = 1;
 
+        private int m_CurrentMaxBullet;
+
         private float m_CurrentFireTime;
         private float m_CurrentPosTime;
         private float m_AimingFOV;
@@ -44,8 +46,7 @@ namespace Entity.Object.Weapon
         private bool m_IsFiring;
         private bool m_IsRunning;
 
-
-        public override int MaxBullet => m_RangeWeaponStat.m_MaxBullets;
+        public override int MaxBullet { get => m_CurrentMaxBullet; set => m_CurrentMaxBullet = value; }
         public override bool CanChangeWeapon => base.CanChangeWeapon && !m_IsFiring && !IsReloading;
         private bool IsReloading => m_Reloadable.IsReloading;
 
@@ -53,6 +54,7 @@ namespace Entity.Object.Weapon
         {
             base.PreAwake();
             m_RangeWeaponStat = (RangeWeaponStatScriptable)base.m_WeaponStatScriptable;
+            m_CurrentMaxBullet = m_RangeWeaponStat.m_MaxBullets;
         }
 
         protected override void Awake()

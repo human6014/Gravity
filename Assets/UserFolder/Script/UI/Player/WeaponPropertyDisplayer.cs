@@ -7,7 +7,7 @@ namespace UI.Player
 {
     public class WeaponPropertyDisplayer : MonoBehaviour
     {
-        private const int m_MaxBulletCount = 40;
+        private const int m_MaxBulletCount = 50;
         private int top = -1;       //top번째 배열 원소는 활성화 상태임
 
         [SerializeField] private GameObject m_ReloadNotification;
@@ -21,6 +21,7 @@ namespace UI.Player
         [SerializeField] private Sprite [] m_BulletIcon;
 
         public readonly GameObject[] m_BulletTemplate = new GameObject[m_MaxBulletCount];
+        public readonly Image[] m_BulletTemplateImage = new Image[m_MaxBulletCount];
         private Sprite currentBulletImage;
 
         public void Init()
@@ -37,6 +38,7 @@ namespace UI.Player
             foreach(Transform g in m_BulletGroup)
             {
                 m_BulletTemplate[iter] = g.gameObject;
+                m_BulletTemplateImage[iter] = g.GetComponent<Image>();
                 iter++;
             }
         }
@@ -52,7 +54,7 @@ namespace UI.Player
             currentBulletImage = m_BulletIcon[bulletType - 1];
             for (int i = 0; i < currentRemainBullet; i++)
             {
-                m_BulletTemplate[i].GetComponent<Image>().sprite = currentBulletImage;
+                m_BulletTemplateImage[i].sprite = currentBulletImage;
                 m_BulletTemplate[i].SetActive(true);
             }
             top = currentRemainBullet;
@@ -84,7 +86,11 @@ namespace UI.Player
         {
             if (value >= top)
             {
-                for (int i = 0; i < value; i++) m_BulletTemplate[i].SetActive(true);  //바로 5번 무기 들고 공격 시 버그
+                for (int i = 0; i < value; i++)
+                {
+                    m_BulletTemplateImage[i].sprite = currentBulletImage;
+                    m_BulletTemplate[i].SetActive(true);  //바로 5번 무기 들고 공격 시 버그
+                }
                 top = value;
             }
             else

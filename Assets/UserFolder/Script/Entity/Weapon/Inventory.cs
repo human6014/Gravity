@@ -21,7 +21,13 @@ public class WeaponInfo
     public int m_HavingWeaponIndex;
     public int m_CurrentRemainBullet;
     public int m_MagazineRemainBullet;
-    public int m_MaxBullet;
+    private int m_MaxBullet;
+
+    public int MaxBullet 
+    { 
+        get => m_MaxBullet;
+        set => m_MaxBullet = Mathf.Clamp(value, 0, 50);
+    }
 
     public WeaponInfo(int index, int remainBullet, int magazineBullet, int maxBullet)
     {
