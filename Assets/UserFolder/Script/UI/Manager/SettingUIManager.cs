@@ -9,15 +9,18 @@ namespace UI.Manager
     {
         [SerializeField] private Game.SettingPanel m_SettingPanel;
 
-        bool m_IsPause;
-        bool m_IsActivePauseUI;
-        public bool IsPause 
+        private bool m_IsActiveSkillEventUI;
+        private bool m_IsActivePauseUI;
+
+        public bool IsPause { get => IsActiveSkillEventUI || IsActivePauseUI; private set => IsPause = value; }
+
+        public bool IsActiveSkillEventUI
         {
-            get =>  m_IsPause;
+            get => m_IsActiveSkillEventUI;
             set
             {
-                m_IsPause = value;
-                PauseMode(value);
+                m_IsActiveSkillEventUI = value;
+                PauseMode();
             }
         }
 
@@ -28,40 +31,36 @@ namespace UI.Manager
             {
                 m_IsActivePauseUI = value;
                 m_SettingPanel.TryActive(value);
-                IsPause = value;      
+                PauseMode();
             }
         }
-        //버그 있음
 
-        private void Awake() => PauseMode(false);
+        private void Awake() => PauseMode();
 
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape)) IsActivePauseUI = !IsActivePauseUI;
         }
 
-        private void DoChangePanel()
+        private void PauseMode()
         {
-            IsActivePauseUI = !IsActivePauseUI;
-            m_SettingPanel.TryActive(IsActivePauseUI);
-            PauseMode(IsActivePauseUI);
+            Cursor.visible = IsPause;
+            Cursor.lockState = IsPause ? CursorLockMode.None : CursorLockMode.Locked;
+            Time.timeScale = IsPause ? 0 : 1;
         }
 
-        public void PauseMode(bool isActive)
+        #region UnityEvent
+        public void Resume() => IsActivePauseUI = false;
+        
+        public void Setting()
         {
-            Cursor.visible = isActive;
-            Cursor.lockState = isActive ? CursorLockMode.None : CursorLockMode.Locked;
-            Time.timeScale = isActive ? 0 : 1;
-        }
-
-        public void Resume()
-        {
-            //DoChangePanel();
+            //연결 안함 아직
         }
 
         public void ReturnLobby()
         {
             Debug.Log("ReturnLobby");
         }
+        #endregion
     }
 }

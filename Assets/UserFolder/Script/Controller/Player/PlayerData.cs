@@ -21,10 +21,10 @@ public class PlayerData : MonoBehaviour
 
 
     [Tooltip("특정 시간당 회복 할 HP계수")]
-    [SerializeField] private int m_AutoHPHealAmount = 2;
+    [SerializeField] private int m_AutoHPHealAmount = 1;
 
     [Tooltip("특정 시간당 회복 할 MP계수")]
-    [SerializeField] private int m_AutoMPHealAmount = 12;
+    [SerializeField] private int m_AutoMPHealAmount = 10;
 
     [Tooltip("HP 회복 할 시간")]
     [SerializeField] private float m_AutoHPHealTime = 0.1f;
@@ -61,11 +61,11 @@ public class PlayerData : MonoBehaviour
 
     #region Property
     public Inventory Inventory { get => m_Inventory; }
+    private WeaponInfo CurrentWeaponInfo { get; set; }
     public PlayerState PlayerState { get; } = new PlayerState();
     public Action<bool> GrabAction { get; set; }
     public Action<Transform, Transform, Transform, Transform> GrabPoint {get;set;}
     public Func<int, int, WeaponData> WeaponDataFunc { get; set; }
-    private WeaponInfo m_CurrentWeaponInfo { get; set; }
 
     public bool IsAlive { get; set; } = true;
     public bool IsSameMaxCurrentHP { get => PlayerHP == m_MaxPlayerHP; }
@@ -170,9 +170,9 @@ public class PlayerData : MonoBehaviour
     /// <param name="weaponImage">무기 아이콘 이미지</param>
     public void ChangeWeapon(int equipingWeaponType, AttackType attackType, FireMode fireMode, Sprite weaponImage)
     {
-        m_CurrentWeaponInfo = m_Inventory.WeaponInfo[equipingWeaponType];
-        m_PlayerUIManager.ChangeWeapon(equipingWeaponType, (int)attackType, GetBitPosition((int)fireMode), m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet, weaponImage);
-        m_PlayerUIManager.DisplayReloadImage(m_CurrentWeaponInfo.IsActiveReloadImage());
+        CurrentWeaponInfo = m_Inventory.WeaponInfo[equipingWeaponType];
+        m_PlayerUIManager.ChangeWeapon(equipingWeaponType, (int)attackType, GetBitPosition((int)fireMode), CurrentWeaponInfo.m_CurrentRemainBullet, CurrentWeaponInfo.m_MagazineRemainBullet, weaponImage);
+        m_PlayerUIManager.DisplayReloadImage(CurrentWeaponInfo.IsActiveReloadImage());
     }
 
     /// <summary>
@@ -207,42 +207,38 @@ public class PlayerData : MonoBehaviour
     /// </summary>
     public void RangeWeaponFire()
     {
-        m_CurrentWeaponInfo.m_CurrentRemainBullet--;
-        m_PlayerUIManager.RangeWeaponFire(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.IsActiveReloadImage());
+        CurrentWeaponInfo.m_CurrentRemainBullet--;
+        m_PlayerUIManager.RangeWeaponFire(CurrentWeaponInfo.m_CurrentRemainBullet, CurrentWeaponInfo.IsActiveReloadImage());
     }
     #endregion
 
     #region Reload related
     public void RangeWeaponCountingReload()
     {
-        m_CurrentWeaponInfo.m_MagazineRemainBullet--;
-        m_CurrentWeaponInfo.m_CurrentRemainBullet++;
+        CurrentWeaponInfo.m_MagazineRemainBullet--;
+        CurrentWeaponInfo.m_CurrentRemainBullet++;
 
-        m_PlayerUIManager.RangeWeaponReload(m_CurrentWeaponInfo.m_MagazineRemainBullet);
-        m_PlayerUIManager.RangeWeaponFire(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.IsActiveReloadImage());
+        m_PlayerUIManager.RangeWeaponReload(CurrentWeaponInfo.m_MagazineRemainBullet);
+        m_PlayerUIManager.RangeWeaponFire(CurrentWeaponInfo.m_CurrentRemainBullet, CurrentWeaponInfo.IsActiveReloadImage());
     }
 
     public void RangeWeaponReload()
     {
-        int totalBullet = m_CurrentWeaponInfo.m_CurrentRemainBullet + m_CurrentWeaponInfo.m_MagazineRemainBullet;
+        int totalBullet = CurrentWeaponInfo.m_CurrentRemainBullet + CurrentWeaponInfo.m_MagazineRemainBullet;
         int maxBullet;
-        if (totalBullet > (maxBullet = m_CurrentWeaponInfo.m_MaxBullet))
+        if (totalBullet > (maxBullet = CurrentWeaponInfo.MaxBullet))
         {
-            m_CurrentWeaponInfo.m_MagazineRemainBullet -= maxBullet - m_CurrentWeaponInfo.m_CurrentRemainBullet;
-            m_CurrentWeaponInfo.m_CurrentRemainBullet = maxBullet;
+            CurrentWeaponInfo.m_MagazineRemainBullet -= maxBullet - CurrentWeaponInfo.m_CurrentRemainBullet;
+            CurrentWeaponInfo.m_CurrentRemainBullet = maxBullet;
         }
         else
         {
-            m_CurrentWeaponInfo.m_MagazineRemainBullet = 0;
-            m_CurrentWeaponInfo.m_CurrentRemainBullet = totalBullet;
+            CurrentWeaponInfo.m_MagazineRemainBullet = 0;
+            CurrentWeaponInfo.m_CurrentRemainBullet = totalBullet;
         }
-        m_PlayerUIManager.RangeWeaponReload(m_CurrentWeaponInfo.m_MagazineRemainBullet);
-        m_PlayerUIManager.RangeWeaponFire(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.IsActiveReloadImage());
+        m_PlayerUIManager.RangeWeaponReload(CurrentWeaponInfo.m_MagazineRemainBullet);
+        m_PlayerUIManager.RangeWeaponFire(CurrentWeaponInfo.m_CurrentRemainBullet, CurrentWeaponInfo.IsActiveReloadImage());
     }
-
-    //private bool IsActiveReloadImage() 
-    //    => m_CurrentWeaponInfo.m_CurrentRemainBullet < m_CurrentWeaponInfo.m_MaxBullet * 0.5f && 
-    //       m_CurrentWeaponInfo.m_MaxBullet != 0 && m_CurrentWeaponInfo.m_MagazineRemainBullet != 0;
     #endregion
 
     #region HP,MP related
@@ -327,20 +323,22 @@ public class PlayerData : MonoBehaviour
         // 형태만 변경 대기
         m_Inventory.WeaponInfo[slotNumber].m_HavingWeaponIndex = weaponIndex;
         m_Inventory.WeaponInfo[slotNumber].m_CurrentRemainBullet = weaponData.m_MaxBullet;
-        m_Inventory.WeaponInfo[slotNumber].m_MaxBullet = weaponData.m_MaxBullet;
+        m_Inventory.WeaponInfo[slotNumber].MaxBullet += weaponData.m_MaxBullet;
         m_Inventory.WeaponInfo[slotNumber].m_MagazineRemainBullet = weaponData.m_MagazineRemainBullet;
     }
 
     public void GetSupply(int slotNumber, int amount)
     {
         m_Inventory.WeaponInfo[slotNumber].m_MagazineRemainBullet += amount;
-        m_PlayerUIManager.RangeWeaponReload(m_CurrentWeaponInfo.m_MagazineRemainBullet);
+        m_PlayerUIManager.RangeWeaponReload(CurrentWeaponInfo.m_MagazineRemainBullet);
     }
 
     public void MaxBulletUp(float amount)
     {
-        //모든 무기들 순회
-        //or WeaponManager에서 순회
+        for(int slotNumber = 1; slotNumber <= 3; slotNumber++)
+        {
+            m_Inventory.WeaponInfo[slotNumber].MaxBullet += (int)amount;
+        }
     }
 
     public void HealKitRateUp(int amount)

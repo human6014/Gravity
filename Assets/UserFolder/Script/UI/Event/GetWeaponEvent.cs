@@ -12,7 +12,7 @@ namespace UI.Event
 
         public override void DoSkill()
         {
-            m_PlayerSkillReceiver.GetWeaponEvent(m_SlotNumber, m_WeaponIndex);
+            PlayerSkillReceiver.GetWeaponEvent(m_SlotNumber, m_WeaponIndex);
         }
     }
 }

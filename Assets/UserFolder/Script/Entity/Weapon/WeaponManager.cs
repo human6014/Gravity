@@ -37,7 +37,7 @@ namespace Manager.Weapon
 
         private int m_CurrentEquipIndex = -1; //현재 장착하고 있는 무기 슬롯 번호
         private const int m_ToolKitToEquipIndex = 5;
-        private bool IsInteracting;
+        private bool m_IsInteracting;
 
         public Vector3 OriginalPivotPosition { get; private set; }            //위치 조정용 부모 오브젝트 원래 위치
         public Quaternion OriginalPivotRotation { get; private set; }         //위치 조정용 부모 오브젝트 원래 각도
@@ -87,7 +87,7 @@ namespace Manager.Weapon
 
         private async void TryWeaponChange(int slotNumber)
         {
-            if (IsInteracting) return;
+            if (m_IsInteracting) return;
             int index = m_PlayerData.Inventory.WeaponInfo[slotNumber].m_HavingWeaponIndex;
             if (index < 0) return;
             if (m_CurrentWeapon != null)
@@ -118,14 +118,14 @@ namespace Manager.Weapon
         {
             if (m_PlayerData.Inventory.HealKitHavingCount < 1) return;
             if (m_PlayerData.IsSameMaxCurrentHP) return;
-            if (IsInteracting) return;
+            if (m_IsInteracting) return;
 
             bool isNull = m_CurrentWeapon == null;
             bool canChangeWeapon = false;
 
             if (!isNull && !(canChangeWeapon = m_CurrentWeapon.CanChangeWeapon)) return;
 
-            IsInteracting = true;
+            m_IsInteracting = true;
             if (isNull) await m_Syringe.TryHeal();
             else if (canChangeWeapon)
             {
@@ -134,8 +134,10 @@ namespace Manager.Weapon
                 m_CurrentWeapon.Init();
             }
             m_PlayerData.UsingHealKit(-1);
-            IsInteracting = false;
+            m_IsInteracting = false;
         }
+
+        #region UnityEvent
 
         public void DamageUp(float amount)
         {
@@ -151,5 +153,6 @@ namespace Manager.Weapon
         {
             ReloadSpeedUpPercentage += amount;
         }
+        #endregion
     }
 }

@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using Manager.AI;
 
 namespace UI.Event
 {
-    public abstract class SkillEvent : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
+    public abstract class SkillEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         [Header("Parent")]
         [Tooltip("마우스를 올렸을 때 활성화 할 오브젝트")]
@@ -27,39 +26,35 @@ namespace UI.Event
 
         private int m_CurrentLevel = 1;
         private int m_CallingCount = 0;
-        public event System.Action PointerDownAction;
+        public event System.Action PointerClickAction;
 
-        public int Level 
+        public int CurrentLevel 
         {
             get => m_CurrentLevel;
             private set { m_CurrentLevel = Mathf.Clamp(value, 1, m_MaxLevel); }
         }
         public Scriptable.UI.EventType EventType { get; }
-        protected PlayerSkillReceiver m_PlayerSkillReceiver { get; private set; }
-        
+        protected PlayerSkillReceiver PlayerSkillReceiver { get; private set; }
 
         #region PointerHandler
-        public void OnPointerDown(PointerEventData eventData)
+        public void OnPointerClick(PointerEventData eventData)
         {
-            PointerDownAction?.Invoke();
-            Level = m_CurrentLevel + 1;
-            //Debug.Log(Level);
+            PointerClickAction?.Invoke();
+            CurrentLevel++;
         }
 
         public void OnPointerEnter(PointerEventData eventData) 
             => m_OutlineUI.SetActive(true);
         
-
         public void OnPointerExit(PointerEventData eventData) 
             => m_OutlineUI.SetActive(false);
-        
+
         #endregion
 
-        private void Awake() => PointerDownAction += DoSkill;
-        
-        private void Start()
+        private void Awake() 
         {
-            m_PlayerSkillReceiver = AIManager.PlayerTransform.GetComponent<PlayerSkillReceiver>();
+            PointerClickAction += DoSkill;
+            PlayerSkillReceiver = FindObjectOfType<PlayerSkillReceiver>();
         }
 
         public virtual void Init()
@@ -70,9 +65,6 @@ namespace UI.Event
 
         public abstract void DoSkill();
 
-        public virtual void Dispose()
-        {
-            gameObject.SetActive(false);
-        }
+        public virtual void Dispose() => gameObject.SetActive(false);
     }
 }
