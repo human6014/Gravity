@@ -11,22 +11,34 @@ namespace Entity.Unit.Normal
 
         private RagDollChanger m_RagDollChanger;
         private NormalMonsterAI m_NormalMonsterAI;
+        private NormalMonsterAnimController m_NormalMonsterAnimController;
         private PlayerData m_PlayerData;
-        private Animator m_Animator;
         
         private int m_CurrentHP;
         private bool m_IsAlive;
         private float m_AttackTimer;
 
         public System.Action<int, AttackType> HitEvent { get; set; }
-
+        private bool CanAttack
+        {
+            get => m_AttackTimer >= settings.m_AttackSpeed &&
+                    Vector3.Distance(Manager.AI.AIManager.PlayerTransform.position, transform.position)
+                    <= settings.m_AttackRange;
+        }
         public NoramlMonsterType GetMonsterType() => settings.m_MonsterType;
+
+        public void OnOffRagdoll(bool isActive)
+        {
+            if (isActive) m_RagDollChanger.ChangeToRagDoll();
+            else m_RagDollChanger.ChangeToOriginal();
+        }
 
         private void Awake()
         {
             m_RagDollChanger = GetComponent<RagDollChanger>();
             m_NormalMonsterAI = GetComponent<NormalMonsterAI>();
-            m_Animator = GetComponentInChildren<Animator>();
+            m_NormalMonsterAnimController = GetComponent<NormalMonsterAnimController>();
+            m_NormalMonsterAI.RagdollOnOffAction += OnOffRagdoll;
         }
 
         public void Init(Vector3 pos, Manager.ObjectPoolManager.PoolingObject poolingObject)
@@ -35,6 +47,7 @@ namespace Entity.Unit.Normal
             m_CurrentHP = settings.m_HP;
             m_IsAlive = true;
             m_NormalMonsterAI.Init(pos);
+            m_NormalMonsterAnimController.Init();
             m_PlayerData = Manager.AI.AIManager.PlayerTransform.GetComponent<PlayerData>();
             m_PoolingObject = poolingObject;
         }
@@ -47,33 +60,28 @@ namespace Entity.Unit.Normal
             //¼º´É issue
             Move();
 
-            if (CanAttack()) Attack();
+            if (CanAttack) Attack();
 
             if (m_NormalMonsterAI.IsMalfunction)
             {
                 m_IsAlive = false;
+                m_NormalMonsterAI.Dispose();
                 ReturnObject();
             }
-        }
-
-        private bool CanAttack()
-        {
-            if (m_AttackTimer >= settings.m_AttackSpeed &&
-                Vector3.Distance(Manager.AI.AIManager.PlayerTransform.position, transform.position) <= settings.m_AttackRange)
-                return true;
-            return false;
         }
 
         public void Move()
         {
             m_NormalMonsterAI.Move();
-            //animator.SetBool("isMove", true);
+            if (m_NormalMonsterAI.IsClimbing) m_NormalMonsterAnimController.PlayCrawl(true);
+            else m_NormalMonsterAnimController.PlayWalk(true);
         }
 
         public void Attack()
         {
             m_AttackTimer = 0;
 
+            m_NormalMonsterAnimController.PlayAttack();
             m_PlayerData.PlayerHit(transform, settings.m_Damage, settings.m_NoramlAttackType);
         }
 
@@ -104,20 +112,17 @@ namespace Entity.Unit.Normal
 
         public void Die()
         {
-            Debug.Log("Die");
             m_CurrentHP = 0;
             m_IsAlive = false;
 
             m_NormalMonsterAI.Dispose();
             m_RagDollChanger.ChangeToRagDoll();
             Invoke(nameof(ReturnObject),10);
-            //ReturnObject();
         }
 
         [ContextMenu("ReturnObject")]
         public override void ReturnObject()
         {
-            
             Manager.SpawnManager.NormalMonsterCount--;
             m_PoolingObject.ReturnObject(this);
         }

@@ -1028,9 +1028,8 @@ GameObject:
   - component: {fileID: 6856809650439802834}
   - component: {fileID: 4717416265459387795}
   - component: {fileID: 3104493595405107392}
-  - component: {fileID: 6443214548509682614}
   - component: {fileID: 8178215152342686326}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GiantZombie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1064,7 +1063,7 @@ Animator:
   m_GameObject: {fileID: 823408897669662156}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: f57f85ae5e7398b4cb8c70a5432d5a7d, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 441315c724822a2408c5ceb7d7ce3493, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -1131,22 +1130,6 @@ LODGroup:
     - renderer: {fileID: 7667216858077871529}
     - renderer: {fileID: 4178217654908917806}
   m_Enabled: 1
---- !u!54 &6443214548509682614
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 823408897669662156}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!136 &8178215152342686326
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -9107,8 +9090,10 @@ GameObject:
   - component: {fileID: 7500330024229283057}
   - component: {fileID: 6602246692695085894}
   - component: {fileID: 6788990093087940451}
+  - component: {fileID: 3505591569880603524}
   - component: {fileID: -6130877166836249328}
   - component: {fileID: 5262254899861945277}
+  - component: {fileID: 3373766842919099250}
   m_Layer: 8
   m_Name: GiantZombie
   m_TagString: Untagged
@@ -9185,6 +9170,18 @@ MonoBehaviour:
     m_Bits: 417792
   castHeight: 2.7
   castRadius: 0.9
+--- !u!114 &3505591569880603524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5867953557993454527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245133e4adcad84bb599911414719b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &-6130877166836249328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9225,6 +9222,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_OriginalObject: {fileID: 823408897669662156}
   m_RagDollObject: {fileID: 3734599987646485557}
+--- !u!54 &3373766842919099250
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5867953557993454527}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &5927479122158827235
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,56 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 using Manager.AI;
 using Manager;
 
+
 public class NormalMonsterAI : MonoBehaviour
 {
     [SerializeField] private LayerMask climbingDetectLayer;
-
-    private WaitForSeconds waitForSeconds = new(0.2f);
-    private NavMeshAgent navMeshAgent;
-    private NavMeshPath path;
-    private Rigidbody cachedRigidbody;
-
-    private Quaternion climbingLookRot;
-    private Quaternion autoTargetRot;
-    private Quaternion manualTargetRot;
-    private Vector3 autoTargetDir;
-    private Vector3 manualTargetDir;
-
-    private const float maximumFallingTime = 10;
-    private float stopDistance;
-    private float currentSpeed;
-    private float fallingTimer;
-    private bool detectCol;
     [SerializeField] private float castHeight = 1.9f;
     [SerializeField] private float castRadius = 0.5f;
 
+    private NavMeshAgent m_NavMeshAgent;
+    private Rigidbody m_Rigidbody;
+
+    private const float m_MaximumFallingTime = 10;
+    private float m_FallingTimer;
+    private bool m_WasNavMeshLink;
     public bool IsBatch { get; private set; } = false;
-    public bool IsFolling { get; private set; } = false;
+    public bool IsFalling { get; private set; } = false;
     public bool IsAutoMode { get; private set; } = true;
     public bool IsClimbing { get; private set; } = false;
     public bool IsMalfunction { get; private set; } = false;
+    
+    public Action<bool> RagdollOnOffAction { get; set; }
 
     private void Awake()
     {
-        navMeshAgent = GetComponent<NavMeshAgent>();
-        cachedRigidbody = GetComponentInChildren<Rigidbody>();
+        m_NavMeshAgent = GetComponent<NavMeshAgent>();
+        m_Rigidbody = GetComponent<Rigidbody>();
 
-        stopDistance = navMeshAgent.stoppingDistance;
-        currentSpeed = navMeshAgent.speed;
-        navMeshAgent.updateRotation = false;
-        navMeshAgent.updateUpAxis = false;
-        path = new NavMeshPath();
+        m_NavMeshAgent.updateRotation = false;
+        m_NavMeshAgent.updateUpAxis = false;
     }
 
     public void Init(Vector3 pos)
     {
         IsBatch = true;
-        navMeshAgent.enabled = true;
-        navMeshAgent.Warp(pos);
+        m_NavMeshAgent.enabled = true;
+        m_NavMeshAgent.Warp(pos);
         transform.rotation = Quaternion.LookRotation(transform.forward, -GravityManager.GravityVector);
     }
 
@@ -60,161 +50,98 @@ public class NormalMonsterAI : MonoBehaviour
 
         if (GravityManager.IsGravityChanging)
         {
-            SetMode(false);
+            SetFallingMode(true);
             return;
         }
-        if (IsFolling)
+        if (IsFalling)
         {
-            DetectCol();
+            DetectWalkableArea();
             DetectMalfunction();
             return;
         }
 
-        if (IsAutoMode)
-        {
-            AutoMode();
-            //path.ClearCorners();
-            //navMeshAgent.CalculatePath(AIManager.PlayerTransfrom.position, path);
-        }
-
-        /*
-        if (path.status == NavMeshPathStatus.PathPartial) { }// ManualMode();
-        else if (path.status == NavMeshPathStatus.PathInvalid)
-        {
-
-        }
-        else AutoMode();
-        */
+        if (IsAutoMode) AutoMode();
     }
 
-    private void DetectCol()
+    private void DetectWalkableArea()
     {
-        //건물 오르는 중에 중력이 바뀌면 회전하면서 떨어짐
-        //따라서 위쪽방향 직선이 아니라 Collider가 필요
-        //레이어도 관리 필요함 (울타리 같은 애들)
-
-        // 대부분 정상 작동
         if (Physics.SphereCast(new Ray(transform.position, transform.up), castRadius, castHeight, climbingDetectLayer))
-            SetMode(true);
+            SetFallingMode(false);
     }
 
-    private void SetMode(bool isAutoMode)
+    private void SetFallingMode(bool isAutoMode)
     {
-        IsFolling = !isAutoMode;
-        cachedRigidbody.useGravity = !isAutoMode;
-        cachedRigidbody.isKinematic = isAutoMode;
-        navMeshAgent.enabled = isAutoMode;
-        IsAutoMode = isAutoMode;
+        if (isAutoMode && !IsFalling) RagdollOnOffAction?.Invoke(true);
+        else if (!isAutoMode && IsFalling) RagdollOnOffAction?.Invoke(false);
+        
+        IsFalling = isAutoMode;
+        m_Rigidbody.useGravity = isAutoMode;
+        m_Rigidbody.isKinematic = !isAutoMode;
+        m_NavMeshAgent.enabled = !isAutoMode;
+        IsAutoMode = !isAutoMode;
     }
 
     private void DetectMalfunction()
     {
-        fallingTimer += Time.deltaTime;
-        if (fallingTimer >= maximumFallingTime)
-        {
-            IsMalfunction = true;
-            Dispose();
-        }
+        m_FallingTimer += Time.deltaTime;
+        if (m_FallingTimer >= m_MaximumFallingTime) IsMalfunction = true; 
     }
 
+    #region Nav Move
     private void AutoMode()
     {
-        //Debug.Log("AutoMode");
+        m_FallingTimer = 0;
+        m_NavMeshAgent.SetDestination(AIManager.PlayerTransform.position);
 
-        fallingTimer = 0;
-        navMeshAgent.SetDestination(AIManager.PlayerTransform.position);
-
-        if (!navMeshAgent.isOnOffMeshLink && !AIManager.IsSameFloor(navMeshAgent))
-        {
-            IsClimbing = true;
-            climbingLookRot = Quaternion.LookRotation((navMeshAgent.navMeshOwner as Component).transform.position, -GravityManager.GravityVector);
-        }
-        else IsClimbing = false;
-
-        if (IsClimbing) autoTargetRot = climbingLookRot;
-        else
-        {
-            autoTargetDir = (navMeshAgent.steeringTarget - transform.position).normalized;
-
-            switch (GravityManager.gravityDirection)
-            {
-                case EnumType.GravityDirection.X:
-                    autoTargetDir.x = 0;
-                    break;
-                case EnumType.GravityDirection.Y:
-                    autoTargetDir.y = 0;
-                    break;
-                case EnumType.GravityDirection.Z:
-                    autoTargetDir.z = 0;
-                    break;
-            }
-            if (autoTargetDir == Vector3.zero)
-                autoTargetRot = Quaternion.LookRotation(AIManager.PlayerTransform.position, -GravityManager.GravityVector);
-            else
-                autoTargetRot = Quaternion.LookRotation(autoTargetDir, -GravityManager.GravityVector);
-        }
-        //cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, autoTargetRot, 0.2f);
-        //ㄴ 이동중에 뒤집힐듯 말듯 하는 현상 원인
+        Quaternion autoTargetRot = Quaternion.identity;
+        if (!m_NavMeshAgent.isOnOffMeshLink && !AIManager.IsSameFloor(m_NavMeshAgent)) 
+            ClimbingMove(ref autoTargetRot);
+        else NormalMove(ref autoTargetRot);
+        
         transform.rotation = autoTargetRot;
+        m_WasNavMeshLink = m_NavMeshAgent.isOnOffMeshLink;
+        //Climbing 시작, 끝부분 잡아내야함
+        //-> 애니메이션 연동 + GettingUp 등에서 정지상태로 해야 하기 때문
     }
+
+    private void ClimbingMove(ref Quaternion autoTargetRot)
+    {
+        if (!m_WasNavMeshLink && !IsClimbing) Debug.Log("StartClimbing");
+        IsClimbing = true;
+        autoTargetRot = Quaternion.LookRotation(-GravityManager.GravityVector,-(m_NavMeshAgent.navMeshOwner as Component).transform.position);
+    }
+
+    private void NormalMove(ref Quaternion autoTargetRot)
+    {
+        IsClimbing = false;
+        Vector3 autoTargetDir = (m_NavMeshAgent.steeringTarget - transform.position).normalized;
+
+        switch (GravityManager.gravityDirection)
+        {
+            case EnumType.GravityDirection.X:
+                autoTargetDir.x = 0;
+                break;
+            case EnumType.GravityDirection.Y:
+                autoTargetDir.y = 0;
+                break;
+            case EnumType.GravityDirection.Z:
+                autoTargetDir.z = 0;
+                break;
+        }
+        autoTargetRot = Quaternion.LookRotation(autoTargetDir, -GravityManager.GravityVector);
+    }
+    #endregion
 
     public void Dispose()
     {
-        navMeshAgent.enabled = false;
+        m_NavMeshAgent.enabled = false;
         IsBatch = false;
     }
-    /*
-    private Coroutine navDetect = null;
-    private void ManualMode()
+
+    private void OnDrawGizmosSelected()
     {
-        
-        Debug.Log("ManualMode");
-        if (navDetect == null) navDetect = StartCoroutine(DetectNavMeshOn());
-        
-        IsAutoMode = false;
-
-        //벽뚫고 옴
-        manualTargetDir = (AIManager.CurrentTargetPosition(cachedTransform) - cachedTransform.position).normalized;
-        manualTargetRot = Quaternion.LookRotation(manualTargetDir, -GravitiesManager.GravityVector);
-        cachedTransform.rotation = Quaternion.Lerp(cachedTransform.rotation, manualTargetRot, 0.2f);
-
-        if (Vector3.Distance(cachedTransform.position, AIManager.CurrentTargetPosition(cachedTransform)) < stopDistance) return;
-        cachedTransform.position += Time.deltaTime * currentSpeed * manualTargetDir;
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(transform.position, castRadius);
+        Gizmos.DrawSphere(transform.position + transform.up * castHeight, castRadius);
     }
-
-    
-    private IEnumerator DetectNavMeshOn()
-    {
-        //성능 부하 엄청남
-        //의도대로 안움직임
-        //-> 위에서 연결되지 않은 땅으로 떨어지는 경우
-        //중간중간에 계속 navMeshAgent를 켜서 위치를 강제 이동시켜서 그런 것 같음
-        while (true)
-        {
-            navMeshAgent.enabled = true;
-            if(navMeshAgent.isActiveAndEnabled && navMeshAgent.isOnNavMesh)
-            {
-                path.ClearCorners();
-                navMeshAgent.CalculatePath(AIManager.PlayerTransfrom.position, path);
-                if (path.status == NavMeshPathStatus.PathComplete)
-                {
-                    cachedRigidbody.useGravity = false;
-                    cachedRigidbody.isKinematic = true;
-                    IsAutoMode = true;
-                    navDetect = null;
-                    yield break;
-                }
-            }
-            navMeshAgent.enabled = false;
-            yield return null;
-        }
-    }
-    */
-
-    //private void OnDrawGizmosSelected()
-    //{
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawSphere(transform.position, castRadius);
-    //    Gizmos.DrawSphere(transform.position + transform.up * castHeight, castRadius);
-    //}
 }

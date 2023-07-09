@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UrbanZombieAnimController
+  m_Controller: {fileID: 9100000, guid: 441315c724822a2408c5ceb7d7ce3493, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: -203655887218126122, guid: dca1f0513a26d9445b6d7304eef5aa33,
+      type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: 8e36f0ede14b8e4418dabc28dca819c8,
+      type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: b59643369ff8b9c48816d35d6431558f,
+      type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: c244651884ce54f409b9bc2238e2a708,
+      type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: 1d7e24a3b80bc0e48bfbd512fcff055a,
+      type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: 36e65da1fff76e94bab7db8915a6a97b,
+      type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: f42c7e9aada2a7a4e92b649369f43e26,
+      type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: 0d36c7056c44e0e4a9d102226310b4f9,
+      type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: be2bd11964981f94787550732b25564d,
+      type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: e9f76be014fcf5a478e79d012fb1b9bb,
+      type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: 0b0efa496d858364e87c207eb13aac9c,
+      type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: f03d5832b2071344ea8fa9908198ccee,
+      type: 3}
