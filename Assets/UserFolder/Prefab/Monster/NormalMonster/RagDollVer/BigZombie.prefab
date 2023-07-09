@@ -4267,7 +4267,7 @@ GameObject:
   - component: {fileID: 993881955816618487}
   - component: {fileID: 1285010817937357974}
   - component: {fileID: 1005072637131193717}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BigZomibe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4301,7 +4301,7 @@ Animator:
   m_GameObject: {fileID: 4882158106205435736}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 6edfd1e7488f67541844027604aee633, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 85c9f346f1013204494dddc927361061, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -6876,6 +6876,7 @@ GameObject:
   - component: {fileID: 4916961174626956496}
   - component: {fileID: -2913809098598066082}
   - component: {fileID: 6737168753181531930}
+  - component: {fileID: 8913767867764477858}
   - component: {fileID: -6412295647024621301}
   - component: {fileID: 8482205819184408453}
   m_Layer: 8
@@ -6954,6 +6955,18 @@ MonoBehaviour:
     m_Bits: 417792
   castHeight: 2.4
   castRadius: 0.9
+--- !u!114 &8913767867764477858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8859791611582518511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d6f37bdc62e423458eac7ef5cf14f0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &-6412295647024621301
 MonoBehaviour:
   m_ObjectHideFlags: 0

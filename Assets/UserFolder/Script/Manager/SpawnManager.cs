@@ -67,8 +67,8 @@ namespace Manager
 
         #region Normal Value
         private EnumType.GravityType currentGravityType = EnumType.GravityType.yDown;
-        private readonly float[] m_Probs = new float[] { 52, 21, 21, 4, 2 };
-        //private readonly float[] m_Probs = new float[] { 50, 0, 0, 0, 50 };
+        //private readonly float[] m_Probs = new float[] { 52, 21, 21, 4, 2 };
+        private readonly float[] m_Probs = new float[] { 0, 0, 0, 0, 100 };
         private float m_Total = 0;
 
         private float m_NormalMonsterTimer;
@@ -257,12 +257,12 @@ namespace Manager
             IsSP1MonsterSpawned = true;
         }
 
-        private void SpawnSpecialMonster2()
+        public void SpawnSpecialMonster2()
         {
             IsSP2MonsterSpawned = true;
         }
 
-        private void SpawnSpecialMonster3()
+        public void SpawnSpecialMonster3()
         {
             IsSP3MonsterSpawned = true;
         }

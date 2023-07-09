@@ -3,12 +3,37 @@ guid: f57f85ae5e7398b4cb8c70a5432d5a7d
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Giant_Zombie_Body_Legs_MAT
+    second: {fileID: 2100000, guid: e1abafc0fd463654c83aa36bd5f202c7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Giant_Zombie_Body_MAT
+    second: {fileID: 2100000, guid: 5790bf331b5fbd848bae7794c205e6cd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Giant_Zombie_LowerBody_MAT
+    second: {fileID: 2100000, guid: 000c839d713aca1419a63035d36968a5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Giant_Zombie_TankTop_MAT
+    second: {fileID: 2100000, guid: 435af7ccdea49514ab2e164d598328c1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Giant_Zombie_Tshirt_MAT
+    second: {fileID: 2100000, guid: c45d6f06804f7c74aaf22f020d6288fa, type: 2}
   materials:
     materialImportMode: 1
     materialName: 1
     materialSearch: 1
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0

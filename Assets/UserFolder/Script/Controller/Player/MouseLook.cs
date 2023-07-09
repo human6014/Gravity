@@ -36,8 +36,6 @@ namespace Contoller.Player.Utility
 
         public void LookRotation(float mouseHorizontal, float mouseVertical)
         {
-            Debug.Log("LookRotation");
-
             float yRot = m_RightAxisRecoil + mouseHorizontal * XSensitivity;
             float xRot = m_UpAxisRecoil + mouseVertical * YSensitivity;
 

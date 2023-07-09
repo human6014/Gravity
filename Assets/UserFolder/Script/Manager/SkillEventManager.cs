@@ -183,7 +183,6 @@ namespace UI.Manager
             EndSkillEvent();
         }
 
-        #endregion
         public void EndSkillEvent()
         {
             m_Animator.SetTrigger("Hide");
@@ -194,6 +193,7 @@ namespace UI.Manager
 
             m_SettingUIManager.IsActiveSkillEventUI = false;
         }
+        #endregion
 
         #region Animation Event
         public void EndHideAnimation()

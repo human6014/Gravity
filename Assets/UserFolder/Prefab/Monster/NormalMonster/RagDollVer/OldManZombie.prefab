@@ -830,6 +830,7 @@ GameObject:
   - component: {fileID: 3692393216956997639}
   - component: {fileID: -127741219502407457}
   - component: {fileID: -1875183069119470787}
+  - component: {fileID: 4830995043508709699}
   - component: {fileID: 8833514753336622347}
   - component: {fileID: 9132846442729850382}
   m_Layer: 8
@@ -908,6 +909,18 @@ MonoBehaviour:
     m_Bits: 417792
   castHeight: 2.2
   castRadius: 0.8
+--- !u!114 &4830995043508709699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 975183230792573812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245133e4adcad84bb599911414719b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8833514753336622347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5882,7 +5895,7 @@ Animator:
   m_GameObject: {fileID: 7884403416162961347}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 47686f09b930a4046a9d2fff9cf90058, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: e2e03fbce9545864889eae335a2c0f8a, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
