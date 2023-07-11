@@ -19,7 +19,7 @@ namespace Entity.Unit.Normal
 
         #region Property
         public NormalMonsterBehaviorState BehaviorState { get; private set; }
-
+        private NormalMonsterBehaviorState BeforeBehaviorState { get; set; }
         public bool CanAttackState 
         {
             get => BehaviorState != NormalMonsterBehaviorState.Crawling &&
@@ -35,6 +35,11 @@ namespace Entity.Unit.Normal
         public NormalMonsterState(NormalMonsterAnimController normalMonsterAnimController)
         {
             m_NormalMonsterAnimController = normalMonsterAnimController;
+            Init();
+        }
+
+        public void Init()
+        {
             BehaviorState = NormalMonsterBehaviorState.Idle;
         }
 
@@ -76,9 +81,10 @@ namespace Entity.Unit.Normal
         public async void SetTriggerAttacking()
         {
             //조건검사 호출하기 전에 함
+            BeforeBehaviorState = BehaviorState;
             BehaviorState = NormalMonsterBehaviorState.Attacking;
             await m_NormalMonsterAnimController.PlayAttack();
-            BehaviorState = NormalMonsterBehaviorState.Idle;
+            BehaviorState = BeforeBehaviorState;
         }
 
         public async void SetTriggerGettingUp()
@@ -86,9 +92,10 @@ namespace Entity.Unit.Normal
             if (BehaviorState == NormalMonsterBehaviorState.Crawling ||
                 BehaviorState == NormalMonsterBehaviorState.Idle)
             {
+                BeforeBehaviorState = BehaviorState;
                 BehaviorState = NormalMonsterBehaviorState.GettingUp;
                 await m_NormalMonsterAnimController.PlayGettingUp();
-                BehaviorState = NormalMonsterBehaviorState.Idle;
+                BehaviorState = BeforeBehaviorState;
             }
         }
         #endregion

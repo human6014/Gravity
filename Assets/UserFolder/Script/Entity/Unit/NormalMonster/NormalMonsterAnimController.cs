@@ -26,6 +26,9 @@ namespace Entity.Unit.Normal
         public void Init()
         {
             m_BeforeState = m_Walking;
+
+            IsEndAttack = true;
+            IsEndGettingUp = true;
         }
 
         public void PlayIdle()

@@ -830,9 +830,10 @@ GameObject:
   - component: {fileID: 3692393216956997639}
   - component: {fileID: -127741219502407457}
   - component: {fileID: -1875183069119470787}
-  - component: {fileID: 4830995043508709699}
   - component: {fileID: 8833514753336622347}
   - component: {fileID: 9132846442729850382}
+  - component: {fileID: 89242836913445163}
+  - component: {fileID: 3564608000483922525}
   m_Layer: 8
   m_Name: OldManZombie
   m_TagString: Untagged
@@ -909,18 +910,6 @@ MonoBehaviour:
     m_Bits: 417792
   castHeight: 2.2
   castRadius: 0.8
---- !u!114 &4830995043508709699
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 975183230792573812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245133e4adcad84bb599911414719b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8833514753336622347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -949,6 +938,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_OriginalObject: {fileID: 7884403416162961347}
   m_RagDollObject: {fileID: 8047478068789640916}
+  m_MaxDepth: 8
+--- !u!54 &89242836913445163
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 975183230792573812}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 2
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!136 &3564608000483922525
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 975183230792573812}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.25
+  m_Height: 1.949863
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.8749314, z: 0}
 --- !u!1 &975196620211666554
 GameObject:
   m_ObjectHideFlags: 0
@@ -5859,8 +5879,7 @@ GameObject:
   - component: {fileID: 5064425900268417764}
   - component: {fileID: 6130236619677044591}
   - component: {fileID: 8350062916609053847}
-  - component: {fileID: 2778009132338936577}
-  - component: {fileID: 7173062940360582427}
+  - component: {fileID: 396990913988778706}
   m_Layer: 0
   m_Name: OldManZombieRag
   m_TagString: Untagged
@@ -5932,36 +5951,18 @@ LODGroup:
     renderers:
     - renderer: {fileID: 1791611080159550743}
   m_Enabled: 1
---- !u!54 &2778009132338936577
-Rigidbody:
+--- !u!114 &396990913988778706
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7884403416162961347}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!136 &7173062940360582427
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7884403416162961347}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.25
-  m_Height: 1.949863
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.8749314, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245133e4adcad84bb599911414719b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7927945778581394812
 GameObject:
   m_ObjectHideFlags: 0

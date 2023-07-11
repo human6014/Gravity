@@ -13,7 +13,7 @@ public class Customization : MonoBehaviour
 
     public void Customize(Entity.Unit.Normal.NormalMonster unit)
     {
-        NoramlMonsterType monsterType = unit.GetMonsterType();
+        NoramlMonsterType monsterType = unit.GetMonsterType;
 
         unit.GetComponent<CustomizableScript>().Customizing(ref customizingAssetList.GetUnitMaterial(monsterType));
     }
