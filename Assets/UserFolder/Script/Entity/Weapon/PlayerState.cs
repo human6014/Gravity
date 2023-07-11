@@ -36,26 +36,28 @@ public class PlayerState
     {
         if (PlayerBehaviorState != PlayerBehaviorState.Jumping && 
             PlayerBehaviorState != PlayerBehaviorState.Crouching)
-            PlayerBehaviorState = PlayerBehaviorState.Idle;
+             PlayerBehaviorState = PlayerBehaviorState.Idle;
     }
     public void SetBehaviorWalking()
     {
         if(PlayerBehaviorState != PlayerBehaviorState.Running && 
-            PlayerBehaviorState != PlayerBehaviorState.Jumping && 
-            PlayerBehaviorState != PlayerBehaviorState.Crouching)
+           PlayerBehaviorState != PlayerBehaviorState.Jumping && 
+           PlayerBehaviorState != PlayerBehaviorState.Crouching)
             PlayerBehaviorState = PlayerBehaviorState.Walking;
     }
     public void SetBehaviorRunning(bool value)
     {
         if (value)
         {
-            if (PlayerBehaviorState != PlayerBehaviorState.Jumping && 
+            if (PlayerBehaviorState != PlayerBehaviorState.Jumping &&
                 PlayerBehaviorState != PlayerBehaviorState.Crouching)
-                PlayerBehaviorState = PlayerBehaviorState.Running;
+                 PlayerBehaviorState = PlayerBehaviorState.Running;
         }
-        else if(PlayerBehaviorState != PlayerBehaviorState.Jumping && 
-                PlayerBehaviorState != PlayerBehaviorState.Crouching)
+        else if (PlayerBehaviorState != PlayerBehaviorState.Jumping &&
+                 PlayerBehaviorState != PlayerBehaviorState.Crouching)
+        {
             PlayerBehaviorState = PlayerBehaviorState.Idle;
+        }
     }
     public void SetBehaviorCrouching(bool value)
     {
@@ -74,13 +76,13 @@ public class PlayerState
     {
         if (PlayerWeaponState != PlayerWeaponState.Changing &&
             PlayerWeaponState != PlayerWeaponState.Firing)
-            PlayerWeaponState = PlayerWeaponState.Idle;
+             PlayerWeaponState = PlayerWeaponState.Idle;
     }
     public void SetWeaponAiming()
     {
         if (PlayerWeaponState != PlayerWeaponState.Changing &&
             PlayerWeaponState != PlayerWeaponState.Firing)
-            PlayerWeaponState = PlayerWeaponState.Aiming;
+             PlayerWeaponState = PlayerWeaponState.Aiming;
     }
     public void SetWeaponChanging(bool value)
     {
@@ -95,11 +97,6 @@ public class PlayerState
         BeforePlayerWeaponState = PlayerWeaponState;
         PlayerWeaponState = PlayerWeaponState.Firing;
     }
-    public void SetBack()
-    {
-        PlayerWeaponState = BeforePlayerWeaponState;
-    }
-
-
+    public void SetBack() => PlayerWeaponState = BeforePlayerWeaponState;
     #endregion
 }

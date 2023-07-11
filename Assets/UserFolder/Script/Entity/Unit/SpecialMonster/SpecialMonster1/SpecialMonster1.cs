@@ -10,7 +10,9 @@ namespace Entity.Unit.Special
 {
     public class SpecialMonster1 : MonoBehaviour, IMonster
     {
+        [Header("Data")]
         [SerializeField] private Scriptable.Monster.SpecialMonsterScriptable m_Settings;
+
         [Header("Model")]
         [SerializeField] private SkinnedMeshRenderer m_SkinnedMeshRenderer;
 
@@ -171,7 +173,6 @@ namespace Entity.Unit.Special
             m_DoingBehaviour = false;
         }
 
-
         public void Hit(int damage, AttackType bulletType)
         {
             if (!m_IsAlive) return;
@@ -200,7 +201,6 @@ namespace Entity.Unit.Special
         public void Die()
         {
             m_IsAlive = false;
-            //StopAllCoroutines();
             m_SpecialMonsterAI.Dispose();
             if(m_IsGrabbing) m_PlayerData.EndGrab();
             m_SP1AnimationController.SetDie();
@@ -224,7 +224,6 @@ namespace Entity.Unit.Special
             float height = m_Parabola.GetHeight(m_Settings.m_JumpHeightRatio, m_Target, out Vector3 targetVector, ref m_GroundDirection);
 
             m_Parabola.CalculatePathWithHeight(targetVector, height, out float v0, out float angle, out float time);
-            //StartCoroutine(JumpMovement(m_GroundDirection.normalized, v0, angle, time));
 
             TestJump(m_GroundDirection.normalized, v0, angle, m_Settings.m_PreJumpTime, time, false);
         }
@@ -237,7 +236,6 @@ namespace Entity.Unit.Special
             float height = m_Parabola.GetHeight(m_Settings.m_JumpAttackHeightRatio, m_Target, out Vector3 targetVector, ref m_GroundDirection, m_Settings.m_DestinationDist);
 
             m_Parabola.CalculatePathWithHeight(targetVector, height, out float v0, out float angle, out float time);
-            //StartCoroutine(JumpAttackMovement(m_GroundDirection.normalized, v0, angle, time));
             TestJump(m_GroundDirection.normalized, v0, angle, m_Settings.m_PreJumpAttackTime, time, true);
         }
 
@@ -313,107 +311,6 @@ namespace Entity.Unit.Special
             m_SpecialMonsterAI.SetNavMeshEnable(true);
         }
 
-        #endregion
-
-        #region 포물선 이동 원본
-        private IEnumerator JumpMovement(Vector3 direction, float v0, float angle, float time)
-        {
-            //m_SP1AnimationController.SetWalk(false);
-            m_SpecialMonsterAI.SetNavMeshEnable(false);
-            m_LegController.SetPreJump(true);
-
-            float elapsedTime = 0;
-            Vector3 startPos = m_NavMeshTransform.position;
-            while (elapsedTime < m_Settings.m_PreJumpTime)
-            {
-                elapsedTime += Time.deltaTime;
-                m_NavMeshTransform.position = Vector3.Lerp(startPos, startPos - m_NavMeshTransform.up, elapsedTime / m_Settings.m_PreJumpTime);
-                
-                yield return null;
-            }
-
-            m_LegController.SetPreJump(false);
-            m_LegController.Jump(true);
-
-            elapsedTime = 0;
-            startPos = m_NavMeshTransform.position;
-            Quaternion startRotation = m_NavMeshTransform.rotation;
-            Quaternion targetRot = Quaternion.LookRotation(m_GroundDirection, m_Target.up);
-            float xAngle = Mathf.Cos(angle);
-            float yAngle = Mathf.Sin(angle);
-
-            while (elapsedTime < time)
-            {
-                elapsedTime += Time.deltaTime * 2f;
-
-                float x = v0 * elapsedTime * xAngle;
-                float y = v0 * elapsedTime * yAngle - 0.5f * Physics.gravity.magnitude * Mathf.Pow(elapsedTime, 2);
-                m_NavMeshTransform.SetPositionAndRotation(startPos + direction * x - GravityManager.GravityVector * y,
-                                 Quaternion.Lerp(startRotation, targetRot, elapsedTime / time));
-                //elapsedTime += Time.deltaTime * (time / 1.5f);
-                //elapsedTime += Time.deltaTime;
-                
-                yield return null;
-            }
-            m_LegController.Jump(false);
-            m_SpecialMonsterAI.SetNavMeshEnable(true);
-        }
-
-        private IEnumerator JumpAttackMovement(Vector3 direction, float v0, float angle, float time)
-        {
-            m_SpecialMonsterAI.SetNavMeshEnable(false);
-            m_LegController.SetPreJump(true);
-
-            float elapsedTime = 0;
-            Vector3 startPos = m_NavMeshTransform.position;
-            while (elapsedTime < m_Settings.m_PreJumpAttackTime)
-            {
-                elapsedTime += Time.deltaTime;
-                m_NavMeshTransform.position = Vector3.Lerp(startPos, startPos - m_NavMeshTransform.up * 0.5f, elapsedTime / m_Settings.m_PreJumpAttackTime);
-
-                yield return null;
-            }
-
-            m_LegController.SetPreJump(false);
-            m_LegController.Jump(true);
-            m_SP1AnimationController.SetJumpBiteAttack();
-
-            elapsedTime = 0;
-            startPos = m_NavMeshTransform.position;
-            Quaternion startRotation = m_NavMeshTransform.rotation;
-            Quaternion targetRot = Quaternion.LookRotation(m_GroundDirection, m_Target.up);
-            float xAngle = Mathf.Cos(angle);
-            float yAngle = Mathf.Sin(angle);
-            bool isPlayEndAnimation = false;
-
-            Debug.Log(time);
-            while (elapsedTime < time)
-            {
-                elapsedTime += Time.deltaTime * 2;
-
-                float x = v0 * elapsedTime * xAngle;
-                float y = v0 * elapsedTime * yAngle - 0.5f * Physics.gravity.magnitude * Mathf.Pow(elapsedTime, 2);
-                m_NavMeshTransform.SetPositionAndRotation(startPos + direction * x - GravityManager.GravityVector * y,
-                                 Quaternion.Lerp(startRotation, targetRot, elapsedTime / time));
-                //elapsedTime += Time.deltaTime * (time / 1.5f);
-                //elapsedTime += Time.deltaTime;
-                if (time - elapsedTime <= 0.4f && !isPlayEndAnimation)
-                {
-                    isPlayEndAnimation = true;
-                    m_SP1AnimationController.EndJumpBiteAttack();
-                }
-
-                yield return null;
-            }
-            m_LegController.Jump(false);
-            m_DoingBehaviour = false;
-            m_SpecialMonsterAI.SetNavMeshEnable(true);
-
-            m_GrabAttackTimer = 8;
-            m_NormalAttackTimer = 3;
-
-            CheckJumpAttackToPlayer();
-        }
         #endregion
 
         private void CheckJumpAttackToPlayer()

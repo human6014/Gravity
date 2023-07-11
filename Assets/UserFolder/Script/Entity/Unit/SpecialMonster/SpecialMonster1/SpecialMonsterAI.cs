@@ -34,20 +34,14 @@ public class SpecialMonsterAI : MonoBehaviour
 
     #region Property
     public bool IsOnMeshLink { get; private set; } = false;
-
     public bool IsClimbing { get; private set; } = false;
-
     public Vector3 ProceduralForwardAngle { get; set; }
-
     public Vector3 ProceduralUpAngle { get; set; }
-
     public Vector3 ProceduralPosition { get; set; }
     #endregion
 
     public bool GetIsOnOffMeshLink() => m_NavMeshAgent.isOnOffMeshLink;
-
     public void SetNavMeshEnable(bool isOn) => m_NavMeshAgent.enabled = isOn;
-
     public void SetNavMeshPos(Vector3 pos) => m_NavMeshAgent.Warp(pos);
     
     private void Awake()

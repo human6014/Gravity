@@ -236,7 +236,7 @@ namespace Contoller.Player
         private Vector3 GravityVelocity(float x, float y, float z)
         {
             Vector3 value = Vector3.zero;
-            switch (GravityManager.currentGravityType)
+            switch (GravityManager.m_CurrentGravityType)
             {
                 case EnumType.GravityType.xDown:
                 case EnumType.GravityType.xUp:

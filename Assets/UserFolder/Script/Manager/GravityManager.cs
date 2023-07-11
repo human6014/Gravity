@@ -10,11 +10,11 @@ namespace Manager
     {
         [SerializeField] private Contoller.PlayerInputController m_PlayerInputController;
 
-        public static GravityType currentGravityType = GravityType.yDown;
-        public static GravityType beforeGravityType = GravityType.yDown;
-        public static GravityDirection gravityDirection = GravityDirection.Y;
+        public static GravityType m_CurrentGravityType = GravityType.yDown;
+        public static GravityType m_BeforeGravityType = GravityType.yDown;
+        public static GravityDirection m_CurrentGravityAxis = GravityDirection.Y;
 
-        private const float ROTATETIME = 1;
+        private const float m_RotateTime = 1;
 
         public static Action <GravityType> GravityChangeAction { get; set; }
 
@@ -41,11 +41,11 @@ namespace Manager
         /// <summary>
         /// 현재 중력에 해당하는 Area의 normal 각도
         /// </summary>
-        private static readonly Vector3Int[] gravityRotation =
+        private static readonly Vector3Int[] m_GravityNormalRotation =
         {
             new Vector3Int(0, 0, -90)   , new Vector3Int(0, 0, 90),
             new Vector3Int(0, 0, 0)     , new Vector3Int(180, 0, 0),
-            new Vector3Int(90, 0, 0)   , new Vector3Int(-90, 0, 0),
+            new Vector3Int(90, 0, 0)    , new Vector3Int(-90, 0, 0),
         };
 
         private void Awake()
@@ -57,7 +57,7 @@ namespace Manager
         {
             if (IsGravityChanging) return;
 
-            gravityDirection = (GravityDirection)gravityKeyInput;
+            m_CurrentGravityAxis = (GravityDirection)gravityKeyInput;
             GravityChange(Mathf.FloorToInt(mouseScroll * 10));
             if(!IsGravityDupleicated) StartCoroutine(GravityRotate());
         }
@@ -68,28 +68,28 @@ namespace Manager
         /// <param name="direct"></param>
         private void GravityChange(int direct)
         {
-            beforeGravityType = currentGravityType;
+            m_BeforeGravityType = m_CurrentGravityType;
             GravityDirectionValue = direct;
-            switch (gravityDirection)
+            switch (m_CurrentGravityAxis)
             {
                 case GravityDirection.X:
-                    currentGravityType = direct < 0 ? GravityType.xDown : GravityType.xUp;
+                    m_CurrentGravityType = direct < 0 ? GravityType.xDown : GravityType.xUp;
                     GravityVector = new Vector3(direct, 0, 0);
                     break;
                 case GravityDirection.Y:
-                    currentGravityType = direct < 0 ? GravityType.yDown : GravityType.yUp;
+                    m_CurrentGravityType = direct < 0 ? GravityType.yDown : GravityType.yUp;
                     GravityVector = new Vector3(0, direct, 0);
                     break;
                 case GravityDirection.Z:
-                    currentGravityType = direct < 0 ? GravityType.zDown : GravityType.zUp;
+                    m_CurrentGravityType = direct < 0 ? GravityType.zDown : GravityType.zUp;
                     GravityVector = new Vector3(0, 0, direct);
                     break;
             }
 
-            if (beforeGravityType == currentGravityType) IsGravityDupleicated = true;
+            if (m_BeforeGravityType == m_CurrentGravityType) IsGravityDupleicated = true;
             else
             {
-                GravityChangeAction?.Invoke(currentGravityType);
+                GravityChangeAction?.Invoke(m_CurrentGravityType);
                 Physics.gravity = GravityVector * Physics.gravity.magnitude;
 
                 IsGravityChanging = true;
@@ -101,19 +101,19 @@ namespace Manager
         {
             Quaternion currentRotation = transform.rotation;
             float t = 0;
-            while (t < ROTATETIME)
+            while (t < m_RotateTime)
             {
-                t += Time.deltaTime / ROTATETIME;
+                t += Time.deltaTime / m_RotateTime;
                 transform.rotation = Quaternion.Lerp(currentRotation, GetCurrentGravityNormalRotation(), t);
                 yield return null;
             }
             IsGravityChanging = false;
         }
 
-        public static Vector3Int GetCurrentGravityNoramlDirection() => gravityRotation[(int)currentGravityType];
+        public static Vector3Int GetCurrentGravityNoramlDirection() => m_GravityNormalRotation[(int)m_CurrentGravityType];
 
-        public static Quaternion GetSpecificGravityNormalRotation(int index) => Quaternion.Euler(gravityRotation[index]);
+        public static Quaternion GetSpecificGravityNormalRotation(int index) => Quaternion.Euler(m_GravityNormalRotation[index]);
         
-        public static Quaternion GetCurrentGravityNormalRotation() => Quaternion.Euler(gravityRotation[(int)currentGravityType]);
+        public static Quaternion GetCurrentGravityNormalRotation() => Quaternion.Euler(m_GravityNormalRotation[(int)m_CurrentGravityType]);
     }
 }
