@@ -270,7 +270,7 @@ namespace Contoller.Player
 
         private void ApplyToGravity(bool isDuple, float value)
         {
-            switch (GravityManager.currentGravityType)
+            switch (GravityManager.m_CurrentGravityType)
             {
                 case EnumType.GravityType.xUp:
                 case EnumType.GravityType.xDown:

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EnumType;
+using Manager.AI;
 
 namespace Entity.Unit.Normal
 {
@@ -9,46 +10,57 @@ namespace Entity.Unit.Normal
     {
         [SerializeField] private Scriptable.Monster.NormalMonsterScriptable settings;
 
+        private CapsuleCollider m_CapsuleCollider;
         private RagDollChanger m_RagDollChanger;
         private NormalMonsterAI m_NormalMonsterAI;
         private NormalMonsterAnimController m_NormalMonsterAnimController;
+        private NormalMonsterState m_NormalMonsterState;
         private PlayerData m_PlayerData;
         
         private int m_CurrentHP;
         private bool m_IsAlive;
         private float m_AttackTimer;
 
+        private float m_GettingUpTimer = 5.5f;
+        private float m_CurrentGettingUpTimer;
+
         public System.Action<int, AttackType> HitEvent { get; set; }
+        public bool m_IsMovingState;
         private bool CanAttack
         {
             get => m_AttackTimer >= settings.m_AttackSpeed &&
-                    Vector3.Distance(Manager.AI.AIManager.PlayerTransform.position, transform.position)
-                    <= settings.m_AttackRange;
+                Vector3.Distance(AIManager.PlayerTransform.position, transform.position) <= settings.m_AttackRange &&
+                m_NormalMonsterState.CanAttackState;
         }
         public NoramlMonsterType GetMonsterType() => settings.m_MonsterType;
 
         public void OnOffRagdoll(bool isActive)
         {
+            m_CapsuleCollider.enabled = !isActive;
             if (isActive) m_RagDollChanger.ChangeToRagDoll();
             else m_RagDollChanger.ChangeToOriginal();
         }
 
         private void Awake()
         {
+            m_CapsuleCollider = GetComponent<CapsuleCollider>();
             m_RagDollChanger = GetComponent<RagDollChanger>();
             m_NormalMonsterAI = GetComponent<NormalMonsterAI>();
-            m_NormalMonsterAnimController = GetComponent<NormalMonsterAnimController>();
+            m_NormalMonsterAnimController = GetComponentInChildren<NormalMonsterAnimController>();
+            
+            m_NormalMonsterState = new NormalMonsterState(m_NormalMonsterAnimController);
             m_NormalMonsterAI.RagdollOnOffAction += OnOffRagdoll;
+            m_NormalMonsterAI.NormalMonsterState = m_NormalMonsterState;
         }
 
         public void Init(Vector3 pos, Manager.ObjectPoolManager.PoolingObject poolingObject)
         {
-            m_RagDollChanger.ChangeToOriginal();
+            OnOffRagdoll(false);
             m_CurrentHP = settings.m_HP;
             m_IsAlive = true;
             m_NormalMonsterAI.Init(pos);
             m_NormalMonsterAnimController.Init();
-            m_PlayerData = Manager.AI.AIManager.PlayerTransform.GetComponent<PlayerData>();
+            m_PlayerData = AIManager.PlayerTransform.GetComponent<PlayerData>();
             m_PoolingObject = poolingObject;
         }
 
@@ -56,10 +68,8 @@ namespace Entity.Unit.Normal
         {
             if (!m_IsAlive) return;
             m_AttackTimer += Time.deltaTime;
-
-            //¼º´É issue
-            Move();
-
+            Debug.Log("Current State : " + m_NormalMonsterState.BehaviorState);
+            if (m_NormalMonsterAI.CheckCanMoveState()) Move();
             if (CanAttack) Attack();
 
             if (m_NormalMonsterAI.IsMalfunction)
@@ -72,16 +82,14 @@ namespace Entity.Unit.Normal
 
         public void Move()
         {
-            m_NormalMonsterAI.Move();
-            if (m_NormalMonsterAI.IsClimbing) m_NormalMonsterAnimController.PlayCrawl(true);
-            else m_NormalMonsterAnimController.PlayWalk(true);
+            m_NormalMonsterAI.AutoMode();
         }
 
         public void Attack()
         {
             m_AttackTimer = 0;
 
-            m_NormalMonsterAnimController.PlayAttack();
+            m_NormalMonsterState.SetTriggerAttacking();
             m_PlayerData.PlayerHit(transform, settings.m_Damage, settings.m_NoramlAttackType);
         }
 
@@ -116,7 +124,7 @@ namespace Entity.Unit.Normal
             m_IsAlive = false;
 
             m_NormalMonsterAI.Dispose();
-            m_RagDollChanger.ChangeToRagDoll();
+            OnOffRagdoll(true);
             Invoke(nameof(ReturnObject),10);
         }
 

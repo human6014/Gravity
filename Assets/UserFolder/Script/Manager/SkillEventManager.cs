@@ -110,7 +110,7 @@ namespace UI.Manager
         /// </summary>
         private int BatchFixedNonSpecific()
         {
-            Debug.Log("BatchFixedNonSpecificRandom");
+            //Debug.Log("BatchFixedNonSpecificRandom");
             FixedNonSpecificEvent fnse = m_FixedNonSpecificDict[m_GameEventCount];
             int eventType = (int)fnse.m_EventType;
             SkillEventSet skillEventSet = m_SkillEvent[eventType];
@@ -129,7 +129,7 @@ namespace UI.Manager
         /// </summary>
         private int BatchFixedSpecific()
         {
-            Debug.Log("BatchFixedSpecificRandom");
+            //Debug.Log("BatchFixedSpecificRandom");
             FixedSpecificEvent fse = m_FixedSpecificDict[m_GameEventCount];
             int eventType = (int)fse.m_SkillEvent[0].EventType;
             for (int i = 0; i < fse.m_SkillEvent.Length; i++)
@@ -145,7 +145,7 @@ namespace UI.Manager
         /// </summary>
         private int BatchRandom()
         {
-            Debug.Log("BatchRandom");
+            //Debug.Log("BatchRandom");
             //GetWeapon 제외를 위해서 0번은 생략
             int randomType = Random.Range(1, (int)Scriptable.UI.EventType.Specific);
             SkillEventSet skillEventSet = m_SkillEvent[randomType];

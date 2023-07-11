@@ -11,8 +11,7 @@ namespace UI.Player
         [SerializeField] private Image m_HitDirectionImage;
         [SerializeField] private RectTransform m_Indicator;
 
-        [SerializeField] private float m_MaxTimer;
-        [SerializeField] private Transform test;
+        [SerializeField] private float m_HitDirectionTimer = 1;
         [SerializeField][Range(0,255)] private int m_MaxAlpha;
 
         private Coroutine m_HitDirectionCoroutine;
@@ -57,7 +56,7 @@ namespace UI.Player
             Quaternion m_TargetRotation;
             float m_timer = 0;
             m_Indicator.gameObject.SetActive(true);
-            while (m_timer < m_MaxTimer)
+            while (m_timer < m_HitDirectionTimer)
             {
                 direction = (m_MainCamera.position - target.position).normalized;
 

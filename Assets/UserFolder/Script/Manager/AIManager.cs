@@ -35,7 +35,7 @@ namespace Manager.AI
         public static Vector3 CurrentTargetPosition(Transform transform)
         {
             Vector3 playerPos = PlayerTransform.position;
-            switch (GravityManager.gravityDirection)
+            switch (GravityManager.m_CurrentGravityAxis)
             {
                 case GravityDirection.X: return new(transform.position.x, playerPos.y, playerPos.z);
                 case GravityDirection.Y: return new(playerPos.x, transform.position.y, playerPos.z);
