@@ -25,14 +25,14 @@ namespace Entity.Unit.Normal
         private float m_CurrentGettingUpTimer;
 
         public System.Action<int, AttackType> HitEvent { get; set; }
-        public bool m_IsMovingState;
+
         private bool CanAttack
         {
             get => m_AttackTimer >= settings.m_AttackSpeed &&
                 Vector3.Distance(AIManager.PlayerTransform.position, transform.position) <= settings.m_AttackRange &&
                 m_NormalMonsterState.CanAttackState;
         }
-        public NoramlMonsterType GetMonsterType() => settings.m_MonsterType;
+        public NoramlMonsterType GetMonsterType { get => settings.m_MonsterType; }
 
         public void OnOffRagdoll(bool isActive)
         {
@@ -58,6 +58,7 @@ namespace Entity.Unit.Normal
             OnOffRagdoll(false);
             m_CurrentHP = settings.m_HP;
             m_IsAlive = true;
+            m_NormalMonsterState.Init();
             m_NormalMonsterAI.Init(pos);
             m_NormalMonsterAnimController.Init();
             m_PlayerData = AIManager.PlayerTransform.GetComponent<PlayerData>();
@@ -69,8 +70,12 @@ namespace Entity.Unit.Normal
             if (!m_IsAlive) return;
             m_AttackTimer += Time.deltaTime;
             Debug.Log("Current State : " + m_NormalMonsterState.BehaviorState);
-            if (m_NormalMonsterAI.CheckCanMoveState()) Move();
-            if (CanAttack) Attack();
+
+            if (m_NormalMonsterAI.CheckCanBehaviorState())
+            {
+                Move();
+                if (CanAttack) Attack();
+            }
 
             if (m_NormalMonsterAI.IsMalfunction)
             {

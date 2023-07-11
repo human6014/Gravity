@@ -6,13 +6,14 @@ public class RagDollChanger : MonoBehaviour
 {
     [SerializeField] private GameObject m_OriginalObject;
     [SerializeField] private GameObject m_RagDollObject;
+    [SerializeField] private int m_MaxDepth = 8;
 
     private Transform m_OriginalRoot;
     private Transform m_RagDollRoot;
     private Transform m_RagChild;
     private Transform m_OriginalChild;
 
-    private const int m_MaxDepth = 8;
+    
 
     private void Awake()
     {
@@ -35,6 +36,7 @@ public class RagDollChanger : MonoBehaviour
         m_RagDollObject.SetActive(true);
     }
     
+    // 성능 이슈 심할 경우 케싱 해서 사용
     public void CopyToRagDoll(Transform original, Transform ragDoll, int depth)
     {
         for(int i = 0; i < original.childCount; i++)
@@ -46,6 +48,11 @@ public class RagDollChanger : MonoBehaviour
 
             m_RagChild.localPosition = m_OriginalChild.localPosition;
             m_RagChild.localRotation = m_OriginalChild.localRotation;
+            if (m_RagChild.TryGetComponent(out Rigidbody rigidbody))
+            {
+                rigidbody.velocity = Vector3.zero;
+                rigidbody.angularVelocity = Vector3.zero;
+            }
         }
     }
 }

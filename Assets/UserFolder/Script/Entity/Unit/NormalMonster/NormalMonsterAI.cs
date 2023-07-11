@@ -43,18 +43,21 @@ namespace Entity.Unit.Normal
             IsBatch = true;
             m_FallingTimer = 0;
             IsMalfunction = false;
+            m_Rigidbody.isKinematic = true;
+            m_Rigidbody.useGravity = false;
             m_NavMeshAgent.enabled = true;
             m_NavMeshAgent.Warp(pos);
             transform.rotation = Quaternion.LookRotation(transform.forward, -GravityManager.GravityVector);
         }
 
-        public bool CheckCanMoveState()
+        public bool CheckCanBehaviorState()
         {
             if (!IsBatch) return false;
 
             if (GravityManager.IsGravityChanging)
             {
                 SetFallingMode(true);
+                return false;
             }
             if (IsFalling)
             {
@@ -69,6 +72,7 @@ namespace Entity.Unit.Normal
 
         private void FixedUpdate()
         {
+            if (!IsBatch) return;
             if (IsFalling) DetectWalkableArea();
         }
 
@@ -80,12 +84,19 @@ namespace Entity.Unit.Normal
 
         private void SetFallingMode(bool isAutoMode)
         {
-            //if (isAutoMode && !IsFalling) RagdollOnOffAction?.Invoke(true);
-            //else if (!isAutoMode && IsFalling) RagdollOnOffAction?.Invoke(false);
-
-            IsFalling = isAutoMode;
             m_Rigidbody.useGravity = isAutoMode;
             m_Rigidbody.isKinematic = !isAutoMode;
+            if (isAutoMode && !IsFalling)
+            {
+                RagdollOnOffAction?.Invoke(true);
+            }
+            else if (!isAutoMode && IsFalling)
+            {
+                RagdollOnOffAction?.Invoke(false);
+            }
+
+            IsFalling = isAutoMode;
+
             m_NavMeshAgent.enabled = !isAutoMode;
             IsAutoMode = !isAutoMode;
             if (IsAutoMode)
@@ -156,6 +167,8 @@ namespace Entity.Unit.Normal
         public void Dispose()
         {
             m_NavMeshAgent.enabled = false;
+            m_Rigidbody.isKinematic = true;
+            m_Rigidbody.useGravity = false;
             IsBatch = false;
         }
 

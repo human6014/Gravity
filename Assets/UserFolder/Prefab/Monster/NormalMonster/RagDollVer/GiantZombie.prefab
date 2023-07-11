@@ -9090,8 +9090,8 @@ GameObject:
   - component: {fileID: 6788990093087940451}
   - component: {fileID: -6130877166836249328}
   - component: {fileID: 5262254899861945277}
-  - component: {fileID: 3373766842919099250}
-  - component: {fileID: 2882667218292803783}
+  - component: {fileID: 145663923636428915}
+  - component: {fileID: 7177845414341235190}
   m_Layer: 8
   m_Name: GiantZombie
   m_TagString: Untagged
@@ -9130,7 +9130,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 45
   m_AngularSpeed: 120
-  m_StoppingDistance: 3
+  m_StoppingDistance: 2.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -9151,7 +9151,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: 6677a81546760b04295fd09c36b760b1, type: 2}
-  m_IsMovingState: 0
 --- !u!114 &6788990093087940451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9209,7 +9208,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_OriginalObject: {fileID: 823408897669662156}
   m_RagDollObject: {fileID: 3734599987646485557}
---- !u!54 &3373766842919099250
+  m_MaxDepth: 8
+--- !u!54 &145663923636428915
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9225,7 +9225,7 @@ Rigidbody:
   m_Interpolate: 2
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!136 &2882667218292803783
+--- !u!136 &7177845414341235190
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
