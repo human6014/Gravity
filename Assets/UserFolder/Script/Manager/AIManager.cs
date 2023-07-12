@@ -32,17 +32,21 @@ namespace Manager.AI
         /// </summary>
         /// <param name="transform">평면 위치에 해당하는 transform</param>
         /// <returns>값을 구할 수 있을 경우 유효한 Vector3 값, 오류일 경우 Vector3.zero</returns>
-        public static Vector3 CurrentTargetPosition(Transform transform)
+        public static Vector3 CurrentTargetPosition(Vector3 direction)
         {
-            Vector3 playerPos = PlayerTransform.position;
             switch (GravityManager.m_CurrentGravityAxis)
             {
-                case GravityDirection.X: return new(transform.position.x, playerPos.y, playerPos.z);
-                case GravityDirection.Y: return new(playerPos.x, transform.position.y, playerPos.z);
-                case GravityDirection.Z: return new(playerPos.x, playerPos.y, transform.position.z);
-                default: break;
+                case GravityDirection.X:
+                    direction.x = 0;
+                    break;
+                case GravityDirection.Y:
+                    direction.y = 0;
+                    break;
+                case GravityDirection.Z:
+                    direction.z = 0;
+                    break;
             }
-            return Vector3.zero;
+            return direction;
         }
     }
 }

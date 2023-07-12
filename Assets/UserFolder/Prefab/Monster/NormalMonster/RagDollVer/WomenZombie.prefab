@@ -904,7 +904,7 @@ GameObject:
   - component: {fileID: 2392410870523370321}
   - component: {fileID: 1073096417876824246}
   - component: {fileID: 5882241660257110321}
-  - component: {fileID: 8989340394570012748}
+  - component: {fileID: 2412798609210045574}
   m_Layer: 0
   m_Name: WomenZombie
   m_TagString: Untagged
@@ -976,7 +976,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 6470709865276983570}
   m_Enabled: 1
---- !u!114 &8989340394570012748
+--- !u!114 &2412798609210045574
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -985,7 +985,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1572683703547560980}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e42dc6e610626b4b8b56c0f1004eca8, type: 3}
+  m_Script: {fileID: 11500000, guid: 3245133e4adcad84bb599911414719b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1852683294825647840

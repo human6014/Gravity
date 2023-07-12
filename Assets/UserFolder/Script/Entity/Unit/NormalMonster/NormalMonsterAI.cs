@@ -11,22 +11,25 @@ namespace Entity.Unit.Normal
     public class NormalMonsterAI : MonoBehaviour
     {
         [SerializeField] private LayerMask climbingDetectLayer;
+        [SerializeField] private LayerMask m_FallingDetectLayer;
         [SerializeField] private float castHeight = 1.9f;
         [SerializeField] private float castRadius = 0.5f;
-
         
         private NavMeshAgent m_NavMeshAgent;
         private Rigidbody m_Rigidbody;
+        private Vector3 m_WarpPos;
 
         private const float m_MaximumFallingTime = 10;
         private float m_FallingTimer;
 
+        private bool m_GravityChangeFlag;
+        private bool m_isBatch;
+        private bool m_isFalling;
+        private bool m_isAutoMode = true;
+        private bool m_isClimbing;
+
+        public bool IsMalfunction { get; private set; }
         public NormalMonsterState NormalMonsterState { get; set; }
-        public bool IsBatch { get; private set; } = false;
-        public bool IsFalling { get; private set; } = false;
-        public bool IsAutoMode { get; private set; } = true;
-        public bool IsClimbing { get; private set; } = false;
-        public bool IsMalfunction { get; private set; } = false;
         public Action<bool> RagdollOnOffAction { get; set; }
 
         private void Awake()
@@ -40,9 +43,10 @@ namespace Entity.Unit.Normal
 
         public void Init(Vector3 pos)
         {
-            IsBatch = true;
+            m_isBatch = true;
             m_FallingTimer = 0;
             IsMalfunction = false;
+            m_isFalling = false;
             m_Rigidbody.isKinematic = true;
             m_Rigidbody.useGravity = false;
             m_NavMeshAgent.enabled = true;
@@ -52,58 +56,55 @@ namespace Entity.Unit.Normal
 
         public bool CheckCanBehaviorState()
         {
-            if (!IsBatch) return false;
+            if (!m_isBatch) return false;
 
-            if (GravityManager.IsGravityChanging)
+            if (GravityManager.IsGravityChanging && !m_GravityChangeFlag)
             {
+                m_GravityChangeFlag = true;
                 SetFallingMode(true);
                 return false;
             }
-            if (IsFalling)
+            if (!GravityManager.IsGravityChanging) m_GravityChangeFlag = false;
+
+            if (m_isFalling)
             {
                 DetectMalfunction();
                 return false;
             }
             else m_FallingTimer = 0;
 
-            if (!IsAutoMode) return false;
+            if (!m_isAutoMode) return false;
             return true;
         }
 
         private void FixedUpdate()
         {
-            if (!IsBatch) return;
-            if (IsFalling) DetectWalkableArea();
+            if (!m_isBatch) return;
+            if (m_isFalling) DetectWalkableArea();
         }
-
+        
         private void DetectWalkableArea()
         {
-            if (Physics.SphereCast(new Ray(transform.position, transform.up), castRadius, castHeight, climbingDetectLayer))
+            if (Physics.Raycast(transform.position + transform.up * 1.5f, GravityManager.GravityVector, out RaycastHit hitInfo, 1, m_FallingDetectLayer))
+            {
+                //Need normal check
+                m_WarpPos = hitInfo.point;
                 SetFallingMode(false);
+                NormalMonsterState.SetBoolIdle();
+                NormalMonsterState.SetTriggerGettingUp();
+                m_NavMeshAgent.Warp(hitInfo.point);
+            }
         }
 
         private void SetFallingMode(bool isAutoMode)
         {
             m_Rigidbody.useGravity = isAutoMode;
             m_Rigidbody.isKinematic = !isAutoMode;
-            if (isAutoMode && !IsFalling)
-            {
-                RagdollOnOffAction?.Invoke(true);
-            }
-            else if (!isAutoMode && IsFalling)
-            {
-                RagdollOnOffAction?.Invoke(false);
-            }
-
-            IsFalling = isAutoMode;
-
+            RagdollOnOffAction?.Invoke(isAutoMode);
             m_NavMeshAgent.enabled = !isAutoMode;
-            IsAutoMode = !isAutoMode;
-            if (IsAutoMode)
-            {
-                NormalMonsterState.SetBoolIdle();
-                NormalMonsterState.SetTriggerGettingUp();
-            }
+
+            m_isFalling = isAutoMode;
+            m_isAutoMode = !isAutoMode;
         }
 
         private void DetectMalfunction()
@@ -124,15 +125,15 @@ namespace Entity.Unit.Normal
 
             if (!m_NavMeshAgent.isOnOffMeshLink && !AIManager.IsSameFloor(m_NavMeshAgent))
             {
-                if (!IsClimbing) Debug.Log("Climbing Start");
+                if (!m_isClimbing) Debug.Log("Climbing Start");
                 else SetClimbingRotation();
-                IsClimbing = true;
+                m_isClimbing = true;
             }
             else
             {
-                if (IsClimbing) NormalMonsterState.SetTriggerGettingUp();
+                if (m_isClimbing) NormalMonsterState.SetTriggerGettingUp();
                 else SetNormalRotation(isMoving);
-                IsClimbing = false;
+                m_isClimbing = false;
             }
         }
 
@@ -146,21 +147,10 @@ namespace Entity.Unit.Normal
         {
             NormalMonsterState.SetBoolWalking();
             Vector3 target = isMoving ? m_NavMeshAgent.steeringTarget : AIManager.PlayerTransform.position;
-            Vector3 autoTargetDir = (target - transform.position).normalized;
+            Vector3 autoTargetDir = AIManager.CurrentTargetPosition((target - transform.position).normalized);
 
-            switch (GravityManager.m_CurrentGravityAxis)
-            {
-                case EnumType.GravityDirection.X:
-                    autoTargetDir.x = 0;
-                    break;
-                case EnumType.GravityDirection.Y:
-                    autoTargetDir.y = 0;
-                    break;
-                case EnumType.GravityDirection.Z:
-                    autoTargetDir.z = 0;
-                    break;
-            }
-            transform.rotation = Quaternion.LookRotation(autoTargetDir, -GravityManager.GravityVector);
+            if (autoTargetDir != Vector3.zero)
+                transform.rotation = Quaternion.LookRotation(autoTargetDir, -GravityManager.GravityVector);
         }
         #endregion
 
@@ -169,14 +159,16 @@ namespace Entity.Unit.Normal
             m_NavMeshAgent.enabled = false;
             m_Rigidbody.isKinematic = true;
             m_Rigidbody.useGravity = false;
-            IsBatch = false;
+            m_isBatch = false;
         }
 
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawSphere(transform.position, castRadius);
-            Gizmos.DrawSphere(transform.position + transform.up * castHeight, castRadius);
+
+            Vector3 startPos = transform.position + transform.up * 2;
+            Vector3 endPos = startPos + (GravityManager.GravityVector * 1);
+            Gizmos.DrawLine(startPos, endPos);
         }
     }
 }

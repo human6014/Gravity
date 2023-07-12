@@ -84,7 +84,7 @@ namespace Entity.Unit.Normal
             BeforeBehaviorState = BehaviorState;
             BehaviorState = NormalMonsterBehaviorState.Attacking;
             await m_NormalMonsterAnimController.PlayAttack();
-            BehaviorState = BeforeBehaviorState;
+            BehaviorState = NormalMonsterBehaviorState.Idle;
         }
 
         public async void SetTriggerGettingUp()
@@ -95,7 +95,7 @@ namespace Entity.Unit.Normal
                 BeforeBehaviorState = BehaviorState;
                 BehaviorState = NormalMonsterBehaviorState.GettingUp;
                 await m_NormalMonsterAnimController.PlayGettingUp();
-                BehaviorState = BeforeBehaviorState;
+                BehaviorState = NormalMonsterBehaviorState.Idle;
             }
         }
         #endregion

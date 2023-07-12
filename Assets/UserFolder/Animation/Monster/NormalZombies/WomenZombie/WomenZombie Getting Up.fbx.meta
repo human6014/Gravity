@@ -63,7 +63,7 @@ ModelImporter:
       - time: 1
         functionName: EndGettingUp
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 6e42dc6e610626b4b8b56c0f1004eca8,
+        objectReferenceParameter: {fileID: 11500000, guid: 3245133e4adcad84bb599911414719b5,
           type: 3}
         floatParameter: 0
         intParameter: 0

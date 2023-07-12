@@ -10,8 +10,8 @@ namespace Entity.Unit.Normal
         protected Animator m_Animator;
 
         #region Animation string
-        protected const string m_Walking = "Walking";
-        protected const string m_Running = "Running";
+        private const string m_Walking = "Walking";
+        private const string m_Running = "Running";
         private const string m_CrawlMoving = "CrawlMoving";
         private const string m_Attack = "Attack";
         private const string m_GettingUp = "GettingUp";
