@@ -69,7 +69,7 @@ namespace Entity.Unit.Normal
         {
             if (!m_IsAlive) return;
             m_AttackTimer += Time.deltaTime;
-            Debug.Log("Current State : " + m_NormalMonsterState.BehaviorState);
+            //Debug.Log("Current State : " + m_NormalMonsterState.BehaviorState);
 
             if (m_NormalMonsterAI.CheckCanBehaviorState())
             {

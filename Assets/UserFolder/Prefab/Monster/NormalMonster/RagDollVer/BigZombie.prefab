@@ -4265,7 +4265,7 @@ GameObject:
   - component: {fileID: 8115129658696504492}
   - component: {fileID: 3970898905284533104}
   - component: {fileID: 993881955816618487}
-  - component: {fileID: 5860864366620128980}
+  - component: {fileID: 7126978135581791156}
   m_Layer: 8
   m_Name: BigZomibe
   m_TagString: Untagged
@@ -4340,7 +4340,7 @@ LODGroup:
     - renderer: {fileID: 2334743933060067983}
     - renderer: {fileID: 6790331221228248992}
   m_Enabled: 1
---- !u!114 &5860864366620128980
+--- !u!114 &7126978135581791156
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4349,7 +4349,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4882158106205435736}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d6f37bdc62e423458eac7ef5cf14f0f, type: 3}
+  m_Script: {fileID: 11500000, guid: 3245133e4adcad84bb599911414719b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5118670842675238407

@@ -8,4 +8,28 @@ AnimatorOverrideController:
   m_PrefabAsset: {fileID: 0}
   m_Name: WomenZombieAnimController
   m_Controller: {fileID: 9100000, guid: 441315c724822a2408c5ceb7d7ce3493, type: 2}
-  m_Clips: []
+  m_Clips:
+  - m_OriginalClip: {fileID: -203655887218126122, guid: be2bd11964981f94787550732b25564d,
+      type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: 2244c237fe8af144899554cf9c865564,
+      type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: f42c7e9aada2a7a4e92b649369f43e26,
+      type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: dc3bf7ec8b08afb4b9833e2a3f397802,
+      type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: 0b0efa496d858364e87c207eb13aac9c,
+      type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: c40d3de09d0f0af44b34dc8f694c483b,
+      type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: 1d7e24a3b80bc0e48bfbd512fcff055a,
+      type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: 07ae52cc69bed3c4fa32b332c4d18f7c,
+      type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: b59643369ff8b9c48816d35d6431558f,
+      type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: d2623b5509473be42a401b235b8c0e4e,
+      type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: dca1f0513a26d9445b6d7304eef5aa33,
+      type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: d2623b5509473be42a401b235b8c0e4e,
+      type: 3}
