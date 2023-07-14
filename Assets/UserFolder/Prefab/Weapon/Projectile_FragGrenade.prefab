@@ -38585,12 +38585,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ActivatingEffectObject:
   - {fileID: 3117185301073819222}
-  m_AutoExplosionTime: 3
+  m_AutoExplosionTime: 2.5
   m_EffectDuration: 4
   m_StopDuration: 0
-  m_Damage: 2500
-  m_AttackRadius: 6
+  m_Damage: 3000
+  m_AttackRadius: 7
+  m_AttackForce: 500
   m_Layer:
     serializedVersion: 2
     m_Bits: 268435456
-  m_AttackForce: 500

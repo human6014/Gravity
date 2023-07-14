@@ -378,9 +378,15 @@ namespace Contoller.Player
             m_MovementSpeed = (m_IsWalking ? m_WalkSpeed : m_RunSpeed) * m_MovementMultiplier;
             m_Input = new Vector2(horizontal, vertical);
 
-            if (m_Input == Vector2.zero) m_PlayerData.PlayerState.SetBehaviorIdle();
-            else m_PlayerData.PlayerState.SetBehaviorWalking();
             m_IsMoving = m_Input != Vector2.zero;
+
+            if (!m_IsMoving) m_PlayerData.PlayerState.SetBehaviorIdle();
+            else
+            {
+                //Debug.Log("Walk");
+                m_PlayerData.PlayerState.SetBehaviorWalking();
+            }
+            
 
             if (m_Input.sqrMagnitude > 1) m_Input.Normalize();
 
@@ -400,7 +406,7 @@ namespace Contoller.Player
             if (canRunning && isRunning && m_PlayerData.CanRunning()) m_IsWalking = false;
             else m_IsWalking = true;
 
-            m_PlayerData.PlayerState.SetBehaviorRunning(!m_IsWalking);
+            if(m_IsMoving) m_PlayerData.PlayerState.SetBehaviorRunning(!m_IsWalking);
         }
 
         public void MoveSpeedUp(int amount)

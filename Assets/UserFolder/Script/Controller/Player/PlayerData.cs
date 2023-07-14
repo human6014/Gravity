@@ -128,6 +128,8 @@ public class PlayerData : MonoBehaviour
     {
         if (!IsAlive) return;
 
+        Debug.Log(PlayerState.PlayerBehaviorState);
+
         if ((m_HPTimer += Time.deltaTime) >= m_AutoHPHealTime)
         {
             m_HPTimer = 0;
@@ -334,10 +336,18 @@ public class PlayerData : MonoBehaviour
 
     public void GetSupply(int slotNumber, int amount)
     {
-        m_Inventory.WeaponInfo[slotNumber].m_MagazineRemainBullet += amount;
-        if (slotNumber == 4 && CurrentWeaponInfo == m_Inventory.WeaponInfo[slotNumber])
-            ReInit?.Invoke();
-        else m_PlayerUIManager.RangeWeaponReload(CurrentWeaponInfo.m_MagazineRemainBullet);
+        if (slotNumber == 4 && m_Inventory.WeaponInfo[slotNumber].m_CurrentRemainBullet <= 0)
+        {
+            m_Inventory.WeaponInfo[slotNumber].m_CurrentRemainBullet = 1;
+            m_Inventory.WeaponInfo[slotNumber].m_MagazineRemainBullet = amount - 1;
+            if (CurrentWeaponInfo == m_Inventory.WeaponInfo[slotNumber])
+            {
+                m_PlayerUIManager.RangeWeaponFire(1,false);
+                ReInit?.Invoke();
+            }
+        }
+        else m_Inventory.WeaponInfo[slotNumber].m_MagazineRemainBullet += amount;
+        m_PlayerUIManager.RangeWeaponReload(CurrentWeaponInfo.m_MagazineRemainBullet);
     }
 
     public void MaxBulletUp(float amount)
