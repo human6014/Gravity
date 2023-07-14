@@ -25,8 +25,6 @@ namespace Entity.Object.Weapon
         [Tooltip("탄알집 오브젝트")]
         [SerializeField] private PoolableScript m_MagazineObject;
 
-        [SerializeField] private AnimationClip[] m_ReloadAnimationClips;
-
         [Header("Pooling")]
         [Tooltip("풀링 오브젝트 하이라키 위치")]
         [SerializeField] private Transform m_ActiveObjectPool;

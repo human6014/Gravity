@@ -26,11 +26,14 @@ namespace Entity.Unit.Normal
 
         public System.Action<int, AttackType> HitEvent { get; set; }
 
+        private bool CanAttackRange
+        {
+            get => Vector3.Distance(AIManager.PlayerTransform.position, transform.position) <= settings.m_AttackRange;
+        }
+
         private bool CanAttack
         {
-            get => m_AttackTimer >= settings.m_AttackSpeed &&
-                Vector3.Distance(AIManager.PlayerTransform.position, transform.position) <= settings.m_AttackRange &&
-                m_NormalMonsterState.CanAttackState;
+            get => m_AttackTimer >= settings.m_AttackSpeed && m_NormalMonsterState.CanAttackState;
         }
         public NoramlMonsterType GetMonsterType { get => settings.m_MonsterType; }
 
@@ -71,13 +74,10 @@ namespace Entity.Unit.Normal
             m_AttackTimer += Time.deltaTime;
             //Debug.Log("Current State : " + m_NormalMonsterState.BehaviorState);
 
-            if (m_NormalMonsterAI.CheckCanBehaviorState())
-            {
+            if (m_NormalMonsterAI.CheckCanBehaviorState(out bool isMalfunction))
                 Move();
-                if (CanAttack) Attack();
-            }
 
-            if (m_NormalMonsterAI.IsMalfunction)
+            if (isMalfunction)
             {
                 m_IsAlive = false;
                 m_NormalMonsterAI.Dispose();
@@ -87,7 +87,11 @@ namespace Entity.Unit.Normal
 
         public void Move()
         {
-            m_NormalMonsterAI.AutoMode();
+            if (CanAttackRange)
+            {
+                if (CanAttack) Attack();
+            }
+            else m_NormalMonsterAI.AutoBehavior();
         }
 
         public void Attack()
@@ -100,6 +104,7 @@ namespace Entity.Unit.Normal
 
         public void Hit(int damage, AttackType bulletType)
         {
+            Debug.Log("Hit");
             if (!m_IsAlive) return;
             if (bulletType == AttackType.Explosion) m_CurrentHP -= (damage / settings.m_ExplosionResistance);
             else if (bulletType == AttackType.Melee) m_CurrentHP -= (damage / settings.m_MeleeResistance);
@@ -129,7 +134,8 @@ namespace Entity.Unit.Normal
             m_IsAlive = false;
 
             m_NormalMonsterAI.Dispose();
-            OnOffRagdoll(true);
+            if (!m_NormalMonsterAI.IsFalling) OnOffRagdoll(true);
+            else m_CapsuleCollider.enabled = true;
             Invoke(nameof(ReturnObject),10);
         }
 

@@ -63,9 +63,12 @@ public class PlayerData : MonoBehaviour
     public Inventory Inventory { get => m_Inventory; }
     private WeaponInfo CurrentWeaponInfo { get; set; }
     public PlayerState PlayerState { get; } = new PlayerState();
+
+    public Action ReInit { get; set; }
     public Action<bool> GrabAction { get; set; }
     public Action<Transform, Transform, Transform, Transform> GrabPoint {get;set;}
     public Func<int, int, WeaponData> WeaponDataFunc { get; set; }
+    
 
     public bool IsAlive { get; set; } = true;
     public bool IsSameMaxCurrentHP { get => PlayerHP == m_MaxPlayerHP; }
@@ -301,6 +304,8 @@ public class PlayerData : MonoBehaviour
     /// <param name="attackType">공격 종류</param>
     public void PlayerHit(int damage, AttackType attackType)
     {
+        //가끔 자기가 쏘고 자기가 맞는거 방지
+        if ((int)attackType >= 1 && (int)attackType <= 4) return;
         if (attackType == AttackType.Explosion) damage = (int)(damage * 0.5f);
         UpdatePlayerHP(damage);
     }
@@ -330,15 +335,15 @@ public class PlayerData : MonoBehaviour
     public void GetSupply(int slotNumber, int amount)
     {
         m_Inventory.WeaponInfo[slotNumber].m_MagazineRemainBullet += amount;
-        m_PlayerUIManager.RangeWeaponReload(CurrentWeaponInfo.m_MagazineRemainBullet);
+        if (slotNumber == 4 && CurrentWeaponInfo == m_Inventory.WeaponInfo[slotNumber])
+            ReInit?.Invoke();
+        else m_PlayerUIManager.RangeWeaponReload(CurrentWeaponInfo.m_MagazineRemainBullet);
     }
 
     public void MaxBulletUp(float amount)
     {
         for(int slotNumber = 1; slotNumber <= 3; slotNumber++)
-        {
             m_Inventory.WeaponInfo[slotNumber].MaxBullet += (int)amount;
-        }
     }
 
     public void HealKitRateUp(int amount)

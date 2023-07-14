@@ -281,6 +281,7 @@ GameObject:
   - component: {fileID: 414697587847105400}
   - component: {fileID: 5508150404928497444}
   - component: {fileID: 1192067274970683132}
+  - component: {fileID: 4045924169112941860}
   m_Layer: 29
   m_Name: Shoulder_R
   m_TagString: Untagged
@@ -380,6 +381,34 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &4045924169112941860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 199685732194718236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bb4c5fef1099b458fe87a89dd35212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6602246692695085894}
+        m_TargetAssemblyTypeName: Entity.Unit.Normal.NormalMonster, Assembly-CSharp
+        m_MethodName: Hit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
 --- !u!1 &349687692425937097
 GameObject:
   m_ObjectHideFlags: 0
@@ -1425,6 +1454,7 @@ GameObject:
   - component: {fileID: 7808532567799127299}
   - component: {fileID: 4503946653553104319}
   - component: {fileID: 6042308187471514741}
+  - component: {fileID: 1781006375247810672}
   m_Layer: 29
   m_Name: Head_M
   m_TagString: Untagged
@@ -1477,7 +1507,7 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!144 &6042308187471514741
@@ -1526,6 +1556,34 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &1781006375247810672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114042613308541137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bb4c5fef1099b458fe87a89dd35212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6602246692695085894}
+        m_TargetAssemblyTypeName: Entity.Unit.Normal.NormalMonster, Assembly-CSharp
+        m_MethodName: Hit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 1
 --- !u!1 &1141479187556420266
 GameObject:
   m_ObjectHideFlags: 0
@@ -3234,6 +3292,7 @@ GameObject:
   - component: {fileID: 8493905405766839555}
   - component: {fileID: 9123237597635045367}
   - component: {fileID: 7412665261958910629}
+  - component: {fileID: 1846657319133409928}
   m_Layer: 29
   m_Name: Knee_R
   m_TagString: Untagged
@@ -3333,6 +3392,34 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &1846657319133409928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2214063417715606453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bb4c5fef1099b458fe87a89dd35212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6602246692695085894}
+        m_TargetAssemblyTypeName: Entity.Unit.Normal.NormalMonster, Assembly-CSharp
+        m_MethodName: Hit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
 --- !u!1 &2225055884913276962
 GameObject:
   m_ObjectHideFlags: 0
@@ -3993,6 +4080,7 @@ GameObject:
   - component: {fileID: 2578792917212558308}
   - component: {fileID: 858662160819943960}
   - component: {fileID: 8874858286842751045}
+  - component: {fileID: 5474896799593724187}
   m_Layer: 29
   m_Name: Elbow_R
   m_TagString: Untagged
@@ -4092,6 +4180,34 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &5474896799593724187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2577088169963155615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bb4c5fef1099b458fe87a89dd35212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6602246692695085894}
+        m_TargetAssemblyTypeName: Entity.Unit.Normal.NormalMonster, Assembly-CSharp
+        m_MethodName: Hit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
 --- !u!1 &2593152055030057750
 GameObject:
   m_ObjectHideFlags: 0
@@ -4492,6 +4608,7 @@ GameObject:
   - component: {fileID: 4592261840471208933}
   - component: {fileID: 6803736206561991864}
   - component: {fileID: 5848894052979651324}
+  - component: {fileID: 5749283475651276824}
   m_Layer: 29
   m_Name: Hip_L
   m_TagString: Untagged
@@ -4591,6 +4708,34 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &5749283475651276824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3103210890325891516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bb4c5fef1099b458fe87a89dd35212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6602246692695085894}
+        m_TargetAssemblyTypeName: Entity.Unit.Normal.NormalMonster, Assembly-CSharp
+        m_MethodName: Hit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
 --- !u!1 &3119626087949755159
 GameObject:
   m_ObjectHideFlags: 0
@@ -5754,7 +5899,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8371498097386506658
 Transform:
   m_ObjectHideFlags: 0
@@ -6928,6 +7073,7 @@ GameObject:
   - component: {fileID: 542529381163502925}
   - component: {fileID: 1028647753117570632}
   - component: {fileID: 5707248305656354902}
+  - component: {fileID: 6363590653547261863}
   m_Layer: 29
   m_Name: Knee_L
   m_TagString: Untagged
@@ -7027,6 +7173,34 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &6363590653547261863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4450287127077377261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bb4c5fef1099b458fe87a89dd35212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6602246692695085894}
+        m_TargetAssemblyTypeName: Entity.Unit.Normal.NormalMonster, Assembly-CSharp
+        m_MethodName: Hit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
 --- !u!1 &4499596701900983671
 GameObject:
   m_ObjectHideFlags: 0
@@ -7038,6 +7212,7 @@ GameObject:
   - component: {fileID: 3914636897899228890}
   - component: {fileID: 3193532289456543348}
   - component: {fileID: 2979802631359119003}
+  - component: {fileID: 6549850842436888839}
   m_Layer: 29
   m_Name: Root_M
   m_TagString: Untagged
@@ -7089,9 +7264,37 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6549850842436888839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4499596701900983671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bb4c5fef1099b458fe87a89dd35212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6602246692695085894}
+        m_TargetAssemblyTypeName: Entity.Unit.Normal.NormalMonster, Assembly-CSharp
+        m_MethodName: Hit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
 --- !u!1 &4541250641567493984
 GameObject:
   m_ObjectHideFlags: 0
@@ -7378,6 +7581,7 @@ GameObject:
   - component: {fileID: 5063756912228866831}
   - component: {fileID: 3004790846071101245}
   - component: {fileID: 5366489866383129786}
+  - component: {fileID: 7691209723786752666}
   m_Layer: 29
   m_Name: Shoulder_L
   m_TagString: Untagged
@@ -7477,6 +7681,34 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &7691209723786752666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4985535958221796882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bb4c5fef1099b458fe87a89dd35212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6602246692695085894}
+        m_TargetAssemblyTypeName: Entity.Unit.Normal.NormalMonster, Assembly-CSharp
+        m_MethodName: Hit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
 --- !u!1 &4993330463241098986
 GameObject:
   m_ObjectHideFlags: 0
@@ -8841,6 +9073,7 @@ GameObject:
   - component: {fileID: 4427769098355144975}
   - component: {fileID: 51765323710461824}
   - component: {fileID: 751685210236986740}
+  - component: {fileID: 8981483286310369921}
   m_Layer: 29
   m_Name: Spine1_M
   m_TagString: Untagged
@@ -8890,7 +9123,7 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!144 &751685210236986740
@@ -8939,6 +9172,34 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &8981483286310369921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5777913019398899988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bb4c5fef1099b458fe87a89dd35212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6602246692695085894}
+        m_TargetAssemblyTypeName: Entity.Unit.Normal.NormalMonster, Assembly-CSharp
+        m_MethodName: Hit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
 --- !u!1 &5783085303433847988
 GameObject:
   m_ObjectHideFlags: 0
@@ -9126,7 +9387,7 @@ NavMeshAgent:
   m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.4
-  m_Speed: 3.5
+  m_Speed: 4
   m_Acceleration: 8
   avoidancePriority: 45
   m_AngularSpeed: 120
@@ -9169,8 +9430,8 @@ MonoBehaviour:
   m_FallingDetectLayer:
     serializedVersion: 2
     m_Bits: 155648
-  castHeight: 2.7
-  castRadius: 0.3
+  m_RayStartY: 1.5
+  m_RayDist: 1
 --- !u!114 &-6130877166836249328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9223,8 +9484,8 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
   m_Interpolate: 2
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -9796,6 +10057,7 @@ GameObject:
   - component: {fileID: 4795894924539109065}
   - component: {fileID: 4889386929968754116}
   - component: {fileID: 5444559223345224874}
+  - component: {fileID: 5986097544474081546}
   m_Layer: 29
   m_Name: Hip_R
   m_TagString: Untagged
@@ -9895,6 +10157,34 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &5986097544474081546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6311146020406581786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bb4c5fef1099b458fe87a89dd35212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6602246692695085894}
+        m_TargetAssemblyTypeName: Entity.Unit.Normal.NormalMonster, Assembly-CSharp
+        m_MethodName: Hit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
 --- !u!1 &6630723602723927405
 GameObject:
   m_ObjectHideFlags: 0
@@ -10514,6 +10804,7 @@ GameObject:
   - component: {fileID: 8121929761192940802}
   - component: {fileID: 341127999667456026}
   - component: {fileID: 8993579859193215909}
+  - component: {fileID: 6088007065878831428}
   m_Layer: 29
   m_Name: Elbow_L
   m_TagString: Untagged
@@ -10613,6 +10904,34 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &6088007065878831428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7281266719872971924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bb4c5fef1099b458fe87a89dd35212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6602246692695085894}
+        m_TargetAssemblyTypeName: Entity.Unit.Normal.NormalMonster, Assembly-CSharp
+        m_MethodName: Hit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
 --- !u!1 &7294833228373024108
 GameObject:
   m_ObjectHideFlags: 0

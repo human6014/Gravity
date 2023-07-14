@@ -12,7 +12,7 @@ namespace Entity.Object.Util
         [SerializeField] private AnimatorOverrideController m_ArmOverrideController;
         [SerializeField] private AudioSource m_AudioSource;
         [SerializeField] private AudioClip m_HealSound;
-
+        [SerializeField] private ArmController m_ArmController;
         private Animator m_EquipmentAnimator;
 
         public bool IsUsing { get; private set; }
@@ -26,6 +26,7 @@ namespace Entity.Object.Util
         {
             IsUsing = true;
             gameObject.SetActive(true);
+            m_ArmController.AppearArms(true);
             m_ArmAnimator.runtimeAnimatorController = m_ArmOverrideController;
             m_ArmAnimator.SetTrigger("Use");
             m_EquipmentAnimator.SetTrigger("Use");

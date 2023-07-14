@@ -30,7 +30,6 @@ namespace Entity.Object.Weapon
 
         private bool m_IsThrowing;
         private bool m_IsRunning;
-        private bool m_IsActiveState;
         private const int m_MaxBullet = 1;
         private const float m_ReInitTime = 0.35f;
 
@@ -39,7 +38,6 @@ namespace Entity.Object.Weapon
 
         public override int MaxBullet => m_MaxBullet;
         public override bool CanChangeWeapon => base.CanChangeWeapon && !m_IsThrowing;
-
 
         public override void PreAwake()
         {
@@ -62,7 +60,6 @@ namespace Entity.Object.Weapon
         public override void Init()
         {
             base.Init();
-
         }
 
         protected override void DoAppearObject()
@@ -74,10 +71,11 @@ namespace Entity.Object.Weapon
             if(m_HasParticle) m_ParticleObject.SetActive(isActive);
         }
 
-        private void ReInit()
+        public void ReInit()
         {
             m_IsThrowing = false;
             m_RendererObject.enabled = true;
+            m_ArmController.AppearArms(true);
             m_ArmAnimator.SetTrigger("Equip");
             EquipmentAnimator.SetTrigger("Equip");
         }
@@ -85,7 +83,7 @@ namespace Entity.Object.Weapon
         private void AssignPooling()
         {
             m_PoolingObject = Manager.ObjectPoolManager.Register(m_Explosive, m_ActiveObjectPool);
-            m_PoolingObject.GenerateObj(1);
+            m_PoolingObject.GenerateObj(2);
         }
 
         protected override void AssignKeyAction()
@@ -185,13 +183,9 @@ namespace Entity.Object.Weapon
             }
         }
 
-        private void EndThrow()
+        public void EndThrow()
         {
-            if (WeaponInfo.m_MagazineRemainBullet <= 0)
-            {
-                m_IsThrowing = false;
-                m_IsActiveState = false;
-            }
+            if (WeaponInfo.m_MagazineRemainBullet <= 0) m_IsThrowing = false;
             else
             {
                 PlayerData.RangeWeaponCountingReload();
