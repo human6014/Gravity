@@ -66,7 +66,7 @@ namespace Manager.Weapon
             m_PlayerInputController.Heal += TryHealInteract;
             m_PlayerInputController.Light += () => TryWeaponChange(m_ToolKitToEquipIndex);
             m_PlayerData.WeaponDataFunc += RegisterWeapon;
-            m_PlayerData.ReInit += () => ((ThrowingWeapon)m_CurrentWeapon).EndThrow();
+            m_PlayerData.ReInit += () => ((ThrowingWeapon)m_CurrentWeapon).ReInit();
         }
 
         private void Start()
