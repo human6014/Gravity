@@ -50,6 +50,9 @@ namespace Manager
 
         [Tooltip("공중 몬스터 소환 주기")]
         [SerializeField] private float flyingMonsterSpawnTime = 5;
+
+        [Tooltip("몬스터 생성 확률")]
+        [SerializeField] private float [] m_MonsterProbs;
         #endregion
 
         #region Object Value
@@ -67,8 +70,8 @@ namespace Manager
 
         #region Normal Value
         private EnumType.GravityType currentGravityType = EnumType.GravityType.yDown;
-        //private readonly float[] m_Probs = new float[] { 52, 21, 21, 4, 2 };
-        private readonly float[] m_Probs = new float[] { 0, 0, 0, 0, 100 };
+        private readonly float[] m_Probs = new float[] { 52, 21, 21, 4, 2 };
+        //private readonly float[] m_Probs = new float[] { 0, 0, 0, 0, 100 };
         private float m_Total = 0;
 
         private float m_NormalMonsterTimer;
@@ -93,7 +96,7 @@ namespace Manager
             NormalMonsterCount = 0;
             FlyingMonsterCount = 0;
 
-            foreach (float elem in m_Probs) m_Total += elem;
+            foreach (float elem in m_MonsterProbs) m_Total += elem;
             GravityManager.GravityChangeAction += ChangeCurrentArea;
         }
 
@@ -178,12 +181,12 @@ namespace Manager
         {
             float randomPoint = Random.value * m_Total;
 
-            for (int i = 0; i < m_Probs.Length; i++)
+            for (int i = 0; i < m_MonsterProbs.Length; i++)
             {
-                if (randomPoint < m_Probs[i]) return i;
-                else randomPoint -= m_Probs[i];
+                if (randomPoint < m_MonsterProbs[i]) return i;
+                else randomPoint -= m_MonsterProbs[i];
             }
-            return m_Probs.Length - 1;
+            return m_MonsterProbs.Length - 1;
         }
 
         /// <summary>

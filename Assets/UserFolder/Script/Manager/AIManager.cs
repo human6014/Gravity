@@ -12,6 +12,7 @@ namespace Manager.AI
     {
         public static FloorController FloorDetector { get; set; }
         public static Transform PlayerTransform { get; set; }
+        public static Vector3 PlayerGroundPosition { get => PlayerTransform.position + (PlayerTransform.up * - 0.5f);}
         public static Vector3 PlayerRerversePosition { get; set; }
         public static Transform PlayerSupportTargetTransform { get; set; }
         public static bool PlayerIsGround { get; set; }

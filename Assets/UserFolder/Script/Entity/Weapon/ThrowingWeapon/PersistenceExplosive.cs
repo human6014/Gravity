@@ -60,7 +60,6 @@ public class PersistenceExplosive : Explosible
         while(elapsedTime < m_EffectDuration)
         {
             elapsedTime += m_DamageTick;
-            Debug.Log(elapsedTime);
             base.Damage(false);
             yield return PersistenceExplosionTime;
         }

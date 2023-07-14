@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Entity.Object.Weapon;
+using Entity.Object.Util;
 using EntityWeapon = Entity.Object.Weapon.Weapon;
 
 namespace Manager.Weapon
@@ -23,8 +25,8 @@ namespace Manager.Weapon
         [SerializeField] private PlayerData m_PlayerData;
         [SerializeField] private Contoller.PlayerInputController m_PlayerInputController;
         [SerializeField] private Transform m_Pivot;
-        [SerializeField] private Entity.Object.Util.Syringe m_Syringe;
-        [SerializeField] private Entity.Object.Weapon.FlashLight m_FlashLight; 
+        [SerializeField] private Syringe m_Syringe;
+        [SerializeField] private FlashLight m_FlashLight; 
 
         [Header("Pooling")]
         [SerializeField] private Transform m_ActiveObjectPool;
@@ -64,6 +66,7 @@ namespace Manager.Weapon
             m_PlayerInputController.Heal += TryHealInteract;
             m_PlayerInputController.Light += () => TryWeaponChange(m_ToolKitToEquipIndex);
             m_PlayerData.WeaponDataFunc += RegisterWeapon;
+            m_PlayerData.ReInit += () => ((ThrowingWeapon)m_CurrentWeapon).EndThrow();
         }
 
         private void Start()
@@ -95,18 +98,12 @@ namespace Manager.Weapon
                 if (m_CurrentEquipIndex == slotNumber) return;
                 if (!m_CurrentWeapon.CanChangeWeapon) return;
                 await m_CurrentWeapon.UnEquip();
-                ChangeWeapon(slotNumber, index);
             }
-            else
-            {
-                m_WeaponDictionary.TryGetValue(new (slotNumber, index), out m_CurrentWeapon);
-                m_CurrentWeapon.Init();
-                m_PlayerData.ChangeWeapon(m_CurrentWeapon.EquipingType, m_CurrentWeapon.BulletType, m_CurrentWeapon.CurrentFireMode,m_CurrentWeapon.WeaponIcon);
-            }
+            ChangeWeapon(slotNumber, index);
             m_CurrentEquipIndex = slotNumber;
         }
 
-        public void ChangeWeapon(int slotNumber, int index)
+        private void ChangeWeapon(int slotNumber, int index)
         {
             m_WeaponDictionary.TryGetValue(new(slotNumber, index), out m_CurrentWeapon);
 
