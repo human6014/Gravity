@@ -40,8 +40,9 @@ public class SpecialMonsterAI : MonoBehaviour
     public Vector3 ProceduralPosition { get; set; }
     #endregion
 
-    public bool GetIsOnOffMeshLink() => m_NavMeshAgent.isOnOffMeshLink;
-    public void SetNavMeshEnable(bool isOn) => m_NavMeshAgent.enabled = isOn;
+    public bool GetIsOnOffMeshLink { get => m_NavMeshAgent.isOnOffMeshLink; }
+    public bool SetNavMeshEnable { set => m_NavMeshAgent.enabled = value; }
+    public bool CanJump { get => !m_NavMeshAgent.isOnOffMeshLink; }
     public void SetNavMeshPos(Vector3 pos) => m_NavMeshAgent.Warp(pos);
     
     private void Awake()
@@ -128,18 +129,16 @@ public class SpecialMonsterAI : MonoBehaviour
 
     private void SetDestination()
     {
+        Vector3 finalDestination = AIManager.PlayerGroundPosition;
         if (AIManager.PlayerRerversePosition != Vector3.zero)
         {
             float reversedDistance = (transform.position - AIManager.PlayerRerversePosition).sqrMagnitude;
-            float normalDistance = (transform.position - AIManager.PlayerTransform.position).sqrMagnitude;
+            float normalDistance = (transform.position - AIManager.PlayerGroundPosition).sqrMagnitude;
 
             if (reversedDistance < normalDistance)
-            {
-                m_NavMeshAgent.SetDestination(AIManager.PlayerRerversePosition);
-                return;
-            }
+                finalDestination = AIManager.PlayerRerversePosition;
         }
-        m_NavMeshAgent.SetDestination(AIManager.PlayerTransform.position);
+        m_NavMeshAgent.SetDestination(finalDestination);
     }
 
     //public bool IsSameFloor() => navMeshAgent.navMeshOwner.name == floorDetector.GetNowFloor().name;

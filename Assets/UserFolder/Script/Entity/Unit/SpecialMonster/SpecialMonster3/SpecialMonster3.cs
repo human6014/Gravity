@@ -2,18 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpecialMonster3 : MonoBehaviour
+namespace Entity.Unit.Special
 {
-    Boids boids;
-    Animator animator;
-    private void Awake()
+    public class SpecialMonster3 : MonoBehaviour, IMonster
     {
-        boids = GetComponent<Boids>();
-        //animator = GetComponent<Animator>();
-    }
+        [SerializeField] [Range(0, 2000)] private int m_BoidsInstacingCount = 500;
 
-    void Start()
-    {
-        boids.GenerateBoidMonster(500);
+        private BoidsController m_BoidsController;
+        private Animator m_Animator;
+
+        private void Awake()
+        {
+            m_BoidsController = GetComponent<BoidsController>();
+            //animator = GetComponent<Animator>();
+        }
+
+        void Start()
+        {
+            m_BoidsController.GenerateBoidMonster(m_BoidsInstacingCount);
+        }
+
+        public void Attack()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Die()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Hit(int damage, AttackType bulletType)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Move()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

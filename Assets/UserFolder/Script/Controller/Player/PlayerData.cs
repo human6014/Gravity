@@ -128,8 +128,6 @@ public class PlayerData : MonoBehaviour
     {
         if (!IsAlive) return;
 
-        Debug.Log(PlayerState.PlayerBehaviorState);
-
         if ((m_HPTimer += Time.deltaTime) >= m_AutoHPHealTime)
         {
             m_HPTimer = 0;
