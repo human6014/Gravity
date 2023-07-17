@@ -49,9 +49,8 @@ namespace Manager
             /// 오브젝트 생성
             /// </summary>
             /// <returns></returns>
-            private PoolableScript CreateNewObject()
+            private PoolableScript CreateNewObject() 
             {
-                //Flying Monster 에러 뜨면 플레이어 오브젝트 활성화 해보도록
                 var newObj = Instantiate(script);
                 newObj.gameObject.SetActive(false);
                 newObj.transform.SetParent(cachedTransform);

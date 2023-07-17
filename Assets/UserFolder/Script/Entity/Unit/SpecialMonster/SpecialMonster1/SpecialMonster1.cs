@@ -41,7 +41,6 @@ namespace Entity.Unit.Special
         private float m_NormalAttackTimer;
         private float m_GrabAttackTimer;
         private float m_JumpAttackTimer;
-        private float m_RangeAttackTimer;
         private float m_JumpTimer;
 
         private bool m_IsAlive;
@@ -50,30 +49,31 @@ namespace Entity.Unit.Special
         private bool m_IsGrabbing;
 
         private bool CanGrabAttack() => m_GrabAttackTimer >= m_Settings.m_GrabAttackSpeed &&
-            m_TargetDist <= m_Settings.m_GrabAttackRange;
+            m_TargetDist <= m_Settings.m_GrabAttackRange && !IsDetectObstacle(m_Settings.m_GrabAttackRange, false);
 
         private bool CanNormalAttack() => m_NormalAttackTimer >= m_Settings.m_AttackSpeed &&
-            m_TargetDist <= m_Settings.m_AttackRange;
+            m_TargetDist <= m_Settings.m_AttackRange && !IsDetectObstacle(m_Settings.m_AttackRange, false);
 
-        //private bool CanSpitVenom() => !IsDetectObstacle(int.MaxValue);
-        
         private bool CanJumpAttack() => m_Settings.CanJumpAttack(m_TargetDist, m_JumpAttackTimer) && 
-            !IsDetectObstacle(m_Settings.m_JumpAttackMaxRange) && AIManager.PlayerIsGround;
+            m_SpecialMonsterAI.CanJump && AIManager.PlayerIsGround && !IsDetectObstacle(m_Settings.m_JumpAttackMaxRange, true);
         
         private bool CanJump() => m_Settings.CanJump(m_TargetDist, m_JumpTimer) &&
-                 !IsDetectObstacle(m_Settings.m_JumpMaxRange) && AIManager.PlayerIsGround;
+            m_SpecialMonsterAI.CanJump && AIManager.PlayerIsGround && !IsDetectObstacle(m_Settings.m_JumpMaxRange, true);
 
         private bool CanCriticalHit(int realDamage) => realDamage >= m_Settings.m_HitDamage && !m_DoingBehaviour &&
             m_CurrentHP <= m_Settings.m_HitHP && Random.Range(0, 100) <= m_Settings.m_HitPercentage;
 
-        private bool IsDetectObstacle(float maxRange)
+        private bool IsDetectObstacle(float maxRange, bool isOriginalTransform)
         {
-            Vector3 currentPos = m_NavMeshTransform.position + m_NavMeshTransform.up * 4;
+            Vector3 currentPos = isOriginalTransform ? m_NavMeshTransform.position + m_NavMeshTransform.up * 4 : m_LookPoint.position;
             Vector3 dir = (AIManager.PlayerTransform.position - currentPos).normalized;
             return Physics.Raycast(currentPos, dir, maxRange, m_Settings.m_ObstacleDetectLayer);
         }
 
-        private void Awake() => m_LegController = GetComponentInChildren<LegController>();
+        private void Awake()
+        {
+            m_LegController = GetComponentInChildren<LegController>();
+        }
         
         public void Init(Quaternion rotation)
         {
@@ -115,7 +115,6 @@ namespace Entity.Unit.Special
         {
             m_NormalAttackTimer += Time.deltaTime;
             m_GrabAttackTimer += Time.deltaTime; 
-            //m_RangeAttackTimer += Time.deltaTime;
             m_JumpAttackTimer += Time.deltaTime;
             m_JumpTimer += Time.deltaTime;
         }
@@ -127,9 +126,10 @@ namespace Entity.Unit.Special
 
         public void Attack()
         {
-            if (m_DoingBehaviour || m_SpecialMonsterAI.GetIsOnOffMeshLink()) return;
+            if (m_DoingBehaviour || m_SpecialMonsterAI.GetIsOnOffMeshLink) return;
 
             m_TargetDist = Vector3.Distance(AIManager.PlayerTransform.position, m_NavMeshTransform.position);
+
             if (CanJumpAttack())
             {
                 if (!m_Settings.CanJumpAttackPercentage()) m_JumpAttackTimer = 0;
@@ -262,7 +262,7 @@ namespace Entity.Unit.Special
 
         private async Task PreJump(float preJumpTime, float upDist)
         {
-            m_SpecialMonsterAI.SetNavMeshEnable(false);
+            m_SpecialMonsterAI.SetNavMeshEnable = false;
             m_LegController.SetPreJump(true);
 
             float elapsedTime = 0;
@@ -308,7 +308,7 @@ namespace Entity.Unit.Special
             }
 
             m_LegController.Jump(false);
-            m_SpecialMonsterAI.SetNavMeshEnable(true);
+            m_SpecialMonsterAI.SetNavMeshEnable = true;
         }
 
         #endregion

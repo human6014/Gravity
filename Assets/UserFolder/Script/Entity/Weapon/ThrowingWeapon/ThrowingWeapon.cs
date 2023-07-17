@@ -73,7 +73,6 @@ namespace Entity.Object.Weapon
 
         public void ReInit()
         {
-            Debug.Log("ReInit");
             m_IsThrowing = false;
             m_RendererObject.enabled = true;
             m_ArmController.AppearArms(true);
@@ -186,7 +185,6 @@ namespace Entity.Object.Weapon
 
         public void EndThrow()
         {
-            Debug.Log("EndThrow");
             if (WeaponInfo.m_MagazineRemainBullet <= 0) m_IsThrowing = false;
             else
             {

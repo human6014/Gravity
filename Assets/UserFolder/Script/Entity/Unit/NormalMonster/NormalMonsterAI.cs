@@ -155,7 +155,10 @@ namespace Entity.Unit.Normal
             Vector3 autoTargetDir = AIManager.CurrentTargetPosition((target - transform.position).normalized);
 
             if (autoTargetDir != Vector3.zero)
-                transform.rotation = Quaternion.LookRotation(autoTargetDir, -GravityManager.GravityVector);
+            {
+                Quaternion lookRot = Quaternion.LookRotation(autoTargetDir, -GravityManager.GravityVector);
+                transform.rotation = Quaternion.Slerp(transform.rotation,lookRot, 0.5f);
+            }
         }
         #endregion
 

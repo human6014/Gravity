@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: BoidMonsterSetting
   m_EditorClassIdentifier: 
   speedRange: {x: 10, y: 10}
-  cohesionWeight: 4
+  cohesionWeight: 3
   alignmentWeight: 5
-  separationWeight: 3
+  separationWeight: 4
   targetWeight: 5
   boundsWeight: 7.5
   obstacleWeight: 30

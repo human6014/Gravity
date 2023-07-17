@@ -159,7 +159,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f2d4a4a1644eed24aae05080541c7d5d, type: 2}
+  - {fileID: 2100000, guid: c78159c2efc7ef1439f952ee04f60d3d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -381,3 +381,8 @@ MonoBehaviour:
   climbingDetectLayer:
     serializedVersion: 2
     m_Bits: 24576
+  m_FallingDetectLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  m_RayStartY: 1.5
+  m_RayDist: 1
