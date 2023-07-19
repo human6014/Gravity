@@ -292,7 +292,8 @@ public class PlayerData : MonoBehaviour
     {
         if(attackType == AttackType.Grab) GrabAction?.Invoke(true);
         else if (attackType == AttackType.Explosion) damage = (int)(damage * 0.5f);
-
+        else if (attackType == AttackType.OnlyDamage && PlayerHP - damage <= 0) damage = PlayerHP - 1;
+        
         UpdatePlayerHP(damage);
         m_PlayerUIManager.DisplayHitDirection(target);
     }

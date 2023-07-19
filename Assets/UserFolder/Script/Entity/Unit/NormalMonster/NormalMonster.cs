@@ -103,7 +103,6 @@ namespace Entity.Unit.Normal
 
         public void Hit(int damage, AttackType bulletType)
         {
-            Debug.Log("Hit");
             if (!m_IsAlive) return;
             if (bulletType == AttackType.Explosion) m_CurrentHP -= (damage / settings.m_ExplosionResistance);
             else if (bulletType == AttackType.Melee) m_CurrentHP -= (damage / settings.m_MeleeResistance);
@@ -138,7 +137,6 @@ namespace Entity.Unit.Normal
             Invoke(nameof(ReturnObject),10);
         }
 
-        [ContextMenu("ReturnObject")]
         public override void ReturnObject()
         {
             Manager.SpawnManager.NormalMonsterCount--;

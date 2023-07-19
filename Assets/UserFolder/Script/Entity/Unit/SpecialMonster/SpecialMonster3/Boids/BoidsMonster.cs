@@ -1,159 +1,88 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Manager.AI;
 
-public class BoidsMonster : PoolableScript
+namespace Entity.Unit.Flying
 {
-    #region Variables & Initializer
-    [Header("Info")]
-    [SerializeField] private Scriptable.Monster.BoidsScriptable settings;
-    [SerializeField] private Scriptable.Monster.FlyingMonsterScriptable m_FlyingMonsterScriptable;
-
-    private WaitForSeconds calcEgoWaitSeconds;
-    private WaitForSeconds findNeighbourSeconds;
-
-    private readonly List<BoidsMonster> neighbours = new();
-    private BoidsController myBoids;
-
-    private Transform m_Target;
-
-    private float m_Speed;
-    private float m_AdditionalSpeed;
-
-    private Vector3 m_TargetVec;
-    private Vector3 m_EgoVector;
-
-    private Vector3 m_CohesionVec;
-    private Vector3 m_AlignmentVec;
-    private Vector3 m_SeparationVec;
-
-    private Vector3 m_TargetForwardVec;
-    private Vector3 m_BoundsVec;
-    private Vector3 m_ObstacleVec;
-    #endregion
-
-    public void Init(BoidsController _boids)
+    public class BoidsMonster : PoolableScript, IMonster
     {
-        myBoids = _boids;
-        m_Speed = Random.Range(settings.speedRange.x, settings.speedRange.y);
-        m_Target = Manager.AI.AIManager.PlayerTransform;
+        [SerializeField] private Scriptable.Monster.FlyingMonsterScriptable m_Settings;
 
-        calcEgoWaitSeconds = new WaitForSeconds(Random.Range(1f, 3f));
-        findNeighbourSeconds = new WaitForSeconds(Random.Range(1f, 2f));
+        private BoidsMovement m_BoidsMovement;
+        private PlayerData m_PlayerData;
 
-        StartCoroutine(FindNeighbourCoroutine());
-        StartCoroutine(CalculateEgoVectorCoroutine());
-    }
+        private int m_CurrentHP;
+        private float m_CurrentAttackTimer;
+        private bool m_IsAlive;
 
-    private void Update()
-    {
-        if (m_AdditionalSpeed > 0) m_AdditionalSpeed -= Time.deltaTime;
+        public System.Action<bool> TracePatternAction { get; set; }
+        public System.Action<bool> PatrolPatternAction { get; set; }
+        public System.Action<PoolableScript> ReturnAction { get; set; }
 
-        CalculateVectors();
-        // Calculate all the vectors we need
-        m_CohesionVec *= settings.cohesionWeight;
-        m_AlignmentVec *= settings.alignmentWeight;
-        m_SeparationVec *= settings.separationWeight;
-
-        // 추가적인 방향
-        if (m_Target != null && Input.GetKey(KeyCode.Tab)) //공격 패턴 주기시마다 하게 함
-            m_TargetForwardVec = CalculateTargetVector() * settings.targetWeight;
-        else m_BoundsVec = CalculateBoundsVector() * settings.boundsWeight;
-        m_ObstacleVec = CalculateObstacleVector() * settings.obstacleWeight;
-
-        m_TargetVec = m_CohesionVec + m_AlignmentVec + m_SeparationVec + m_BoundsVec + m_ObstacleVec + (m_EgoVector * settings.egoWeight) + m_TargetForwardVec;
-
-        // Steer and Move
-        if (m_TargetVec == Vector3.zero) m_TargetVec = m_EgoVector;
-        else m_TargetVec = Vector3.Lerp(transform.forward, m_TargetVec, Time.deltaTime).normalized;
-
-        transform.SetPositionAndRotation(transform.position + (m_Speed + m_AdditionalSpeed) * Time.deltaTime * m_TargetVec,
-                                        Quaternion.LookRotation(m_TargetVec));
-    }
-
-    #region Calculate Vectors
-    private IEnumerator CalculateEgoVectorCoroutine()
-    {
-        while (true)
+        private void Awake()
         {
-            m_Speed = Random.Range(settings.speedRange.x, settings.speedRange.y);
-            m_EgoVector = Random.insideUnitSphere;
-            yield return calcEgoWaitSeconds;
+            m_BoidsMovement = GetComponent<BoidsMovement>();
+            TracePatternAction += m_BoidsMovement.TryTracePlayer;
+            PatrolPatternAction += m_BoidsMovement.TryPatrol;
         }
-    }
 
-    private IEnumerator FindNeighbourCoroutine()
-    {
-        Collider[] colls;
-        while (true)
+        private void Start()
         {
-            neighbours.Clear();
-
-            colls = Physics.OverlapSphere(transform.position, settings.neighbourDistance, settings.boidUnitLayer);
-            for (int i = 0; i < colls.Length && i <= settings.maxNeighbourCount; i++)
-            {
-                if (Vector3.Angle(transform.forward, colls[i].transform.position - transform.position) <= settings.FOVAngle)
-                    neighbours.Add(colls[i].GetComponent<BoidsMonster>());
-            }
-            yield return findNeighbourSeconds;
+            m_PlayerData = AIManager.PlayerTransform.GetComponent<PlayerData>();
         }
-    }
 
-    private void CalculateVectors()
-    {
-        m_CohesionVec = Vector3.zero;
-        m_AlignmentVec = transform.forward;
-        m_SeparationVec = Vector3.zero;
-        if (neighbours.Count > 0)
+        public void Init(Transform moveCenter)
         {
-            // 이웃 unit들의 위치 더하기
-            for (int i = 0; i < neighbours.Count; i++)
-            {
-                m_CohesionVec += neighbours[i].transform.position;
-                m_AlignmentVec += neighbours[i].transform.forward;
-                m_SeparationVec += (transform.position - neighbours[i].transform.position);
-            }
+            m_IsAlive = true;
+            m_CurrentHP = m_Settings.m_HP;
+            m_CurrentAttackTimer = 0;
 
-            // 중심 위치로의 벡터 찾기
-            m_CohesionVec /= neighbours.Count;
-            m_AlignmentVec /= neighbours.Count;
-            m_SeparationVec /= neighbours.Count;
-            m_CohesionVec -= transform.position;
-
-            m_CohesionVec.Normalize();
-            m_AlignmentVec.Normalize();
-            m_SeparationVec.Normalize();
+            m_BoidsMovement.Init(moveCenter);
         }
-    }
 
-    private Vector3 CalculateBoundsVector()
-    {
-        m_TargetForwardVec = Vector3.zero;
-        Vector3 offsetToCenter = myBoids.transform.position - transform.position;
-        return offsetToCenter.magnitude >= myBoids.SpawnRange ? offsetToCenter.normalized : Vector3.zero;
-    }
-
-    private Vector3 CalculateObstacleVector()
-    {
-        Vector3 obstacleVec = Vector3.zero;
-        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, settings.obstacleDistance, settings.obstacleLayer))
+        public void Update()
         {
-            obstacleVec = hit.normal;
-            m_AdditionalSpeed = 10;
+            if (!m_IsAlive) return;
+            Move();
+            m_CurrentAttackTimer += Time.deltaTime;
         }
-        return obstacleVec;
-    }
 
-    private Vector3 CalculateTargetVector()
-    {
-        m_BoundsVec = Vector3.zero;
-        return (m_Target.position - transform.position).normalized;
-    }
-    #endregion
+        public void Move()
+        {
+            m_BoidsMovement.CalcAndMove();
+        }
 
-    //호출할 때 this
-    public override void ReturnObject()
-    {
-        myBoids.ReturnObj(this);
+        public void Attack()
+        {
+            if (m_CurrentAttackTimer < m_Settings.m_AttackSpeed) return;
+            m_CurrentAttackTimer = 0;
+            m_PlayerData.PlayerHit(transform, m_Settings.m_Damage, m_Settings.m_NoramlAttackType);
+        }
+
+        public void Hit(int damage, AttackType bulletType)
+        {
+            if (!m_IsAlive) return;
+            m_CurrentHP -= damage - m_Settings.m_Def;
+
+            if (m_CurrentHP <= 0) Die();
+        }
+
+        public void Die()
+        {
+            m_BoidsMovement.Dispose();
+            m_IsAlive = false;
+            ReturnObject();
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Player")) Attack();
+        }
+
+        public override void ReturnObject()
+        {
+            ReturnAction?.Invoke(this);
+        }
     }
 }
