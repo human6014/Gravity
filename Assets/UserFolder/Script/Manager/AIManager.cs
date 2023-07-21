@@ -26,14 +26,14 @@ namespace Manager.AI
         {
             if (!navMeshAgent.isOnNavMesh) return false;
             return navMeshAgent.navMeshOwner.name == FloorDetector.GetNowFloor().name;
-        }
+        }//이름 비교 nono!
 
         /// <summary>
         /// 현재 중력의 방향 해당하는 축을 제외하고 2차원적 위치를 구합니다.
         /// </summary>
         /// <param name="transform">평면 위치에 해당하는 transform</param>
         /// <returns>값을 구할 수 있을 경우 유효한 Vector3 값, 오류일 경우 Vector3.zero</returns>
-        public static Vector3 CurrentTargetPosition(Vector3 direction)
+        public static Vector3 GetCurrentGravityDirection(Vector3 direction)
         {
             switch (GravityManager.m_CurrentGravityAxis)
             {
@@ -47,7 +47,7 @@ namespace Manager.AI
                     direction.z = 0;
                     break;
             }
-            return direction;
-        }
+            return direction.normalized;
+        }//GravityManager에 있는게 맞는 것 같음
     }
 }

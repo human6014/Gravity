@@ -9,7 +9,7 @@ public class SP1AnimationController : MonoBehaviour
 {
     [SerializeField] Animator []rigAnimators;
     [SerializeField] RigBuilder []rigBuilders;
-    private LegController legController;
+
     private Animator m_Animator;
 
     private bool m_DoCrawsAttacking;
@@ -35,20 +35,9 @@ public class SP1AnimationController : MonoBehaviour
     private const string m_EndJumpAttack = "EndJump";
     #endregion
 
-    public bool CanMoving() => !m_DoCrawsAttacking && !m_DoGrabAttacking && !m_DoGrabAttackingReverse &&
-         !m_DoJumpBiteAttacking && !m_DoSpiting && !m_DoHitting && !m_DoRoaring;
-
     private void Awake()
     {
         m_Animator = GetComponent<Animator>();
-        legController = FindObjectOfType<LegController>();
-        //юс╫ц©К
-    }
-
-    public void Init()
-    {
-        m_Animator = GetComponent<Animator>();
-        legController = FindObjectOfType<LegController>();
     }
 
     public void SetIKEnable(bool _value)
@@ -61,6 +50,7 @@ public class SP1AnimationController : MonoBehaviour
         }
     }
 
+    /*
     public void SetIKEnableExceptNeck(bool _value)
     {
         for (int i = 0; i < rigAnimators.Length - 1; i++)
@@ -69,6 +59,7 @@ public class SP1AnimationController : MonoBehaviour
             rigBuilders[i].enabled = _value;
         }
     }
+    */
 
     public void SetWalk(bool isActiveIK)
     {
@@ -81,6 +72,7 @@ public class SP1AnimationController : MonoBehaviour
         SetWalk(false);
         m_Animator.SetTrigger(name);
     }
+
     public void SetDie()
     {
         SetTriggerAnimation(m_Die);

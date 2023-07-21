@@ -10,7 +10,7 @@ namespace Entity.Unit.Flying
         #region Variables & Initializer
         [Header("Info")]
         [SerializeField] private Scriptable.Monster.BoidsScriptable settings;
-
+        [SerializeField] private ComputeShader m_ComputeShader;
         private readonly List<BoidsMovement> m_Neighbours = new();
 
         private WaitForSeconds calcEgoWaitSeconds;
@@ -121,7 +121,58 @@ namespace Entity.Unit.Flying
                 yield return findNeighbourSeconds;
             }
         }
+        #region Compute Shader
+        //private ComputeBuffer neighbourPositionsBuffer;
+        //private ComputeBuffer neighbourForwardsBuffer;
+        //private ComputeBuffer cohesionVectorBuffer;
+        //private ComputeBuffer alignmentVectorBuffer;
+        //private ComputeBuffer separationVectorBuffer;
+        //private int kernelID;
+        //private void InitSetting()
+        //{
+        //    kernelID = m_ComputeShader.FindKernel("CalculateVectors");
 
+        //    neighbourPositionsBuffer = new ComputeBuffer(boidCount, sizeof(float) * 3);
+        //    neighbourForwardsBuffer = new ComputeBuffer(boidCount, sizeof(float) * 3);
+        //    cohesionVectorBuffer = new ComputeBuffer(boidCount, sizeof(float) * 3);
+        //    alignmentVectorBuffer = new ComputeBuffer(boidCount, sizeof(float) * 3);
+        //    separationVectorBuffer = new ComputeBuffer(boidCount, sizeof(float) * 3);
+
+        //    // Set data to buffers (example: random positions and forwards)
+        //    Vector3[] neighbourPositions = new Vector3[boidCount];
+        //    Vector3[] neighbourForwards = new Vector3[boidCount];
+        //    for (int i = 0; i < m_Neighbours.Count; i++)
+        //    {
+        //        neighbourPositions[i] = m_Neighbours[i].transform.position;
+        //        neighbourForwards[i] = m_Neighbours[i].transform.forward;
+        //    }
+        //    neighbourPositionsBuffer.SetData(neighbourPositions);
+        //    neighbourForwardsBuffer.SetData(neighbourForwards);
+
+        //    m_ComputeShader.SetBuffer(kernelID, "neighbourPositions", neighbourPositionsBuffer);
+        //    m_ComputeShader.SetBuffer(kernelID, "neighbourForwards", neighbourForwardsBuffer);
+        //    m_ComputeShader.SetBuffer(kernelID, "cohesionVector", cohesionVectorBuffer);
+        //    m_ComputeShader.SetBuffer(kernelID, "alignmentVector", alignmentVectorBuffer);
+        //    m_ComputeShader.SetBuffer(kernelID, "separationVector", separationVectorBuffer);
+        //}
+
+        //private void Dispatch()
+        //{
+        //    Vector3 weights = new Vector3(settings.cohesionWeight, settings.alignmentWeight, settings.separationWeight);
+        //    m_ComputeShader.SetVector("settings", weights);
+
+        //    // Dispatch compute shader
+        //    m_ComputeShader.Dispatch(kernelID, boidCount / 16, 1, 1);
+
+        //    // Read data from compute buffers if needed
+        //    Vector3[] cohesionVectors = new Vector3[boidCount];
+        //    Vector3[] alignmentVectors = new Vector3[boidCount];
+        //    Vector3[] separationVectors = new Vector3[boidCount];
+        //    cohesionVectorBuffer.GetData(cohesionVectors);
+        //    alignmentVectorBuffer.GetData(alignmentVectors);
+        //    separationVectorBuffer.GetData(separationVectors);
+        //}
+        #endregion
         private void CalculateVectors(out Vector3 cohesionVector, out Vector3 alignmentVector, out Vector3 separationVector)
         {
             cohesionVector = Vector3.zero;

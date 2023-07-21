@@ -152,7 +152,7 @@ namespace Entity.Unit.Normal
         {
             NormalMonsterState.SetBoolWalking();
             Vector3 target = isMoving ? m_NavMeshAgent.steeringTarget : AIManager.PlayerTransform.position;
-            Vector3 autoTargetDir = AIManager.CurrentTargetPosition((target - transform.position).normalized);
+            Vector3 autoTargetDir = AIManager.GetCurrentGravityDirection((target - transform.position));
 
             if (autoTargetDir != Vector3.zero)
             {

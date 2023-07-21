@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f810adf6c22aaea43b4fd115fc05f8f8, type: 3}
+  m_Name: SpecialMonster1 Stat
+  m_EditorClassIdentifier: 
+  m_HP: 30000
+  m_Def: 75
+  m_Damage: 350
+  m_MovementSpeed: 10
+  m_AttackSpeed: 4
+  m_AttackRange: 7.5
+  m_ExplosionResistance: 6
+  m_MeleeResistance: 6
+  m_NoramlAttackType: 0
+  m_MonsterType: 0
+  m_AttackableLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  m_ObstacleDetectLayer:
+    serializedVersion: 2
+    m_Bits: 409728
+  m_GrabAttackType: 7
+  m_GrabAttackDamage: 500
+  m_GrabAttackSpeed: 9
+  m_GrabAttackRange: 7
+  m_JumpAttackDamage: 350
+  m_JumpAttackRange: 4
+  m_JumpAttackSpeed: 6
+  m_JumpAttackMinRange: 25
+  m_JumpAttackMaxRange: 50
+  m_DestinationDist: 0.5
+  m_PreJumpAttackTime: 0.7
+  m_JumpAttackHeightRatio: 7
+  m_JumpAttackPercentage: 100
+  m_JumpSpeed: 15
+  m_JumpMinRange: 60
+  m_JumpMaxRange: 130
+  m_PreJumpTime: 2
+  m_JumpHeightRatio: 2
+  m_JumpPercentage: 100
+  m_HitHP: 15000
+  m_HitDamage: 900
+  m_HitPercentage: 25
+  m_MaxInjuryColor: {r: 1, g: 0.7058824, b: 0.7058824, a: 1}
