@@ -20,11 +20,9 @@ namespace Manager
         private SpawnManager m_SpawnManager;
         private SettingUIManager m_SettingUIManager;
 
-        private float m_SkillEventTimer;
         
-
-        public float GameTime { get; private set; }
         public static bool IsGameEnd { get; private set; } = false;
+        private float EventTimer { get; set; }
         public static void GameEnd()
         {
             IsGameEnd = true;
@@ -43,24 +41,23 @@ namespace Manager
         private void Update()
         {
             if (m_SettingUIManager.IsActivePauseUI) return;
-            GameTime += Time.deltaTime;
             if (m_SettingUIManager.IsActiveSkillEventUI) return;
+            EventTimer += Time.deltaTime;
 
-            m_SkillEventTimer += Time.deltaTime;
 
             SpawnSpecialMonster();
-            if (m_SkillEventTimer >= m_SkillEventTiming)
+            if (EventTimer >= m_SkillEventTiming)
             {
-                m_SkillEventTimer = 0;
+                EventTimer = 0;
                 m_SkillEventManager.OccurSkillEvent();
             }
         }
 
         private void SpawnSpecialMonster()
         {
-            if (!m_SpawnManager.IsSP1MonsterSpawned && GameTime >= m_SPSpawnTiming[0]) m_SpawnManager.SpawnSpecialMonster1();
-            else if (!m_SpawnManager.IsSP1MonsterSpawned && GameTime >= m_SPSpawnTiming[1]) m_SpawnManager.SpawnSpecialMonster2();
-            else if (!m_SpawnManager.IsSP1MonsterSpawned && GameTime >= m_SPSpawnTiming[2]) m_SpawnManager.SpawnSpecialMonster3();
+            if (!m_SpawnManager.IsSP1MonsterSpawned && EventTimer >= m_SPSpawnTiming[0]) m_SpawnManager.SpawnSpecialMonster1();
+            else if (!m_SpawnManager.IsSP1MonsterSpawned && EventTimer >= m_SPSpawnTiming[1]) m_SpawnManager.SpawnSpecialMonster2();
+            else if (!m_SpawnManager.IsSP1MonsterSpawned && EventTimer >= m_SPSpawnTiming[2]) m_SpawnManager.SpawnSpecialMonster3();
         }
     }
 }

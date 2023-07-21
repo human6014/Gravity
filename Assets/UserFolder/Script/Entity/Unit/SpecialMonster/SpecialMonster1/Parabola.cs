@@ -10,13 +10,13 @@ public class Parabola : MonoBehaviour
     [SerializeField] private LineRenderer m_LineRenderer;
     //[SerializeField] float height = 10;
 
-    private Transform m_AITransform;
+    private Transform m_NavMeshTransform;
 
-    private void Awake() => m_AITransform = transform.GetChild(0);
+    private void Awake() => m_NavMeshTransform = transform.GetChild(0);
 
     public float GetHeight(float heightRatio, Transform target, out Vector3 targetVector, ref Vector3 groundDirection, float destinationDist = 0)
     {
-        Vector3 direction = target.position - m_AITransform.position;
+        Vector3 direction = target.position - m_NavMeshTransform.position;
         float dir = 0;
         switch (GravityManager.m_CurrentGravityType)
         {
@@ -52,13 +52,13 @@ public class Parabola : MonoBehaviour
         {
             float x = v0 * i * Mathf.Cos(angle);
             float y = v0 * i * Mathf.Sin(angle) - 0.5f * Physics.gravity.magnitude * Mathf.Pow(i, 2);
-            m_LineRenderer.SetPosition(count, m_AITransform.position + direction * x - GravityManager.GravityVector * y);
+            m_LineRenderer.SetPosition(count, m_NavMeshTransform.position + direction * x - GravityManager.GravityVector * y);
 
             count++;
         }
         float xFinal = v0 * time * Mathf.Cos(angle);
         float yFinal = v0 * time * Mathf.Sin(angle) - 0.5f * Physics.gravity.magnitude * Mathf.Pow(time, 2);
-        m_LineRenderer.SetPosition(count, m_AITransform.position + direction * xFinal - GravityManager.GravityVector * yFinal);
+        m_LineRenderer.SetPosition(count, m_NavMeshTransform.position + direction * xFinal - GravityManager.GravityVector * yFinal);
     }
 #endif
 

@@ -20,7 +20,8 @@ public enum AttackType
     Melee = 6,
 
     //Monster only
-    Grab = 7
+    Grab = 7,
+    OnlyDamage = 8
 }
 
 namespace Scriptable.Equipment

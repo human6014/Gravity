@@ -10,14 +10,13 @@ using Contoller.Floor;
 public class SpecialMonsterAI : MonoBehaviour
 {
     private WaitUntil m_WaitUntil;
-    private Rigidbody m_Rigidbody;
     private NavMeshAgent m_NavMeshAgent;
-    private LegController m_LegController;
     private SP1AnimationController m_AnimationController;
 
     private bool m_IsInit;
-    private bool m_DoingJumpBiteAttacking;
-    
+    private bool m_DoingJumpBiteAttacking; //이거 뭐임????
+
+
     #region Adjustment factor
     [Tooltip("회전 강도")]
     private readonly float m_RotAdjustRatio = 0.3f;
@@ -42,15 +41,12 @@ public class SpecialMonsterAI : MonoBehaviour
 
     public bool GetIsOnOffMeshLink { get => m_NavMeshAgent.isOnOffMeshLink; }
     public bool SetNavMeshEnable { set => m_NavMeshAgent.enabled = value; }
-    public bool CanJump { get => !m_NavMeshAgent.isOnOffMeshLink; }
     public void SetNavMeshPos(Vector3 pos) => m_NavMeshAgent.Warp(pos);
     
     private void Awake()
     {
-        m_Rigidbody = GetComponent<Rigidbody>();
         m_NavMeshAgent = GetComponent<NavMeshAgent>();
         m_AnimationController = GetComponent<SP1AnimationController>();
-        m_LegController = FindObjectOfType<LegController>();
 
         m_NavMeshAgent.updatePosition = false;
         m_NavMeshAgent.updateRotation = false;
@@ -71,28 +67,18 @@ public class SpecialMonsterAI : MonoBehaviour
     {
         m_NavMeshAgent.enabled = false;
     }
-
+    Vector3 targetForward;
     /// <summary>
-    /// AI 행동 실시 (Recommended calling from FixedUpdate())
+    /// AI 행동 실시
     /// </summary>
-    public void OperateAIBehavior()
+    public bool OperateAIBehavior(ref bool changeFlag)
     {
-        if (!m_IsInit) return;
-        if (!m_LegController.GetIsNavOn())
-        {
-            m_AnimationController.SetWalk(true);
-            return;
-        }
-
-        if (!m_NavMeshAgent.isActiveAndEnabled) //점프 끝날 때 작동
-        {
-            //navMeshAgent.Warp(aiController.GetPosition());
-            return;
-        }
+        bool isWalk = false;
+        if (!m_IsInit) return isWalk;
 
         //if (m_NavMeshAgent.pathPending) return;
-
-        SetDestination();
+        m_NavMeshAgent.isStopped = false;
+        SetDestination(out float remainingDistance);
 
         if (m_NavMeshAgent.isOnOffMeshLink)
         {
@@ -106,38 +92,51 @@ public class SpecialMonsterAI : MonoBehaviour
             m_NavMeshAgent.speed = m_OriginalSpeed;
             //navMeshAgent.updateUpAxis = true;
         }
+        bool isCloseToTarget = remainingDistance <= m_NavMeshAgent.stoppingDistance;
 
-        Vector3 targetDirection = (m_NavMeshAgent.steeringTarget - transform.position).normalized;
+        Vector3 targetVec = isCloseToTarget ? AIManager.PlayerGroundPosition : m_NavMeshAgent.steeringTarget;
+        Vector3 targetDirection = (targetVec - transform.position).normalized;
         //targetForward = IsOnMeshLink == true ? ProceduralForwardAngle : targetDirection;
-        Vector3 targetForward = ProceduralForwardAngle + targetDirection;
+        targetForward = (ProceduralForwardAngle + targetDirection).normalized;
+        //위쪽으로 기움
 
         Quaternion navRotation = Quaternion.LookRotation(targetForward, ProceduralUpAngle);
-        transform.rotation = Quaternion.Lerp(transform.rotation, navRotation, m_RotAdjustRatio);
-        
-        if (m_NavMeshAgent.remainingDistance <= m_NavMeshAgent.stoppingDistance)
+        transform.rotation = Quaternion.Slerp(transform.rotation, navRotation, m_RotAdjustRatio);
+
+        if (isCloseToTarget)
         {
-            if (!m_DoingJumpBiteAttacking) m_AnimationController.SetWalk(false);
-            m_NavMeshAgent.nextPosition = transform.position;
+            m_NavMeshAgent.isStopped = true;
+            Debug.Log("Closer");
+            
+            changeFlag = true;
+            isWalk = false;
+            m_NavMeshAgent.destination = transform.position;
         }
         else
         {
-            if (!m_DoingJumpBiteAttacking) m_AnimationController.SetWalk(true);
+            changeFlag = true;
+            isWalk = true;
             m_NavMeshAgent.nextPosition = ProceduralPosition + Time.deltaTime * m_NavMeshAgent.speed * targetDirection;
             transform.position = m_NavMeshAgent.nextPosition;
         }
+        return isWalk;
     }
 
-    private void SetDestination()
+    private void SetDestination(out float remainingDistance)
     {
         Vector3 finalDestination = AIManager.PlayerGroundPosition;
+        remainingDistance = (transform.position - AIManager.PlayerGroundPosition).sqrMagnitude;
         if (AIManager.PlayerRerversePosition != Vector3.zero)
         {
             float reversedDistance = (transform.position - AIManager.PlayerRerversePosition).sqrMagnitude;
-            float normalDistance = (transform.position - AIManager.PlayerGroundPosition).sqrMagnitude;
 
-            if (reversedDistance < normalDistance)
+            if (reversedDistance < remainingDistance)
+            {
                 finalDestination = AIManager.PlayerRerversePosition;
+                remainingDistance = reversedDistance;
+            }
         }
+        remainingDistance = Mathf.Sqrt(remainingDistance);
         m_NavMeshAgent.SetDestination(finalDestination);
     }
 
@@ -145,6 +144,13 @@ public class SpecialMonsterAI : MonoBehaviour
     //MeshLink 타는 중에 점프 하면 버그생김
 
 #if UNITY_EDITOR
+
+    public void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, targetForward);
+    }
+
     public void OnDrawGizmos()
     {
         //Gizmos.color = Color.yellow;

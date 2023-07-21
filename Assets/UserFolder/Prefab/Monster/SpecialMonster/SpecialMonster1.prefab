@@ -79,18 +79,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee17bd872786e3b498e918f724c65e2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  legController: {fileID: 2851243572512173295}
-  m_HasDownRay: 1
-  downRayOrigin: {fileID: 2851243572578158472}
-  m_HasForwardRay: 0
-  forwardRayOrigin: {fileID: 0}
-  m_HasBackRay: 0
-  backRayOrigin: {fileID: 0}
+  m_SP1MonsterLegSettings: {fileID: 11400000, guid: 1ee4331ebb16351478a0dab8201adf1e,
+    type: 2}
+  m_BodyTransform: {fileID: 4332540135787782581}
   ikTarget: {fileID: 2851243571707920060}
+  downRayOrigin: {fileID: 2851243572578158472}
+  maxDownRayDist: 10
+  forwardRayOrigin: {fileID: 0}
+  maxFowardRayDist: 3
+  backRayOrigin: {fileID: 0}
+  maxBackRayDist: 7
   tipMoveDist: 1.1
   tipAnimationTime: 0.35
   ikOffset: 2.3
-  maxFowardRayDist: 3
 --- !u!1 &544955035050553022
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,18 +235,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee17bd872786e3b498e918f724c65e2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  legController: {fileID: 2851243572512173295}
-  m_HasDownRay: 1
-  downRayOrigin: {fileID: 2851243573648442969}
-  m_HasForwardRay: 1
-  forwardRayOrigin: {fileID: 2851243571921759736}
-  m_HasBackRay: 0
-  backRayOrigin: {fileID: 0}
+  m_SP1MonsterLegSettings: {fileID: 11400000, guid: 1ee4331ebb16351478a0dab8201adf1e,
+    type: 2}
+  m_BodyTransform: {fileID: 4332540135787782581}
   ikTarget: {fileID: 2851243572017217871}
+  downRayOrigin: {fileID: 2851243573648442969}
+  maxDownRayDist: 10
+  forwardRayOrigin: {fileID: 2851243571921759736}
+  maxFowardRayDist: 7
+  backRayOrigin: {fileID: 0}
+  maxBackRayDist: 7
   tipMoveDist: 1.9
   tipAnimationTime: 0.55
   ikOffset: 2.5
-  maxFowardRayDist: 7
 --- !u!1 &1115060510911033123
 GameObject:
   m_ObjectHideFlags: 0
@@ -1190,53 +1192,6 @@ MonoBehaviour:
   Enabled: 0
   size: 0.1
   color: {r: 0, g: 1, b: 0.013520718, a: 1}
---- !u!1 &2851243571956216267
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2851243571956216266}
-  - component: {fileID: 2851243571956216277}
-  m_Layer: 0
-  m_Name: NavDownRay
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2851243571956216266
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2851243571956216267}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.593}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2851243572315697993}
-  m_RootOrder: 14
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2851243571956216277
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2851243571956216267}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Enabled: 0
-  size: 0.1
-  color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &2851243571962984828
 GameObject:
   m_ObjectHideFlags: 0
@@ -1985,9 +1940,6 @@ Transform:
   - {fileID: 2851243571858791495}
   - {fileID: 2851243572322652090}
   - {fileID: 2851243573262247671}
-  - {fileID: 2851243572897208588}
-  - {fileID: 2851243572578742065}
-  - {fileID: 2851243571956216266}
   m_Father: {fileID: 4332540135787782581}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2381,8 +2333,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf2cb370df04dea4da35003fb9e8d40a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navTrace: {fileID: 2851243573218338006}
-  bodyTransform: {fileID: 4332540135787782581}
+  m_SpecialMonsterAI: {fileID: 2851243573218338006}
+  m_BodyTransform: {fileID: 4332540135787782581}
   legs:
   - {fileID: 2851243572417558050}
   - {fileID: 2851243573481211381}
@@ -2390,69 +2342,6 @@ MonoBehaviour:
   - {fileID: 2851243571989239960}
   - {fileID: 2851243572299229704}
   - {fileID: 2851243572268975853}
-  speedCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  heightCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: -0.0047187805
-      inSlope: 2.043496
-      outSlope: 2.043496
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.49166667
-      value: 1
-      inSlope: 0.03814137
-      outSlope: 0.03814137
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -1.9672132
-      outSlope: -1.9672132
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 155648
-  layerMaskBack:
-    serializedVersion: 2
-    m_Bits: 16384
   m_MultiAimConstraint:
   - {fileID: 1992618534674386382}
   - {fileID: 3648516715313928409}
@@ -2500,56 +2389,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 0
+  Enabled: 1
   size: 0.2
   color: {r: 1, g: 0, b: 0, a: 1}
---- !u!1 &2851243572578742070
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2851243572578742065}
-  - component: {fileID: 2851243572578742064}
-  m_Layer: 0
-  m_Name: NavBackRay
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2851243572578742065
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2851243572578742070}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: -1.173, z: 1.918}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2851243572315697993}
-  m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &2851243572578742064
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2851243572578742070}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Enabled: 0
-  size: 0.1
-  color: {r: 0.9245283, g: 0.8155037, b: 0.8155037, a: 1}
 --- !u!1 &2851243572611577021
 GameObject:
   m_ObjectHideFlags: 0
@@ -3192,53 +3034,6 @@ Transform:
   m_Father: {fileID: 2851243571707920060}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2851243572897208589
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2851243572897208588}
-  - component: {fileID: 2851243572897208591}
-  m_Layer: 0
-  m_Name: NavForwardRay
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2851243572897208588
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2851243572897208589}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.45, z: 1.148}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2851243572315697993}
-  m_RootOrder: 12
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2851243572897208591
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2851243572897208589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Enabled: 0
-  size: 0.1
-  color: {r: 0.1792453, g: 0.1530349, b: 0.1530349, a: 1}
 --- !u!1 &2851243572923712671
 GameObject:
   m_ObjectHideFlags: 0
@@ -3339,7 +3134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 0
+  Enabled: 1
   size: 0.2
   color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &2851243572968841896
@@ -4214,7 +4009,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 0
+  Enabled: 1
   size: 0.2
   color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &2851243573325739551
@@ -4440,7 +4235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 0
+  Enabled: 1
   size: 0.2
   color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &2851243573436739888
@@ -4809,7 +4604,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 0
+  Enabled: 1
   size: 0.2
   color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &2851243573705186699
@@ -4979,7 +4774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d912fdb59f8e90c468a3196b0d2591e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 0
+  Enabled: 1
   size: 0.2
   color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &2851243573760478642
@@ -5473,7 +5268,7 @@ NavMeshAgent:
   m_AngularSpeed: 180
   m_StoppingDistance: 5.5
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 1
   m_BaseOffset: -0.02
@@ -6179,18 +5974,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee17bd872786e3b498e918f724c65e2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  legController: {fileID: 2851243572512173295}
-  m_HasDownRay: 1
-  downRayOrigin: {fileID: 2851243573753811960}
-  m_HasForwardRay: 1
-  forwardRayOrigin: {fileID: 2851243571858791495}
-  m_HasBackRay: 0
-  backRayOrigin: {fileID: 0}
+  m_SP1MonsterLegSettings: {fileID: 11400000, guid: 1ee4331ebb16351478a0dab8201adf1e,
+    type: 2}
+  m_BodyTransform: {fileID: 4332540135787782581}
   ikTarget: {fileID: 2851243573316737740}
+  downRayOrigin: {fileID: 2851243573753811960}
+  maxDownRayDist: 10
+  forwardRayOrigin: {fileID: 2851243571858791495}
+  maxFowardRayDist: 7
+  backRayOrigin: {fileID: 0}
+  maxBackRayDist: 7
   tipMoveDist: 1.9
   tipAnimationTime: 0.55
   ikOffset: 2.5
-  maxFowardRayDist: 7
 --- !u!1 &6208796425635070974
 GameObject:
   m_ObjectHideFlags: 0
@@ -6576,18 +6372,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee17bd872786e3b498e918f724c65e2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  legController: {fileID: 2851243572512173295}
-  m_HasDownRay: 1
-  downRayOrigin: {fileID: 2851243573320361452}
-  m_HasForwardRay: 0
-  forwardRayOrigin: {fileID: 0}
-  m_HasBackRay: 0
-  backRayOrigin: {fileID: 0}
+  m_SP1MonsterLegSettings: {fileID: 11400000, guid: 1ee4331ebb16351478a0dab8201adf1e,
+    type: 2}
+  m_BodyTransform: {fileID: 4332540135787782581}
   ikTarget: {fileID: 2851243573450156525}
+  downRayOrigin: {fileID: 2851243573320361452}
+  maxDownRayDist: 10
+  forwardRayOrigin: {fileID: 0}
+  maxFowardRayDist: 3
+  backRayOrigin: {fileID: 0}
+  maxBackRayDist: 7
   tipMoveDist: 1.1
   tipAnimationTime: 0.35
   ikOffset: 2.3
-  maxFowardRayDist: 3
 --- !u!1 &7348923212738455884
 GameObject:
   m_ObjectHideFlags: 0
@@ -6779,18 +6576,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee17bd872786e3b498e918f724c65e2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  legController: {fileID: 2851243572512173295}
-  m_HasDownRay: 1
-  downRayOrigin: {fileID: 2851243573380217368}
-  m_HasForwardRay: 1
-  forwardRayOrigin: {fileID: 2851243573614275838}
-  m_HasBackRay: 1
-  backRayOrigin: {fileID: 2851243573262247671}
+  m_SP1MonsterLegSettings: {fileID: 11400000, guid: 1ee4331ebb16351478a0dab8201adf1e,
+    type: 2}
+  m_BodyTransform: {fileID: 4332540135787782581}
   ikTarget: {fileID: 2851243572658227724}
+  downRayOrigin: {fileID: 2851243573380217368}
+  maxDownRayDist: 10
+  forwardRayOrigin: {fileID: 2851243573614275838}
+  maxFowardRayDist: 4
+  backRayOrigin: {fileID: 2851243573262247671}
+  maxBackRayDist: 7
   tipMoveDist: 3.9
   tipAnimationTime: 0.6
   ikOffset: 4.5
-  maxFowardRayDist: 4
 --- !u!1 &8163713388281536244
 GameObject:
   m_ObjectHideFlags: 0
@@ -7148,15 +6946,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee17bd872786e3b498e918f724c65e2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  legController: {fileID: 2851243572512173295}
-  m_HasDownRay: 1
-  downRayOrigin: {fileID: 2851243572929889265}
-  m_HasForwardRay: 1
-  forwardRayOrigin: {fileID: 2851243573776390307}
-  m_HasBackRay: 1
-  backRayOrigin: {fileID: 2851243572322652090}
+  m_SP1MonsterLegSettings: {fileID: 11400000, guid: 1ee4331ebb16351478a0dab8201adf1e,
+    type: 2}
+  m_BodyTransform: {fileID: 4332540135787782581}
   ikTarget: {fileID: 2851243572659539946}
+  downRayOrigin: {fileID: 2851243572929889265}
+  maxDownRayDist: 10
+  forwardRayOrigin: {fileID: 2851243573776390307}
+  maxFowardRayDist: 4
+  backRayOrigin: {fileID: 2851243572322652090}
+  maxBackRayDist: 7
   tipMoveDist: 3.9
   tipAnimationTime: 0.6
   ikOffset: 4.5
-  maxFowardRayDist: 4

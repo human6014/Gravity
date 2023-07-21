@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Manager;
-using EnumType;
 using Manager.AI;
 using System.Threading.Tasks;
 
@@ -34,6 +33,8 @@ namespace Entity.Unit.Special
 
         private Vector3 m_GroundDirection;
 
+        private int m_PlayerLayerNum;
+
         private float m_AttackBetweenTime = 2;
         private float m_TargetDist;
         private float m_CurrentHP;
@@ -49,46 +50,50 @@ namespace Entity.Unit.Special
         private bool m_IsGrabbing;
 
         private bool CanGrabAttack() => m_GrabAttackTimer >= m_Settings.m_GrabAttackSpeed &&
-            m_TargetDist <= m_Settings.m_GrabAttackRange && !IsDetectObstacle(m_Settings.m_GrabAttackRange, false);
+            m_TargetDist <= m_Settings.m_GrabAttackRange;
 
         private bool CanNormalAttack() => m_NormalAttackTimer >= m_Settings.m_AttackSpeed &&
-            m_TargetDist <= m_Settings.m_AttackRange && !IsDetectObstacle(m_Settings.m_AttackRange, false);
+            m_TargetDist <= m_Settings.m_AttackRange;
 
         private bool CanJumpAttack() => m_Settings.CanJumpAttack(m_TargetDist, m_JumpAttackTimer) && 
-            m_SpecialMonsterAI.CanJump && AIManager.PlayerIsGround && !IsDetectObstacle(m_Settings.m_JumpAttackMaxRange, true);
+            AIManager.PlayerIsGround;
         
         private bool CanJump() => m_Settings.CanJump(m_TargetDist, m_JumpTimer) &&
-            m_SpecialMonsterAI.CanJump && AIManager.PlayerIsGround && !IsDetectObstacle(m_Settings.m_JumpMaxRange, true);
+            AIManager.PlayerIsGround;
 
         private bool CanCriticalHit(int realDamage) => realDamage >= m_Settings.m_HitDamage && !m_DoingBehaviour &&
             m_CurrentHP <= m_Settings.m_HitHP && Random.Range(0, 100) <= m_Settings.m_HitPercentage;
 
-        private bool IsDetectObstacle(float maxRange, bool isOriginalTransform)
+        private bool DetectObstacle()
         {
-            Vector3 currentPos = isOriginalTransform ? m_NavMeshTransform.position + m_NavMeshTransform.up * 4 : m_LookPoint.position;
+            Vector3 currentPos = m_NavMeshTransform.position;
             Vector3 dir = (AIManager.PlayerTransform.position - currentPos).normalized;
-            return Physics.Raycast(currentPos, dir, maxRange, m_Settings.m_ObstacleDetectLayer);
+
+            Physics.Raycast(currentPos, dir, out RaycastHit hit, m_TargetDist, m_Settings.m_ObstacleDetectLayer);
+            //hit가 없을 수가 없구마잉?
+
+            return hit.transform.gameObject.layer != m_PlayerLayerNum;
         }
 
         private void Awake()
         {
             m_LegController = GetComponentInChildren<LegController>();
+            m_Parabola = GetComponent<Parabola>();
+
+            m_NavMeshTransform = transform.GetChild(0);
+            m_SpecialMonsterAI = m_NavMeshTransform.GetComponent<SpecialMonsterAI>();
+            m_SP1AnimationController = m_NavMeshTransform.GetComponent<SP1AnimationController>();
+            m_MaterialPropertyBlock = new MaterialPropertyBlock();
+
+            m_PlayerLayerNum = LayerMask.NameToLayer("Player");
         }
         
         public void Init(Quaternion rotation)
         {
             m_Target = AIManager.PlayerTransform;
             m_PlayerData = m_Target.GetComponent<PlayerData>();
-            m_Parabola = GetComponent<Parabola>();
-
-            m_NavMeshTransform = transform.GetChild(0);
-            m_SpecialMonsterAI = m_NavMeshTransform.GetComponent<SpecialMonsterAI>();
-            m_SP1AnimationController = m_NavMeshTransform.GetComponent<SP1AnimationController>();
-
-            m_MaterialPropertyBlock = new MaterialPropertyBlock();
-
+            
             m_SpecialMonsterAI.Init(rotation);
-            m_SP1AnimationController.Init();
 
             m_CurrentHP = m_Settings.m_HP;
             m_IsAlive = true;
@@ -121,7 +126,9 @@ namespace Entity.Unit.Special
 
         public void Move()
         {
-            m_SpecialMonsterAI.OperateAIBehavior();
+            bool changeFlag = false;
+            bool isWalk = m_SpecialMonsterAI.OperateAIBehavior(ref changeFlag);
+            if (changeFlag) m_SP1AnimationController.SetWalk(isWalk);
         }
 
         public void Attack()
@@ -130,15 +137,18 @@ namespace Entity.Unit.Special
 
             m_TargetDist = Vector3.Distance(AIManager.PlayerTransform.position, m_NavMeshTransform.position);
 
+            if (DetectObstacle()) return;
+
             if (CanJumpAttack())
             {
                 if (!m_Settings.CanJumpAttackPercentage()) m_JumpAttackTimer = 0;
-                else JumpAttack();
+                else JumpBehavior(ref m_JumpAttackTimer, m_Settings.m_JumpAttackHeightRatio, 
+                    m_Settings.m_DestinationDist, m_Settings.m_PreJumpAttackTime, true);
             }
             else if (CanJump())
             {
                 if (!m_Settings.CanJumpPercentage()) m_JumpTimer = 0;
-                else Jump();
+                else JumpBehavior(ref m_JumpTimer, m_Settings.m_JumpHeightRatio, 0, m_Settings.m_PreJumpTime, false);
             }
             else if (CanGrabAttack()) GrabAttack();
             else if (CanNormalAttack()) NormalAttack();
@@ -176,6 +186,7 @@ namespace Entity.Unit.Special
         public void Hit(int damage, AttackType bulletType)
         {
             if (!m_IsAlive) return;
+
             int realDamage;
             if (bulletType == AttackType.Explosion) realDamage = damage / m_Settings.m_ExplosionResistance;
             else if (bulletType == AttackType.Melee) realDamage = damage / m_Settings.m_MeleeResistance;
@@ -216,32 +227,20 @@ namespace Entity.Unit.Special
         }
 
         #region Parabola Related
-        private void Jump()
+
+        private void JumpBehavior(ref float controllingTimer, float heightRatio, float destinationDist, float preJumpTime, bool hasAnimation)
         {
             m_DoingBehaviour = true;
-            m_JumpTimer = 0;
+            controllingTimer = 0;
 
-            float height = m_Parabola.GetHeight(m_Settings.m_JumpHeightRatio, m_Target, out Vector3 targetVector, ref m_GroundDirection);
-
+            float height = m_Parabola.GetHeight(heightRatio, m_Target, out Vector3 targetVector, ref m_GroundDirection, destinationDist);
             m_Parabola.CalculatePathWithHeight(targetVector, height, out float v0, out float angle, out float time);
 
-            TestJump(m_GroundDirection.normalized, v0, angle, m_Settings.m_PreJumpTime, time, false);
+            Jump(m_GroundDirection.normalized, v0, angle, preJumpTime, time, hasAnimation);
         }
 
-        private void JumpAttack()
-        {
-            m_DoingBehaviour = true;
-            m_JumpAttackTimer = 0;
-
-            float height = m_Parabola.GetHeight(m_Settings.m_JumpAttackHeightRatio, m_Target, out Vector3 targetVector, ref m_GroundDirection, m_Settings.m_DestinationDist);
-
-            m_Parabola.CalculatePathWithHeight(targetVector, height, out float v0, out float angle, out float time);
-            TestJump(m_GroundDirection.normalized, v0, angle, m_Settings.m_PreJumpAttackTime, time, true);
-        }
-
-        #region 통합 테스트
-        //이상함
-        private async void TestJump(Vector3 direction, float v0,float angle, float preJumpTime, float jumpTime, bool hasAnimation)
+        #region 테스트
+        private async void Jump(Vector3 direction, float v0,float angle, float preJumpTime, float jumpTime, bool hasAnimation)
         {
             m_DoingBehaviour = true;
             float upDist = hasAnimation ? 0.5f : 1;
@@ -303,14 +302,13 @@ namespace Entity.Unit.Special
                     isPlayEndAnimation = true;
                     m_SP1AnimationController.EndJumpBiteAttack();
                 }
-
                 await Task.Yield();
             }
 
             m_LegController.Jump(false);
             m_SpecialMonsterAI.SetNavMeshEnable = true;
+            m_SpecialMonsterAI.SetNavMeshPos(m_NavMeshTransform.position);
         }
-
         #endregion
 
         private void CheckJumpAttackToPlayer()
@@ -325,10 +323,14 @@ namespace Entity.Unit.Special
             Vector3 currentPos = m_NavMeshTransform.position + m_NavMeshTransform.up * 4;
             Vector3 dir = (AIManager.PlayerTransform.position - currentPos).normalized;
 
-            Gizmos.color = Color.white;
+            Gizmos.color = Color.magenta;
             Gizmos.DrawRay(currentPos, dir * m_Settings.m_JumpAttackMaxRange);
 
-            
+            currentPos = m_LookPoint.position;
+            dir = (AIManager.PlayerTransform.position - currentPos).normalized;
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawRay(currentPos, dir * m_Settings.m_AttackRange);
         }
 
         private void OnDrawGizmos()

@@ -8,8 +8,11 @@ namespace Entity.Unit.Special
     {
         [SerializeField] [Range(0, 2000)] private int m_BoidsInstacingCount = 500;
 
+        
         private BoidsController m_BoidsController;
         private Animator m_Animator;
+
+        private int m_CurrentHP;
 
         private void Awake()
         {
@@ -24,22 +27,22 @@ namespace Entity.Unit.Special
 
         public void Attack()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void Die()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void Hit(int damage, AttackType bulletType)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void Move()
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }

@@ -47,6 +47,12 @@ namespace Scriptable.Monster
         public float neighbourDistance = 5;
 
         [Header("ETC")]
+        [Tooltip("기본 이동 영역의 최대 거리")]
+        public float maxMovementRange;
+
+        [Tooltip("순찰 이동 영역의 최대 거리")]
+        public float patrolMovementRange;
+
         [Tooltip("같은 Boid개체 레이어")]
         public LayerMask boidUnitLayer;
         [Tooltip("장애물 레이어")]

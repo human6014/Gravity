@@ -1,0 +1,42 @@
+#pragma kernel CalculateVectors
+
+StructuredBuffer<float3> neighbourPositions;
+StructuredBuffer<float3> neighbourForwards;
+RWStructuredBuffer<float3> cohesionVector;
+RWStructuredBuffer<float3> alignmentVector;
+RWStructuredBuffer<float3> separationVector;
+
+float3 currentPosition;
+float3 settings;
+
+[numthreads(16, 1, 1)]
+void CalculateVectors(uint3 dispatchThreadID : SV_DispatchThreadID)
+{
+    float3 _cohesionVector = float3(0, 0, 0);
+    float3 _alignmentVector = float3(0, 0, 0);
+    float3 _separationVector = float3(0, 0, 0);
+
+    uint neighbourCount = neighbourPositions.Length;
+    if (neighbourCount > 0)
+    {
+        for (uint i = 0; i < neighbourCount; i++)
+        {
+            _cohesionVector += neighbourPositions[i];
+            _alignmentVector += neighbourForwards[i];
+            _separationVector += (currentPosition - neighbourPositions[i]);
+        }
+
+        _cohesionVector /= neighbourCount;
+        _alignmentVector /= neighbourCount;
+        _separationVector /= neighbourCount;
+        _cohesionVector -= currentPosition;
+
+        _cohesionVector = normalize(_cohesionVector);
+        _alignmentVector = normalize(_alignmentVector);
+        _separationVector = normalize(_separationVector);
+    }
+
+    cohesionVector[dispatchThreadID.x] = _cohesionVector * settings.x;
+    alignmentVector[dispatchThreadID.x] = _alignmentVector * settings.y;
+    separationVector[dispatchThreadID.x] = _separationVector * settings.z;
+}
