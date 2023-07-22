@@ -10,7 +10,7 @@ namespace Manager
     {
         [SerializeField] private SkillEventManager m_SkillEventManager;
 
-        [SerializeField] private float[] m_SPSpawnTiming;
+        
         [SerializeField] private float m_SkillEventTiming = 30; 
         [SerializeField] private int m_FrameRate = 60;
         //스킬 발동 조건
@@ -23,6 +23,8 @@ namespace Manager
         
         public static bool IsGameEnd { get; private set; } = false;
         private float EventTimer { get; set; }
+        private float SpecialSpawnTimer { get; set; }
+
         public static void GameEnd()
         {
             IsGameEnd = true;
@@ -44,20 +46,11 @@ namespace Manager
             if (m_SettingUIManager.IsActiveSkillEventUI) return;
             EventTimer += Time.deltaTime;
 
-
-            SpawnSpecialMonster();
             if (EventTimer >= m_SkillEventTiming)
             {
                 EventTimer = 0;
                 m_SkillEventManager.OccurSkillEvent();
             }
-        }
-
-        private void SpawnSpecialMonster()
-        {
-            if (!m_SpawnManager.IsSP1MonsterSpawned && EventTimer >= m_SPSpawnTiming[0]) m_SpawnManager.SpawnSpecialMonster1();
-            else if (!m_SpawnManager.IsSP1MonsterSpawned && EventTimer >= m_SPSpawnTiming[1]) m_SpawnManager.SpawnSpecialMonster2();
-            else if (!m_SpawnManager.IsSP1MonsterSpawned && EventTimer >= m_SPSpawnTiming[2]) m_SpawnManager.SpawnSpecialMonster3();
         }
     }
 }

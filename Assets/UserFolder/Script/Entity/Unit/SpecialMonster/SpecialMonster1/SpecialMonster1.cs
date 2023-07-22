@@ -15,7 +15,7 @@ namespace Entity.Unit.Special
         [Header("Model")]
         [SerializeField] private SkinnedMeshRenderer m_SkinnedMeshRenderer;
 
-        [Header("Code")]
+        [Header("GrabPoint")]
         [SerializeField] private Transform m_GrabCameraPoint;
         [SerializeField] private Transform m_GrabBodyPoint;
         [SerializeField] private Transform m_ThrowingPoint;
@@ -27,7 +27,6 @@ namespace Entity.Unit.Special
 
         private MaterialPropertyBlock m_MaterialPropertyBlock;
         private LegController m_LegController;
-        private Transform m_Target;
         private PlayerData m_PlayerData;
         private Parabola m_Parabola;
 
@@ -35,7 +34,7 @@ namespace Entity.Unit.Special
 
         private int m_PlayerLayerNum;
 
-        private float m_AttackBetweenTime = 2;
+        private readonly float m_AttackBetweenTime = 3;
         private float m_TargetDist;
         private float m_CurrentHP;
 
@@ -46,8 +45,12 @@ namespace Entity.Unit.Special
 
         private bool m_IsAlive;
         private bool m_DoingBehaviour;
-
         private bool m_IsGrabbing;
+
+        private int m_RealMaxHP;
+        private int m_RealDef;
+        private int m_RealCriticalHP;
+        private int m_RealDamage;
 
         private bool CanGrabAttack() => m_GrabAttackTimer >= m_Settings.m_GrabAttackSpeed &&
             m_TargetDist <= m_Settings.m_GrabAttackRange;
@@ -62,7 +65,7 @@ namespace Entity.Unit.Special
             AIManager.PlayerIsGround;
 
         private bool CanCriticalHit(int realDamage) => realDamage >= m_Settings.m_HitDamage && !m_DoingBehaviour &&
-            m_CurrentHP <= m_Settings.m_HitHP && Random.Range(0, 100) <= m_Settings.m_HitPercentage;
+            m_CurrentHP <= m_RealCriticalHP && Random.Range(0, 100) <= m_Settings.m_HitPercentage;
 
         private bool DetectObstacle()
         {
@@ -74,6 +77,8 @@ namespace Entity.Unit.Special
 
             return hit.transform.gameObject.layer != m_PlayerLayerNum;
         }
+
+        public System.Action EndSpecialMonsterAction { get; set; }
 
         private void Awake()
         {
@@ -88,18 +93,27 @@ namespace Entity.Unit.Special
             m_PlayerLayerNum = LayerMask.NameToLayer("Player");
         }
         
-        public void Init(Quaternion rotation)
+        public void Init(Quaternion rotation, float statMultiplier)
         {
-            m_Target = AIManager.PlayerTransform;
-            m_PlayerData = m_Target.GetComponent<PlayerData>();
-            
+            m_PlayerData = AIManager.PlayerTransform.GetComponent<PlayerData>();
+
+            SetRealStat(statMultiplier);
+
             m_SpecialMonsterAI.Init(rotation);
-
-            m_CurrentHP = m_Settings.m_HP;
-            m_IsAlive = true;
-
             m_SP1AnimationController.SetWalk(true);
             m_PlayerData.GrabPoint(m_GrabCameraPoint, m_GrabBodyPoint, m_LookPoint, m_ThrowingPoint);
+        }
+
+        private void SetRealStat(float statMultiplier)
+        {
+            m_IsAlive = true;
+
+            m_RealMaxHP = m_Settings.m_HP + (int)(statMultiplier * m_Settings.m_HPMultiplier);
+            m_RealDef = m_Settings.m_Def + (int)(statMultiplier * m_Settings.m_DefMultiplier);
+            m_RealDamage = (int)(statMultiplier * m_Settings.m_DamageMultiplier);
+            m_RealCriticalHP = (int)(m_RealMaxHP * m_Settings.m_HitHP);
+            
+            m_CurrentHP = m_RealMaxHP;
         }
 
         private void FixedUpdate()
@@ -131,6 +145,7 @@ namespace Entity.Unit.Special
             if (changeFlag) m_SP1AnimationController.SetWalk(isWalk);
         }
 
+        #region Attack
         public void Attack()
         {
             if (m_DoingBehaviour || m_SpecialMonsterAI.GetIsOnOffMeshLink) return;
@@ -159,7 +174,7 @@ namespace Entity.Unit.Special
             m_DoingBehaviour = true;
             m_NormalAttackTimer = 0;
             
-            m_PlayerData.PlayerHit(m_NavMeshTransform, m_Settings.m_Damage, m_Settings.m_NoramlAttackType);
+            m_PlayerData.PlayerHit(m_NavMeshTransform, (m_Settings.m_Damage + m_RealDamage), m_Settings.m_NoramlAttackType);
             await m_SP1AnimationController.SetClawsAttack();
 
             m_DoingBehaviour = false;
@@ -174,55 +189,12 @@ namespace Entity.Unit.Special
 
             await m_SP1AnimationController.SetGrabAttack();
 
-            m_PlayerData.PlayerHit(m_GrabCameraPoint, m_Settings.m_GrabAttackDamage, m_Settings.m_NoramlAttackType);
+            m_PlayerData.PlayerHit(m_GrabCameraPoint, (m_Settings.m_GrabAttackDamage + m_RealDamage), m_Settings.m_NoramlAttackType);
 
             m_GrabAttackTimer = 0;
             m_NormalAttackTimer = m_Settings.m_AttackSpeed - m_AttackBetweenTime;
             m_IsGrabbing = false;
             m_PlayerData.EndGrab();
-            m_DoingBehaviour = false;
-        }
-
-        public void Hit(int damage, AttackType bulletType)
-        {
-            if (!m_IsAlive) return;
-
-            int realDamage;
-            if (bulletType == AttackType.Explosion) realDamage = damage / m_Settings.m_ExplosionResistance;
-            else if (bulletType == AttackType.Melee) realDamage = damage / m_Settings.m_MeleeResistance;
-            else realDamage = damage - m_Settings.m_Def;
-
-            m_CurrentHP -= realDamage;
-
-            ChangeBaseColor();
-            if (m_CurrentHP <= 0) Die();
-            else if (CanCriticalHit(realDamage)) CriticalHit();
-        }
-
-        private void ChangeBaseColor()
-        {
-            float ratio = Mathf.Clamp01(m_CurrentHP / m_Settings.m_HP);
-            Color newColor = Color.Lerp(m_Settings.m_MaxInjuryColor, Color.white, ratio);
-
-            m_SkinnedMeshRenderer.GetPropertyBlock(m_MaterialPropertyBlock);
-            m_MaterialPropertyBlock.SetColor("_BaseColor", newColor);
-            m_SkinnedMeshRenderer.SetPropertyBlock(m_MaterialPropertyBlock);
-        }
-
-        public void Die()
-        {
-            m_IsAlive = false;
-            m_SpecialMonsterAI.Dispose();
-            if(m_IsGrabbing) m_PlayerData.EndGrab();
-            m_SP1AnimationController.SetDie();
-        }
-
-        private async void CriticalHit()
-        {
-            m_DoingBehaviour = true;
-
-            await m_SP1AnimationController.SetHit();
-
             m_DoingBehaviour = false;
         }
 
@@ -233,29 +205,28 @@ namespace Entity.Unit.Special
             m_DoingBehaviour = true;
             controllingTimer = 0;
 
-            float height = m_Parabola.GetHeight(heightRatio, m_Target, out Vector3 targetVector, ref m_GroundDirection, destinationDist);
+            float height = m_Parabola.GetHeight(heightRatio, AIManager.PlayerTransform, out Vector3 targetVector, ref m_GroundDirection, destinationDist);
             m_Parabola.CalculatePathWithHeight(targetVector, height, out float v0, out float angle, out float time);
 
             Jump(m_GroundDirection.normalized, v0, angle, preJumpTime, time, hasAnimation);
         }
 
-        #region Å×½ºÆ®
-        private async void Jump(Vector3 direction, float v0,float angle, float preJumpTime, float jumpTime, bool hasAnimation)
+        private async void Jump(Vector3 direction, float v0, float angle, float preJumpTime, float jumpTime, bool hasAnimation)
         {
-            m_DoingBehaviour = true;
             float upDist = hasAnimation ? 0.5f : 1;
 
             await PreJump(preJumpTime, upDist);
-            if(hasAnimation) m_SP1AnimationController.SetJumpBiteAttack();
+            if (hasAnimation) m_SP1AnimationController.SetJumpBiteAttack();
             await DoJump(direction, v0, angle, jumpTime, hasAnimation);
 
+            m_GrabAttackTimer = m_Settings.m_GrabAttackSpeed - 2f;
             if (hasAnimation)
             {
-                m_GrabAttackTimer = m_Settings.m_GrabAttackSpeed - 1.5f;
                 m_NormalAttackTimer = 3;
 
                 CheckJumpAttackToPlayer();
             }
+
             m_DoingBehaviour = false;
         }
 
@@ -283,7 +254,7 @@ namespace Entity.Unit.Special
             float elapsedTime = 0;
             Vector3 startPos = m_NavMeshTransform.position;
             Quaternion startRotation = m_NavMeshTransform.rotation;
-            Quaternion targetRot = Quaternion.LookRotation(m_GroundDirection, m_Target.up);
+            Quaternion targetRot = Quaternion.LookRotation(m_GroundDirection, AIManager.PlayerTransform.up);
             float xAngle = Mathf.Cos(angle);
             float yAngle = Mathf.Sin(angle);
             bool isPlayEndAnimation = false;
@@ -309,12 +280,11 @@ namespace Entity.Unit.Special
             m_SpecialMonsterAI.SetNavMeshEnable = true;
             m_SpecialMonsterAI.SetNavMeshPos(m_NavMeshTransform.position);
         }
-        #endregion
 
         private void CheckJumpAttackToPlayer()
         {
             if (Physics.CheckSphere(m_GrabCameraPoint.position, m_Settings.m_JumpAttackRange, m_Settings.m_AttackableLayer, QueryTriggerInteraction.Ignore))
-                m_PlayerData.PlayerHit(m_NavMeshTransform, m_Settings.m_JumpAttackDamage, m_Settings.m_NoramlAttackType);
+                m_PlayerData.PlayerHit(m_NavMeshTransform, (m_Settings.m_JumpAttackDamage + m_RealDamage), m_Settings.m_NoramlAttackType);
         }
 
         private void OnDrawGizmosSelected()
@@ -338,5 +308,51 @@ namespace Entity.Unit.Special
             Gizmos.DrawRay(m_ThrowingPoint.position, m_GrabCameraPoint.position - m_ThrowingPoint.position);
         }
         #endregion
+
+        #endregion
+        public void Hit(int damage, AttackType bulletType)
+        {
+            if (!m_IsAlive) return;
+
+            int realDamage;
+            if (bulletType == AttackType.Explosion) realDamage = damage / m_Settings.m_ExplosionResistance;
+            else if (bulletType == AttackType.Melee) realDamage = damage / m_Settings.m_MeleeResistance;
+            else realDamage = damage - m_RealDef;
+
+            m_CurrentHP -= realDamage;
+
+            ChangeBaseColor();
+            if (m_CurrentHP <= 0) Die();
+            else if (CanCriticalHit(realDamage)) CriticalHit();
+        }
+
+        private void ChangeBaseColor()
+        {
+            float ratio = Mathf.Clamp01(m_CurrentHP / m_RealMaxHP);
+            Color newColor = Color.Lerp(m_Settings.m_MaxInjuryColor, Color.white, ratio);
+
+            m_SkinnedMeshRenderer.GetPropertyBlock(m_MaterialPropertyBlock);
+            m_MaterialPropertyBlock.SetColor("_BaseColor", newColor);
+            m_SkinnedMeshRenderer.SetPropertyBlock(m_MaterialPropertyBlock);
+        }
+
+        public void Die()
+        {
+            m_IsAlive = false;
+            EndSpecialMonsterAction?.Invoke();
+
+            m_SpecialMonsterAI.Dispose();
+            if(m_IsGrabbing) m_PlayerData.EndGrab();
+            m_SP1AnimationController.SetDie();
+        }
+
+        private async void CriticalHit()
+        {
+            m_DoingBehaviour = true;
+
+            await m_SP1AnimationController.SetHit();
+
+            m_DoingBehaviour = false;
+        }
     }
 }

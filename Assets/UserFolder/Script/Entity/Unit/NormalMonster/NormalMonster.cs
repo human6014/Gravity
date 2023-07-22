@@ -16,15 +16,17 @@ namespace Entity.Unit.Normal
         private NormalMonsterAnimController m_NormalMonsterAnimController;
         private NormalMonsterState m_NormalMonsterState;
         private PlayerData m_PlayerData;
-        
-        private int m_CurrentHP;
+
         private bool m_IsAlive;
+
+        private int m_RealMaxHP;
+        private int m_RealDef;
+        private int m_RealDamage;
+        private int m_CurrentHP;
+        
         private float m_AttackTimer;
 
-        private float m_GettingUpTimer = 5.5f;
-        private float m_CurrentGettingUpTimer;
-
-        public System.Action<int, AttackType> HitEvent { get; set; }
+        public System.Action<int, AttackType> HitEvent { get; set; }//???¹»±î
 
         private bool CanAttackRange
         {
@@ -56,16 +58,29 @@ namespace Entity.Unit.Normal
             m_NormalMonsterAI.NormalMonsterState = m_NormalMonsterState;
         }
 
-        public void Init(Vector3 pos, Manager.ObjectPoolManager.PoolingObject poolingObject)
+        private void Start() => m_PlayerData = AIManager.PlayerTransform.GetComponent<PlayerData>();
+
+        public void Init(Vector3 pos, Manager.ObjectPoolManager.PoolingObject poolingObject, float statMultiplier)
         {
             OnOffRagdoll(false);
-            m_CurrentHP = settings.m_HP;
-            m_IsAlive = true;
+            SetRealStat(statMultiplier);
+            
+            m_PoolingObject = poolingObject;
+
             m_NormalMonsterState.Init();
             m_NormalMonsterAI.Init(pos);
             m_NormalMonsterAnimController.Init();
-            m_PlayerData = AIManager.PlayerTransform.GetComponent<PlayerData>();
-            m_PoolingObject = poolingObject;
+        }
+
+        private void SetRealStat(float statMultiplier)
+        {
+            m_IsAlive = true;
+
+            m_RealMaxHP = settings.m_HP + (int)(statMultiplier * settings.m_HPMultiplier);
+            m_RealDef = settings.m_Def + (int)(statMultiplier * settings.m_HPMultiplier);
+            m_RealDamage = settings.m_Damage + (int)(statMultiplier * settings.m_Damage);
+
+            m_CurrentHP = m_RealMaxHP;
         }
 
         private void Update()
@@ -98,15 +113,13 @@ namespace Entity.Unit.Normal
             m_AttackTimer = 0;
 
             m_NormalMonsterState.SetTriggerAttacking();
-            m_PlayerData.PlayerHit(transform, settings.m_Damage, settings.m_NoramlAttackType);
+            m_PlayerData.PlayerHit(transform, m_RealDamage, settings.m_NoramlAttackType);
         }
 
         public void Hit(int damage, AttackType bulletType)
         {
             if (!m_IsAlive) return;
-            if (bulletType == AttackType.Explosion) m_CurrentHP -= (damage / settings.m_ExplosionResistance);
-            else if (bulletType == AttackType.Melee) m_CurrentHP -= (damage / settings.m_MeleeResistance);
-            else m_CurrentHP -= (damage - settings.m_Def);
+            TypeToDamage(damage, bulletType);
 
             if (m_CurrentHP <= 0) Die();
         }
@@ -114,9 +127,7 @@ namespace Entity.Unit.Normal
         public bool PhysicsableHit(int damage, AttackType bulletType)
         {
             if (!m_IsAlive) return false;
-            if (bulletType == AttackType.Explosion) m_CurrentHP -= (damage / settings.m_ExplosionResistance);
-            else if (bulletType == AttackType.Melee) m_CurrentHP -= (damage / settings.m_MeleeResistance);
-            else m_CurrentHP -= (damage - settings.m_Def);
+            TypeToDamage(damage, bulletType);
 
             if (m_CurrentHP <= 0)
             {
@@ -124,6 +135,13 @@ namespace Entity.Unit.Normal
                 return true;
             }
             return false;
+        }
+
+        private void TypeToDamage(int damage, AttackType bulletType)
+        {
+            if (bulletType == AttackType.Explosion) m_CurrentHP -= (damage / settings.m_ExplosionResistance);
+            else if (bulletType == AttackType.Melee) m_CurrentHP -= (damage / settings.m_MeleeResistance);
+            else m_CurrentHP -= (damage - m_RealDef);
         }
 
         public void Die()
