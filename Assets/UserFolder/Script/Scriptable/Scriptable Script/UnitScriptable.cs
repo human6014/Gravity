@@ -37,5 +37,15 @@ namespace Scriptable.Monster
 
         [Tooltip("일반 공격 타입")]
         public AttackType m_NoramlAttackType = AttackType.None;
+
+        [Header("Stat multiplier")]
+        [Tooltip("체력 상승치")]
+        public int m_HPMultiplier;
+
+        [Tooltip("방어력 상승치")]
+        public int m_DefMultiplier;
+
+        [Tooltip("공격력 상승치")]
+        public int m_DamageMultiplier;
     }
 }

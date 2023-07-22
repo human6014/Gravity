@@ -12,16 +12,12 @@ namespace Manager
     [RequireComponent(typeof(EntityManager))]
     public class SpawnManager : MonoBehaviour
     {
-        public static int NormalMonsterCount { get; set; }
-        public static int FlyingMonsterCount { get; set; }
-
-        public bool IsSP1MonsterSpawned { get; private set; }
-        public bool IsSP2MonsterSpawned { get; private set; }
-        public bool IsSP3MonsterSpawned { get; private set; }
-
         #region SerializeField
         [Tooltip("유닛 스폰 여부 (Editor only)")]
         [SerializeField] private bool m_IsActiveSpawn;
+
+        [Tooltip("특수 몬스터 스폰 시간")]
+        [SerializeField] private float[] m_SPSpawnTiming;
 
         [Header("Spawn Area")]
         [Tooltip("스폰영역을 자식으로 가지는 Transform")]
@@ -76,12 +72,50 @@ namespace Manager
 
         private float m_NormalMonsterTimer;
         private float m_FlyingMonsterTimer;
+        private float m_SpecialMonsterTimer;
 
         private int m_RandomNormalMonsterIndex;
         private int m_RandomFlyingMonsterIndex;
+
+        private int m_Stage = 1;
+        private int m_Wave = 1;
+        private float m_StatMultiplier = 0;
+        #endregion
+        #region Property
+        public static int NormalMonsterCount { get; set; }
+        public static int FlyingMonsterCount { get; set; }
+
+        public bool IsSP1MonsterSpawned { get; private set; }
+        public bool IsSP2MonsterSpawned { get; private set; }
+        public bool IsSP3MonsterSpawned { get; private set; }
+
+        public bool IsSP1MonsterEnd { get; private set; }
+        public bool IsSP2MonsterEnd { get; private set; }
+        public bool IsSP3MonsterEnd { get; private set; }
+
+        public int Stage 
+        {
+            get => m_Stage;
+            set
+            {
+                m_Stage = value;
+                m_Wave = 1;
+                m_StatMultiplier = (m_Stage - 1) + ((m_Wave - 1) * 0.5f);
+                //식 한번 따져봐야함
+            }
+        }
+
+        public int Wave
+        {
+            get => m_Wave;
+            set
+            {
+                m_Wave = value;
+                m_StatMultiplier = (m_Stage - 1) + ((m_Wave - 1) * 0.5f);
+            }
+        }
         #endregion
 
-        
         private void Awake()
         {
             m_EntityManager = GetComponent<EntityManager>();
@@ -97,6 +131,7 @@ namespace Manager
             FlyingMonsterCount = 0;
 
             foreach (float elem in m_MonsterProbs) m_Total += elem;
+
             GravityManager.GravityChangeAction += ChangeCurrentArea;
         }
 
@@ -208,6 +243,8 @@ namespace Manager
 
         private void Update()
         {
+            m_SpecialMonsterTimer += Time.deltaTime;
+            SpawnSpecialMonster();
             if (!m_IsActiveSpawn) return;
 
             m_NormalMonsterTimer += Time.deltaTime;
@@ -230,7 +267,7 @@ namespace Manager
             BoxCollider boxCollider = GetClosetArea(m_CurrentAreaCollider);
             Vector3 pos = GetRandomPos(boxCollider, 1);
 
-            currentNormalMonster.Init(pos, m_NormalMonsterPoolingObjectArray[m_RandomNormalMonsterIndex]);
+            currentNormalMonster.Init(pos, m_NormalMonsterPoolingObjectArray[m_RandomNormalMonsterIndex], m_StatMultiplier);
             currentNormalMonster.gameObject.SetActive(true);
         }
 
@@ -241,11 +278,20 @@ namespace Manager
             FlyingMonsterCount++;
 
             FlyingMonster currentFlyingMonster = (FlyingMonster)m_FlyingMonsterPoolingObjectArray[0].GetObject(false);
-            currentFlyingMonster.Init(m_Octree.GetRandomSpawnableArea(), m_FlyingMonsterPoolingObjectArray[0]);
+            currentFlyingMonster.Init(m_Octree.GetRandomSpawnableArea(), m_FlyingMonsterPoolingObjectArray[0], m_StatMultiplier);
             currentFlyingMonster.gameObject.SetActive(true);
         }
 
-        [ContextMenu("SpawnSpecialMonster")]
+        private void SpawnSpecialMonster()
+        {
+            if (!IsSP1MonsterSpawned && m_SpecialMonsterTimer >= m_SPSpawnTiming[0])
+                SpawnSpecialMonster1();
+            else if (!IsSP2MonsterSpawned && m_SpecialMonsterTimer >= m_SPSpawnTiming[1])
+                SpawnSpecialMonster2();
+            else if (!IsSP3MonsterSpawned && m_SpecialMonsterTimer >= m_SPSpawnTiming[2])
+                SpawnSpecialMonster3();
+        }
+
         public void SpawnSpecialMonster1()
         {
             BoxCollider[] initColliders = ExcludeRandomIndex((int)currentGravityType, out int specificIndex);
@@ -255,7 +301,9 @@ namespace Manager
             Quaternion initRotation = GravityManager.GetSpecificGravityNormalRotation(specificIndex);
 
             SpecialMonster1 specialMonster1 = Instantiate(m_EntityManager.GetSpecialMonster1, initPosition, Quaternion.identity).GetComponent<SpecialMonster1>();
-            specialMonster1.Init(initRotation);
+            specialMonster1.EndSpecialMonsterAction += () => IsSP1MonsterEnd = true;
+            specialMonster1.EndSpecialMonsterAction += () => m_Stage++;
+            specialMonster1.Init(initRotation, m_StatMultiplier);
 
             IsSP1MonsterSpawned = true;
         }

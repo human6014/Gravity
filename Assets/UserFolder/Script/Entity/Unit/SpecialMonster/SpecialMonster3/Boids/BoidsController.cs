@@ -83,26 +83,26 @@ namespace Entity.Unit.Special
         {
             m_IsTracingPlayer = true;
             foreach (BoidsMonster bm in m_BoidMonsters)
-                bm.TracePatternAction.Invoke(m_IsTracingPlayer);
+                bm.TracePatternAction?.Invoke(m_IsTracingPlayer);
 
             yield return m_TraceOffSeconds;
 
             m_IsTracingPlayer = false;
             foreach (BoidsMonster bm in m_BoidMonsters)
-                bm.TracePatternAction.Invoke(m_IsTracingPlayer);
+                bm.TracePatternAction?.Invoke(m_IsTracingPlayer);
         }
 
         public IEnumerator PatrolBoids()
         {
             m_IsPatrol = true;
             foreach (BoidsMonster bm in m_BoidMonsters)
-                bm.PatrolPatternAction.Invoke(m_IsPatrol);
+                bm.PatrolPatternAction?.Invoke(m_IsPatrol);
 
             yield return m_PatrolOffSeconds;
 
             m_IsPatrol = false;
             foreach (BoidsMonster bm in m_BoidMonsters)
-                bm.PatrolPatternAction.Invoke(m_IsPatrol);
+                bm.PatrolPatternAction?.Invoke(m_IsPatrol);
         }
 
         public void ReturnObj(PoolableScript poolableScript)

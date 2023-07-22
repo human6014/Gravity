@@ -11,11 +11,8 @@ public class SpecialMonsterAI : MonoBehaviour
 {
     private WaitUntil m_WaitUntil;
     private NavMeshAgent m_NavMeshAgent;
-    private SP1AnimationController m_AnimationController;
 
     private bool m_IsInit;
-    private bool m_DoingJumpBiteAttacking; //이거 뭐임????
-
 
     #region Adjustment factor
     [Tooltip("회전 강도")]
@@ -46,7 +43,6 @@ public class SpecialMonsterAI : MonoBehaviour
     private void Awake()
     {
         m_NavMeshAgent = GetComponent<NavMeshAgent>();
-        m_AnimationController = GetComponent<SP1AnimationController>();
 
         m_NavMeshAgent.updatePosition = false;
         m_NavMeshAgent.updateRotation = false;
@@ -67,7 +63,7 @@ public class SpecialMonsterAI : MonoBehaviour
     {
         m_NavMeshAgent.enabled = false;
     }
-    Vector3 targetForward;
+
     /// <summary>
     /// AI 행동 실시
     /// </summary>
@@ -76,7 +72,6 @@ public class SpecialMonsterAI : MonoBehaviour
         bool isWalk = false;
         if (!m_IsInit) return isWalk;
 
-        //if (m_NavMeshAgent.pathPending) return;
         m_NavMeshAgent.isStopped = false;
         SetDestination(out float remainingDistance);
 
@@ -97,7 +92,7 @@ public class SpecialMonsterAI : MonoBehaviour
         Vector3 targetVec = isCloseToTarget ? AIManager.PlayerGroundPosition : m_NavMeshAgent.steeringTarget;
         Vector3 targetDirection = (targetVec - transform.position).normalized;
         //targetForward = IsOnMeshLink == true ? ProceduralForwardAngle : targetDirection;
-        targetForward = (ProceduralForwardAngle + targetDirection).normalized;
+        Vector3 targetForward = (ProceduralForwardAngle + targetDirection).normalized;
         //위쪽으로 기움
 
         Quaternion navRotation = Quaternion.LookRotation(targetForward, ProceduralUpAngle);
@@ -147,8 +142,8 @@ public class SpecialMonsterAI : MonoBehaviour
 
     public void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position, targetForward);
+        //Gizmos.color = Color.red;
+        //Gizmos.DrawRay(transform.position, targetForward);
     }
 
     public void OnDrawGizmos()

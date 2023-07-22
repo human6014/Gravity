@@ -11,6 +11,17 @@ namespace Entity.Unit.Flying
 
         private FlyingMovementController flyingMovementController;
         private FlyingRotationController flyingRotationController;
+        private PlayerData m_PlayerData;
+
+        private bool m_IsAlive;
+
+        private int m_RealMaxHP;
+        private int m_RealDef;
+        private int m_RealDamage;
+        private int m_CurrentHP;
+
+        private float m_AttackTimer;
+
         private void Awake()
         {
             flyingMovementController = GetComponent<FlyingMovementController>();
@@ -19,6 +30,8 @@ namespace Entity.Unit.Flying
 
         private void Update()
         {
+            if (!m_IsAlive) return;
+            m_AttackTimer += Time.deltaTime;
             flyingRotationController.LookCurrentTarget();
         }
 
@@ -27,35 +40,64 @@ namespace Entity.Unit.Flying
             flyingMovementController.MoveCurrentTarget();
         }
 
-        public void Init(Vector3 pos, Manager.ObjectPoolManager.PoolingObject poolingObject)
+        public void Init(Vector3 pos, Manager.ObjectPoolManager.PoolingObject poolingObject, float statMultiplier)
         {
             transform.position = pos;
-            this.m_PoolingObject = poolingObject;
+            m_PoolingObject = poolingObject;
+
+            SetRealStat(statMultiplier);
+
             flyingMovementController.Init();
             flyingRotationController.Init();
         }
 
+        private void SetRealStat(float statMultiplier)
+        {
+            m_IsAlive = true;
+
+            m_RealMaxHP = settings.m_HP + (int)(statMultiplier * settings.m_HPMultiplier);
+            m_RealDef = settings.m_Def + (int)(statMultiplier * settings.m_HPMultiplier);
+            m_RealDamage = settings.m_Damage + (int)(statMultiplier * settings.m_Damage);
+
+            m_CurrentHP = m_RealMaxHP;
+        }
+
         public void Move()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void Attack()
         {
-            throw new System.NotImplementedException();
+            m_AttackTimer = 0;
+            
+            m_PlayerData.PlayerHit(transform, m_RealDamage, settings.m_NoramlAttackType);
         }
 
         public void Hit(int damage, AttackType bulletType)
         {
-            throw new System.NotImplementedException();
+            if (!m_IsAlive) return;
+            TypeToDamage(damage, bulletType);
+
+            if (m_CurrentHP <= 0) Die();
+        }
+
+        private void TypeToDamage(int damage, AttackType bulletType)
+        {
+            if (bulletType == AttackType.Explosion) m_CurrentHP -= (damage / settings.m_ExplosionResistance);
+            else if (bulletType == AttackType.Melee) m_CurrentHP -= (damage / settings.m_MeleeResistance);
+            else m_CurrentHP -= (damage - m_RealDef);
         }
 
         public void Die()
         {
-            throw new System.NotImplementedException();
+            m_CurrentHP = 0;
+            m_IsAlive = false;
+
+            //ReturnObject();
         }
 
-        [ContextMenu("ReturnObject")]
+
         public override void ReturnObject()
         {
             Manager.SpawnManager.FlyingMonsterCount--;

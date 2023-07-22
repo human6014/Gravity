@@ -83,8 +83,8 @@ namespace Scriptable.Monster
 
 
         [Header("Hit")]
-        [Tooltip("피격 시 경직이 가능한 체력")]
-        public float m_HitHP = 15000;
+        [Tooltip("피격 시 경직이 가능한 체력 비율")] [Range(0,1)]
+        public float m_HitHP = 0.5f;
 
         [Tooltip("피격 시 경직을 일으킬 수 있는 데미지")]
         public float m_HitDamage = 900;
