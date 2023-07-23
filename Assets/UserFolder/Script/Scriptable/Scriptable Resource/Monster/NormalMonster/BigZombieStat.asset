@@ -21,4 +21,7 @@ MonoBehaviour:
   m_ExplosionResistance: 10
   m_MeleeResistance: 10
   m_NoramlAttackType: 0
+  m_HPMultiplier: 300
+  m_DefMultiplier: 0
+  m_DamageMultiplier: 10
   m_MonsterType: 3

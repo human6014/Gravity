@@ -25,7 +25,7 @@ public class Octree : MonoBehaviour
     private int currentIndex;
 
 
-    private List<OctreeElement> gizmoMap = new();
+    private List<OctreeElement> m_GizmoMap = new();
     public Vector3 GetRandomSpawnableArea() => spawnableArea[UnityEngine.Random.Range(0, currentIndex)];
     private void Awake()
     {
@@ -39,7 +39,7 @@ public class Octree : MonoBehaviour
         while (toBeSplit.Count > 0)
         {
             var elem = toBeSplit.Dequeue();
-            gizmoMap.Add(elem);
+            m_GizmoMap.Add(elem);
             elem.Empty = !Physics.CheckBox(elem.Bounds.center, elem.Bounds.extents, Quaternion.identity, mask, QueryTriggerInteraction.Ignore);
 
             if (elem.Empty) spawnableArea[currentIndex++] = elem.Bounds.center;
@@ -67,11 +67,11 @@ public class Octree : MonoBehaviour
         Gizmos.color = Color.white;
         //Gizmos.DrawWireCube(root.Bounds.center, root.Bounds.extents);
 
-        for (int i = 0; i < gizmoMap.Count; i++)
+        for (int i = 0; i < m_GizmoMap.Count; i++)
         {
-            if (gizmoMap[i].Empty) Gizmos.color = Color.blue;
+            if (m_GizmoMap[i].Empty) Gizmos.color = Color.blue;
             else Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(gizmoMap[i].Bounds.center, gizmoMap[i].Bounds.extents);
+            Gizmos.DrawWireCube(m_GizmoMap[i].Bounds.center, m_GizmoMap[i].Bounds.extents);
         }
     }
 #endif
