@@ -17,16 +17,18 @@ namespace Manager
         //유닛 능력치 업 + 소환 주기 제어 명령
         //특수몹 생성 조건 + 명령
 
-        private SpawnManager m_SpawnManager;
-        private SettingUIManager m_SettingUIManager;
-
-        
-        public static bool IsGameEnd { get; private set; } = false;
+        public static bool IsGameEnd { get; private set; }
         private float EventTimer { get; set; }
-        private float SpecialSpawnTimer { get; set; }
 
+        public static void GameClear()
+        {
+            if (IsGameEnd) return;
+            IsGameEnd = true;
+            Debug.Log("GameClear");
+        }
         public static void GameEnd()
         {
+            if (IsGameEnd) return;
             IsGameEnd = true;
             Debug.Log("GameEnd");
         }
@@ -34,16 +36,12 @@ namespace Manager
         private void Awake()
         {
             IsGameEnd = false;
-            m_SpawnManager = GetComponent<SpawnManager>();
-            m_SettingUIManager = FindObjectOfType<SettingUIManager>();
 
             Application.targetFrameRate = m_FrameRate;
         }
 
         private void Update()
         {
-            if (m_SettingUIManager.IsActivePauseUI) return;
-            if (m_SettingUIManager.IsActiveSkillEventUI) return;
             EventTimer += Time.deltaTime;
 
             if (EventTimer >= m_SkillEventTiming)

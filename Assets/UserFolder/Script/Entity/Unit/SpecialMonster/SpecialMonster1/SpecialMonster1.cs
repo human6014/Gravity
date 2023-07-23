@@ -72,9 +72,13 @@ namespace Entity.Unit.Special
             Vector3 currentPos = m_NavMeshTransform.position;
             Vector3 dir = (AIManager.PlayerTransform.position - currentPos).normalized;
 
-            Physics.Raycast(currentPos, dir, out RaycastHit hit, m_TargetDist, m_Settings.m_ObstacleDetectLayer);
-            //hit가 없을 수가 없구마잉?
-
+            bool isHit = Physics.Raycast(currentPos, dir, out RaycastHit hit, m_TargetDist, m_Settings.m_ObstacleDetectLayer);
+            //hit가 없을 수가 없을탠데? 가끔 Null reference가 나와용
+            if (!isHit)
+            {
+                Debug.Log("Hit is Null");
+                return true;
+            }
             return hit.transform.gameObject.layer != m_PlayerLayerNum;
         }
 

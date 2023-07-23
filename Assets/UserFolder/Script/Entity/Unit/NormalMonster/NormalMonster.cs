@@ -77,7 +77,7 @@ namespace Entity.Unit.Normal
             m_IsAlive = true;
 
             m_RealMaxHP = settings.m_HP + (int)(statMultiplier * settings.m_HPMultiplier);
-            m_RealDef = settings.m_Def + (int)(statMultiplier * settings.m_HPMultiplier);
+            m_RealDef = settings.m_Def + (int)(statMultiplier * settings.m_DefMultiplier);
             m_RealDamage = settings.m_Damage + (int)(statMultiplier * settings.m_Damage);
 
             m_CurrentHP = m_RealMaxHP;
