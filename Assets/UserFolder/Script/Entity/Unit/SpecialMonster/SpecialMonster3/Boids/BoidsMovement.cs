@@ -15,6 +15,7 @@ namespace Entity.Unit.Flying
 
         private WaitForSeconds calcEgoWaitSeconds;
         private WaitForSeconds findNeighbourSeconds;
+        private WaitForSeconds calcObstacleWaitSeconds;
 
         private Transform m_MoveCenter;
         private Transform m_Target;
@@ -33,6 +34,8 @@ namespace Entity.Unit.Flying
         private bool m_IsTracePlayer;
         private bool m_IsPatrol;
 
+        private Vector3 m_ObstacleVector;
+
         public void TryTracePlayer(bool value)
         {
             m_IsTracePlayer = value;
@@ -48,6 +51,7 @@ namespace Entity.Unit.Flying
         {
             calcEgoWaitSeconds = new WaitForSeconds(Random.Range(1f, 3f));
             findNeighbourSeconds = new WaitForSeconds(Random.Range(1.5f, 2f));
+            calcObstacleWaitSeconds = new WaitForSeconds(Random.Range(0.05f,0.1f));
             m_CurrentMaxMovementRange = settings.maxMovementRange;
         }
 
@@ -64,6 +68,7 @@ namespace Entity.Unit.Flying
             m_Neighbours.Clear();
             StartCoroutine(FindNeighbourCoroutine());
             StartCoroutine(CalculateEgoVectorCoroutine());
+            StartCoroutine(CalculateObstacleVectorCoroutine());
         }
 
         public void CalcAndMove()
@@ -74,12 +79,12 @@ namespace Entity.Unit.Flying
             CalculateVectors(out Vector3 cohesionVector, out Vector3 alignmentVector, out Vector3 separationVector);
 
             // 추가적인 방향
-            if (m_IsTracePlayer && !m_IsPatrol && m_Target != null) //공격 패턴 주기시마다 하게 함
+            if (m_IsTracePlayer && !m_IsPatrol && m_Target != null)
                 m_TargetForwardVec = CalculateTargetVector() * settings.targetWeight;
             else m_BoundsVec = CalculateBoundsVector() * settings.boundsWeight;
-            CalculateObstacleVector(out Vector3 obstacleVector);
+            //CalculateObstacleVector(out Vector3 obstacleVector);
 
-            m_TargetVec = cohesionVector + alignmentVector + separationVector + m_BoundsVec + obstacleVector + (m_EgoVector * settings.egoWeight) + m_TargetForwardVec;
+            m_TargetVec = cohesionVector + alignmentVector + separationVector + m_BoundsVec + m_ObstacleVector + (m_EgoVector * settings.egoWeight) + m_TargetForwardVec;
 
             // Steer and Move
             if (m_TargetVec == Vector3.zero) m_TargetVec = m_EgoVector;
@@ -119,6 +124,20 @@ namespace Entity.Unit.Flying
                     }
                 }
                 yield return findNeighbourSeconds;
+            }
+        }
+
+        private IEnumerator CalculateObstacleVectorCoroutine()
+        {
+            while (true)
+            {
+                m_ObstacleVector = Vector3.zero;
+                if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, settings.obstacleDistance, settings.obstacleLayer))
+                {
+                    m_ObstacleVector = hit.normal * settings.obstacleWeight;
+                    m_AdditionalSpeed = 8;
+                }
+                yield return calcObstacleWaitSeconds;
             }
         }
         #region Compute Shader

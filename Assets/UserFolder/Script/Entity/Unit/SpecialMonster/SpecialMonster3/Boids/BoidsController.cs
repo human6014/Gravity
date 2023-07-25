@@ -23,6 +23,8 @@ namespace Entity.Unit.Special
         [SerializeField] private float m_BoidsMonsterTraceTime = 7.5f;
         [Tooltip("순찰 지속시간")]
         [SerializeField] private float m_PatrolTime = 25;
+
+        [SerializeField] private ComputeShader m_ComputeShader;
         #endregion
 
         private ObjectPoolManager.PoolingObject poolingObj;
@@ -51,13 +53,9 @@ namespace Entity.Unit.Special
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.O))
-            {
                 StartCoroutine(TracePlayer());
-            }
             else if (Input.GetKeyDown(KeyCode.P))
-            {
                 StartCoroutine(PatrolBoids());
-            }
         }
 
         public void GenerateBoidMonster(int spawnCount)
@@ -79,6 +77,7 @@ namespace Entity.Unit.Special
             }
         }
 
+        #region Pattern
         public IEnumerator TracePlayer()
         {
             m_IsTracingPlayer = true;
@@ -104,7 +103,7 @@ namespace Entity.Unit.Special
             foreach (BoidsMonster bm in m_BoidMonsters)
                 bm.PatrolPatternAction?.Invoke(m_IsPatrol);
         }
-
+        #endregion
         public void ReturnObj(PoolableScript poolableScript)
         {
             m_BoidMonsters.Remove((BoidsMonster)poolableScript);
