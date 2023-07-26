@@ -17,7 +17,7 @@ MonoBehaviour:
   alignmentWeight: 5
   separationWeight: 4
   targetWeight: 5
-  boundsWeight: 7
+  boundsWeight: 10
   obstacleWeight: 30
   egoWeight: 1
   obstacleDistance: 4

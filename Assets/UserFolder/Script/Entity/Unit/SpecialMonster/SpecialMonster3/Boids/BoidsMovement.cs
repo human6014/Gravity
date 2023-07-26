@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Manager.AI;
@@ -10,8 +10,6 @@ namespace Entity.Unit.Flying
         #region Variables & Initializer
         [Header("Info")]
         [SerializeField] private Scriptable.Monster.BoidsScriptable settings;
-        [SerializeField] private ComputeShader m_ComputeShader;
-        private readonly List<BoidsMovement> m_Neighbours = new();
 
         private WaitForSeconds calcEgoWaitSeconds;
         private WaitForSeconds findNeighbourSeconds;
@@ -27,6 +25,7 @@ namespace Entity.Unit.Flying
         private Vector3 m_TargetVec;
         private Vector3 m_EgoVector;
 
+        private Vector3 m_ObstacleVector;
         private Vector3 m_TargetForwardVec;
         private Vector3 m_BoundsVec;
         #endregion
@@ -34,7 +33,9 @@ namespace Entity.Unit.Flying
         private bool m_IsTracePlayer;
         private bool m_IsPatrol;
 
-        private Vector3 m_ObstacleVector;
+        public Vector3 CohesionVector { get; set; }
+        public Vector3 AlignmentVector { get; set; }
+        public Vector3 SeparationVector { get; set; }
 
         public void TryTracePlayer(bool value)
         {
@@ -50,7 +51,7 @@ namespace Entity.Unit.Flying
         private void Awake()
         {
             calcEgoWaitSeconds = new WaitForSeconds(Random.Range(1f, 3f));
-            findNeighbourSeconds = new WaitForSeconds(Random.Range(1.5f, 2f));
+            findNeighbourSeconds = new WaitForSeconds(Random.Range(1.5f,2f));
             calcObstacleWaitSeconds = new WaitForSeconds(Random.Range(0.05f,0.1f));
             m_CurrentMaxMovementRange = settings.maxMovementRange;
         }
@@ -65,8 +66,7 @@ namespace Entity.Unit.Flying
             m_MoveCenter = moveCenter;
             m_Speed = Random.Range(settings.speedRange.x, settings.speedRange.y);
 
-            m_Neighbours.Clear();
-            StartCoroutine(FindNeighbourCoroutine());
+            //StartCoroutine(FindNeighbourCoroutine());
             StartCoroutine(CalculateEgoVectorCoroutine());
             StartCoroutine(CalculateObstacleVectorCoroutine());
         }
@@ -76,17 +76,16 @@ namespace Entity.Unit.Flying
             if (m_AdditionalSpeed > 0) m_AdditionalSpeed -= Time.deltaTime;
 
             // Calculate all the vectors we need
-            CalculateVectors(out Vector3 cohesionVector, out Vector3 alignmentVector, out Vector3 separationVector);
+            //CalculateVectors();
 
-            // Ãß°¡ÀûÀÎ ¹æÇâ
+            // ì¶”ê°€ì ì¸ ë°©í–¥
             if (m_IsTracePlayer && !m_IsPatrol && m_Target != null)
                 m_TargetForwardVec = CalculateTargetVector() * settings.targetWeight;
             else m_BoundsVec = CalculateBoundsVector() * settings.boundsWeight;
-            //CalculateObstacleVector(out Vector3 obstacleVector);
 
-            m_TargetVec = cohesionVector + alignmentVector + separationVector + m_BoundsVec + m_ObstacleVector + (m_EgoVector * settings.egoWeight) + m_TargetForwardVec;
+            m_TargetVec = CohesionVector + AlignmentVector + SeparationVector + 
+                m_BoundsVec + m_ObstacleVector + (m_EgoVector * settings.egoWeight) + m_TargetForwardVec;
 
-            // Steer and Move
             if (m_TargetVec == Vector3.zero) m_TargetVec = m_EgoVector;
             else m_TargetVec = Vector3.Lerp(transform.forward, m_TargetVec, Time.deltaTime).normalized;
 
@@ -105,6 +104,42 @@ namespace Entity.Unit.Flying
             }
         }
 
+        private IEnumerator CalculateObstacleVectorCoroutine()
+        {
+            while (true)
+            {
+                m_ObstacleVector = Vector3.zero;
+                if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, settings.obstacleDistance, settings.obstacleLayer))
+                {
+                    m_ObstacleVector = hit.normal * settings.obstacleWeight;
+                    m_AdditionalSpeed = 8;
+                }
+                yield return calcObstacleWaitSeconds;
+            }
+        }
+
+        private Vector3 CalculateBoundsVector()
+        {
+            m_TargetForwardVec = Vector3.zero;
+            Vector3 offsetToCenter = m_MoveCenter.position - transform.position;
+            return offsetToCenter.magnitude >= m_CurrentMaxMovementRange ? offsetToCenter.normalized : Vector3.zero;
+        }
+
+        private Vector3 CalculateTargetVector()
+        {
+            m_BoundsVec = Vector3.zero;
+            return (m_Target.position - transform.position).normalized;
+        }
+        #endregion
+
+        public void Dispose()
+        {
+            StopAllCoroutines();
+        }
+
+        #region CPU version
+        
+        List<BoidsMovement> m_Neighbours = new List<BoidsMovement>();
         private IEnumerator FindNeighbourCoroutine()
         {
             Collider[] colls;
@@ -119,7 +154,7 @@ namespace Entity.Unit.Flying
                     if (Vector3.Angle(transform.forward, colls[i].transform.position - transform.position) <= settings.FOVAngle)
                     {
                         neighbour = colls[i].GetComponent<BoidsMovement>();
-                        
+
                         m_Neighbours.Add(neighbour);
                     }
                 }
@@ -127,107 +162,34 @@ namespace Entity.Unit.Flying
             }
         }
 
-        private IEnumerator CalculateObstacleVectorCoroutine()
+        private void CalculateVectors()
         {
-            while (true)
-            {
-                m_ObstacleVector = Vector3.zero;
-                if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, settings.obstacleDistance, settings.obstacleLayer))
-                {
-                    m_ObstacleVector = hit.normal * settings.obstacleWeight;
-                    m_AdditionalSpeed = 8;
-                }
-                yield return calcObstacleWaitSeconds;
-            }
-        }
-        #region Compute Shader
-        //private ComputeBuffer neighbourPositionsBuffer;
-        //private ComputeBuffer neighbourForwardsBuffer;
-        //private ComputeBuffer cohesionVectorBuffer;
-        //private ComputeBuffer alignmentVectorBuffer;
-        //private ComputeBuffer separationVectorBuffer;
-        //private int kernelID;
-        //private void InitSetting()
-        //{
-        //    kernelID = m_ComputeShader.FindKernel("CalculateVectors");
+            CohesionVector = Vector3.zero;
+            AlignmentVector = transform.forward;
+            SeparationVector = Vector3.zero;
 
-        //    neighbourPositionsBuffer = new ComputeBuffer(boidCount, sizeof(float) * 3);
-        //    neighbourForwardsBuffer = new ComputeBuffer(boidCount, sizeof(float) * 3);
-        //    cohesionVectorBuffer = new ComputeBuffer(boidCount, sizeof(float) * 3);
-        //    alignmentVectorBuffer = new ComputeBuffer(boidCount, sizeof(float) * 3);
-        //    separationVectorBuffer = new ComputeBuffer(boidCount, sizeof(float) * 3);
-
-        //    // Set data to buffers (example: random positions and forwards)
-        //    Vector3[] neighbourPositions = new Vector3[boidCount];
-        //    Vector3[] neighbourForwards = new Vector3[boidCount];
-        //    for (int i = 0; i < m_Neighbours.Count; i++)
-        //    {
-        //        neighbourPositions[i] = m_Neighbours[i].transform.position;
-        //        neighbourForwards[i] = m_Neighbours[i].transform.forward;
-        //    }
-        //    neighbourPositionsBuffer.SetData(neighbourPositions);
-        //    neighbourForwardsBuffer.SetData(neighbourForwards);
-
-        //    m_ComputeShader.SetBuffer(kernelID, "neighbourPositions", neighbourPositionsBuffer);
-        //    m_ComputeShader.SetBuffer(kernelID, "neighbourForwards", neighbourForwardsBuffer);
-        //    m_ComputeShader.SetBuffer(kernelID, "cohesionVector", cohesionVectorBuffer);
-        //    m_ComputeShader.SetBuffer(kernelID, "alignmentVector", alignmentVectorBuffer);
-        //    m_ComputeShader.SetBuffer(kernelID, "separationVector", separationVectorBuffer);
-        //}
-
-        //private void Dispatch()
-        //{
-        //    Vector3 weights = new Vector3(settings.cohesionWeight, settings.alignmentWeight, settings.separationWeight);
-        //    m_ComputeShader.SetVector("settings", weights);
-
-        //    // Dispatch compute shader
-        //    m_ComputeShader.Dispatch(kernelID, boidCount / 16, 1, 1);
-
-        //    // Read data from compute buffers if needed
-        //    Vector3[] cohesionVectors = new Vector3[boidCount];
-        //    Vector3[] alignmentVectors = new Vector3[boidCount];
-        //    Vector3[] separationVectors = new Vector3[boidCount];
-        //    cohesionVectorBuffer.GetData(cohesionVectors);
-        //    alignmentVectorBuffer.GetData(alignmentVectors);
-        //    separationVectorBuffer.GetData(separationVectors);
-        //}
-        #endregion
-        private void CalculateVectors(out Vector3 cohesionVector, out Vector3 alignmentVector, out Vector3 separationVector)
-        {
-            cohesionVector = Vector3.zero;
-            alignmentVector = transform.forward;
-            separationVector = Vector3.zero;
             if (m_Neighbours.Count > 0)
             {
-                // ÀÌ¿ô unitµéÀÇ À§Ä¡ ´õÇÏ±â
                 for (int i = 0; i < m_Neighbours.Count; i++)
                 {
-                    cohesionVector += m_Neighbours[i].transform.position;
-                    alignmentVector += m_Neighbours[i].transform.forward;
-                    separationVector += (transform.position - m_Neighbours[i].transform.position);
+                    CohesionVector += m_Neighbours[i].transform.position;
+                    AlignmentVector += m_Neighbours[i].transform.forward;
+                    SeparationVector += (transform.position - m_Neighbours[i].transform.position);
                 }
 
-                // Áß½É À§Ä¡·ÎÀÇ º¤ÅÍ Ã£±â
-                cohesionVector /= m_Neighbours.Count;
-                alignmentVector /= m_Neighbours.Count;
-                separationVector /= m_Neighbours.Count;
-                cohesionVector -= transform.position;
+                CohesionVector /= m_Neighbours.Count;
+                AlignmentVector /= m_Neighbours.Count;
+                SeparationVector /= m_Neighbours.Count;
+                CohesionVector -= transform.position;
 
-                cohesionVector.Normalize();
-                alignmentVector.Normalize();
-                separationVector.Normalize();
+                CohesionVector.Normalize();
+                AlignmentVector.Normalize();
+                SeparationVector.Normalize();
             }
 
-            cohesionVector *= settings.cohesionWeight;
-            alignmentVector *= settings.alignmentWeight;
-            separationVector *= settings.separationWeight;
-        }
-
-        private Vector3 CalculateBoundsVector()
-        {
-            m_TargetForwardVec = Vector3.zero;
-            Vector3 offsetToCenter = m_MoveCenter.position - transform.position;
-            return offsetToCenter.magnitude >= m_CurrentMaxMovementRange ? offsetToCenter.normalized : Vector3.zero;
+            CohesionVector *= settings.cohesionWeight;
+            AlignmentVector *= settings.alignmentWeight;
+            SeparationVector *= settings.separationWeight;
         }
 
         private void CalculateObstacleVector(out Vector3 obstacleVector)
@@ -239,17 +201,7 @@ namespace Entity.Unit.Flying
                 m_AdditionalSpeed = 10;
             }
         }
-
-        private Vector3 CalculateTargetVector()
-        {
-            m_BoundsVec = Vector3.zero;
-            return (m_Target.position - transform.position).normalized;
-        }
+        
         #endregion
-
-        public void Dispose()
-        {
-            StopAllCoroutines();
-        }
     }
 }
