@@ -1,42 +1,65 @@
 #pragma kernel CalculateVectors
 
-StructuredBuffer<float3> neighbourPositions;
-StructuredBuffer<float3> neighbourForwards;
-RWStructuredBuffer<float3> cohesionVector;
-RWStructuredBuffer<float3> alignmentVector;
-RWStructuredBuffer<float3> separationVector;
+struct BoidInfo {
+    float3 position;
+    float3 forward;
 
-float3 currentPosition;
-float3 settings;
+    float3 cohesionVector;
+    float3 alignmentVector;
+    float3 separationVector;
+};
 
-[numthreads(16, 1, 1)]
-void CalculateVectors(uint3 dispatchThreadID : SV_DispatchThreadID)
+struct BoidOutput {
+    float3 cohesionVector;
+    float3 alignmentVector;
+    float3 separationVector;
+};
+
+
+RWStructuredBuffer<BoidInfo> boidInfo;
+RWStructuredBuffer<BoidOutput> boidOutput;
+
+float cohesionWeight;
+float alignmentWeight;
+float separationWeight;
+float detectDist;
+uint numberBoids;
+[numthreads(1024, 1, 1)]
+void CalculateVectors(uint3 id : SV_DispatchThreadID)
 {
-    float3 _cohesionVector = float3(0, 0, 0);
-    float3 _alignmentVector = float3(0, 0, 0);
-    float3 _separationVector = float3(0, 0, 0);
+	boidInfo[id.x].cohesionVector = float3(0, 0, 0);
+	boidInfo[id.x].alignmentVector = boidInfo[id.x].forward;
+	boidInfo[id.x].separationVector = float3(0, 0, 0);
 
-    uint neighbourCount = neighbourPositions.Length;
-    if (neighbourCount > 0)
-    {
-        for (uint i = 0; i < neighbourCount; i++)
-        {
-            _cohesionVector += neighbourPositions[i];
-            _alignmentVector += neighbourForwards[i];
-            _separationVector += (currentPosition - neighbourPositions[i]);
-        }
+    float3 offset;
+    float sqrDist;
+    uint currentNeighbourCount = 0;
+    for (uint i = 0; i < numberBoids; i++) {
+        if (id.x == i) continue;
 
-        _cohesionVector /= neighbourCount;
-        _alignmentVector /= neighbourCount;
-        _separationVector /= neighbourCount;
-        _cohesionVector -= currentPosition;
+        BoidInfo currentBoidInfo = boidInfo[i];
+        offset = currentBoidInfo.position - boidInfo[id.x].position;
+        sqrDist = offset.x * offset.x + offset.y * offset.y + offset.z * offset.z;
 
-        _cohesionVector = normalize(_cohesionVector);
-        _alignmentVector = normalize(_alignmentVector);
-        _separationVector = normalize(_separationVector);
+		if (sqrDist <= detectDist) {
+            currentNeighbourCount++;
+
+			boidInfo[id.x].cohesionVector += currentBoidInfo.position;
+			boidInfo[id.x].alignmentVector += currentBoidInfo.forward;
+			boidInfo[id.x].separationVector += boidInfo[id.x].position - currentBoidInfo.position;
+
+            if (currentNeighbourCount >= 4) break;
+		}
     }
 
-    cohesionVector[dispatchThreadID.x] = _cohesionVector * settings.x;
-    alignmentVector[dispatchThreadID.x] = _alignmentVector * settings.y;
-    separationVector[dispatchThreadID.x] = _separationVector * settings.z;
+    if (currentNeighbourCount > 0) {
+        boidInfo[id.x].cohesionVector /= currentNeighbourCount;
+        boidInfo[id.x].alignmentVector /= currentNeighbourCount;
+        boidInfo[id.x].separationVector /= currentNeighbourCount;
+        boidInfo[id.x].cohesionVector -= boidInfo[id.x].position;
+    }
+
+    boidInfo[id.x].cohesionVector *= cohesionWeight;
+    boidInfo[id.x].alignmentVector *= alignmentWeight;
+    boidInfo[id.x].separationVector *= separationWeight;
 }

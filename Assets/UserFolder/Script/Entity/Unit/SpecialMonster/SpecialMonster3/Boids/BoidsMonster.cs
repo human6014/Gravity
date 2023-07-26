@@ -15,7 +15,6 @@ namespace Entity.Unit.Flying
         private int m_CurrentHP;
         private float m_CurrentAttackTimer;
         private bool m_IsAlive;
-
         public System.Action<bool> TracePatternAction { get; set; }
         public System.Action<bool> PatrolPatternAction { get; set; }
         public System.Action<PoolableScript> ReturnAction { get; set; }
@@ -77,7 +76,7 @@ namespace Entity.Unit.Flying
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Player")) Attack();
+            //if (other.CompareTag("Player")) Attack();
         }
 
         public override void ReturnObject()
