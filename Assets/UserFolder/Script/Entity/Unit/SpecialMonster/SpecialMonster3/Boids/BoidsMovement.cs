@@ -68,7 +68,7 @@ namespace Entity.Unit.Flying
 
             //StartCoroutine(FindNeighbourCoroutine());
             StartCoroutine(CalculateEgoVectorCoroutine());
-            StartCoroutine(CalculateObstacleVectorCoroutine());
+            //StartCoroutine(CalculateObstacleVectorCoroutine());
         }
 
         public void CalcAndMove()
@@ -82,9 +82,10 @@ namespace Entity.Unit.Flying
             if (m_IsTracePlayer && !m_IsPatrol && m_Target != null)
                 m_TargetForwardVec = CalculateTargetVector() * settings.targetWeight;
             else m_BoundsVec = CalculateBoundsVector() * settings.boundsWeight;
+            CalculateObstacleVector(out Vector3 obstacleVector);
 
             m_TargetVec = CohesionVector + AlignmentVector + SeparationVector + 
-                m_BoundsVec + m_ObstacleVector + (m_EgoVector * settings.egoWeight) + m_TargetForwardVec;
+                m_BoundsVec + obstacleVector + (m_EgoVector * settings.egoWeight) + m_TargetForwardVec;
 
             if (m_TargetVec == Vector3.zero) m_TargetVec = m_EgoVector;
             else m_TargetVec = Vector3.Lerp(transform.forward, m_TargetVec, Time.deltaTime).normalized;
@@ -117,7 +118,15 @@ namespace Entity.Unit.Flying
                 yield return calcObstacleWaitSeconds;
             }
         }
-
+        private void CalculateObstacleVector(out Vector3 obstacleVector)
+        {
+            obstacleVector = Vector3.zero;
+            if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, settings.obstacleDistance, settings.obstacleLayer))
+            {
+                obstacleVector = hit.normal * settings.obstacleWeight;
+                m_AdditionalSpeed = 10;
+            }
+        }
         private Vector3 CalculateBoundsVector()
         {
             m_TargetForwardVec = Vector3.zero;
@@ -138,7 +147,7 @@ namespace Entity.Unit.Flying
         }
 
         #region CPU version
-        
+        /*
         List<BoidsMovement> m_Neighbours = new List<BoidsMovement>();
         private IEnumerator FindNeighbourCoroutine()
         {
@@ -191,17 +200,7 @@ namespace Entity.Unit.Flying
             AlignmentVector *= settings.alignmentWeight;
             SeparationVector *= settings.separationWeight;
         }
-
-        private void CalculateObstacleVector(out Vector3 obstacleVector)
-        {
-            obstacleVector = Vector3.zero;
-            if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, settings.obstacleDistance, settings.obstacleLayer))
-            {
-                obstacleVector = hit.normal * settings.obstacleWeight;
-                m_AdditionalSpeed = 10;
-            }
-        }
-        
+        */
         #endregion
     }
 }

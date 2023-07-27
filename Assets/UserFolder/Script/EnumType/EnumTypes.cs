@@ -35,7 +35,7 @@ namespace EnumType
     {
         Horridomorph = 0,
         SP2 = 1,
-        SP3 = 2
+        Scyver = 2
     }
 
     public enum Boss1
