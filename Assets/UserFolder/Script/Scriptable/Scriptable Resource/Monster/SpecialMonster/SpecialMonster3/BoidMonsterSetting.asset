@@ -16,7 +16,7 @@ MonoBehaviour:
   cohesionWeight: 3
   alignmentWeight: 5
   separationWeight: 4
-  targetWeight: 5
+  targetWeight: 6
   boundsWeight: 10
   obstacleWeight: 30
   egoWeight: 1
@@ -24,7 +24,7 @@ MonoBehaviour:
   FOVAngle: 120
   maxNeighbourCount: 4
   neighbourDistance: 3
-  maxMovementRange: 10
+  maxMovementRange: 9
   patrolMovementRange: 90
   boidUnitLayer:
     serializedVersion: 2
