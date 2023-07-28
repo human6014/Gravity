@@ -20,13 +20,13 @@ namespace Manager
 
         [Space(15)]
         [SerializeField] private GameObject specialMonster1;
-        [SerializeField] private SpecialMonster2 specialMonster2;
-        [SerializeField] private SpecialMonster3 specialMonster3;
+        [SerializeField] private GameObject specialMonster2;
+        [SerializeField] private GameObject specialMonster3;
 
         #region Property
         public GameObject GetSpecialMonster1 => specialMonster1;
-        public SpecialMonster2 GetSpecialMonster2 => specialMonster2;
-        public SpecialMonster3 GetSpecialMonster3  => specialMonster3;
+        public GameObject GetSpecialMonster2 => specialMonster2;
+        public GameObject GetSpecialMonster3  => specialMonster3;
         #endregion
 
         #region Getter

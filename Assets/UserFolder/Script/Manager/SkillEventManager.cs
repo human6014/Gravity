@@ -56,6 +56,7 @@ namespace UI.Manager
         private readonly Dictionary<int, FixedNonSpecificEvent> m_FixedNonSpecificDict = new();
         private readonly Dictionary<int, FixedSpecificEvent> m_FixedSpecificDict = new();
         private readonly List<SkillEvent> m_CurrentVisibleSkillEvents = new ();
+        private readonly System.Random m_MyRandom = new System.Random();
 
         private const int m_DefaultDisplayCount = 3;
         private int m_GameEventCount = 0;
@@ -168,9 +169,8 @@ namespace UI.Manager
         /// <returns>int ¹è¿­</returns>
         private int[] GetRandomNumber(int min, int max, int count = m_DefaultDisplayCount)
         {
-            System.Random random = new System.Random();
             int[] randomElements = Enumerable.Range(min, max - min)
-                                             .OrderBy(x => random.Next())
+                                             .OrderBy(x => m_MyRandom.Next())
                                              .Take(count)
                                              .ToArray();
             return randomElements;

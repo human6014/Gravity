@@ -40,6 +40,7 @@ public class Leg : MonoBehaviour
     private float m_Interporation;
     private bool m_IsJump;
 
+    
     private bool m_HasDownRay;
     private bool m_HasForwardRay;
     private bool m_HasBackRay;
@@ -75,7 +76,7 @@ public class Leg : MonoBehaviour
     /// </summary>
     public float TipDistance { get; private set; }
 
-
+    public bool IsAlive { get; set; } = true;
     private void Awake()
     {
         TipPos = ikTarget.position;
@@ -90,8 +91,7 @@ public class Leg : MonoBehaviour
     RaycastHit hit;
     private void FixedUpdate()
     {
-        // Calculate the tip target position
-        //if (!IsIKEnable) return;
+        if (!IsAlive) return;
         if (m_HasForwardRay && Physics.Raycast(forwardRayOrigin.position, forwardRayOrigin.forward, out hit, maxFowardRayDist, m_SP1MonsterLegSettings.m_FDLayerMask))
         {
             RaycastTipPos = hit.point;

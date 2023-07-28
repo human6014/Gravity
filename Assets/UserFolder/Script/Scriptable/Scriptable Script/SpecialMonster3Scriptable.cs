@@ -15,10 +15,16 @@ namespace Scriptable.Monster
         [Tooltip("직선 장애물 감지 레이어")]
         public LayerMask m_ObstacleDetectLayer;
 
-        [Tooltip("Boids 추적 공격 시간")]
+        [Tooltip("Boids 일부 추적 공격 시간")]
+        [SerializeField] private float m_BoidsMonsterAttackSpeed = 10;
+
+        [Tooltip("Boids 일부 추적 공격 지속 시간")]
+        [SerializeField] private float m_BoidsMonsterAttackTime = float.MaxValue;
+
+        [Tooltip("Boids 전체 추적 공격 시간")]
         [SerializeField] private float m_BoidsMonsterTraceSpeed = 20;
 
-        [Tooltip("Boids 추적 공격 지속 시간")]
+        [Tooltip("Boids 전체 추적 공격 지속 시간")]
         [SerializeField] private float m_BoidsMonsterTraceTime = 7.5f;
 
         [Tooltip("Boids 퍼뜨리기 공격 시간")]

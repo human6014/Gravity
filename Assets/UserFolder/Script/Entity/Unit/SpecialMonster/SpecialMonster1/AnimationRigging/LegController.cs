@@ -13,6 +13,7 @@ public class LegController : MonoBehaviour
     [Header("Options")]
     [SerializeField] private MultiAimConstraint[] m_MultiAimConstraint;
 
+    private bool m_IsAlive = true;
     private bool preJump = false;
     private bool isJump = false;
     private bool readySwitchOrder = false;
@@ -37,10 +38,16 @@ public class LegController : MonoBehaviour
         WeightedTransformArray weightedTransforms = new() { weightedTransform };
         foreach (MultiAimConstraint m in m_MultiAimConstraint) m.data.sourceObjects = weightedTransforms;
     }
-    
+
+    private void ClearAimConstraint()
+    {
+        foreach (MultiAimConstraint m in m_MultiAimConstraint)
+            m.data.sourceObjects = new WeightedTransformArray();
+    }
 
     private void FixedUpdate()
     {
+        if (!m_IsAlive) return;
         // If tip is not in current order but it's too far from target position, Switch the order
         for (int i = 0; i < legs.Length; i++)
         {
@@ -141,5 +148,12 @@ public class LegController : MonoBehaviour
         isJump = _isJump;
         foreach (Leg leg in legs)
             leg.SetIsJump(isJump);
+    }
+
+    public void Dispose()
+    {
+        ClearAimConstraint();
+        m_IsAlive = false;
+        StopAllCoroutines();
     }
 }
