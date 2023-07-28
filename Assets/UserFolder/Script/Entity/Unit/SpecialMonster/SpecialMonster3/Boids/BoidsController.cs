@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Entity.Unit.Flying;
+using System.Linq;
 using Manager;
 
 namespace Entity.Unit.Special
@@ -32,10 +33,10 @@ namespace Entity.Unit.Special
         [SerializeField] private BoidsMonster m_BoidUnitPrefab;
 
         [Tooltip("미리 생성할 유닛 수")]
-        [Range(5, 5000)] [SerializeField] private int m_BoidPollingCount = 1000;
+        [Range(5, 1000)] [SerializeField] private int m_BoidPollingCount = 1000;
 
         [Tooltip("생성 범위")]
-        [Range(5, 100)] [SerializeField] private float m_SpawnRange = 10;
+        [Range(1, 20)] [SerializeField] private float m_SpawnRange = 5;
 
         [Header("Patterns related")]
         [Tooltip("플레이어 추적 지속시간")]
@@ -55,17 +56,20 @@ namespace Entity.Unit.Special
         private Transform m_BoidsPool;
         private WaitForSeconds m_TraceOffSeconds;
         private WaitForSeconds m_PatrolOffSeconds;
-        private List<BoidsMonster> m_BoidMonsters = new List<BoidsMonster>();
-        private List<BoidsMovement> m_BoidMovement = new List<BoidsMovement>();
+        private readonly List<BoidsMonster> m_BoidMonsters = new List<BoidsMonster>();
+        private readonly List<BoidsMovement> m_BoidMovement = new List<BoidsMovement>();
+        private readonly System.Random m_MyRandom = new System.Random();
 
         private const string m_ActivePoolName = "BoidsPool";
         private const int m_ThreadGroupSize = 1024;
 
+        private bool m_IsAlive;
         private bool m_IsTracingPlayer;
         private bool m_IsPatrol;
 
         private BoidData[] m_BoidData;
         private ComputeBuffer m_ComputeBuffer;
+
         private void Awake()
         {
             m_BoidsPool = GameObject.Find(m_ActivePoolName).transform;
@@ -79,23 +83,14 @@ namespace Entity.Unit.Special
             m_ComputeShader.SetFloat("separationWeight", m_SeparationWeight);
         }
 
-        private void Start()
+        public void Init()
         {
+            m_IsAlive = true;
             poolingObj = ObjectPoolManager.Register(m_BoidUnitPrefab, m_BoidsPool);
             poolingObj.GenerateObj(m_BoidPollingCount);
         }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.O))
-                StartCoroutine(TracePlayer());
-            else if (Input.GetKeyDown(KeyCode.P))
-                StartCoroutine(PatrolBoids());
-
-            Dispatch();
-        }
-
-        private void Dispatch()
+        public void Dispatch()
         {
             int numBoids = m_BoidMovement.Count;
             if (numBoids <= 1) return;
@@ -142,7 +137,7 @@ namespace Entity.Unit.Special
 
                 currUnit = (BoidsMonster)poolingObj.GetObject(true);
                 currUnit.transform.SetPositionAndRotation(transform.position + randomVec, randomRot);
-                currUnit.ReturnAction += ReturnObj;
+                currUnit.ReturnAction += ReturnChildObj;
                 currUnit.Init(transform);
 
                 m_BoidMonsters.Add(currUnit);
@@ -150,9 +145,16 @@ namespace Entity.Unit.Special
             }
         }
 
-        private void OnDestroy()
+        public void TraceAttack(bool isActive, int count)
         {
-            if (m_ComputeBuffer != null) m_ComputeBuffer.Release();
+            if (m_BoidMovement.Count <= count) return;
+            int[] randomIndex = Enumerable.Range(0, m_BoidMovement.Count)
+                                          .OrderBy(x => m_MyRandom.Next())
+                                          .Take(count)
+                                          .ToArray();
+
+            for(int i = 0; i < randomIndex.Length; i++)
+                m_BoidMonsters[i].TracePatternAction?.Invoke(isActive);
         }
 
         #region Pattern
@@ -182,11 +184,24 @@ namespace Entity.Unit.Special
                 bm.PatrolPatternAction?.Invoke(m_IsPatrol);
         }
         #endregion
-        public void ReturnObj(PoolableScript poolableScript)
+        public void ReturnChildObj(PoolableScript poolableScript)
         {
             m_BoidMovement.Remove(poolableScript.GetComponent<BoidsMovement>());
             m_BoidMonsters.Remove((BoidsMonster)poolableScript);
             poolingObj.ReturnObject(poolableScript);
+        }
+
+        public void Dispose()
+        {
+            m_IsAlive = false;
+
+            foreach (BoidsMonster bm in m_BoidMonsters)
+                bm.Die();
+        }
+
+        private void OnDestroy()
+        {
+            if (m_ComputeBuffer != null) m_ComputeBuffer.Release();
         }
     }
 }

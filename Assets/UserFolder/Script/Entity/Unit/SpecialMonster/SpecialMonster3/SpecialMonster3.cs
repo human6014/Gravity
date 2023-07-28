@@ -8,15 +8,18 @@ namespace Entity.Unit.Special
 {
     public class SpecialMonster3 : MonoBehaviour, IMonster
     {
-        [SerializeField] [Range(0, 2000)] private int m_BoidsInstacingCount = 500;
         [SerializeField] private SpecialMonster3Scriptable m_Setting;
+        [SerializeField] [Range(0, 2000)] private int m_BoidsInstacingCount = 500;
+        [SerializeField] [Range(0, 1000)] private int m_BoidsReInstancingCount = 250;
         private Transform[] m_MovePoints;
 
         private SP3AnimationController m_SP3AnimationController;
         private BoidsController m_BoidsController;
         private PlayerData m_PlayerData;
+        private Rigidbody m_Rigidbody;
 
         private bool m_IsAlive;
+        private bool m_IsRespawned;
 
         private int m_PlayerLayerNum;
 
@@ -27,9 +30,11 @@ namespace Entity.Unit.Special
         private int m_CurrentHP;
 
         private float m_AttackTimer;
+        private float m_TraceAttackTimer;
         private float m_TraceBoidsTimer;
         private float m_PatrolBoidsTimer;
 
+        private bool CanNormalAttack() => m_Setting.m_AttackSpeed <= m_AttackTimer && !DetectObstacle();
         public System.Action EndSpecialMonsterAction { get; set; }
         private bool DetectObstacle()
         {
@@ -44,19 +49,20 @@ namespace Entity.Unit.Special
         {
             m_SP3AnimationController = GetComponentInChildren<SP3AnimationController>();
             m_BoidsController = GetComponent<BoidsController>();
-
-            m_MovePoints = new Transform[6];
-            //Transform points = transform.Find("MovePoints");
-            //int count = 0;
-            //foreach(Transform child in points)
-            //    m_MovePoints[count++] = child;
+            m_Rigidbody = GetComponent<Rigidbody>();
 
             m_PlayerLayerNum = LayerMask.NameToLayer("Player");
         }
 
-        public void Init(Vector3 pos, float statMultiplier)
+        public void Init(Transform MovePoint, float statMultiplier)
         {
             m_PlayerData = AIManager.PlayerTransform.GetComponent<PlayerData>();
+            int count = 0;
+            m_MovePoints = new Transform[6];
+            foreach (Transform child in MovePoint)
+                m_MovePoints[count++] = child;
+
+            m_BoidsController.Init();
             m_SP3AnimationController.Init();
             SetRealStat(statMultiplier);
         }
@@ -80,19 +86,33 @@ namespace Entity.Unit.Special
 
         private void Update()
         {
+            if (!m_IsAlive) return;
             UpdateTimer();
+            Move();
+            m_BoidsController.Dispatch();
+            Attack();
         }
 
         private void UpdateTimer()
         {
             m_AttackTimer += Time.deltaTime;
+            m_TraceAttackTimer += Time.deltaTime;
             m_TraceBoidsTimer += Time.deltaTime;
             m_PatrolBoidsTimer += Time.deltaTime;
         }
 
         public void Attack()
         {
-            
+            if (CanNormalAttack())
+            {
+                m_AttackTimer = 0;
+            }
+            if (Input.GetKeyDown(KeyCode.O))
+                StartCoroutine(m_BoidsController.TracePlayer());
+            else if (Input.GetKeyDown(KeyCode.P))
+                StartCoroutine(m_BoidsController.PatrolBoids());
+            else if (Input.GetKeyDown(KeyCode.I))
+                m_BoidsController.TraceAttack(true, 5);
         }
 
         public void Move()
@@ -112,17 +132,23 @@ namespace Entity.Unit.Special
             m_CurrentHP -= realDamage;
 
             if (m_CurrentHP <= 0) Die();
-            else if (m_CurrentHP <= m_RealMaxHP) RespawnBoids();
+            else if (!m_IsRespawned && m_CurrentHP <= m_RespawnBoidsHP) RespawnBoids();
         }
 
         private void RespawnBoids()
         {
-
+            m_IsRespawned = true;
+            m_BoidsController.GenerateBoidMonster(m_BoidsInstacingCount);
         }
 
         public void Die()
         {
             m_IsAlive = false;
+            m_Rigidbody.isKinematic = false;
+            m_Rigidbody.useGravity = true;
+
+            m_BoidsController.Dispose();
+
             EndSpecialMonsterAction?.Invoke();
         }
     }

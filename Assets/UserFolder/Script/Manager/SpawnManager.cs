@@ -35,12 +35,12 @@ namespace Manager
         [Tooltip("무한 웨이브 시간")]
         [SerializeField] private float m_InfintyWaveTiming;
 
-        [Tooltip("특수 몬스터 스폰 시간")]
-        [SerializeField] private float[] m_SPSpawnTiming;
-
         [Header("Spawn Area")]
         [Tooltip("스폰영역을 자식으로 가지는 Transform")]
         [SerializeField] private Transform [] spawnAreaTransform = new Transform[6];
+
+        [Tooltip("SpecialMonster3 스폰 위치")]
+        [SerializeField] private Transform m_SP3SpawnPos;
 
         [Header("Pooling Transform")]
         [Tooltip("활성화된 유닛의 transform")]
@@ -302,13 +302,13 @@ namespace Manager
             switch (CurrentStage)
             {
                 case 1:
-                    SpawnSpecialMonster1();
+                    SpawnSpecialMonster3();
                     break;
                 case 2:
-                    SpawnSpecialMonster2();
+                    //SpawnSpecialMonster2();
                     break;
                 case 3:
-                    SpawnSpecialMonster3();
+                    //SpawnSpecialMonster3();
                     break;
             }
         }
@@ -362,7 +362,6 @@ namespace Manager
 
             SpecialMonster1 specialMonster1 = Instantiate(m_EntityManager.GetSpecialMonster1, initPosition, Quaternion.identity).GetComponent<SpecialMonster1>();
             specialMonster1.EndSpecialMonsterAction += () => IsSP1MonsterEnd = true;
-            specialMonster1.EndSpecialMonsterAction += () => m_CurrentStage++;
             specialMonster1.Init(initRotation, m_StatMultiplier);
 
             IsSP1MonsterSpawned = true;
@@ -375,6 +374,12 @@ namespace Manager
 
         public void SpawnSpecialMonster3()
         {
+            Vector3 initPosition = m_SP3SpawnPos.position;
+
+            SpecialMonster3 specialMonster3 = Instantiate(m_EntityManager.GetSpecialMonster3, initPosition,Quaternion.identity).GetComponent<SpecialMonster3>();
+            specialMonster3.EndSpecialMonsterAction += () => IsSP3MonsterEnd = true;
+            specialMonster3.Init(m_SP3SpawnPos, m_StatMultiplier);
+
             IsSP3MonsterSpawned = true;
         }
         #endregion

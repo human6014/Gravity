@@ -346,7 +346,8 @@ namespace Entity.Unit.Special
             EndSpecialMonsterAction?.Invoke();
 
             m_SpecialMonsterAI.Dispose();
-            if(m_IsGrabbing) m_PlayerData.EndGrab();
+            m_LegController.Dispose();
+            if (m_IsGrabbing) m_PlayerData.EndGrab();
             m_SP1AnimationController.SetDie();
         }
 

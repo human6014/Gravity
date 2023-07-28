@@ -9,6 +9,8 @@ namespace Entity.Unit.Flying
     {
         [SerializeField] private Scriptable.Monster.FlyingMonsterScriptable m_Settings;
 
+        private Rigidbody m_Rigidbody;
+        private CapsuleCollider m_CapsuleCollider;
         private BoidsMovement m_BoidsMovement;
         private PlayerData m_PlayerData;
 
@@ -22,6 +24,9 @@ namespace Entity.Unit.Flying
         private void Awake()
         {
             m_BoidsMovement = GetComponent<BoidsMovement>();
+            m_Rigidbody = GetComponent<Rigidbody>();
+            m_CapsuleCollider = GetComponent<CapsuleCollider>();
+
             TracePatternAction += m_BoidsMovement.TryTracePlayer;
             PatrolPatternAction += m_BoidsMovement.TryPatrol;
         }
@@ -37,12 +42,17 @@ namespace Entity.Unit.Flying
             m_CurrentHP = m_Settings.m_HP;
             m_CurrentAttackTimer = 0;
 
+            m_Rigidbody.isKinematic = true;
+            m_Rigidbody.useGravity = false;
+            m_CapsuleCollider.radius = 0.9f;
+
             m_BoidsMovement.Init(moveCenter);
         }
 
         public void Update()
         {
             if (!m_IsAlive) return;
+            
             Move();
             m_CurrentAttackTimer += Time.deltaTime;
         }
@@ -71,12 +81,14 @@ namespace Entity.Unit.Flying
         {
             m_BoidsMovement.Dispose();
             m_IsAlive = false;
-            ReturnObject();
-        }
 
-        private void OnTriggerEnter(Collider other)
-        {
-            //if (other.CompareTag("Player")) Attack();
+            m_CapsuleCollider.radius = 0.3f;
+            m_Rigidbody.isKinematic = false;
+            m_Rigidbody.useGravity = true;
+            m_Rigidbody.AddForce(transform.forward * 12, ForceMode.Impulse);
+            
+
+            Invoke(nameof(ReturnObject), 10);
         }
 
         public override void ReturnObject()

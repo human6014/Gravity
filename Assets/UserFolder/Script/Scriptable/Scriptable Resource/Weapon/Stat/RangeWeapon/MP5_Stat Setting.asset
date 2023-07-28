@@ -16,7 +16,7 @@ MonoBehaviour:
   m_Damage: 240
   m_AttackableLayer:
     serializedVersion: 2
-    m_Bits: 805756928
+    m_Bits: 805758976
   m_RunningPosTime: 0.5
   m_RunningPivotPosition: {x: -0.08, y: -0.09, z: 0.5}
   m_RunningPivotDirection: {x: 18, y: -36.5, z: 13.5}
