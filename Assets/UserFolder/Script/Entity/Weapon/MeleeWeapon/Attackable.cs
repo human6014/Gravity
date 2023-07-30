@@ -35,7 +35,6 @@ namespace Entity.Object.Weapon
             {
                 Vector3 dir = (hit.point - m_ForcePoint.position).normalized * m_MeleeWeaponStat.m_AttackForce;
                 damageable.Hit(m_RealDamage, m_MeleeWeaponStat.m_BulletType, dir);
-                Debug.Log(m_RealDamage);
                 return true;
             }
 
