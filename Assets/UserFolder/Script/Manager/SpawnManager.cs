@@ -6,7 +6,6 @@ using Entity.Unit.Normal;
 using Entity.Unit.Special;
 using System.Linq;
 
-
 namespace Manager
 {
     [System.Serializable]
@@ -375,10 +374,11 @@ namespace Manager
         public void SpawnSpecialMonster3()
         {
             Vector3 initPosition = m_SP3SpawnPos.position;
+            PathCreation.PathCreator pathCreator = m_SP3SpawnPos.parent.GetComponent<PathCreation.PathCreator>();
 
-            SpecialMonster3 specialMonster3 = Instantiate(m_EntityManager.GetSpecialMonster3, initPosition,Quaternion.identity).GetComponent<SpecialMonster3>();
+            SpecialMonster3 specialMonster3 = Instantiate(m_EntityManager.GetSpecialMonster3, initPosition, Quaternion.identity).GetComponent<SpecialMonster3>();
             specialMonster3.EndSpecialMonsterAction += () => IsSP3MonsterEnd = true;
-            specialMonster3.Init(m_SP3SpawnPos, m_StatMultiplier);
+            specialMonster3.Init(pathCreator, m_StatMultiplier);
 
             IsSP3MonsterSpawned = true;
         }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdaa71cd16782824781f0b156c406e93, type: 3}
   m_Name: SpecialMonster3Stat
   m_EditorClassIdentifier: 
-  m_HP: 20000
+  m_HP: 5000
   m_Def: 0
   m_Damage: 250
   m_MovementSpeed: 5
@@ -28,6 +28,10 @@ MonoBehaviour:
   m_ObstacleDetectLayer:
     serializedVersion: 2
     m_Bits: 155648
+  m_BoidsSpawnCount: 1
+  m_BoidsRespawnCount: 1
+  m_BoidsMonsterAttackSpeed: 10
+  m_BoidsMonsterAttackTime: 99999
   m_BoidsMonsterTraceSpeed: 20
   m_BoidsMonsterTraceTime: 7.5
   m_BoidsPatrolSpeed: 20

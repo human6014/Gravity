@@ -10,12 +10,9 @@ namespace Entity.Unit.Special
         private Animator m_Animator;
 
         #region Animation string
-
-        private const string m_Move = "Move";
         private const string m_Attack = "Attacking";
         private const string m_Die = "Die";
         private const string m_DieGround = "DieGround";
-
         #endregion
 
         private void Awake()
@@ -26,6 +23,31 @@ namespace Entity.Unit.Special
         public void Init()
         {
 
+        }
+
+        private void SetTrigger(string name)
+        {
+            m_Animator.SetTrigger(name);
+        }
+
+        private void SetBool(string name, bool isActive)
+        {
+            m_Animator.SetBool(name, isActive);
+        }
+
+        public void Attack()
+        {
+            SetTrigger(m_Attack);
+        }
+
+        public void Die()
+        {
+            SetBool(m_Die, true);
+        }
+
+        public void DieHitGround()
+        {
+            SetBool(m_DieGround, true);
         }
     }
 }

@@ -3,19 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Manager.AI;
+using PathCreation;
 
 namespace Entity.Unit.Special
 {
     public class SpecialMonster3 : MonoBehaviour, IMonster
     {
-        [SerializeField] private SpecialMonster3Scriptable m_Setting;
-        [SerializeField] [Range(0, 2000)] private int m_BoidsInstacingCount = 500;
-        [SerializeField] [Range(0, 1000)] private int m_BoidsReInstancingCount = 250;
-        private Transform[] m_MovePoints;
+        [SerializeField] private SpecialMonster3Scriptable m_Setting;    
 
         private SP3AnimationController m_SP3AnimationController;
         private BoidsController m_BoidsController;
         private PlayerData m_PlayerData;
+        private PathFollower m_PathFollower;
         private Rigidbody m_Rigidbody;
 
         private bool m_IsAlive;
@@ -49,22 +48,22 @@ namespace Entity.Unit.Special
         {
             m_SP3AnimationController = GetComponentInChildren<SP3AnimationController>();
             m_BoidsController = GetComponent<BoidsController>();
+            m_PathFollower = GetComponent<PathFollower>();
             m_Rigidbody = GetComponent<Rigidbody>();
-
+            
             m_PlayerLayerNum = LayerMask.NameToLayer("Player");
         }
 
-        public void Init(Transform MovePoint, float statMultiplier)
+        public void Init(PathCreator pathCreator, float statMultiplier)
         {
             m_PlayerData = AIManager.PlayerTransform.GetComponent<PlayerData>();
-            int count = 0;
-            m_MovePoints = new Transform[6];
-            foreach (Transform child in MovePoint)
-                m_MovePoints[count++] = child;
 
             m_BoidsController.Init();
             m_SP3AnimationController.Init();
+            m_PathFollower.Init(pathCreator);
+
             SetRealStat(statMultiplier);
+            m_BoidsController.GenerateBoidMonster(m_Setting.m_BoidsSpawnCount);
         }
 
         private void SetRealStat(float statMultiplier)
@@ -72,16 +71,11 @@ namespace Entity.Unit.Special
             m_IsAlive = true;
 
             m_RealMaxHP = m_Setting.m_HP + (int)(statMultiplier * m_Setting.m_HPMultiplier);
-            m_RealDef = m_Setting.m_Def + (int)(statMultiplier * m_Setting.m_HPMultiplier);
+            m_RealDef = m_Setting.m_Def + (int)(statMultiplier * m_Setting.m_DefMultiplier);
             m_RealDamage = m_Setting.m_Damage + (int)(statMultiplier * m_Setting.m_Damage);
 
             m_RespawnBoidsHP = (int)(m_RealMaxHP * 0.5f);
             m_CurrentHP = m_RealMaxHP;
-        }
-
-        private void Start()
-        {
-            m_BoidsController.GenerateBoidMonster(m_BoidsInstacingCount);
         }
 
         private void Update()
@@ -117,7 +111,7 @@ namespace Entity.Unit.Special
 
         public void Move()
         {
-
+            m_PathFollower.FollowPath();
         }
 
         public void Hit(int damage, AttackType bulletType)
@@ -125,7 +119,7 @@ namespace Entity.Unit.Special
             if (!m_IsAlive) return;
 
             int realDamage;
-            if (bulletType == AttackType.Explosion) realDamage = damage / m_Setting.m_ExplosionResistance;
+            if (bulletType == AttackType.Explosion) realDamage = 0;
             else if (bulletType == AttackType.Melee) realDamage = damage / m_Setting.m_MeleeResistance;
             else realDamage = damage - m_RealDef;
 
@@ -138,18 +132,48 @@ namespace Entity.Unit.Special
         private void RespawnBoids()
         {
             m_IsRespawned = true;
-            m_BoidsController.GenerateBoidMonster(m_BoidsInstacingCount);
+            m_BoidsController.GenerateBoidMonster(m_Setting.m_BoidsRespawnCount);
         }
 
-        public void Die()
+        private IEnumerator RotateToDieMotion(float time)
         {
             m_IsAlive = false;
-            m_Rigidbody.isKinematic = false;
-            m_Rigidbody.useGravity = true;
-
+            
             m_BoidsController.Dispose();
 
+            float elapsedTime = 0;
+            while(elapsedTime < time)
+            {
+                elapsedTime += Time.deltaTime;
+                transform.rotation = Quaternion.LookRotation(transform.forward, -Manager.GravityManager.GravityVector);
+                yield return null;
+            }
+
+            m_Rigidbody.isKinematic = false;
+            m_Rigidbody.useGravity = true;
+            m_SP3AnimationController.Die();
             EndSpecialMonsterAction?.Invoke();
+        }
+        //
+        public void Die()
+        {
+            StartCoroutine(RotateToDieMotion(1));
+            //m_IsAlive = false;
+            //m_Rigidbody.isKinematic = false;
+            //m_Rigidbody.useGravity = true;
+
+            //m_SP3AnimationController.Die();
+
+            //m_BoidsController.Dispose();
+
+            //EndSpecialMonsterAction?.Invoke();
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (m_IsAlive) return;
+            m_SP3AnimationController.DieHitGround();
+            m_Rigidbody.isKinematic = true;
         }
     }
 }

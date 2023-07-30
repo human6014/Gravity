@@ -145,6 +145,7 @@ namespace Entity.Unit.Special
             }
         }
 
+        #region Pattern
         public void TraceAttack(bool isActive, int count)
         {
             if (m_BoidMovement.Count <= count) return;
@@ -156,8 +157,7 @@ namespace Entity.Unit.Special
             for(int i = 0; i < randomIndex.Length; i++)
                 m_BoidMonsters[i].TracePatternAction?.Invoke(isActive);
         }
-
-        #region Pattern
+        
         public IEnumerator TracePlayer()
         {
             m_IsTracingPlayer = true;
@@ -184,6 +184,7 @@ namespace Entity.Unit.Special
                 bm.PatrolPatternAction?.Invoke(m_IsPatrol);
         }
         #endregion
+
         public void ReturnChildObj(PoolableScript poolableScript)
         {
             m_BoidMovement.Remove(poolableScript.GetComponent<BoidsMovement>());
@@ -194,6 +195,7 @@ namespace Entity.Unit.Special
         public void Dispose()
         {
             m_IsAlive = false;
+            StopAllCoroutines();
 
             foreach (BoidsMonster bm in m_BoidMonsters)
                 bm.Die();
@@ -205,4 +207,3 @@ namespace Entity.Unit.Special
         }
     }
 }
-
