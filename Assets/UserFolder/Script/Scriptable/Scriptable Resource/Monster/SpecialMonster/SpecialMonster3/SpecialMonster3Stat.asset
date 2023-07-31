@@ -27,9 +27,9 @@ MonoBehaviour:
   m_MonsterType: 2
   m_ObstacleDetectLayer:
     serializedVersion: 2
-    m_Bits: 155648
+    m_Bits: 155776
   m_BoidsSpawnCount: 1
-  m_BoidsRespawnCount: 1
+  m_BoidsRespawnCount: 250
   m_BoidsMonsterAttackSpeed: 10
   m_BoidsMonsterAttackTime: 99999
   m_BoidsMonsterTraceSpeed: 20

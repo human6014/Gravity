@@ -39,13 +39,20 @@ namespace Manager
         public static Vector3 GravityVector { get; private set; } = Vector3.down;
 
         /// <summary>
-        /// 현재 중력에 해당하는 Area의 normal 각도
+        /// 현재 중력에 해당하는 Area 각도
         /// </summary>
-        private static readonly Vector3Int[] m_GravityNormalRotation =
+        private static readonly Vector3Int[] m_GravityRotation =
         {
             new Vector3Int(0, 0, -90)   , new Vector3Int(0, 0, 90),
             new Vector3Int(0, 0, 0)     , new Vector3Int(180, 0, 0),
             new Vector3Int(90, 0, 0)    , new Vector3Int(-90, 0, 0),
+        };
+
+        private static readonly Vector3Int[] m_GravityNormalDirection =
+        {
+            new Vector3Int(1,0,0), new Vector3Int(-1,0,0),
+            new Vector3Int(0,1,0), new Vector3Int(0,-1,0),
+            new Vector3Int(0,0,1), new Vector3Int(0,0,-1),
         };
 
         private void Awake()
@@ -104,16 +111,17 @@ namespace Manager
             while (t < m_RotateTime)
             {
                 t += Time.deltaTime / m_RotateTime;
-                transform.rotation = Quaternion.Lerp(currentRotation, GetCurrentGravityNormalRotation(), t);
+                transform.rotation = Quaternion.Lerp(currentRotation, GetCurrentGravityRotation(), t);
                 yield return null;
             }
             IsGravityChanging = false;
         }
 
-        public static Vector3Int GetCurrentGravityNoramlDirection() => m_GravityNormalRotation[(int)m_CurrentGravityType];
+        public static Vector3Int GetCurrentGravityNormalDirection() => m_GravityNormalDirection[(int)m_CurrentGravityType];
+        public static Vector3Int GetCurrentGravityDirection() => m_GravityRotation[(int)m_CurrentGravityType];
 
-        public static Quaternion GetSpecificGravityNormalRotation(int index) => Quaternion.Euler(m_GravityNormalRotation[index]);
+        public static Quaternion GetSpecificGravityRotation(int index) => Quaternion.Euler(m_GravityRotation[index]);
         
-        public static Quaternion GetCurrentGravityNormalRotation() => Quaternion.Euler(m_GravityNormalRotation[(int)m_CurrentGravityType]);
+        public static Quaternion GetCurrentGravityRotation() => Quaternion.Euler(m_GravityRotation[(int)m_CurrentGravityType]);
     }
 }

@@ -10,9 +10,9 @@ public class BuildPlayer : MonoBehaviour
     public static void MyBuild_AOS()
     {
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
-        buildPlayerOptions.scenes = new[] { "Assets/Scene1.unity", "Assets/Scene2.unity" };
+        buildPlayerOptions.scenes = new[] { "Assets/UserFolder/Scenes/GameScene.unity" };
         buildPlayerOptions.locationPathName = $"Builds/AOS_{PlayerSettings.bundleVersion}.apk";
-        buildPlayerOptions.target = BuildTarget.Android;
+        buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
         buildPlayerOptions.options = BuildOptions.None;
 
         BuildSummary summary = BuildPipeline.BuildPlayer(buildPlayerOptions).summary;
