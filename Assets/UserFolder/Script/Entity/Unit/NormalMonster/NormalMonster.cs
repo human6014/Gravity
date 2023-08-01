@@ -8,7 +8,7 @@ namespace Entity.Unit.Normal
 {
     public class NormalMonster : PoolableScript, IMonster, IPhysicsable
     {
-        [SerializeField] private Scriptable.Monster.NormalMonsterScriptable settings;
+        [SerializeField] private Scriptable.Monster.NormalMonsterScriptable m_Settings;
 
         private CapsuleCollider m_CapsuleCollider;
         private RagDollChanger m_RagDollChanger;
@@ -18,6 +18,7 @@ namespace Entity.Unit.Normal
         private PlayerData m_PlayerData;
 
         private bool m_IsAlive;
+        private bool m_CanRun;
 
         private int m_RealMaxHP;
         private int m_RealDef;
@@ -30,14 +31,14 @@ namespace Entity.Unit.Normal
 
         private bool CanAttackRange
         {
-            get => Vector3.Distance(AIManager.PlayerTransform.position, transform.position) <= settings.m_AttackRange;
+            get => Vector3.Distance(AIManager.PlayerTransform.position, transform.position) <= m_Settings.m_AttackRange;
         }
 
         private bool CanAttack
         {
-            get => m_AttackTimer >= settings.m_AttackSpeed && m_NormalMonsterState.CanAttackState;
+            get => m_AttackTimer >= m_Settings.m_AttackSpeed && m_NormalMonsterState.CanAttackState;
         }
-        public NoramlMonsterType GetMonsterType { get => settings.m_MonsterType; }
+        public NoramlMonsterType GetMonsterType { get => m_Settings.m_MonsterType; }
 
         public void OnOffRagdoll(bool isActive)
         {
@@ -76,9 +77,10 @@ namespace Entity.Unit.Normal
         {
             m_IsAlive = true;
 
-            m_RealMaxHP = settings.m_HP + (int)(statMultiplier * settings.m_HPMultiplier);
-            m_RealDef = settings.m_Def + (int)(statMultiplier * settings.m_DefMultiplier);
-            m_RealDamage = settings.m_Damage + (int)(statMultiplier * settings.m_Damage);
+            m_RealMaxHP = m_Settings.m_HP + (int)(statMultiplier * m_Settings.m_HPMultiplier);
+            m_RealDef = m_Settings.m_Def + (int)(statMultiplier * m_Settings.m_DefMultiplier);
+            m_RealDamage = m_Settings.m_Damage + (int)(statMultiplier * m_Settings.m_Damage);
+            m_CanRun = statMultiplier >= m_Settings.CanRunStat;
 
             m_CurrentHP = m_RealMaxHP;
         }
@@ -113,7 +115,7 @@ namespace Entity.Unit.Normal
             m_AttackTimer = 0;
 
             m_NormalMonsterState.SetTriggerAttacking();
-            m_PlayerData.PlayerHit(transform, m_RealDamage, settings.m_NoramlAttackType);
+            m_PlayerData.PlayerHit(transform, m_RealDamage, m_Settings.m_NoramlAttackType);
         }
 
         public void Hit(int damage, AttackType bulletType)
@@ -139,8 +141,8 @@ namespace Entity.Unit.Normal
 
         private void TypeToDamage(int damage, AttackType bulletType)
         {
-            if (bulletType == AttackType.Explosion) m_CurrentHP -= (damage / settings.m_ExplosionResistance);
-            else if (bulletType == AttackType.Melee) m_CurrentHP -= (damage / settings.m_MeleeResistance);
+            if (bulletType == AttackType.Explosion) m_CurrentHP -= (damage / m_Settings.m_ExplosionResistance);
+            else if (bulletType == AttackType.Melee) m_CurrentHP -= (damage / m_Settings.m_MeleeResistance);
             else m_CurrentHP -= (damage - m_RealDef);
         }
 

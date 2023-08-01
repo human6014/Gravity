@@ -56,6 +56,10 @@ namespace Entity.Unit.Special
         private Transform m_BoidsPool;
         private WaitForSeconds m_TraceOffSeconds;
         private WaitForSeconds m_PatrolOffSeconds;
+
+        private BoidData[] m_BoidData;
+        private ComputeBuffer m_ComputeBuffer;
+
         private readonly List<BoidsMonster> m_BoidMonsters = new List<BoidsMonster>();
         private readonly List<BoidsMovement> m_BoidMovement = new List<BoidsMovement>();
         private readonly System.Random m_MyRandom = new System.Random();
@@ -63,12 +67,13 @@ namespace Entity.Unit.Special
         private const string m_ActivePoolName = "BoidsPool";
         private const int m_ThreadGroupSize = 1024;
 
-        private bool m_IsAlive;
-        private bool m_IsTracingPlayer;
-        private bool m_IsPatrol;
+        private const int m_TraceDividingCount = 100;
 
-        private BoidData[] m_BoidData;
-        private ComputeBuffer m_ComputeBuffer;
+        private bool m_IsAlive;
+        public bool IsTraceAndBackPlayer { get; private set; }
+        public bool IsPatrolBoids { get; private set; }
+
+        public System.Action<int> ReturnChildObject { get; set; }
 
         private void Awake()
         {
@@ -83,14 +88,18 @@ namespace Entity.Unit.Special
             m_ComputeShader.SetFloat("separationWeight", m_SeparationWeight);
         }
 
-        public void Init()
+        public void Init(float traceTime, float patrolTime)
         {
             m_IsAlive = true;
+
+            m_TraceOffSeconds = new WaitForSeconds(traceTime);
+            m_PatrolOffSeconds = new WaitForSeconds(patrolTime);
+
             poolingObj = ObjectPoolManager.Register(m_BoidUnitPrefab, m_BoidsPool);
             poolingObj.GenerateObj(m_BoidPollingCount);
         }
 
-        public void Dispatch()
+        public void BoidsDispatch()
         {
             int numBoids = m_BoidMovement.Count;
             if (numBoids <= 1) return;
@@ -125,11 +134,12 @@ namespace Entity.Unit.Special
             m_ComputeBuffer.Release();
         }
 
-        public void GenerateBoidMonster(int spawnCount)
+        public int GenerateBoidMonster(int spawnCount)
         {
+            if (spawnCount == 0) return 0;
             Vector3 randomVec;
             Quaternion randomRot;
-            BoidsMonster currUnit;
+            BoidsMonster currUnit = null;
             for (int i = 0; i < spawnCount; i++)
             {
                 randomVec = Random.insideUnitSphere * m_SpawnRange;
@@ -137,51 +147,65 @@ namespace Entity.Unit.Special
 
                 currUnit = (BoidsMonster)poolingObj.GetObject(true);
                 currUnit.transform.SetPositionAndRotation(transform.position + randomVec, randomRot);
+                currUnit.DieAction += (int HP) => ReturnChildObject?.Invoke(HP);
                 currUnit.ReturnAction += ReturnChildObj;
                 currUnit.Init(transform);
 
                 m_BoidMonsters.Add(currUnit);
                 m_BoidMovement.Add(currUnit.GetComponent<BoidsMovement>());
             }
+            return currUnit.MaxHP * spawnCount;
         }
 
         #region Pattern
-        public void TraceAttack(bool isActive, int count)
+        public void TraceAttack(bool isActive)
         {
-            if (m_BoidMovement.Count <= count) return;
+            if (m_BoidMonsters.Count == 0) return;
+            int tracingCount = (m_BoidMonsters.Count / m_TraceDividingCount) + 1;
+
             int[] randomIndex = Enumerable.Range(0, m_BoidMovement.Count)
                                           .OrderBy(x => m_MyRandom.Next())
-                                          .Take(count)
+                                          .Take(tracingCount)
                                           .ToArray();
 
             for(int i = 0; i < randomIndex.Length; i++)
                 m_BoidMonsters[i].TracePatternAction?.Invoke(isActive);
         }
         
-        public IEnumerator TracePlayer()
+        public void StartTraceAndBackPlayer()
         {
-            m_IsTracingPlayer = true;
+            IsTraceAndBackPlayer = true;
+            StartCoroutine(TraceAndBackPlayer());
+        }
+
+        public void StartPatrolBoids()
+        {
+            IsPatrolBoids = true;
+            StartCoroutine(PatrolBoids());
+        }
+
+        private IEnumerator TraceAndBackPlayer()
+        {
             foreach (BoidsMonster bm in m_BoidMonsters)
-                bm.TracePatternAction?.Invoke(m_IsTracingPlayer);
+                bm.TracePatternAction?.Invoke(IsTraceAndBackPlayer);
 
             yield return m_TraceOffSeconds;
 
-            m_IsTracingPlayer = false;
+            IsTraceAndBackPlayer = false;
             foreach (BoidsMonster bm in m_BoidMonsters)
-                bm.TracePatternAction?.Invoke(m_IsTracingPlayer);
+                bm.TracePatternAction?.Invoke(IsTraceAndBackPlayer);
         }
 
-        public IEnumerator PatrolBoids()
+        private IEnumerator PatrolBoids()
         {
-            m_IsPatrol = true;
             foreach (BoidsMonster bm in m_BoidMonsters)
-                bm.PatrolPatternAction?.Invoke(m_IsPatrol);
+                bm.PatrolPatternAction?.Invoke(IsPatrolBoids);
 
             yield return m_PatrolOffSeconds;
 
-            m_IsPatrol = false;
+            IsPatrolBoids = false;
             foreach (BoidsMonster bm in m_BoidMonsters)
-                bm.PatrolPatternAction?.Invoke(m_IsPatrol);
+                bm.PatrolPatternAction?.Invoke(IsPatrolBoids);
         }
         #endregion
 

@@ -4,21 +4,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using Manager.AI;
 using PathCreation;
+using Manager;
 
 namespace Entity.Unit.Special
 {
     public class SpecialMonster3 : MonoBehaviour, IMonster
     {
-        [SerializeField] private SpecialMonster3Scriptable m_Setting;    
+        [SerializeField] private SpecialMonster3Scriptable m_Setting;
+        [SerializeField] private PoisonSphere m_PoisonSphere;
+        [SerializeField] private Transform m_AttackStartPoint;
 
+        private WaitForSeconds m_NormalAttackWait;
+        private ObjectPoolManager.PoolingObject m_PollingObject;
         private SP3AnimationController m_SP3AnimationController;
         private BoidsController m_BoidsController;
-        private PlayerData m_PlayerData;
         private PathFollower m_PathFollower;
         private Rigidbody m_Rigidbody;
 
         private bool m_IsAlive;
         private bool m_IsRespawned;
+        private bool m_CanMove = true;
 
         private int m_PlayerLayerNum;
 
@@ -30,11 +35,30 @@ namespace Entity.Unit.Special
 
         private float m_AttackTimer;
         private float m_TraceAttackTimer;
-        private float m_TraceBoidsTimer;
+        private float m_TraceAndBackTimer;
         private float m_PatrolBoidsTimer;
 
-        private bool CanNormalAttack() => m_Setting.m_AttackSpeed <= m_AttackTimer && !DetectObstacle();
+        private readonly float m_PatternBetweenTime = 6;
+        private readonly float m_NormalAttackRotateTime = 1;
+        private readonly float m_DieRotateTime = 0.75f;
+
+        private bool CanPatrolBoids() => 
+            m_Setting.CanBoidsPatrolTime(m_PatrolBoidsTimer) && 
+            !m_BoidsController.IsTraceAndBackPlayer;
+        //확률 따로 처리
+        private bool CanTraceAndBack() => 
+            m_Setting.CanBoidsTraceAndBackTime(m_TraceAndBackTimer) && 
+            !m_BoidsController.IsPatrolBoids;
+
+        private bool CanTraceAttack() => 
+            m_Setting.m_BoidsMonsterAttackSpeed <= m_TraceAttackTimer &&
+            !m_BoidsController.IsTraceAndBackPlayer &&
+            !m_BoidsController.IsPatrolBoids;
+
+        private bool CanNormalAttack() => m_Setting.m_AttackSpeed <= m_AttackTimer;
+
         public System.Action EndSpecialMonsterAction { get; set; }
+
         private bool DetectObstacle()
         {
             Vector3 dir = (AIManager.PlayerTransform.position - transform.position).normalized;
@@ -50,20 +74,29 @@ namespace Entity.Unit.Special
             m_BoidsController = GetComponent<BoidsController>();
             m_PathFollower = GetComponent<PathFollower>();
             m_Rigidbody = GetComponent<Rigidbody>();
-            
+
+            m_NormalAttackWait = new WaitForSeconds(1);
+
             m_PlayerLayerNum = LayerMask.NameToLayer("Player");
         }
 
         public void Init(PathCreator pathCreator, float statMultiplier)
         {
-            m_PlayerData = AIManager.PlayerTransform.GetComponent<PlayerData>();
-
-            m_BoidsController.Init();
+            m_BoidsController.Init(m_Setting.m_BoidsMonsterTraceTime,m_Setting.m_BoidsPatrolTime);
             m_SP3AnimationController.Init();
             m_PathFollower.Init(pathCreator);
 
+            m_BoidsController.ReturnChildObject += (int HP) => Hit(HP, AttackType.None);
+            m_SP3AnimationController.EndDieHitGroundAnimation += () => m_Rigidbody.isKinematic = true;
+
             SetRealStat(statMultiplier);
-            m_BoidsController.GenerateBoidMonster(m_Setting.m_BoidsSpawnCount);
+
+            m_PollingObject = ObjectPoolManager.Register(m_PoisonSphere, GameObject.Find("ActiveObjectPool").transform);
+            m_PollingObject.GenerateObj(3);
+
+            m_CurrentHP += m_BoidsController.GenerateBoidMonster(m_Setting.m_BoidsSpawnCount);
+            
+            m_RespawnBoidsHP = (int)(m_CurrentHP * 0.3f);
         }
 
         private void SetRealStat(float statMultiplier)
@@ -74,7 +107,6 @@ namespace Entity.Unit.Special
             m_RealDef = m_Setting.m_Def + (int)(statMultiplier * m_Setting.m_DefMultiplier);
             m_RealDamage = m_Setting.m_Damage + (int)(statMultiplier * m_Setting.m_Damage);
 
-            m_RespawnBoidsHP = (int)(m_RealMaxHP * 0.5f);
             m_CurrentHP = m_RealMaxHP;
         }
 
@@ -82,36 +114,101 @@ namespace Entity.Unit.Special
         {
             if (!m_IsAlive) return;
             UpdateTimer();
-            Move();
-            m_BoidsController.Dispatch();
             Attack();
+            if(m_CanMove) Move();
+            m_BoidsController.BoidsDispatch();
         }
 
         private void UpdateTimer()
         {
             m_AttackTimer += Time.deltaTime;
             m_TraceAttackTimer += Time.deltaTime;
-            m_TraceBoidsTimer += Time.deltaTime;
+            m_TraceAndBackTimer += Time.deltaTime;
             m_PatrolBoidsTimer += Time.deltaTime;
         }
 
+        //public void Attack()
+        //{
+        //    if (!DetectObstacle())
+        //    {
+        //        if (Input.GetKeyDown(KeyCode.U))
+        //            NormalAttack();
+        //        if (Input.GetKeyDown(KeyCode.O))
+        //            m_BoidsController.StartTraceAndBackPlayer();
+        //    }
+        //    if (Input.GetKeyDown(KeyCode.P))
+        //        m_BoidsController.StartPatrolBoids();
+        //    else if (Input.GetKeyDown(KeyCode.I))
+        //        m_BoidsController.TraceAttack(true);
+        //}
+
         public void Attack()
         {
-            if (CanNormalAttack())
+            if (!DetectObstacle())
             {
-                m_AttackTimer = 0;
+                if (CanNormalAttack())
+                {
+                    m_AttackTimer = 0;
+                    NormalAttack();
+                }
+                else if (CanTraceAndBack())
+                {
+                    if (m_Setting.CanBoidsTraceAndBackPercentage()) m_BoidsController.StartTraceAndBackPlayer();
+                    m_TraceAndBackTimer = 0;
+                    m_PatrolBoidsTimer = Mathf.Min(m_PatrolBoidsTimer, m_Setting.m_BoidsPatrolTime - m_PatternBetweenTime);
+                }
             }
-            if (Input.GetKeyDown(KeyCode.O))
-                StartCoroutine(m_BoidsController.TracePlayer());
-            else if (Input.GetKeyDown(KeyCode.P))
-                StartCoroutine(m_BoidsController.PatrolBoids());
-            else if (Input.GetKeyDown(KeyCode.I))
-                m_BoidsController.TraceAttack(true, 5);
+            if (CanPatrolBoids())
+            {
+                if (m_Setting.CanBoidsPatrolPercentage()) m_BoidsController.StartPatrolBoids();
+                m_PatrolBoidsTimer = 0;
+                m_TraceAndBackTimer = Mathf.Min(m_TraceAndBackTimer, m_Setting.m_BoidsMonsterTraceAndBackSpeed - m_PatternBetweenTime);
+            }
+            else if (CanTraceAttack())
+            {
+                m_TraceAttackTimer = 0;
+                m_BoidsController.TraceAttack(true);
+            }
+        }
+
+        private void NormalAttack()
+        {
+            m_CanMove = false;
+            StartCoroutine(NormalAttackCoroutine(m_NormalAttackRotateTime));
+        }
+
+        private IEnumerator NormalAttackCoroutine(float time)
+        {
+            float elapsedTime = 0;
+            Quaternion startRotation = transform.rotation;
+            Quaternion targetRotation = Quaternion.LookRotation((AIManager.PlayerTransform.position - transform.position).normalized);
+            while (elapsedTime < time)
+            {
+                elapsedTime += Time.deltaTime;
+                transform.rotation = Quaternion.Slerp(startRotation, targetRotation, elapsedTime / time);
+                yield return null;
+            }
+ 
+            PoisonSphere poisonSphere = (PoisonSphere)m_PollingObject.GetObject(false);
+            poisonSphere.Init(m_PollingObject, m_AttackStartPoint.position, transform.rotation, m_RealDamage);
+            poisonSphere.gameObject.SetActive(true);
+            m_SP3AnimationController.Attack();
+
+            yield return m_NormalAttackWait;
+            elapsedTime = 0;
+            while(elapsedTime < time)
+            {
+                elapsedTime += Time.deltaTime;
+                transform.rotation = Quaternion.Slerp(targetRotation, startRotation, elapsedTime / time);
+                yield return null;
+            }
+
+            m_CanMove = true;
         }
 
         public void Move()
         {
-            m_PathFollower.FollowPath();
+            m_PathFollower.FollowPath(m_Setting.m_MovementSpeed);
         }
 
         public void Hit(int damage, AttackType bulletType)
@@ -132,20 +229,19 @@ namespace Entity.Unit.Special
         private void RespawnBoids()
         {
             m_IsRespawned = true;
-            m_BoidsController.GenerateBoidMonster(m_Setting.m_BoidsRespawnCount);
+            m_CurrentHP += m_BoidsController.GenerateBoidMonster(m_Setting.m_BoidsRespawnCount);
         }
 
         private IEnumerator RotateToDieMotion(float time)
         {
-            m_IsAlive = false;
-            
-            m_BoidsController.Dispose();
-
             float elapsedTime = 0;
-            while(elapsedTime < time)
+            Quaternion startRotation = transform.rotation;
+            Vector3 projectedVector = Vector3.ProjectOnPlane(transform.forward, GravityManager.GetCurrentGravityNormalDirection()).normalized;
+            Quaternion targetRotation = Quaternion.LookRotation(projectedVector, -GravityManager.GravityVector);
+            while (elapsedTime < time)
             {
                 elapsedTime += Time.deltaTime;
-                transform.rotation = Quaternion.LookRotation(transform.forward, -Manager.GravityManager.GravityVector);
+                transform.rotation = Quaternion.Slerp(startRotation, targetRotation, elapsedTime / time);
                 yield return null;
             }
 
@@ -154,26 +250,18 @@ namespace Entity.Unit.Special
             m_SP3AnimationController.Die();
             EndSpecialMonsterAction?.Invoke();
         }
-        //
+
         public void Die()
         {
-            StartCoroutine(RotateToDieMotion(1));
-            //m_IsAlive = false;
-            //m_Rigidbody.isKinematic = false;
-            //m_Rigidbody.useGravity = true;
-
-            //m_SP3AnimationController.Die();
-
-            //m_BoidsController.Dispose();
-
-            //EndSpecialMonsterAction?.Invoke();
+            m_IsAlive = false;
+            m_BoidsController.Dispose();
+            StartCoroutine(RotateToDieMotion(m_DieRotateTime));
         }
 
         private void OnCollisionEnter(Collision collision)
         {
             if (m_IsAlive) return;
             m_SP3AnimationController.DieHitGround();
-            m_Rigidbody.isKinematic = true;
         }
     }
 }

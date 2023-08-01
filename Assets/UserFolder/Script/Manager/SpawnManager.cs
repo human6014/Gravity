@@ -357,7 +357,7 @@ namespace Manager
             BoxCollider initCollider = GetClosetArea(initColliders);
 
             Vector3 initPosition = GetRandomPos(initCollider, 4);
-            Quaternion initRotation = GravityManager.GetSpecificGravityNormalRotation(specificIndex);
+            Quaternion initRotation = GravityManager.GetSpecificGravityRotation(specificIndex);
 
             SpecialMonster1 specialMonster1 = Instantiate(m_EntityManager.GetSpecialMonster1, initPosition, Quaternion.identity).GetComponent<SpecialMonster1>();
             specialMonster1.EndSpecialMonsterAction += () => IsSP1MonsterEnd = true;

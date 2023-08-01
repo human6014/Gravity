@@ -9,6 +9,8 @@ namespace Entity.Unit.Special
     {
         private Animator m_Animator;
 
+        public System.Action EndDieHitGroundAnimation { get; set; }
+
         #region Animation string
         private const string m_Attack = "Attacking";
         private const string m_Die = "Die";
@@ -48,6 +50,11 @@ namespace Entity.Unit.Special
         public void DieHitGround()
         {
             SetBool(m_DieGround, true);
+        }
+
+        public void EndDieHitGround()
+        {
+            EndDieHitGroundAnimation?.Invoke();
         }
     }
 }
