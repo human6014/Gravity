@@ -14,25 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HP: 5000
   m_Def: 0
-  m_Damage: 250
+  m_Damage: 150
   m_MovementSpeed: 5
-  m_AttackSpeed: 10
+  m_AttackSpeed: 21
   m_AttackRange: 0
-  m_ExplosionResistance: 1
+  m_ExplosionResistance: 14
   m_MeleeResistance: 1
   m_NoramlAttackType: 0
   m_HPMultiplier: 2000
   m_DefMultiplier: 0
-  m_DamageMultiplier: 250
+  m_DamageMultiplier: 50
   m_MonsterType: 2
   m_ObstacleDetectLayer:
     serializedVersion: 2
     m_Bits: 155776
-  m_BoidsSpawnCount: 1
-  m_BoidsRespawnCount: 250
-  m_BoidsMonsterAttackSpeed: 10
-  m_BoidsMonsterAttackTime: 99999
-  m_BoidsMonsterTraceSpeed: 20
-  m_BoidsMonsterTraceTime: 7.5
-  m_BoidsPatrolSpeed: 20
+  m_BoidsSpawnCount: 400
+  m_BoidsRespawnCount: 200
+  m_BoidsMonsterAttackSpeed: 27
+  m_BoidsMonsterTraceAndBackSpeed: 43
+  m_BoidsMonsterTraceTime: 10
+  m_BoidsTraceAndBackPercentage: 60
+  m_BoidsPatrolSpeed: 57
   m_BoidsPatrolTime: 25
+  m_BoidsPatrolPercentage: 70

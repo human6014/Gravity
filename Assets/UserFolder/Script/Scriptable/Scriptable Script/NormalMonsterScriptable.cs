@@ -12,5 +12,7 @@ namespace Scriptable.Monster
         [Tooltip("몬스터 타입")] 
         public EnumType.NoramlMonsterType m_MonsterType;
 
+        [Tooltip("달리기가 가능한 Stat값")]
+        public float CanRunStat = 2;
     }
 }

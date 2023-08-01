@@ -10,9 +10,9 @@ public class PersistenceExplosive : Explosible
     private AudioSource m_AudioSource;
     private Light m_Light;
     private SphereCollider m_SphereCollider;
-    private WaitForSeconds PersistenceExplosionTime;
+    private WaitForSeconds m_PersistenceExplosionTime;
 
-    private const float m_DamageTick = 0.1f;
+    private const float m_DamageTick = 0.25f;
     private float m_InitialAudioSourceVolume;
     private float m_InitialLightIntensity;
     private float m_InitialLightRange;
@@ -25,7 +25,7 @@ public class PersistenceExplosive : Explosible
         m_AudioSource = m_ControllingParticle[0].GetComponent<AudioSource>();
         m_Light = m_ControllingParticle[0].GetComponent<Light>();
         m_SphereCollider = m_ControllingParticle[0].GetComponent<SphereCollider>();
-        PersistenceExplosionTime = new WaitForSeconds(0.1f);
+        m_PersistenceExplosionTime = new WaitForSeconds(m_DamageTick);
 
         m_InitialAudioSourceVolume = m_AudioSource.volume;
         m_InitialLightIntensity = m_Light.intensity;
@@ -61,7 +61,7 @@ public class PersistenceExplosive : Explosible
         {
             elapsedTime += m_DamageTick;
             base.Damage(false);
-            yield return PersistenceExplosionTime;
+            yield return m_PersistenceExplosionTime;
         }
 
         yield return PersistencingDestroy();
@@ -70,24 +70,25 @@ public class PersistenceExplosive : Explosible
         base.ReturnObject();
     }
 
-    IEnumerator PersistencingDestroy()
+    private IEnumerator PersistencingDestroy()
     {
         for (int i = 0; i < m_ControllingParticle.Length; i++)
             m_ControllingParticle[i].Stop();
 
-        float elapsedTime = 0.0f;
+        float elapsedTime = 0;
+        float t;
         while (elapsedTime < m_StopDuration)
         {
             elapsedTime += m_DamageTick;
             if (elapsedTime * 2 < m_StopDuration) base.Damage(false);
-            float t = Mathf.Clamp01(elapsedTime / m_StopDuration); 
+            t = elapsedTime / m_StopDuration; 
 
             m_AudioSource.volume = Mathf.Lerp(m_InitialAudioSourceVolume, 0, t);
             m_Light.intensity = Mathf.Lerp(m_InitialLightIntensity, 0, t);
             m_Light.range = Mathf.Lerp(m_InitialLightRange, 0, t);
             m_SphereCollider.radius = Mathf.Lerp(m_InitialColliderRadius, 0, t);
 
-            yield return PersistenceExplosionTime;
+            yield return m_PersistenceExplosionTime;
         }
     }
 }

@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using Manager.AI;
+
 
 namespace Entity.Unit.Flying
 {
@@ -17,9 +19,11 @@ namespace Entity.Unit.Flying
         private int m_CurrentHP;
         private float m_CurrentAttackTimer;
         private bool m_IsAlive;
-        public System.Action<bool> TracePatternAction { get; set; }
-        public System.Action<bool> PatrolPatternAction { get; set; }
-        public System.Action<PoolableScript> ReturnAction { get; set; }
+        public Action<bool> TracePatternAction { get; set; }
+        public Action<bool> PatrolPatternAction { get; set; }
+        public Action<int> DieAction { get; set; }
+        public Action<PoolableScript> ReturnAction { get; set; }
+        public int MaxHP { get => m_Settings.m_HP; }
 
         private void Awake()
         {
@@ -72,7 +76,11 @@ namespace Entity.Unit.Flying
         public void Hit(int damage, AttackType bulletType)
         {
             if (!m_IsAlive) return;
-            m_CurrentHP -= damage - m_Settings.m_Def;
+
+            int realDamage;
+            if (bulletType == AttackType.Explosion) realDamage = damage / m_Settings.m_ExplosionResistance;
+            else realDamage = damage - m_Settings.m_Def;
+            m_CurrentHP -= realDamage;
 
             if (m_CurrentHP <= 0) Die();
         }
@@ -86,8 +94,8 @@ namespace Entity.Unit.Flying
             m_Rigidbody.isKinematic = false;
             m_Rigidbody.useGravity = true;
             m_Rigidbody.AddForce(transform.forward * 12, ForceMode.Impulse);
-            
 
+            DieAction?.Invoke(m_Settings.m_HP);
             Invoke(nameof(ReturnObject), 10);
         }
 

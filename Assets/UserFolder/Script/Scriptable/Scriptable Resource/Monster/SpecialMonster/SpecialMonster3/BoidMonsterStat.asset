@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05856b1080ca1844cbd9db5d185436a4, type: 3}
   m_Name: BoidMonsterStat
   m_EditorClassIdentifier: 
-  m_HP: 220
+  m_HP: 200
   m_Def: 0
-  m_Damage: 120
+  m_Damage: 100
   m_MovementSpeed: 0
   m_AttackSpeed: 1
   m_AttackRange: 3
-  m_ExplosionResistance: 1
+  m_ExplosionResistance: 6
   m_MeleeResistance: 1
   m_NoramlAttackType: 8
-  m_HPMultiplier: 22
+  m_HPMultiplier: 0
   m_DefMultiplier: 0
-  m_DamageMultiplier: 12
+  m_DamageMultiplier: 0
   m_MonsterType: 0

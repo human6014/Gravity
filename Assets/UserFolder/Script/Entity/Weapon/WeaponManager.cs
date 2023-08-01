@@ -85,10 +85,11 @@ namespace Manager.Weapon
             Sprite spriteIcon = weapon.WeaponIcon;
             int maxBullet = weapon.MaxBullet;
             int magazineBullet = maxBullet * 3;
+            if (slotNumber == 0) ChangeWeapon(slotNumber,weaponIndex);
             return new WeaponData(spriteIcon,maxBullet,magazineBullet);
         }
 
-        private async void TryWeaponChange(int slotNumber)
+        public async void TryWeaponChange(int slotNumber)
         {
             if (m_IsInteracting) return;
             int index = m_PlayerData.Inventory.WeaponInfo[slotNumber].m_HavingWeaponIndex;
@@ -100,7 +101,6 @@ namespace Manager.Weapon
                 await m_CurrentWeapon.UnEquip();
             }
             ChangeWeapon(slotNumber, index);
-            m_CurrentEquipIndex = slotNumber;
         }
 
         private void ChangeWeapon(int slotNumber, int index)
@@ -109,6 +109,7 @@ namespace Manager.Weapon
 
             m_CurrentWeapon.Init();
             m_PlayerData.ChangeWeapon(m_CurrentWeapon.EquipingType, m_CurrentWeapon.BulletType, m_CurrentWeapon.CurrentFireMode, m_CurrentWeapon.WeaponIcon);
+            m_CurrentEquipIndex = slotNumber;
         }
 
         private async void TryHealInteract()

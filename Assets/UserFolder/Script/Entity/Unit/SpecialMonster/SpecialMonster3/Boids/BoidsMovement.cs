@@ -20,7 +20,9 @@ namespace Entity.Unit.Flying
 
         private float m_Speed;
         private float m_AdditionalSpeed;
+        private float m_PatternSpeed;
         private float m_CurrentMaxMovementRange;
+        
 
         private Vector3 m_TargetVec;
         private Vector3 m_EgoVector;
@@ -40,12 +42,14 @@ namespace Entity.Unit.Flying
         public void TryTracePlayer(bool value)
         {
             m_IsTracePlayer = value;
+            m_PatternSpeed = m_IsTracePlayer ? -2 : 0;
         }
 
         public void TryPatrol(bool value)
         {
             m_IsPatrol = value;
             m_CurrentMaxMovementRange = m_IsPatrol ? settings.patrolMovementRange : settings.maxMovementRange;
+            m_PatternSpeed = m_IsPatrol ? 4 : 0;
         }
 
         private void Awake()
@@ -90,7 +94,7 @@ namespace Entity.Unit.Flying
             if (m_TargetVec == Vector3.zero) m_TargetVec = m_EgoVector;
             else m_TargetVec = Vector3.Lerp(transform.forward, m_TargetVec, Time.deltaTime).normalized;
 
-            transform.SetPositionAndRotation(transform.position + (m_Speed + m_AdditionalSpeed) * Time.deltaTime * m_TargetVec,
+            transform.SetPositionAndRotation(transform.position + (m_Speed + m_AdditionalSpeed + m_PatternSpeed) * Time.deltaTime * m_TargetVec,
                                             Quaternion.LookRotation(m_TargetVec));
         }
 
@@ -127,6 +131,7 @@ namespace Entity.Unit.Flying
                 m_AdditionalSpeed = 10;
             }
         }
+
         private Vector3 CalculateBoundsVector()
         {
             m_TargetForwardVec = Vector3.zero;

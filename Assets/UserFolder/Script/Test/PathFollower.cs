@@ -5,8 +5,6 @@ using PathCreation;
 
 public class PathFollower : MonoBehaviour
 {
-    [SerializeField] private float speed = 5;
-
     private PathCreator m_PathCreator;
     private float distanceTravelled;
 
@@ -15,9 +13,9 @@ public class PathFollower : MonoBehaviour
         m_PathCreator = pathCreator;
     }
 
-    public void FollowPath()
+    public void FollowPath(float movementSpeed)
     {
-        distanceTravelled += speed * Time.deltaTime;
+        distanceTravelled += movementSpeed * Time.deltaTime;
 
         transform.SetPositionAndRotation(
             m_PathCreator.path.GetPointAtDistance(distanceTravelled), 

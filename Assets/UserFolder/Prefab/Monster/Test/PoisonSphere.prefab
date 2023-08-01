@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4797492027139911227}
   - component: {fileID: 5407480555960456492}
   - component: {fileID: -2478541772263527190}
-  m_Layer: 0
+  m_Layer: 24
   m_Name: PoisonSphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: f294958fb78874244ac095f5767cc25d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -127,4 +127,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1589481fdaf7d504f86b998024191066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MovementSpeed: 10
+  m_MovementSpeed: 12

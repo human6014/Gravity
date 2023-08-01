@@ -168,13 +168,13 @@ public class PlayerData : MonoBehaviour
     /// <summary>
     /// 무기 변경 시
     /// </summary>
-    /// <param name="equipingWeaponType">무기 타입 (슬롯 번호랑 일치)</param>
+    /// <param name="slotNumber">무기 타입 (슬롯 번호랑 일치)</param>
     /// <param name="attackType">무기 총알 타입 (아이콘 표시용)</param>
     /// <param name="weaponImage">무기 아이콘 이미지</param>
-    public void ChangeWeapon(int equipingWeaponType, AttackType attackType, FireMode fireMode, Sprite weaponImage)
+    public void ChangeWeapon(int slotNumber, AttackType attackType, FireMode fireMode, Sprite weaponImage)
     {
-        CurrentWeaponInfo = m_Inventory.WeaponInfo[equipingWeaponType];
-        m_PlayerUIManager.ChangeWeapon(equipingWeaponType, (int)attackType, GetBitPosition((int)fireMode), CurrentWeaponInfo.m_CurrentRemainBullet, CurrentWeaponInfo.m_MagazineRemainBullet, weaponImage);
+        CurrentWeaponInfo = m_Inventory.WeaponInfo[slotNumber];
+        m_PlayerUIManager.ChangeWeapon(slotNumber, (int)attackType, GetBitPosition((int)fireMode), CurrentWeaponInfo.m_CurrentRemainBullet, CurrentWeaponInfo.m_MagazineRemainBullet, weaponImage);
         m_PlayerUIManager.DisplayReloadImage(CurrentWeaponInfo.IsActiveReloadImage());
     }
 
@@ -331,6 +331,9 @@ public class PlayerData : MonoBehaviour
         m_Inventory.WeaponInfo[slotNumber].m_CurrentRemainBullet = weaponData.m_MaxBullet;
         m_Inventory.WeaponInfo[slotNumber].MaxBullet += weaponData.m_MaxBullet;
         m_Inventory.WeaponInfo[slotNumber].m_MagazineRemainBullet = weaponData.m_MagazineRemainBullet;
+
+        //if (slotNumber == 0) TryWeaponChange(0);
+        //if (slotNumber == 0) ChangeWeapon(0, AttackType.None,FireMode.None, weaponData.m_Icon);
     }
 
     public void GetSupply(int slotNumber, int amount)
@@ -347,6 +350,7 @@ public class PlayerData : MonoBehaviour
         }
         else m_Inventory.WeaponInfo[slotNumber].m_MagazineRemainBullet += amount;
         m_PlayerUIManager.RangeWeaponReload(CurrentWeaponInfo.m_MagazineRemainBullet);
+        //무기 단 한번도 장착 안한채로 탄약 보급 받으면 에러 뜸
     }
 
     public void MaxBulletUp(float amount)
