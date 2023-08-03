@@ -28,6 +28,7 @@ namespace UI.Event
         private int m_CallingCount = 0;
         public event System.Action PointerClickAction;
 
+        public bool IsActivePointer { get; set; }
         public int CurrentLevel 
         {
             get => m_CurrentLevel;
@@ -39,15 +40,22 @@ namespace UI.Event
         #region PointerHandler
         public void OnPointerClick(PointerEventData eventData)
         {
+            if (!IsActivePointer) return;
             PointerClickAction?.Invoke();
             CurrentLevel++;
         }
 
-        public void OnPointerEnter(PointerEventData eventData) 
-            => m_OutlineUI.SetActive(true);
-        
-        public void OnPointerExit(PointerEventData eventData) 
-            => m_OutlineUI.SetActive(false);
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            if (!IsActivePointer) return;
+            m_OutlineUI.SetActive(true);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            if (!IsActivePointer) return;
+            m_OutlineUI.SetActive(false);
+        }
 
         #endregion
 
@@ -60,11 +68,17 @@ namespace UI.Event
         public virtual void Init()
         {
             m_CallingCount++;
+            IsActivePointer = true;
+            m_OutlineUI.SetActive(false);
             gameObject.SetActive(true);
         }
 
         public abstract void DoSkill();
 
-        public virtual void Dispose() => gameObject.SetActive(false);
+        public virtual void Dispose()
+        {
+            PointerClickAction = null;
+            gameObject.SetActive(false);
+        }
     }
 }

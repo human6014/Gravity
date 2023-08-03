@@ -39,10 +39,6 @@ public class OriginalController : MonoBehaviour
         {
             animationController.SetClawsAttack();
         }
-        else if (Input.GetKeyDown(KeyCode.C))
-        {
-            animationController.SetSpitVenom();
-        }
         else if (Input.GetKeyDown(KeyCode.V))
         {
             animationController.SetRoar();

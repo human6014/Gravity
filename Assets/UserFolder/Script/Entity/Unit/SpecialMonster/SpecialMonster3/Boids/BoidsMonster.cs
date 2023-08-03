@@ -40,7 +40,7 @@ namespace Entity.Unit.Flying
             m_PlayerData = AIManager.PlayerTransform.GetComponent<PlayerData>();
         }
 
-        public void Init(Transform moveCenter)
+        public void Init(Transform moveCenter, bool isTrace, bool isPatrol)
         {
             m_IsAlive = true;
             m_CurrentHP = m_Settings.m_HP;
@@ -50,7 +50,7 @@ namespace Entity.Unit.Flying
             m_Rigidbody.useGravity = false;
             m_CapsuleCollider.radius = 0.9f;
 
-            m_BoidsMovement.Init(moveCenter);
+            m_BoidsMovement.Init(moveCenter, isTrace, isPatrol);
         }
 
         public void Update()
@@ -66,6 +66,7 @@ namespace Entity.Unit.Flying
             m_BoidsMovement.CalcAndMove();
         }
 
+        //Event»£√‚µ 
         public void Attack()
         {
             if (m_CurrentAttackTimer < m_Settings.m_AttackSpeed) return;

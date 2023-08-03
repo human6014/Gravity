@@ -135,12 +135,12 @@ MonoBehaviour:
   m_AutoExplosionTime: 0
   m_EffectDuration: 7
   m_StopDuration: 4.5
-  m_Damage: 150
+  m_Damage: 180
   m_AttackRadius: 7.5
   m_AttackForce: 0
   m_Layer:
     serializedVersion: 2
-    m_Bits: 268437504
+    m_Bits: 268438016
   m_ControllingParticle:
   - {fileID: 4480064021100270119}
   - {fileID: 4480209928976186703}

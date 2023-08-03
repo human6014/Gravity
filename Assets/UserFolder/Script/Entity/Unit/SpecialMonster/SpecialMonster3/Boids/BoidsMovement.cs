@@ -65,10 +65,12 @@ namespace Entity.Unit.Flying
             m_Target = AIManager.PlayerTransform;
         }
 
-        public void Init(Transform moveCenter)
+        public void Init(Transform moveCenter, bool isTrace, bool isPatrol)
         {
             m_MoveCenter = moveCenter;
             m_Speed = Random.Range(settings.speedRange.x, settings.speedRange.y);
+            TryTracePlayer(isTrace);
+            TryPatrol(isPatrol);
 
             //StartCoroutine(FindNeighbourCoroutine());
             StartCoroutine(CalculateEgoVectorCoroutine());

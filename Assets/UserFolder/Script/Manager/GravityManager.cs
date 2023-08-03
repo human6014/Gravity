@@ -9,12 +9,15 @@ namespace Manager
     public class GravityManager : MonoBehaviour
     {
         [SerializeField] private Contoller.PlayerInputController m_PlayerInputController;
+        [SerializeField] private Transform m_RotateControllingObject;
 
-        public static GravityType m_CurrentGravityType = GravityType.yDown;
-        public static GravityType m_BeforeGravityType = GravityType.yDown;
-        public static GravityDirection m_CurrentGravityAxis = GravityDirection.Y;
-
+        public List<Transform> SyncRotatingTransform { get; set; } = new List<Transform>();
         private const float m_RotateTime = 1;
+        private bool m_IsGravityDupleicated;
+
+        private GravityType m_BeforeGravityType { get; set; } = GravityType.yDown;
+        public static GravityType m_CurrentGravityType { get; set; } = GravityType.yDown;
+        public static GravityDirection m_CurrentGravityAxis { get; set; } = GravityDirection.Y;
 
         public static Action <GravityType> GravityChangeAction { get; set; }
 
@@ -27,11 +30,6 @@ namespace Manager
         /// 중력 값 변경시 플레이어 회전 중일 때 true, 플레이어 회전 끝나면 false
         /// </summary>
         public static bool IsGravityChanging { get; private set; } = false;
-
-        /// <summary>
-        /// 중력 값 변경시 곂칠경우 true
-        /// </summary>
-        public static bool IsGravityDupleicated { get; private set; } = false;
 
         /// <summary>
         /// 중력 백터 일반화
@@ -57,7 +55,14 @@ namespace Manager
 
         private void Awake()
         {
+            GravityChangeAction = null;
             m_PlayerInputController.DoGravityChange += GravityChange;
+
+            m_CurrentGravityType = GravityType.yDown;
+            m_CurrentGravityAxis = GravityDirection.Y;
+            GravityDirectionValue = -1;
+            IsGravityChanging = false;
+            GravityVector = Vector3.down;
         }
 
         public void GravityChange(int gravityKeyInput, float mouseScroll)
@@ -66,7 +71,12 @@ namespace Manager
 
             m_CurrentGravityAxis = (GravityDirection)gravityKeyInput;
             GravityChange(Mathf.FloorToInt(mouseScroll * 10));
-            if(!IsGravityDupleicated) StartCoroutine(GravityRotate());
+            if (!m_IsGravityDupleicated)
+            {
+                //StartCoroutine(GravityRotateTransform());
+                StartCoroutine(GravityRotate(m_RotateControllingObject));
+                StartCoroutine(GravityRotate(AI.AIManager.PlayerTransform));
+            }
         }
 
         /// <summary>
@@ -93,25 +103,40 @@ namespace Manager
                     break;
             }
 
-            if (m_BeforeGravityType == m_CurrentGravityType) IsGravityDupleicated = true;
+            if (m_BeforeGravityType == m_CurrentGravityType) m_IsGravityDupleicated = true;
             else
             {
                 GravityChangeAction?.Invoke(m_CurrentGravityType);
                 Physics.gravity = GravityVector * Physics.gravity.magnitude;
 
                 IsGravityChanging = true;
-                IsGravityDupleicated = false;
+                m_IsGravityDupleicated = false;
             }
         }
 
-        private IEnumerator GravityRotate()
+        private IEnumerator GravityRotateTransform()
         {
-            Quaternion currentRotation = transform.rotation;
+            Quaternion currentRotation = SyncRotatingTransform[0].rotation;
+            Quaternion targetRotation = GetCurrentGravityRotation();
+            float elapsedTime = 0;
+            while (elapsedTime < m_RotateTime)
+            {
+                elapsedTime += Time.deltaTime;
+                foreach(Transform t in SyncRotatingTransform)
+                    t.rotation = Quaternion.Lerp(currentRotation, targetRotation, elapsedTime / m_RotateTime);
+                yield return null;
+            }
+            IsGravityChanging = false;
+        }
+
+        private IEnumerator GravityRotate(Transform target)
+        {
+            Quaternion currentRotation = target.rotation;
             float t = 0;
             while (t < m_RotateTime)
             {
                 t += Time.deltaTime / m_RotateTime;
-                transform.rotation = Quaternion.Lerp(currentRotation, GetCurrentGravityRotation(), t);
+                target.rotation = Quaternion.Lerp(currentRotation, GetCurrentGravityRotation(), t);
                 yield return null;
             }
             IsGravityChanging = false;

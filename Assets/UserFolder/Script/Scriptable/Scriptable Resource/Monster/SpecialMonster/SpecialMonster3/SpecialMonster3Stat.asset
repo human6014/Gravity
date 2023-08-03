@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdaa71cd16782824781f0b156c406e93, type: 3}
   m_Name: SpecialMonster3Stat
   m_EditorClassIdentifier: 
-  m_HP: 5000
+  m_HP: 4000
   m_Def: 0
   m_Damage: 150
   m_MovementSpeed: 5
@@ -21,7 +21,7 @@ MonoBehaviour:
   m_ExplosionResistance: 14
   m_MeleeResistance: 1
   m_NoramlAttackType: 0
-  m_HPMultiplier: 2000
+  m_HPMultiplier: 1000
   m_DefMultiplier: 0
   m_DamageMultiplier: 50
   m_MonsterType: 2

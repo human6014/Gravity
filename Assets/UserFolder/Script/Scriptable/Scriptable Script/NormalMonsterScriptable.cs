@@ -13,6 +13,9 @@ namespace Scriptable.Monster
         public EnumType.NoramlMonsterType m_MonsterType;
 
         [Tooltip("달리기가 가능한 Stat값")]
-        public float CanRunStat = 2;
+        public float m_CanRunStat = 2;
+
+        [Tooltip("달리기 속도")]
+        public float m_RunningSpeed = 5.5f;
     }
 }

@@ -58,7 +58,7 @@ namespace UI.Player
             }
         }
 
-        private void FixedUpdate() => SetBehaviorState();
+        private void FixedUpdate() => SetBehaviorState();   //??
 
         private void SetBehaviorState()
         {
@@ -86,15 +86,15 @@ namespace UI.Player
             else if (m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running) CrossHairSetBool(m_RunState);
         }
 
-        public void CrossHairSetTrigger(string state)
+        private void CrossHairSetTrigger(string state)
         {
             m_Animator.SetTrigger(state);
             m_PlayerState.SetBack();
         }
 
-        public void CrossHairSetBool(string state)
+        private void CrossHairSetBool(string state)
         {
-            if (state == m_CurrentAnimState) return;
+            if (state == m_CurrentAnimState || !m_Animator.isActiveAndEnabled) return;
             if (m_CurrentAnimState != m_IdleState) m_Animator.SetBool(m_CurrentAnimState, false);
             if (state != m_IdleState) m_Animator.SetBool(state, true);
             m_CurrentAnimState = state;

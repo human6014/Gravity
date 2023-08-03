@@ -38,7 +38,7 @@ namespace Entity.Unit.Special
         private float m_TraceAndBackTimer;
         private float m_PatrolBoidsTimer;
 
-        private readonly float m_PatternBetweenTime = 6;
+        private readonly float m_PatternBetweenTime = 7;
         private readonly float m_NormalAttackRotateTime = 1;
         private readonly float m_DieRotateTime = 0.75f;
 
@@ -127,21 +127,6 @@ namespace Entity.Unit.Special
             m_PatrolBoidsTimer += Time.deltaTime;
         }
 
-        //public void Attack()
-        //{
-        //    if (!DetectObstacle())
-        //    {
-        //        if (Input.GetKeyDown(KeyCode.U))
-        //            NormalAttack();
-        //        if (Input.GetKeyDown(KeyCode.O))
-        //            m_BoidsController.StartTraceAndBackPlayer();
-        //    }
-        //    if (Input.GetKeyDown(KeyCode.P))
-        //        m_BoidsController.StartPatrolBoids();
-        //    else if (Input.GetKeyDown(KeyCode.I))
-        //        m_BoidsController.TraceAttack(true);
-        //}
-
         public void Attack()
         {
             if (!DetectObstacle())
@@ -156,6 +141,7 @@ namespace Entity.Unit.Special
                     if (m_Setting.CanBoidsTraceAndBackPercentage()) m_BoidsController.StartTraceAndBackPlayer();
                     m_TraceAndBackTimer = 0;
                     m_PatrolBoidsTimer = Mathf.Min(m_PatrolBoidsTimer, m_Setting.m_BoidsPatrolTime - m_PatternBetweenTime);
+                    m_TraceAttackTimer = Mathf.Min(m_TraceAttackTimer, m_Setting.m_BoidsMonsterTraceTime - m_PatternBetweenTime);
                 }
             }
             if (CanPatrolBoids())
@@ -163,6 +149,7 @@ namespace Entity.Unit.Special
                 if (m_Setting.CanBoidsPatrolPercentage()) m_BoidsController.StartPatrolBoids();
                 m_PatrolBoidsTimer = 0;
                 m_TraceAndBackTimer = Mathf.Min(m_TraceAndBackTimer, m_Setting.m_BoidsMonsterTraceAndBackSpeed - m_PatternBetweenTime);
+                m_TraceAttackTimer = Mathf.Min(m_TraceAttackTimer, m_Setting.m_BoidsMonsterTraceTime - m_PatternBetweenTime);
             }
             else if (CanTraceAttack())
             {

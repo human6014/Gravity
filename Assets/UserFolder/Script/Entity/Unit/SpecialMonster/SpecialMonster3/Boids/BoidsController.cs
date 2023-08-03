@@ -69,7 +69,6 @@ namespace Entity.Unit.Special
 
         private const int m_TraceDividingCount = 100;
 
-        private bool m_IsAlive;
         public bool IsTraceAndBackPlayer { get; private set; }
         public bool IsPatrolBoids { get; private set; }
 
@@ -90,8 +89,6 @@ namespace Entity.Unit.Special
 
         public void Init(float traceTime, float patrolTime)
         {
-            m_IsAlive = true;
-
             m_TraceOffSeconds = new WaitForSeconds(traceTime);
             m_PatrolOffSeconds = new WaitForSeconds(patrolTime);
 
@@ -149,7 +146,7 @@ namespace Entity.Unit.Special
                 currUnit.transform.SetPositionAndRotation(transform.position + randomVec, randomRot);
                 currUnit.DieAction += (int HP) => ReturnChildObject?.Invoke(HP);
                 currUnit.ReturnAction += ReturnChildObj;
-                currUnit.Init(transform);
+                currUnit.Init(transform, IsTraceAndBackPlayer, IsPatrolBoids);
 
                 m_BoidMonsters.Add(currUnit);
                 m_BoidMovement.Add(currUnit.GetComponent<BoidsMovement>());
@@ -218,7 +215,6 @@ namespace Entity.Unit.Special
 
         public void Dispose()
         {
-            m_IsAlive = false;
             StopAllCoroutines();
 
             foreach (BoidsMonster bm in m_BoidMonsters)

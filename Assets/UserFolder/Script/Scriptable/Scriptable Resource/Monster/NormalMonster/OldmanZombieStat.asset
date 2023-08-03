@@ -15,7 +15,7 @@ MonoBehaviour:
   m_HP: 800
   m_Def: 75
   m_Damage: 200
-  m_MovementSpeed: 0
+  m_MovementSpeed: 4
   m_AttackSpeed: 1
   m_AttackRange: 2
   m_ExplosionResistance: 10
@@ -25,3 +25,5 @@ MonoBehaviour:
   m_DefMultiplier: 7
   m_DamageMultiplier: 20
   m_MonsterType: 1
+  m_CanRunStat: 2
+  m_RunningSpeed: 5

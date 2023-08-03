@@ -12,10 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05856b1080ca1844cbd9db5d185436a4, type: 3}
   m_Name: RangedFlyingMonsterStat
   m_EditorClassIdentifier: 
-  m_HP: 0
+  m_HP: 500
   m_Def: 0
-  m_Damage: 0
+  m_Damage: 50
   m_MovementSpeed: 0
-  m_AttackSpeed: 0
+  m_AttackSpeed: 2
   m_AttackRange: 0
+  m_ExplosionResistance: 1
+  m_MeleeResistance: 1
+  m_NoramlAttackType: 0
+  m_HPMultiplier: 0
+  m_DefMultiplier: 0
+  m_DamageMultiplier: 0
   m_MonsterType: 1

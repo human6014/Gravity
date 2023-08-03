@@ -67,6 +67,7 @@ namespace UI.Manager
         private void Awake()
         {
             m_Animator = m_SkillPos.GetComponent<Animator>();
+            m_SettingUIManager.PauseUIAction += PauseUI;
             SetFixedEvent();
         }
 
@@ -92,6 +93,12 @@ namespace UI.Manager
             BatchSkillUI();
         }
 
+        private void PauseUI(bool isActive)
+        {
+            foreach (SkillEvent se in m_CurrentVisibleSkillEvents)
+                se.IsActivePointer = !isActive;
+        }
+
         #region UI Batch
         private void BatchSkillUI()
         {
@@ -103,7 +110,7 @@ namespace UI.Manager
             m_EventTypeCounts[eventType]++;
 
             for (int i = 0; i < m_CurrentVisibleSkillEvents.Count; i++)
-                m_CurrentVisibleSkillEvents[i].PointerClickAction += OnPointerDown;
+                m_CurrentVisibleSkillEvents[i].PointerClickAction += EndSkillEvent;
         }
 
         /// <summary>
@@ -177,23 +184,16 @@ namespace UI.Manager
         }
         #endregion
 
-        #region PointerAction
-        private void OnPointerDown()
-        {
-            EndSkillEvent();
-        }
-
         public void EndSkillEvent()
         {
             m_Animator.SetTrigger("Hide");
-            
+
             for (int i = 0; i < m_CurrentVisibleSkillEvents.Count; i++)
                 m_CurrentVisibleSkillEvents[i].Dispose();
             m_CurrentVisibleSkillEvents.Clear();
 
             m_SettingUIManager.IsActiveSkillEventUI = false;
         }
-        #endregion
 
         #region Animation Event
         public void EndHideAnimation()

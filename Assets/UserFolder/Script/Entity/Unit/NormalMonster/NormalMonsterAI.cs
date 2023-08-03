@@ -26,6 +26,7 @@ namespace Entity.Unit.Normal
         private bool m_isBatch;
         private bool m_isAutoMode;
         private bool m_isClimbing;
+        private bool m_CanRunning;
 
         public bool IsFalling { get; private set; }
         public NormalMonsterState NormalMonsterState { get; set; }
@@ -48,13 +49,15 @@ namespace Entity.Unit.Normal
             m_NavMeshAgent.updateUpAxis = false;
         }
 
-        public void Init(Vector3 pos)
+        public void Init(Vector3 pos, bool CanRunning, float movementSpeed)
         {
             m_FallingTimer = 0;
             m_isBatch = true;
             IsFalling = false;
             m_isAutoMode = true;
             m_isClimbing = false;
+            m_CanRunning = CanRunning;
+            m_NavMeshAgent.speed = movementSpeed;
 
             RigidSet = true;
             m_NavMeshAgent.enabled = true;
@@ -150,7 +153,8 @@ namespace Entity.Unit.Normal
 
         private void SetNormalRotation(bool isMoving)
         {
-            NormalMonsterState.SetBoolWalking();
+            if (m_CanRunning) NormalMonsterState.SetBoolRunning();
+            else NormalMonsterState.SetBoolWalking();
             Vector3 target = isMoving ? m_NavMeshAgent.steeringTarget : AIManager.PlayerTransform.position;
             Vector3 autoTargetDir = AIManager.GetCurrentGravityDirection((target - transform.position));
 

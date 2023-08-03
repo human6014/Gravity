@@ -16,7 +16,7 @@ MonoBehaviour:
   m_Damage: 650
   m_AttackableLayer:
     serializedVersion: 2
-    m_Bits: 805758976
+    m_Bits: 805759488
   m_RunningPosTime: 0.5
   m_RunningPivotPosition: {x: 0, y: 0.03, z: 0.3}
   m_RunningPivotDirection: {x: 0, y: 0, z: 0}
@@ -25,8 +25,8 @@ MonoBehaviour:
   m_DefaultCrossHair: 1
   m_WeaponIcon: {fileID: 21300000, guid: 3855a76d5f4e6784d8c267c4750071dd, type: 3}
   m_BulletType: 6
-  m_LightFireTime: 1.3
+  m_LightFireTime: 1.2
   m_HeavyFireTime: 1.3
-  m_SwingRadius: 0.6
-  m_MaxDistance: 2
+  m_SwingRadius: 0.7
+  m_MaxDistance: 2.2
   m_CanComboAttack: 0
