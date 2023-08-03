@@ -25,8 +25,11 @@ namespace Manager
         [Tooltip("특수 유닛 스폰 여부")]
         [SerializeField] private bool m_IsActiveSpecialSpawn;
 
-        [Tooltip("일반 유닛 스폰 여부 (Editor only)")]
+        [Tooltip("일반 유닛 스폰 여부")]
         [SerializeField] private bool m_IsActiveNormalSpawn;
+
+        [Tooltip("공중 유닛 스폰 여부")]
+        [SerializeField] private bool m_IsActiveFlyingSpawn;
 
         [Tooltip("스테이지, 웨이브 정보")]
         [SerializeField] private StageInfo[] m_StageInfo;
@@ -73,9 +76,10 @@ namespace Manager
         private readonly BoxCollider[][] m_SpawnAreaCollider = new BoxCollider[6][];
         private BoxCollider[] m_CurrentAreaCollider;
 
+        private EnvironmentManager m_EnvironmentManager;
         private EntityManager m_EntityManager;
         private Customization m_Customization;
-        private Octree m_Octree;        //temp
+        private Octree m_Octree;
 
         private ObjectPoolManager.PoolingObject[] m_NormalMonsterPoolingObjectArray;
         private ObjectPoolManager.PoolingObject[] m_FlyingMonsterPoolingObjectArray;
@@ -124,7 +128,6 @@ namespace Manager
                 m_CurrentStage = value;
                 m_CurrentWave = 1;
                 m_StatMultiplier = (m_CurrentStage - 1) + ((m_CurrentWave - 1) * 0.5f);
-                //식 한번 따져봐야함
                 m_WaveTimer = 0;
             }
         }
@@ -144,6 +147,7 @@ namespace Manager
         #region Init
         private void Awake()
         {
+            m_EnvironmentManager = GetComponent<EnvironmentManager>();
             m_EntityManager = GetComponent<EntityManager>();
             m_Customization = GetComponent<Customization>();
             m_Octree = FindObjectOfType<Octree>();
@@ -317,9 +321,12 @@ namespace Manager
             if (m_IsActiveNormalSpawn)
             {
                 m_NormalMonsterTimer += Time.deltaTime;
-                m_FlyingMonsterTimer += Time.deltaTime;
 
                 if (m_NormalMonsterTimer >= normalMonsterSpawnTime && NormalMonsterCount < maxNormalMonsterCount) SpawnNormalMonster();
+            }
+            if (m_IsActiveFlyingSpawn)
+            {
+                m_FlyingMonsterTimer += Time.deltaTime;
                 if (m_FlyingMonsterTimer >= flyingMonsterSpawnTime && FlyingMonsterCount < maxFlyingMonsterCount) SpawnFlyingMonster();
             }
         }
@@ -351,8 +358,9 @@ namespace Manager
             currentFlyingMonster.gameObject.SetActive(true);
         }
 
-        public void SpawnSpecialMonster1()
+        public async void SpawnSpecialMonster1()
         {
+            await m_EnvironmentManager.FogDensityChange(0.015f, 10);
             BoxCollider[] initColliders = ExcludeRandomIndex((int)m_CurrentGravityType, out int specificIndex);
             BoxCollider initCollider = GetClosetArea(initColliders);
 
@@ -366,13 +374,19 @@ namespace Manager
             IsSP1MonsterSpawned = true;
         }
 
-        public void SpawnSpecialMonster2()
+        public async void SpawnSpecialMonster2()
         {
+            await m_EnvironmentManager.FogDensityChange(0.025f, 10);
+
+
+
             IsSP2MonsterSpawned = true;
         }
 
-        public void SpawnSpecialMonster3()
+        public async void SpawnSpecialMonster3()
         {
+            await m_EnvironmentManager.FogDensityChange(0.1f,15);
+            Camera.main.farClipPlane = 120;
             Vector3 initPosition = m_SP3SpawnPos.position;
             PathCreation.PathCreator pathCreator = m_SP3SpawnPos.parent.GetComponent<PathCreation.PathCreator>();
 
@@ -381,6 +395,7 @@ namespace Manager
             specialMonster3.Init(pathCreator, m_StatMultiplier);
 
             IsSP3MonsterSpawned = true;
+            await m_EnvironmentManager.FogDensityChange(0.04f,5);
         }
         #endregion
     }

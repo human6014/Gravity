@@ -8,10 +8,12 @@ namespace Entity.Unit.Flying
     public class FlyingMonster : PoolableScript, IMonster
     {
         [SerializeField] private Scriptable.Monster.FlyingMonsterScriptable settings;
+        [SerializeField] private GameObject m_PoisonSphere;
 
-        private FlyingMovementController flyingMovementController;
-        private FlyingRotationController flyingRotationController;
+        private FlyingMovementController m_FlyingMovementController;
+        private FlyingRotationController m_FlyingRotationController;
         private PlayerData m_PlayerData;
+        private Rigidbody m_Rigidbody;
 
         private bool m_IsAlive;
 
@@ -24,20 +26,18 @@ namespace Entity.Unit.Flying
 
         private void Awake()
         {
-            flyingMovementController = GetComponent<FlyingMovementController>();
-            flyingRotationController = GetComponent<FlyingRotationController>();
+            m_FlyingMovementController = GetComponent<FlyingMovementController>();
+            m_FlyingRotationController = GetComponent<FlyingRotationController>();
+            m_Rigidbody = GetComponent<Rigidbody>();
         }
 
         private void Update()
         {
             if (!m_IsAlive) return;
             m_AttackTimer += Time.deltaTime;
-            flyingRotationController.LookCurrentTarget();
-        }
-
-        private void FixedUpdate()
-        {
-            flyingMovementController.MoveCurrentTarget();
+            if (m_FlyingMovementController.AttackableToTarget && m_AttackTimer >= settings.m_AttackSpeed) Attack();
+            Move();
+            m_FlyingRotationController.LookCurrentTarget();
         }
 
         public void Init(Vector3 pos, Manager.ObjectPoolManager.PoolingObject poolingObject, float statMultiplier)
@@ -45,10 +45,13 @@ namespace Entity.Unit.Flying
             transform.position = pos;
             m_PoolingObject = poolingObject;
 
+            m_Rigidbody.useGravity = false;
+            m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+
             SetRealStat(statMultiplier);
 
-            flyingMovementController.Init();
-            flyingRotationController.Init();
+            m_FlyingMovementController.Init();
+            m_FlyingRotationController.Init();
         }
 
         private void SetRealStat(float statMultiplier)
@@ -64,14 +67,17 @@ namespace Entity.Unit.Flying
 
         public void Move()
         {
-            
+            m_FlyingMovementController.MoveCurrentTarget();
         }
 
         public void Attack()
         {
             m_AttackTimer = 0;
-            
-            m_PlayerData.PlayerHit(transform, m_RealDamage, settings.m_NoramlAttackType);
+
+            Rigidbody rigidbody = Instantiate(m_PoisonSphere,transform.position,Quaternion.identity).GetComponent<Rigidbody>();
+            rigidbody.AddForce(transform.forward * 10, ForceMode.Impulse);
+
+            //m_PlayerData.PlayerHit(transform, m_RealDamage, settings.m_NoramlAttackType);
         }
 
         public void Hit(int damage, AttackType bulletType)
@@ -93,16 +99,18 @@ namespace Entity.Unit.Flying
         {
             m_CurrentHP = 0;
             m_IsAlive = false;
+            m_Rigidbody.useGravity = true;
+            m_Rigidbody.constraints = RigidbodyConstraints.None;
 
-            //ReturnObject();
+            Invoke(nameof(ReturnObject),5);
         }
 
 
         public override void ReturnObject()
         {
             Manager.SpawnManager.FlyingMonsterCount--;
-            flyingMovementController.Dispose();
-            flyingRotationController.Dispose();
+            m_FlyingMovementController.Dispose();
+            m_FlyingRotationController.Dispose();
             m_PoolingObject.ReturnObject(this);
         }
     }

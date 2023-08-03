@@ -22,7 +22,6 @@ public class LegController : MonoBehaviour
     private readonly float maxTipWait = 1.5f; //값이 작으면 발 위치 고정 시간이 길어짐 0.7f
     private readonly float bodyHeightBase = 0;   //body 높이 1.3f
     private readonly float posAdjustRatio = 0.05f;  //body 위치 조정 강도
-    private readonly float rotAdjustRatio = 0.75f;   //body 회전 조정 강도, NavTrace.cs로 이동
 
     public void SetPreJump(bool _preJump) => preJump = _preJump;
 
@@ -115,11 +114,6 @@ public class LegController : MonoBehaviour
 
                 bodyPos = tipCenter + bodyUp * bodyHeightBase;
                 m_SpecialMonsterAI.ProceduralPosition = Vector3.Lerp(m_BodyTransform.position, bodyPos, posAdjustRatio);
-                //점프 끝나고 다시 재위치 잡을때 여기서 문제 생기는듯
-                //추정상 다리 6개 Ray가 공중에 있을 땐 위치를 못잡아냄
-                //따라서 기존에 있던 위치로 값이 안바뀌고 있을 것
-                //착지 후 bodyPos로 이동할 때 쓰이는 tipCenter는 기존의 위치를 잡아내고 있을 것임
-                //그래서 원위치로 다시 이동하는 것
                 //bodyTransform.position = Vector3.Lerp(bodyTransform.position, bodyPos, posAdjustRatio);
 
 

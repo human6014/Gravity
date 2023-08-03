@@ -306,7 +306,7 @@ public class Octree : MonoBehaviour
 
         public PathRequest() => path = new List<Vector3>();
 
-        public List<Vector3> Path
+        public List<Vector3> PathList
         {
             get => path;
         }

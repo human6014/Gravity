@@ -13,10 +13,9 @@ public class SP1AnimationController : MonoBehaviour
     private Animator m_Animator;
 
     private bool m_DoCrawsAttacking;
-    private bool m_DoGrabAttacking;
     private bool m_DoGrabAttackingReverse;
+    private bool m_DoGrabAttacking;
     private bool m_DoJumpBiteAttacking;
-    private bool m_DoSpiting;
 
     private bool m_DoHitting;
     private bool m_DoRoaring;
@@ -24,7 +23,6 @@ public class SP1AnimationController : MonoBehaviour
     #region Animation string
     private const string m_ClawsAttack = "ClawsAttack";
     private const string m_GrabAttack = "BiteAttack";
-    private const string m_SpitVenom = "SpitVenom";
 
     private const string m_Walk = "Walk";
     private const string m_Roar = "Roar";
@@ -76,12 +74,6 @@ public class SP1AnimationController : MonoBehaviour
     public void SetDie()
     {
         SetTriggerAnimation(m_Die);
-    }
-
-    public void SetSpitVenom()
-    {
-        m_DoSpiting = true;
-        SetTriggerAnimation(m_SpitVenom);
     }
 
     public void SetJumpBiteAttack()
@@ -171,7 +163,6 @@ public class SP1AnimationController : MonoBehaviour
     private void EndCrawsAttack() => m_DoCrawsAttacking = false;
     private void EndBiteAttack() => m_DoGrabAttacking = false;
     private void EndBiteAttackReverse() => m_DoGrabAttackingReverse = false;
-    private void EndSpitVenom() => m_DoSpiting = false;
     private void EndRoar() => m_DoRoaring = false;
     private void EndHit() => m_DoHitting = false;
 #pragma warning restore IDE0051

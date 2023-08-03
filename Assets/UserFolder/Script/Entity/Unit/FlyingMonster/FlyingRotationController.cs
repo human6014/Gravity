@@ -1,46 +1,49 @@
 ﻿using System;
 using UnityEngine;
 
-public class FlyingRotationController : MonoBehaviour
+namespace Entity.Unit.Flying
 {
-	[SerializeField, Header("Animated Rotation")] private float rotationEasing = 1f;
-
-	private Transform playerHead;
-	private Rigidbody cachedRigidbody;
-	private FlyingMovementController movementController;
-
-	private bool isRun;
-	public Vector3 LookAtDir
+	public class FlyingRotationController : MonoBehaviour
 	{
-		get
+		[SerializeField, Header("Animated Rotation")] private float rotationEasing = 1f;
+
+		private Transform m_PlayerHead;
+		private Rigidbody m_Rigidbody;
+		private FlyingMovementController m_FlyingMovementController;
+
+		private bool m_IsAlive;
+		public Vector3 LookAtDir
 		{
-			if (movementController.CloseToTarget)
-				return movementController.CurrentTargetPosition - cachedRigidbody.position;
-			return playerHead.position - cachedRigidbody.position;
+			get
+			{
+				if (m_FlyingMovementController.CloseToTarget)
+					return m_FlyingMovementController.CurrentTargetPosition - m_Rigidbody.position;
+				return m_PlayerHead.position - m_Rigidbody.position;
+			}
 		}
-	}
 
-	private void Awake()
-	{
-		cachedRigidbody = GetComponent<Rigidbody>();
-		movementController = GetComponent<FlyingMovementController>();
-		playerHead = Manager.AI.AIManager.PlayerTransform;
-	}
+		private void Awake()
+		{
+			m_Rigidbody = GetComponent<Rigidbody>();
+			m_FlyingMovementController = GetComponent<FlyingMovementController>();
+			m_PlayerHead = Manager.AI.AIManager.PlayerTransform;
+		}
 
-	public void Init()
-    {
-		isRun = true;
-	}
+		public void Init()
+		{
+			m_IsAlive = true;
+		}
 
-	public void Dispose()
-	{
-		isRun = false;
-	}
+		public void Dispose()
+		{
+			m_IsAlive = false;
+		}
 
-	public void LookCurrentTarget()
-    {
-		if (!isRun) return;
-		Quaternion lookRot = Quaternion.LookRotation(LookAtDir, -Manager.GravityManager.GravityVector);
-		cachedRigidbody.MoveRotation(Quaternion.Lerp(cachedRigidbody.rotation, lookRot, Time.deltaTime * rotationEasing));
+		public void LookCurrentTarget()
+		{
+			if (!m_IsAlive) return;
+			Quaternion lookRot = Quaternion.LookRotation(LookAtDir, -Manager.GravityManager.GravityVector);
+			m_Rigidbody.MoveRotation(Quaternion.Lerp(m_Rigidbody.rotation, lookRot, Time.deltaTime * rotationEasing));
+		}
 	}
 }

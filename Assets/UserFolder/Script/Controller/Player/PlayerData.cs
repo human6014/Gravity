@@ -331,9 +331,6 @@ public class PlayerData : MonoBehaviour
         m_Inventory.WeaponInfo[slotNumber].m_CurrentRemainBullet = weaponData.m_MaxBullet;
         m_Inventory.WeaponInfo[slotNumber].MaxBullet += weaponData.m_MaxBullet;
         m_Inventory.WeaponInfo[slotNumber].m_MagazineRemainBullet = weaponData.m_MagazineRemainBullet;
-
-        //if (slotNumber == 0) TryWeaponChange(0);
-        //if (slotNumber == 0) ChangeWeapon(0, AttackType.None,FireMode.None, weaponData.m_Icon);
     }
 
     public void GetSupply(int slotNumber, int amount)
@@ -350,7 +347,6 @@ public class PlayerData : MonoBehaviour
         }
         else m_Inventory.WeaponInfo[slotNumber].m_MagazineRemainBullet += amount;
         m_PlayerUIManager.RangeWeaponReload(CurrentWeaponInfo.m_MagazineRemainBullet);
-        //무기 단 한번도 장착 안한채로 탄약 보급 받으면 에러 뜸
     }
 
     public void MaxBulletUp(float amount)

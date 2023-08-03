@@ -16,7 +16,7 @@ MonoBehaviour:
   m_Damage: 650
   m_AttackableLayer:
     serializedVersion: 2
-    m_Bits: 805758976
+    m_Bits: 805759488
   m_RunningPosTime: 0.5
   m_RunningPivotPosition: {x: 0, y: 0.03, z: 0.3}
   m_RunningPivotDirection: {x: 0, y: 0, z: 0}
@@ -27,6 +27,6 @@ MonoBehaviour:
   m_BulletType: 0
   m_LightFireTime: 0.5
   m_HeavyFireTime: 0.75
-  m_SwingRadius: 0.3
-  m_MaxDistance: 1.6
+  m_SwingRadius: 0.4
+  m_MaxDistance: 1.8
   m_CanComboAttack: 1

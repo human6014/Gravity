@@ -31,9 +31,12 @@ namespace UI.Manager
             {
                 m_IsActivePauseUI = value;
                 m_SettingPanel.TryActive(value);
+                PauseUIAction?.Invoke(value);
                 PauseMode();
             }
         }
+
+        public System.Action<bool> PauseUIAction { get; set; }
 
         private void Awake() => PauseMode();
 

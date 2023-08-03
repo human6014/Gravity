@@ -27,8 +27,6 @@ namespace Entity.Unit.Normal
         
         private float m_AttackTimer;
 
-        public System.Action<int, AttackType> HitEvent { get; set; }//???¹»±î
-
         private bool CanAttackRange
         {
             get => Vector3.Distance(AIManager.PlayerTransform.position, transform.position) <= m_Settings.m_AttackRange;
@@ -65,11 +63,11 @@ namespace Entity.Unit.Normal
         {
             OnOffRagdoll(false);
             SetRealStat(statMultiplier);
-            
+            float movementSpeed = m_CanRun ? m_Settings.m_MovementSpeed : m_Settings.m_RunningSpeed;
             m_PoolingObject = poolingObject;
 
             m_NormalMonsterState.Init();
-            m_NormalMonsterAI.Init(pos);
+            m_NormalMonsterAI.Init(pos, m_CanRun, movementSpeed);
             m_NormalMonsterAnimController.Init();
         }
 
@@ -80,7 +78,7 @@ namespace Entity.Unit.Normal
             m_RealMaxHP = m_Settings.m_HP + (int)(statMultiplier * m_Settings.m_HPMultiplier);
             m_RealDef = m_Settings.m_Def + (int)(statMultiplier * m_Settings.m_DefMultiplier);
             m_RealDamage = m_Settings.m_Damage + (int)(statMultiplier * m_Settings.m_Damage);
-            m_CanRun = statMultiplier >= m_Settings.CanRunStat;
+            m_CanRun = statMultiplier >= m_Settings.m_CanRunStat;
 
             m_CurrentHP = m_RealMaxHP;
         }
