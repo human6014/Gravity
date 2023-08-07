@@ -16,7 +16,7 @@ MonoBehaviour:
   m_Def: 0
   m_Damage: 50
   m_MovementSpeed: 0
-  m_AttackSpeed: 2
+  m_AttackSpeed: 3
   m_AttackRange: 0
   m_ExplosionResistance: 1
   m_MeleeResistance: 1

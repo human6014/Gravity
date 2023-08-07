@@ -8,12 +8,11 @@ namespace Entity.Unit.Flying
     public class FlyingMonster : PoolableScript, IMonster
     {
         [SerializeField] private Scriptable.Monster.FlyingMonsterScriptable settings;
-        [SerializeField] private GameObject m_PoisonSphere;
 
         private FlyingMovementController m_FlyingMovementController;
         private FlyingRotationController m_FlyingRotationController;
-        private PlayerData m_PlayerData;
         private Rigidbody m_Rigidbody;
+        private Manager.ObjectPoolManager.PoolingObject m_PoisonSpherePooling;
 
         private bool m_IsAlive;
 
@@ -36,14 +35,18 @@ namespace Entity.Unit.Flying
             if (!m_IsAlive) return;
             m_AttackTimer += Time.deltaTime;
             if (m_FlyingMovementController.AttackableToTarget && m_AttackTimer >= settings.m_AttackSpeed) Attack();
+            //사거리 제한 아직 없는데
             Move();
             m_FlyingRotationController.LookCurrentTarget();
         }
 
-        public void Init(Vector3 pos, Manager.ObjectPoolManager.PoolingObject poolingObject, float statMultiplier)
+        public void Init(Vector3 pos, float statMultiplier, 
+            Manager.ObjectPoolManager.PoolingObject poolingObject, 
+            Manager.ObjectPoolManager.PoolingObject poisonSpherePooling)
         {
             transform.position = pos;
             m_PoolingObject = poolingObject;
+            m_PoisonSpherePooling = poisonSpherePooling;
 
             m_Rigidbody.useGravity = false;
             m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
@@ -74,10 +77,7 @@ namespace Entity.Unit.Flying
         {
             m_AttackTimer = 0;
 
-            Rigidbody rigidbody = Instantiate(m_PoisonSphere,transform.position,Quaternion.identity).GetComponent<Rigidbody>();
-            rigidbody.AddForce(transform.forward * 10, ForceMode.Impulse);
-
-            //m_PlayerData.PlayerHit(transform, m_RealDamage, settings.m_NoramlAttackType);
+            ((PoisonSphere)m_PoisonSpherePooling.GetObject(true)).Init(m_PoisonSpherePooling,transform.position,transform.rotation,m_RealDamage);
         }
 
         public void Hit(int damage, AttackType bulletType)

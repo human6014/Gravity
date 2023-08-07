@@ -34,7 +34,7 @@ namespace EnumType
     public enum SpecialMonsterType
     {
         Horridomorph = 0,
-        SP2 = 1,
+        Titanockarce = 1,
         Scyver = 2
     }
 

@@ -15,6 +15,7 @@ public struct WeaponData
         m_MagazineRemainBullet = magazineBullet;
     }
 }
+
 [System.Serializable]
 public class WeaponInfo
 {
@@ -53,6 +54,7 @@ public class WeaponInfo
     public bool IsActiveReloadImage()
         => m_CurrentRemainBullet < m_MaxBullet * 0.5f && m_MaxBullet != 0 && m_MagazineRemainBullet != 0;
 }
+
 [System.Serializable]
 public class Inventory
 {

@@ -17,6 +17,7 @@ namespace Manager
 
         [Space(12)]
         [SerializeField] private FlyingMonster[] flyingMonsters;
+        [SerializeField] private PoisonSphere poisonSphere;
 
         [Space(15)]
         [SerializeField] private GameObject specialMonster1;
@@ -24,6 +25,7 @@ namespace Manager
         [SerializeField] private GameObject specialMonster3;
 
         #region Property
+        public PoisonSphere GetPoisonSphere => poisonSphere;
         public GameObject GetSpecialMonster1 => specialMonster1;
         public GameObject GetSpecialMonster2 => specialMonster2;
         public GameObject GetSpecialMonster3  => specialMonster3;

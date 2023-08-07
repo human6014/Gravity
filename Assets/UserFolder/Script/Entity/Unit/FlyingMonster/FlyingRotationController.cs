@@ -26,11 +26,11 @@ namespace Entity.Unit.Flying
 		{
 			m_Rigidbody = GetComponent<Rigidbody>();
 			m_FlyingMovementController = GetComponent<FlyingMovementController>();
-			m_PlayerHead = Manager.AI.AIManager.PlayerTransform;
 		}
 
-		public void Init()
+        public void Init()
 		{
+			m_PlayerHead = Manager.AI.AIManager.PlayerTransform;
 			m_IsAlive = true;
 		}
 

@@ -13,49 +13,71 @@ public class PlayerData : MonoBehaviour
     [Tooltip("힐 킷 회복량")]
     [SerializeField] private int m_HealKitAmount = 400;
 
+
+    [Header("HP")]
     [Tooltip("최대 HP")]
     [SerializeField] private int m_MaxPlayerHP = 1000;
-
-    [Tooltip("최대 MP")]
-    [SerializeField] private int m_MaxPlayerMP = 1000;
-
 
     [Tooltip("특정 시간당 회복 할 HP계수")]
     [SerializeField] private int m_AutoHPHealAmount = 1;
 
-    [Tooltip("특정 시간당 회복 할 MP계수")]
-    [SerializeField] private int m_AutoMPHealAmount = 10;
-
     [Tooltip("HP 회복 할 시간")]
     [SerializeField] private float m_AutoHPHealTime = 0.1f;
+
+
+    [Header("MP")]
+    [Tooltip("최대 MP")]
+    [SerializeField] private int m_MaxPlayerMP = 1000;
+
+    [Tooltip("특정 시간당 회복 할 MP계수")]
+    [SerializeField] private int m_AutoMPHealAmount = 10;
 
     [Tooltip("MP 회복 할 시간")]
     [SerializeField] private float m_AutoMPHealTime = 0.1f;
 
-    [Tooltip("달리기를 시작할 최소 MP")]
-    [SerializeField] private int m_StartRunningMP = 100;
+    [Tooltip("점프 MP 소모량")]
+    [SerializeField] private int m_JumpingMP = 180;
 
     [Tooltip("달리기 MP 소모량")]
     [SerializeField] private int m_RunningMP = 4;
 
-    [Tooltip("점프 MP 소모량")]
-    [SerializeField] private int m_JumpingMP = 180;
+    [Tooltip("달리기를 시작할 최소 MP")]
+    [SerializeField] private int m_StartRunningMP = 100;
+
+
+    [Header("GE")]
+    [Tooltip("중력 변경 에너지 최대량")]
+    [SerializeField] private int m_MaxPlayerGE = 1000;
+
+    [Tooltip("중력 변경 에너지 초당 회복량")]
+    [SerializeField] private int m_AutoGEHealAmount = 10;
+
+    [Tooltip("중력 변경 회복 할 시간")]
+    [SerializeField] private float m_AutoGEHealTime = 0.1f;
+
+    [Tooltip("중력 변경 에너지 소모량")]
+    [SerializeField] private int m_GEConsumeAmount = 500;
     #endregion
 
     private int m_CurrentPlayerHP;
     private int m_CurrentPlayerMP;
+    private int m_CurrentPlayerGE;
 
     private float m_AmountPlayerHP = 1;
     private float m_AmountPlayerMP = 1;
+    private float m_AmountPlayerGE = 1;
 
     private float m_HPTimer;
     private float m_MPTimer;
+    private float m_GETimer;
 
     private float m_RealToAmountHPConst = 0.001f;
     private float m_RealToAmountMPConst = 0.001f;
+    private float m_RealToAmountGEConst = 0.001f;
 
     private int m_AmountToRealHPConst = 1000;
     private int m_AmountToRealMPConst = 1000;
+    private int m_AmountToRealGEConst = 1000;
 
     private int m_CallCount;
 
@@ -71,13 +93,13 @@ public class PlayerData : MonoBehaviour
     
 
     public bool IsAlive { get; set; } = true;
-    public bool IsSameMaxCurrentHP { get => PlayerHP == m_MaxPlayerHP; }
+    public bool IsSameMaxCurrentHP { get => PlayerHP == PlayerMaxHP; }
     public int PlayerHP 
     {
         get => m_CurrentPlayerHP;
-        set
+        private set
         {
-            m_CurrentPlayerHP = Mathf.Clamp(value, 0, m_MaxPlayerHP);
+            m_CurrentPlayerHP = Mathf.Clamp(value, 0, PlayerMaxHP);
             m_AmountPlayerHP = m_CurrentPlayerHP * m_RealToAmountHPConst;
         } 
     }
@@ -85,14 +107,25 @@ public class PlayerData : MonoBehaviour
     public int PlayerMP
     {
         get => m_CurrentPlayerMP;
-        set
+        private set
         {
-            m_CurrentPlayerMP = Mathf.Clamp(value, 0, m_MaxPlayerMP);
+            m_CurrentPlayerMP = Mathf.Clamp(value, 0, PlayerMaxMP);
             m_AmountPlayerMP = m_CurrentPlayerMP * m_RealToAmountMPConst;
         }
     }
-    
-    public int PlayerMaxHP
+
+    private int PlayerGE
+    {
+        get => m_CurrentPlayerGE;
+        set
+        {
+            m_CurrentPlayerGE = Mathf.Clamp(value, 0, m_MaxPlayerGE);
+            m_AmountPlayerGE = m_CurrentPlayerGE * m_RealToAmountGEConst;
+            m_PlayerUIManager.UpdatePlayerGE(m_AmountPlayerGE);
+        }
+    }
+
+    private int PlayerMaxHP
     {
         get => m_MaxPlayerHP;
         set
@@ -103,7 +136,7 @@ public class PlayerData : MonoBehaviour
         }
     }
 
-    public int PlayerMaxMP
+    private int PlayerMaxMP
     {
         get => m_MaxPlayerMP;
         set
@@ -114,6 +147,17 @@ public class PlayerData : MonoBehaviour
         }
     }
 
+    private int PlayerMaxGE
+    {
+        get => m_MaxPlayerGE;
+        set
+        {
+            m_MaxPlayerGE = value;
+            m_AmountToRealGEConst = m_MaxPlayerGE;
+            m_RealToAmountGEConst = 1 / (float)m_AmountToRealGEConst;
+        }
+    }
+
     #endregion
 
     #region UnityFuction
@@ -121,6 +165,7 @@ public class PlayerData : MonoBehaviour
     {
         PlayerHP = m_MaxPlayerHP;
         PlayerMP = m_MaxPlayerMP;
+        PlayerGE = m_MaxPlayerGE;
         m_PlayerUIManager.Init(m_MaxPlayerHP, m_MaxPlayerMP, m_AmountToRealHPConst, m_RealToAmountHPConst, m_Inventory.HealKitHavingCount);
     }
 
@@ -143,6 +188,12 @@ public class PlayerData : MonoBehaviour
             PlayerMP += m_AutoMPHealAmount;
             m_PlayerUIManager.UpdatePlayerMP(m_AmountPlayerMP);
         }
+
+        if((m_GETimer += Time.deltaTime) >= m_AutoGEHealTime)
+        {
+            m_GETimer = 0;
+            PlayerGE += m_AutoGEHealAmount;
+        }
     }
     #endregion
 
@@ -161,6 +212,17 @@ public class PlayerData : MonoBehaviour
         if (PlayerMP < m_JumpingMP) return false;
         UpdatePlayerMP(m_JumpingMP);
         return true;
+    }
+
+    public bool CanChangeGravity()
+    {
+        if (PlayerGE < m_GEConsumeAmount) return false;
+        return true;
+    }
+
+    public void UseGravityChange()
+    {
+        PlayerGE -= m_GEConsumeAmount;
     }
     #endregion
 

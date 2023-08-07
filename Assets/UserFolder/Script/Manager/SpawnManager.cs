@@ -55,6 +55,9 @@ namespace Manager
         [Tooltip("미리 생성할 FlyingMonstr 수")]
         [Range(0, 100)] [SerializeField] private int[] flyingMonsterPoolingCount;
 
+        [Tooltip("미리 생성할 PoisonSphere 수")]
+        [Range(0, 50)] [SerializeField] private int poisonSpherePoolingCount;
+
         [Header("Spawn info")]
         [Tooltip("최대로 생성될 일반 몬스터 총 개수")]
         [Range(0, 100)][SerializeField] private int maxNormalMonsterCount = 30;
@@ -83,6 +86,7 @@ namespace Manager
 
         private ObjectPoolManager.PoolingObject[] m_NormalMonsterPoolingObjectArray;
         private ObjectPoolManager.PoolingObject[] m_FlyingMonsterPoolingObjectArray;
+        private ObjectPoolManager.PoolingObject m_PoisonSpherePooling;
         #endregion
 
         #region Normal Value
@@ -186,6 +190,7 @@ namespace Manager
             //urban -> oldman -> women -> big -> giant
             m_NormalMonsterPoolingObjectArray = new ObjectPoolManager.PoolingObject[normalMonsterArrayLength];
             m_FlyingMonsterPoolingObjectArray = new ObjectPoolManager.PoolingObject[flyingMonsterArrayLength];
+            
 
             //Unit
             for (int i = 0; i < normalMonsterArrayLength; i++)
@@ -199,6 +204,8 @@ namespace Manager
                 m_FlyingMonsterPoolingObjectArray[i] = ObjectPoolManager.Register(m_EntityManager.GetFlyingMonster(i), activeUnitPool);
                 m_FlyingMonsterPoolingObjectArray[i].GenerateObj(flyingMonsterPoolingCount[i]);
             }
+            m_PoisonSpherePooling = ObjectPoolManager.Register(m_EntityManager.GetPoisonSphere, activeUnitPool);
+            m_PoisonSpherePooling.GenerateObj(poisonSpherePoolingCount);
         }
 
         public void ChangeCurrentArea(EnumType.GravityType gravityType)
@@ -322,12 +329,14 @@ namespace Manager
             {
                 m_NormalMonsterTimer += Time.deltaTime;
 
-                if (m_NormalMonsterTimer >= normalMonsterSpawnTime && NormalMonsterCount < maxNormalMonsterCount) SpawnNormalMonster();
+                if (m_NormalMonsterTimer >= normalMonsterSpawnTime && NormalMonsterCount < maxNormalMonsterCount) 
+                    SpawnNormalMonster();
             }
             if (m_IsActiveFlyingSpawn)
             {
                 m_FlyingMonsterTimer += Time.deltaTime;
-                if (m_FlyingMonsterTimer >= flyingMonsterSpawnTime && FlyingMonsterCount < maxFlyingMonsterCount) SpawnFlyingMonster();
+                if (m_FlyingMonsterTimer >= flyingMonsterSpawnTime && FlyingMonsterCount < maxFlyingMonsterCount) 
+                    SpawnFlyingMonster();
             }
         }
 
@@ -354,7 +363,7 @@ namespace Manager
             FlyingMonsterCount++;
 
             FlyingMonster currentFlyingMonster = (FlyingMonster)m_FlyingMonsterPoolingObjectArray[0].GetObject(false);
-            currentFlyingMonster.Init(m_Octree.GetRandomSpawnableArea(), m_FlyingMonsterPoolingObjectArray[0], m_StatMultiplier);
+            currentFlyingMonster.Init(m_Octree.GetRandomSpawnableArea(), m_StatMultiplier, m_FlyingMonsterPoolingObjectArray[0], m_PoisonSpherePooling);
             currentFlyingMonster.gameObject.SetActive(true);
         }
 
