@@ -13,6 +13,7 @@ namespace UI.Manager
         [SerializeField] private ItemSlotDisplayer m_ItemSlotDisplayer;
         [SerializeField] private WeaponPropertyDisplayer m_WeaponPropertyDisplayer;
         [SerializeField] private DamageDisplayer m_DamageDisplayer;
+        [SerializeField] private GravityEnergeDisplayer m_GravityEnergeDisplayer;
 
         public void Init(int playerMaxHP, int playerMaxMP, int amountToRealConst, float realToAmountConst, int havingHealKit)
         {
@@ -40,6 +41,12 @@ namespace UI.Manager
 
             m_ItemSlotDisplayer.UpdateFocusSlot(equipingWeaponType);
         }
+        public void UpdatePlayerHP(float hpAmount)
+        {
+            m_PlayerStatDisplayer.UpdateHPImage(hpAmount);
+            m_DamageDisplayer.DisplayBloodScreen(hpAmount);
+            m_HealDisplayer.DisplayHealNotification(hpAmount <= 0.5f);
+        }
 
         public void DisplayReloadImage(bool isActive)
         {
@@ -51,11 +58,6 @@ namespace UI.Manager
             m_WeaponPropertyDisplayer.UpdateFireMode(index);
         }
 
-        public void HitEnemy()
-        {
-            m_AttackCrossHairDisplayer.AttackCrossHairActive();
-        }
-
         public void RangeWeaponFire(int currentRemainBullet, bool isActive)
         {
             m_WeaponPropertyDisplayer.UpdateRemainBulletIcon(currentRemainBullet);
@@ -65,6 +67,10 @@ namespace UI.Manager
         public void RangeWeaponReload(int magazineRemainBullet)
         {
             m_WeaponPropertyDisplayer.UpdateRemainBulletText(magazineRemainBullet);
+        }
+        public void HitEnemy()
+        {
+            m_AttackCrossHairDisplayer.AttackCrossHairActive();
         }
 
         public void UpdateWeaponSlot(int equipingWeaponType, Sprite sprite)
@@ -87,26 +93,14 @@ namespace UI.Manager
             m_DamageDisplayer.ReCalcScreenAlpha(playerMaxHP, amountToRealConst);
         }
 
-        public void UpdatePlayerMaxMP(int playerMaxHP, int amountToRealConst)
-        {
-            
-        }
-
-        public void UpdatePlayerHP(float hpAmount)
-        {
-            m_PlayerStatDisplayer.UpdateHPImage(hpAmount);
-            m_DamageDisplayer.DisplayBloodScreen(hpAmount);
-            DisplayHealImage(hpAmount);
-        }
-
         public void UpdatePlayerMP(float mpAmount)
         {
             m_PlayerStatDisplayer.UpdateMPImage(mpAmount);
         }
 
-        private void DisplayHealImage(float hpAmount)
+        public void UpdatePlayerGE(float geAmount)
         {
-            m_HealDisplayer.DisplayHealNotification(hpAmount <= 0.5f);
+            m_GravityEnergeDisplayer.UpdateGEImage(geAmount);
         }
     }
 }

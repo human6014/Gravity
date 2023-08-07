@@ -21,6 +21,7 @@ namespace Manager {
             m_RainParticle.transform.rotation = GravityManager.GetCurrentGravityRotation();
             m_GravityManager.SyncRotatingTransform.Add(m_RainParticle.transform);
             m_RainParticle.gameObject.SetActive(true);
+            //Particle Play로 변경해야함
         }
 
         public async Task FogDensityChange(float targetDensity, float changeTime)

@@ -61,12 +61,12 @@ namespace UI.Event
 
         private void Awake() 
         {
-            PointerClickAction += DoSkill;
             PlayerSkillReceiver = FindObjectOfType<PlayerSkillReceiver>();
         }
 
         public virtual void Init()
         {
+            PointerClickAction += DoSkill;
             m_CallingCount++;
             IsActivePointer = true;
             m_OutlineUI.SetActive(false);

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Manager.AI;
 
 namespace Entity.Unit.Flying
 {
@@ -85,13 +86,13 @@ namespace Entity.Unit.Flying
             m_SphereCollider = GetComponent<SphereCollider>();
             m_Rigidbody = GetComponent<Rigidbody>();
             m_Octree = FindObjectOfType<Octree>();
-
-            m_PlayerObject = Manager.AI.AIManager.PlayerTransform.gameObject;
-            m_Target = Manager.AI.AIManager.PlayerSupportTargetTransform;
         }
 
         public void Init()
         {
+            m_PlayerObject = AIManager.PlayerTransform.gameObject;
+            m_Target = AIManager.PlayerSupportTargetTransform;
+
             m_RandomPos = UnityEngine.Random.insideUnitSphere * 3;
 
             m_LastDestination = m_Target.position;

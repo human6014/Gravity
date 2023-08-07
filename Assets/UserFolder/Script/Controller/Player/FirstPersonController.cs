@@ -95,6 +95,7 @@ namespace Contoller.Player
 
         #endregion
         private PlayerInputController m_PlayerInputController;
+        private GravityManager m_GravityManager;
         private AudioSource m_AudioSource;
         private PlayerData m_PlayerData;
         private Camera m_Camera;
@@ -134,6 +135,7 @@ namespace Contoller.Player
         #region Init
         private void Awake()
         {
+            m_GravityManager = FindObjectOfType<GravityManager>();
             m_PlayerInputController = GetComponent<PlayerInputController>();
             m_Camera = m_RightAxisTransform.GetComponentInChildren<Camera>();
             m_PlayerData = GetComponent<PlayerData>();
@@ -169,6 +171,7 @@ namespace Contoller.Player
             m_PlayerInputController.Run += TryRun;
             m_PlayerInputController.Crouch += TryCrouch;
             m_PlayerInputController.Jump += TryJump;
+            m_PlayerInputController.DoGravityChange += TryChangeGravity;
         }
         #endregion
 
@@ -196,6 +199,7 @@ namespace Contoller.Player
             
             m_WasGround = m_IsGround;
         }
+
         private void FixedUpdate()
         {
             if (m_IsGrabed) return;
@@ -231,7 +235,6 @@ namespace Contoller.Player
             UpdateCameraPosition(m_MovementSpeed);
             ReversePosCheck();
         }
-
         #endregion
         #region Grab
         private void GrabActionPoint(Transform grabCameraPosition, Transform grabBodyPosition, Transform grabRotation, Transform throwingPosition)
@@ -436,6 +439,14 @@ namespace Contoller.Player
                 target.localPosition = Vector3.Lerp(startLocalPosition, endLocalPosition, currentTime / runTotalTime);
                 yield return null;
             }
+        }
+        #endregion
+
+        #region ChangeGraivity
+        private void TryChangeGravity(int gravityKeyInput, float mouseScroll)
+        {
+            if (!m_PlayerData.CanChangeGravity()) return;
+            if (!m_GravityManager.GravityChange(gravityKeyInput, mouseScroll)) m_PlayerData.UseGravityChange();
         }
         #endregion
     }

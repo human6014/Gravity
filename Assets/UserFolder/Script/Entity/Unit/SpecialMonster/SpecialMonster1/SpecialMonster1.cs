@@ -24,15 +24,12 @@ namespace Entity.Unit.Special
         private Transform m_NavMeshTransform;
         private SpecialMonsterAI m_SpecialMonsterAI;
         private SP1AnimationController m_SP1AnimationController;
-
         private MaterialPropertyBlock m_MaterialPropertyBlock;
         private LegController m_LegController;
         private PlayerData m_PlayerData;
         private Parabola m_Parabola;
 
         private Vector3 m_GroundDirection;
-
-        private int m_PlayerLayerNum;
 
         private readonly float m_AttackBetweenTime = 3;
         private float m_TargetDist;
@@ -46,6 +43,8 @@ namespace Entity.Unit.Special
         private bool m_IsAlive;
         private bool m_DoingBehaviour;
         private bool m_IsGrabbing;
+
+        private int m_PlayerLayerNum;
 
         private int m_RealMaxHP;
         private int m_RealDef;

@@ -56,7 +56,6 @@ namespace Manager
         private void Awake()
         {
             GravityChangeAction = null;
-            m_PlayerInputController.DoGravityChange += GravityChange;
 
             m_CurrentGravityType = GravityType.yDown;
             m_CurrentGravityAxis = GravityDirection.Y;
@@ -65,9 +64,9 @@ namespace Manager
             GravityVector = Vector3.down;
         }
 
-        public void GravityChange(int gravityKeyInput, float mouseScroll)
+        public bool GravityChange(int gravityKeyInput, float mouseScroll)
         {
-            if (IsGravityChanging) return;
+            if (IsGravityChanging) return true;
 
             m_CurrentGravityAxis = (GravityDirection)gravityKeyInput;
             GravityChange(Mathf.FloorToInt(mouseScroll * 10));
@@ -77,6 +76,7 @@ namespace Manager
                 StartCoroutine(GravityRotate(m_RotateControllingObject));
                 StartCoroutine(GravityRotate(AI.AIManager.PlayerTransform));
             }
+            return m_IsGravityDupleicated;
         }
 
         /// <summary>
