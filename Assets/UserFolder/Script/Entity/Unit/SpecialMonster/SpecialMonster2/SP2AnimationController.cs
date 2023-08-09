@@ -18,7 +18,19 @@ namespace Entity.Unit.Special
             m_Animator = GetComponent<Animator>();
         }
 
+        public void SetWalk()
+        {
 
+        }
 
+        public void SetNormalAttack()
+        {
+
+        }
+
+        public void SetDie()
+        {
+
+        }
     }
 }

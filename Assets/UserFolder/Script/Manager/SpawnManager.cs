@@ -204,6 +204,7 @@ namespace Manager
                 m_FlyingMonsterPoolingObjectArray[i] = ObjectPoolManager.Register(m_EntityManager.GetFlyingMonster(i), activeUnitPool);
                 m_FlyingMonsterPoolingObjectArray[i].GenerateObj(flyingMonsterPoolingCount[i]);
             }
+
             m_PoisonSpherePooling = ObjectPoolManager.Register(m_EntityManager.GetPoisonSphere, activeUnitPool);
             m_PoisonSpherePooling.GenerateObj(poisonSpherePoolingCount);
         }
@@ -346,13 +347,13 @@ namespace Manager
             m_RandomNormalMonsterIndex = RandomUnitIndex();
             NormalMonsterCount++;
 
+            BoxCollider boxCollider = GetClosetArea(m_CurrentAreaCollider);
+            Vector3 initPosition = GetRandomPos(boxCollider, 1);
+
             NormalMonster currentNormalMonster = (NormalMonster)m_NormalMonsterPoolingObjectArray[m_RandomNormalMonsterIndex].GetObject(false);
             m_Customization.Customize(currentNormalMonster);
 
-            BoxCollider boxCollider = GetClosetArea(m_CurrentAreaCollider);
-            Vector3 pos = GetRandomPos(boxCollider, 1);
-
-            currentNormalMonster.Init(pos, m_NormalMonsterPoolingObjectArray[m_RandomNormalMonsterIndex], m_StatMultiplier);
+            currentNormalMonster.Init(initPosition, m_NormalMonsterPoolingObjectArray[m_RandomNormalMonsterIndex], m_StatMultiplier);
             currentNormalMonster.gameObject.SetActive(true);
         }
 
@@ -385,17 +386,36 @@ namespace Manager
 
         public async void SpawnSpecialMonster2()
         {
-            await m_EnvironmentManager.FogDensityChange(0.025f, 10);
+            await m_EnvironmentManager.FogDensityChange(0.05f, 10);
 
+            //중력 바꿔야 함
+            BoxCollider boxCollider = GetClosetArea(m_CurrentAreaCollider);
+            Vector3 initPosition;
+            float dist;
+            while (true)
+            {
+                initPosition = GetRandomPos(boxCollider, 4);
+                dist = Vector3.Distance(initPosition, AI.AIManager.PlayerTransform.position);
+                if (dist >= 20) break;
+                //바꾸기
+            }
+            //pos 구하고 거리 체크
 
+            SpecialMonster2 specialMonster2 = Instantiate(m_EntityManager.GetSpecialMonster2, initPosition,Quaternion.identity).GetComponent<SpecialMonster2>();
+            specialMonster2.EndSpecialMonsterAction += () => IsSP2MonsterEnd = true;
+            specialMonster2.Init(m_StatMultiplier);
 
             IsSP2MonsterSpawned = true;
+
+            await m_EnvironmentManager.FogDensityChange(0.025f, 10);
         }
 
         public async void SpawnSpecialMonster3()
         {
             await m_EnvironmentManager.FogDensityChange(0.1f,15);
+
             Camera.main.farClipPlane = 120;
+
             Vector3 initPosition = m_SP3SpawnPos.position;
             PathCreation.PathCreator pathCreator = m_SP3SpawnPos.parent.GetComponent<PathCreation.PathCreator>();
 

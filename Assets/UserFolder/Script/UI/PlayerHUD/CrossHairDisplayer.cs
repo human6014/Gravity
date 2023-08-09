@@ -28,13 +28,14 @@ namespace UI.Player
         private const string m_JumpFire = "JumpFire";
         #endregion
         private string m_CurrentAnimState;
-        public CrossHairScripatble GetCrossHairInfo(int index) => crossHairInfo[index];
 
         private void Awake()
         {
             m_PlayerState = FindObjectOfType<PlayerData>().PlayerState;
             m_Animator = GetComponent<Animator>();
             crossHairImage = GetComponentsInChildren<Image>();
+
+            SetCrossHair(0);
         }
 
         /// <summary>

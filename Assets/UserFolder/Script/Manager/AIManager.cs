@@ -16,7 +16,8 @@ namespace Manager.AI
         public static Vector3 PlayerRerversePosition { get; set; }
         public static Transform PlayerSupportTargetTransform { get; set; }
         public static bool PlayerIsGround { get; set; }
-
+        public static bool OnFloor { get; set; } = true;
+        public static int PlayerLayerNum { get; set; }
         /// <summary>
         /// 해당 navMeshAgent가 현재 중력에 맞는 지상을 밝고 있는지 구합니다
         /// </summary>
