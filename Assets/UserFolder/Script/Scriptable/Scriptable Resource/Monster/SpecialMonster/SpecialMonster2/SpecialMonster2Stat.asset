@@ -28,3 +28,18 @@ MonoBehaviour:
   m_ObstacleDetectLayer:
     serializedVersion: 2
     m_Bits: 409728
+  m_RushObstacleLayer:
+    serializedVersion: 2
+    m_Bits: 417792
+  m_RushAttackDamage: 0
+  m_RushAttackTime: 0
+  m_RushAttackMinRange: 0
+  m_RushAttackMaxRange: 0
+  m_RushAttackMovementSpeed: 0
+  m_GrabAttackDamage: 0
+  m_GrabAttackTime: 0
+  m_GrabAttackMinRange: 0
+  m_GrabAttackMaxRange: 0
+  m_RecoveryTriggerHP: 0.4
+  m_RecoveryHPAmount: 0.4
+  m_RecoveryTime: 20

@@ -2,9 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using Manager;
 using Manager.AI;
-using Contoller.Floor;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class SpecialMonsterAI : MonoBehaviour
@@ -64,9 +62,6 @@ public class SpecialMonsterAI : MonoBehaviour
         m_NavMeshAgent.enabled = false;
     }
 
-    /// <summary>
-    /// AI 행동 실시
-    /// </summary>
     public bool OperateAIBehavior(ref bool changeFlag)
     {
         bool isWalk = false;
@@ -138,6 +133,7 @@ public class SpecialMonsterAI : MonoBehaviour
     //public bool IsSameFloor() => navMeshAgent.navMeshOwner.name == floorDetector.GetNowFloor().name;
     //MeshLink 타는 중에 점프 하면 버그생김
 
+    #region Gizmos
 #if UNITY_EDITOR
 
     public void OnDrawGizmosSelected()
@@ -155,4 +151,5 @@ public class SpecialMonsterAI : MonoBehaviour
         //Gizmos.DrawLine(transform.position, transform.position + targetRightDirection * 15);
     }
 #endif
+    #endregion
 }

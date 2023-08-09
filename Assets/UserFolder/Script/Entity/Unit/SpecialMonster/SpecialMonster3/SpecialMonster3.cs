@@ -25,8 +25,6 @@ namespace Entity.Unit.Special
         private bool m_IsRespawned;
         private bool m_CanMove = true;
 
-        private int m_PlayerLayerNum;
-
         private int m_RealMaxHP;
         private int m_RespawnBoidsHP;
         private int m_RealDef;
@@ -65,7 +63,7 @@ namespace Entity.Unit.Special
 
             bool isHit = Physics.Raycast(transform.position, dir, out RaycastHit hit, Mathf.Infinity, m_Setting.m_ObstacleDetectLayer);
             if (!isHit) return true;
-            return hit.transform.gameObject.layer != m_PlayerLayerNum;
+            return hit.transform.gameObject.layer != AIManager.PlayerLayerNum;
         }
 
         private void Awake()
@@ -77,7 +75,6 @@ namespace Entity.Unit.Special
 
             m_NormalAttackWait = new WaitForSeconds(1);
 
-            m_PlayerLayerNum = LayerMask.NameToLayer("Player");
         }
 
         public void Init(PathCreator pathCreator, float statMultiplier)

@@ -146,6 +146,7 @@ namespace Contoller.Player
             AssignAction();
 
             AIManager.PlayerTransform = transform;
+            AIManager.PlayerLayerNum = gameObject.layer;
 
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
             m_IdlePos = m_RightAxisTransform.localPosition;
@@ -205,6 +206,9 @@ namespace Contoller.Player
             if (m_IsGrabed) return;
             m_IsGround = GroundCheck(out RaycastHit hitInfo);
             AIManager.PlayerIsGround = m_IsGround;
+            if (m_IsGround  && (hitInfo.transform.gameObject.layer == 14 || hitInfo.transform.gameObject.layer == 17))
+                AIManager.OnFloor = false;
+            else AIManager.OnFloor = true;
 
             if (m_IsThrowing)
             {
@@ -263,7 +267,8 @@ namespace Contoller.Player
         #endregion
 
         private bool GroundCheck(out RaycastHit hitInfo)
-           => Physics.Raycast(transform.position, GravityManager.GravityVector, out hitInfo, m_CapsuleCollider.height * 0.5f + m_InterporationDist, m_GroundLayer);
+            => Physics.Raycast(transform.position, GravityManager.GravityVector, out hitInfo, m_CapsuleCollider.height * 0.5f + m_InterporationDist, m_GroundLayer);
+
         
         private void ReversePosCheck()
         {
