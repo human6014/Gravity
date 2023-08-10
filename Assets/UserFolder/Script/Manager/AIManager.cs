@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using Contoller.Floor;
+using Controller.Floor;
 using EnumType;
 
 namespace Manager.AI

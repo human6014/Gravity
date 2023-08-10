@@ -4,7 +4,7 @@ using UnityEngine;
 using Manager.Weapon;
 using System.Threading.Tasks;
 using Scriptable.Equipment;
-using Contoller.Util;
+using Controller.Util;
 
 public enum EquipingWeaponType
 {
@@ -74,7 +74,7 @@ namespace Entity.Object.Weapon
         /// <summary>
         /// 사용자의 입력을 받는 스크립트
         /// </summary>
-        protected Contoller.PlayerInputController PlayerInputController { get; private set; }
+        protected Controller.PlayerInputController PlayerInputController { get; private set; }
 
         /// <summary>
         /// 현재 자신의 무기 에니메이터
@@ -128,7 +128,7 @@ namespace Entity.Object.Weapon
             Transform rootTransform = transform.root;
             Transform parentTransform = transform.parent;
 
-            PlayerInputController = rootTransform.GetComponent<Contoller.PlayerInputController>();
+            PlayerInputController = rootTransform.GetComponent<Controller.PlayerInputController>();
 
             AudioSource = parentTransform.GetComponent<AudioSource>();
             WeaponManager = parentTransform.GetComponent<WeaponManager>();

@@ -1,4 +1,4 @@
-using Contoller.Player;
+using Controller.Player;
 using Manager;
 using Scriptable;
 using System.Collections;

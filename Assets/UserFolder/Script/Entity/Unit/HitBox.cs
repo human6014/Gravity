@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Entity.Unit.Special;
-using System;
 using UnityEngine.Events;
 
 public class HitBox : MonoBehaviour, IDamageable

@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Contoller.Player;
+using Controller.Player;
 using Manager;
 using Scriptable.Equipment;
-using Contoller.Player.Utility;
+using Controller.Player.Utility;
 
 namespace Entity.Object.Weapon
 {

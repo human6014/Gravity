@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SpecialMonster2Stat
   m_EditorClassIdentifier: 
   m_HP: 30000
-  m_Def: 200
+  m_Def: 0
   m_Damage: 300
-  m_MovementSpeed: 7
+  m_MovementSpeed: 3
   m_AttackSpeed: 0
   m_AttackRange: 0
   m_ExplosionResistance: 1
@@ -28,18 +28,22 @@ MonoBehaviour:
   m_ObstacleDetectLayer:
     serializedVersion: 2
     m_Bits: 409728
+  m_AttackableLayer:
+    serializedVersion: 2
+    m_Bits: 128
   m_RushObstacleLayer:
     serializedVersion: 2
     m_Bits: 417792
-  m_RushAttackDamage: 0
-  m_RushAttackTime: 0
-  m_RushAttackMinRange: 0
-  m_RushAttackMaxRange: 0
-  m_RushAttackMovementSpeed: 0
-  m_GrabAttackDamage: 0
-  m_GrabAttackTime: 0
+  m_RushAttackDamage: 350
+  m_RushAttackTime: 10
+  m_RushAttackMinRange: 5
+  m_RushAttackMaxRange: 35
+  m_RushAttackMovementSpeed: 20
+  m_GrabAttackDamage: 100
+  m_GrabAttackTime: 15
   m_GrabAttackMinRange: 0
   m_GrabAttackMaxRange: 0
   m_RecoveryTriggerHP: 0.4
-  m_RecoveryHPAmount: 0.4
+  m_RecoveryMovementSpeed: 10
+  m_RecoveryHPAmount: 0.5
   m_RecoveryTime: 20

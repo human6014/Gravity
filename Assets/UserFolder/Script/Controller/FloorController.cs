@@ -4,7 +4,7 @@ using UnityEngine;
 using Manager.AI;
 using Manager;
 
-namespace Contoller.Floor
+namespace Controller.Floor
 {
     public class FloorController : MonoBehaviour
     {

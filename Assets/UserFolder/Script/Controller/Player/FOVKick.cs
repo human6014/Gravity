@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace Contoller.Player.Utility
+namespace Controller.Player.Utility
 {
     [Serializable]
     public class FOVKick

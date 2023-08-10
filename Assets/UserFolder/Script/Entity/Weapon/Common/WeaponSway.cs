@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-namespace Contoller.Util
+namespace Controller.Util
 {
     [Serializable]
     public class WeaponSway
