@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Contoller.AI
+namespace Controller.AI
 {
 	public class PlayerLookTarget : MonoBehaviour
 	{

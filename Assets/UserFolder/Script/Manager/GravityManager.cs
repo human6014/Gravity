@@ -8,7 +8,7 @@ namespace Manager
 {
     public class GravityManager : MonoBehaviour
     {
-        [SerializeField] private Contoller.PlayerInputController m_PlayerInputController;
+        [SerializeField] private Controller.PlayerInputController m_PlayerInputController;
         [SerializeField] private Transform m_RotateControllingObject;
 
         public List<Transform> SyncRotatingTransform { get; set; } = new List<Transform>();

@@ -23,7 +23,7 @@ namespace Manager.Weapon
     {
         #region SerializeField
         [SerializeField] private PlayerData m_PlayerData;
-        [SerializeField] private Contoller.PlayerInputController m_PlayerInputController;
+        [SerializeField] private Controller.PlayerInputController m_PlayerInputController;
         [SerializeField] private Transform m_Pivot;
         [SerializeField] private Syringe m_Syringe;
         [SerializeField] private FlashLight m_FlashLight; 

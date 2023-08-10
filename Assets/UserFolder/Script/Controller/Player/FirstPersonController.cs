@@ -2,10 +2,10 @@ using System;
 using UnityEngine;
 using Manager;
 using Manager.AI;
-using Contoller.Player.Utility;
+using Controller.Player.Utility;
 using System.Collections;
 
-namespace Contoller.Player
+namespace Controller.Player
 {
     [RequireComponent(typeof(AudioSource))]
     public class FirstPersonController : MonoBehaviour
@@ -262,6 +262,14 @@ namespace Contoller.Player
             m_IsThrowing = true;
             Vector3 throwingVector = (m_GrabCameraPosition.position - m_ThrowingPosition.position).normalized;
             m_RigidBody.AddForce(throwingVector * 50, ForceMode.Impulse);
+            m_RigidBody.useGravity = true;
+        }
+
+        public void PlayerCol(Vector3 dir)
+        {
+            transform.position = transform.position + transform.up * 1.25f;
+            m_IsThrowing = true;
+            m_RigidBody.AddForce(dir * 30 + transform.up * 10, ForceMode.Impulse);
             m_RigidBody.useGravity = true;
         }
         #endregion

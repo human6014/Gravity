@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading.Tasks;
 
 namespace Entity.Unit.Special
 {
@@ -8,9 +9,19 @@ namespace Entity.Unit.Special
     {
         private Animator m_Animator;
 
+        private bool m_DoNormalAttacking;
+        private bool m_DoCriticalHitting;
+
         #region AnimaionString
         private const string m_Walk = "Walk";
-        private const string m_Die = "Die";
+        private const string m_Roar = "Roar";
+        private const string m_Death = "Death";
+        private const string m_Grab = "Grab";
+
+        private const string m_NormalAttack = "NormalAttack";
+        private const string m_CriticalHit = "CriticalHit";
+
+        private const string m_MovementSpeed = "MovementSpeed";
         #endregion
 
         private void Awake()
@@ -18,19 +29,66 @@ namespace Entity.Unit.Special
             m_Animator = GetComponent<Animator>();
         }
 
-        public void SetWalk()
+        public void SetWalk(bool isActive)
         {
-
+            m_Animator.SetBool(m_Walk, isActive);
         }
 
-        public void SetNormalAttack()
+        public void SetRoar(bool isActive)
         {
-
+            m_Animator.SetBool(m_Roar, isActive);
         }
 
-        public void SetDie()
+        public void SetGrab(bool isActive)
         {
-
+            m_Animator.SetBool(m_Death, isActive);
         }
+
+        public void SetDeath(bool isActive)
+        {
+            m_Animator.SetBool(m_Grab, isActive);
+        }
+
+        public Task SetNormalAttack()
+        {
+            TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+            m_DoNormalAttacking = true;
+            m_Animator.SetTrigger(m_NormalAttack);
+            StartCoroutine(CheckForEndCriticalHit(tcs));
+            return tcs.Task;
+        }
+
+        public Task SetCriticalHit()
+        {
+            TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+            m_DoCriticalHitting = true;
+            m_Animator.SetTrigger(m_CriticalHit);
+            StartCoroutine(CheckForEndNormalAttack(tcs));
+
+            return tcs.Task;
+        }
+
+        public void SetMovementSpeed(float value)
+        {
+            m_Animator.SetFloat(m_MovementSpeed, value);
+        }
+
+        private IEnumerator CheckForEndNormalAttack(TaskCompletionSource<bool> tcs)
+        {
+            while (m_DoNormalAttacking) yield return null;
+            tcs.SetResult(true);
+        }
+        private IEnumerator CheckForEndCriticalHit(TaskCompletionSource<bool> tcs)
+        {
+            while (m_DoCriticalHitting) yield return null;
+            tcs.SetResult(true);
+        }
+
+        #region Animation End Event
+#pragma warning disable IDE0051 // 사용되지 않는 private 멤버 제거
+        public void EndNormalAttack() => m_DoNormalAttacking = false;
+        public void EndCriticalHit() => m_DoCriticalHitting = false;
+#pragma warning restore IDE0051
+        #endregion
     }
 }

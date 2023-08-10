@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Entity.Object;
-using Contoller.Player;
+using Controller.Player;
 using Manager;
 
 namespace Entity.Object.Weapon

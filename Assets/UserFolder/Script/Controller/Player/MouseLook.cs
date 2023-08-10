@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Contoller.Player.Utility
+namespace Controller.Player.Utility
 {
     [Serializable]
     public class MouseLook

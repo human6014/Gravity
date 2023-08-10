@@ -15,10 +15,13 @@ namespace Scriptable.Monster
         [Tooltip("직선 장애물 감지 레이어")]
         public LayerMask m_ObstacleDetectLayer;
 
-        [Tooltip("")]
-        public LayerMask m_RushObstacleLayer;
+        [Tooltip("공격 가능 레이어")]
+        public LayerMask m_AttackableLayer;
 
         [Header("Rush Attack")]
+        [Tooltip("돌진 공격 충돌 레이어")]
+        public LayerMask m_RushObstacleLayer;
+
         [Tooltip("돌진 공격 데미지")]
         public int m_RushAttackDamage;
 
@@ -51,6 +54,9 @@ namespace Scriptable.Monster
         [Header("Hide and Recovery")]
         [Tooltip("발동 체력 비율")] [Range(0,1)]
         public float m_RecoveryTriggerHP = 0.4f;
+
+        [Tooltip("회복 이동 속도")]
+        public float m_RecoveryMovementSpeed = 12;
 
         [Tooltip("회복량 비율")] [Range(0,1)]
         public float m_RecoveryHPAmount = 0.4f;
