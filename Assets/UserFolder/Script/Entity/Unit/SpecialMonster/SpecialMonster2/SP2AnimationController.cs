@@ -41,12 +41,12 @@ namespace Entity.Unit.Special
 
         public void SetGrab(bool isActive)
         {
-            m_Animator.SetBool(m_Death, isActive);
+            m_Animator.SetBool(m_Grab, isActive);
         }
 
         public void SetDeath(bool isActive)
         {
-            m_Animator.SetBool(m_Grab, isActive);
+            m_Animator.SetBool(m_Death, isActive);
         }
 
         public Task SetNormalAttack()
@@ -54,7 +54,7 @@ namespace Entity.Unit.Special
             TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
             m_DoNormalAttacking = true;
             m_Animator.SetTrigger(m_NormalAttack);
-            StartCoroutine(CheckForEndCriticalHit(tcs));
+            StartCoroutine(CheckForEndNormalAttack(tcs));
             return tcs.Task;
         }
 
@@ -63,7 +63,7 @@ namespace Entity.Unit.Special
             TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
             m_DoCriticalHitting = true;
             m_Animator.SetTrigger(m_CriticalHit);
-            StartCoroutine(CheckForEndNormalAttack(tcs));
+            StartCoroutine(CheckForEndCriticalHit(tcs));
 
             return tcs.Task;
         }

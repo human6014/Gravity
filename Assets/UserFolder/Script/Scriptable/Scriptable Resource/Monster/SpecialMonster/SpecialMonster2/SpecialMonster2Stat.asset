@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08eafbf28b04655439fe19aefe31360f, type: 3}
   m_Name: SpecialMonster2Stat
   m_EditorClassIdentifier: 
-  m_HP: 30000
+  m_HP: 1000
   m_Def: 0
   m_Damage: 300
   m_MovementSpeed: 3
-  m_AttackSpeed: 0
-  m_AttackRange: 0
+  m_AttackSpeed: 7
+  m_AttackRange: 10
   m_ExplosionResistance: 1
   m_MeleeResistance: 1
   m_NoramlAttackType: 0
@@ -35,12 +35,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 417792
   m_RushAttackDamage: 350
-  m_RushAttackTime: 10
-  m_RushAttackMinRange: 5
-  m_RushAttackMaxRange: 35
-  m_RushAttackMovementSpeed: 20
+  m_RushAttackTime: 20
+  m_RushAttackMinRange: 15
+  m_RushAttackMaxRange: 40
+  m_RushAttackMovementSpeed: 25
   m_GrabAttackDamage: 100
-  m_GrabAttackTime: 15
+  m_GrabAttackTime: 9999
   m_GrabAttackMinRange: 0
   m_GrabAttackMaxRange: 0
   m_RecoveryTriggerHP: 0.4

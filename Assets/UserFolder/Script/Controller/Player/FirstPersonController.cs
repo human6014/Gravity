@@ -269,7 +269,7 @@ namespace Controller.Player
         {
             transform.position = transform.position + transform.up * 1.25f;
             m_IsThrowing = true;
-            m_RigidBody.AddForce(dir * 30 + transform.up * 10, ForceMode.Impulse);
+            m_RigidBody.AddForce(dir * 25 + transform.up * 10, ForceMode.Impulse);
             m_RigidBody.useGravity = true;
         }
         #endregion

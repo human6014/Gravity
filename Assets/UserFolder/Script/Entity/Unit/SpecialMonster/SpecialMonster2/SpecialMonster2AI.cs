@@ -18,6 +18,7 @@ namespace Entity.Unit.Special
         private NavMeshAgent m_NavMeshAgent;
 
         private bool m_IsInit;
+        private float m_RotationSpeed = 45;
 
         public bool IsCloseToTarget { get; private set; }
         public bool CanMoveTarget { get; private set; }
@@ -56,16 +57,21 @@ namespace Entity.Unit.Special
                     break;
             }
 
-            //Vector3 dir = (m_NavMeshAgent.steeringTarget - transform.position);
-            //dir.y = 0;
-            //dir.Normalize();
-            //Quaternion rot = Quaternion.LookRotation(dir);
-            //transform.rotation = Quaternion.Slerp(transform.rotation, rot,0.3f);
-
+            
             if (moveType == MoveType.RecoveryPos && m_NavMeshAgent.remainingDistance <= 3) MoveCompToPos?.Invoke();
-            if (moveType == MoveType.Rush && m_NavMeshAgent.remainingDistance <= 3) RushCompToPos?.Invoke();
+            else if (moveType == MoveType.Rush && m_NavMeshAgent.remainingDistance <= 3) RushCompToPos?.Invoke();
         }
 
+        public void RotateToPlayer()
+        {
+            Vector3 dir = (AIManager.PlayerTransform.position - transform.position);
+            dir.y = 0;
+            dir.Normalize();
+            Quaternion targetRotation = Quaternion.LookRotation(dir);
+
+            float step = m_RotationSpeed * Time.deltaTime; // 초당 회전할 각도
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, step);
+        }
 
         public void Dispose()
         {
