@@ -1411,7 +1411,7 @@ Transform:
   m_GameObject: {fileID: 8608294136795338332}
   m_LocalRotation: {x: -0.3567245, y: 0.17132881, z: 0.16453674, w: 0.90350527}
   m_LocalPosition: {x: -3.951542, y: -5.034154, z: 4.234}
-  m_LocalScale: {x: 1.0000002, y: 0.99999994, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8608294136795366798}
@@ -1643,7 +1643,7 @@ Transform:
   m_GameObject: {fileID: 8608294136795338346}
   m_LocalRotation: {x: -0.56042653, y: 0.10314273, z: 0.13486783, w: 0.8106136}
   m_LocalPosition: {x: -5.752849, y: -2.7110143, z: 3.75}
-  m_LocalScale: {x: 1.0000001, y: 0.9999998, z: 0.99999994}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8608294136795366796}
@@ -3090,7 +3090,7 @@ Transform:
   m_GameObject: {fileID: 8608294136795338546}
   m_LocalRotation: {x: -0.7004882, y: -0.09927388, z: -0.0853154, w: 0.7015571}
   m_LocalPosition: {x: -7.7181616, y: -1.0694739, z: -2.677324}
-  m_LocalScale: {x: 1.0000002, y: 0.99999994, z: 0.9999998}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8608294136795366836}
@@ -6585,7 +6585,7 @@ Transform:
   m_GameObject: {fileID: 8608294136795338672}
   m_LocalRotation: {x: -0.7015572, y: 0.085315175, z: 0.0992739, w: 0.70048803}
   m_LocalPosition: {x: -7.7181606, y: -1.069475, z: 2.676997}
-  m_LocalScale: {x: 1.0000001, y: 1, z: 0.9999999}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8608294136795366834}
@@ -7353,7 +7353,7 @@ Transform:
   m_GameObject: {fileID: 8608294136795338718}
   m_LocalRotation: {x: 0.90350527, y: 0.16453676, z: 0.17132899, w: -0.35672432}
   m_LocalPosition: {x: -3.9515407, y: -5.034154, z: -4.2340136}
-  m_LocalScale: {x: 0.99999994, y: 1.0000001, z: 0.9999999}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8608294136795366832}
@@ -7453,7 +7453,7 @@ Transform:
   m_GameObject: {fileID: 8608294136795338724}
   m_LocalRotation: {x: -0.8106137, y: -0.13486783, z: -0.1031428, w: 0.56042635}
   m_LocalPosition: {x: -5.7528467, y: -2.7110143, z: -3.7503588}
-  m_LocalScale: {x: 1, y: 1.0000002, z: 0.9999999}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8608294136795366838}
@@ -19314,7 +19314,7 @@ NavMeshAgent:
   m_Speed: 3
   m_Acceleration: 8
   avoidancePriority: 38
-  m_AngularSpeed: 90
+  m_AngularSpeed: 60
   m_StoppingDistance: 8
   m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 0
