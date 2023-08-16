@@ -74,7 +74,6 @@ namespace Entity.Unit.Special
             m_Rigidbody = GetComponent<Rigidbody>();
 
             m_NormalAttackWait = new WaitForSeconds(1);
-
         }
 
         public void Init(PathCreator pathCreator, float statMultiplier)

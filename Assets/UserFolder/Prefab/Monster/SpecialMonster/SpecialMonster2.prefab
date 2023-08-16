@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3937056238358366906
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 95506104847953089}
+  m_Layer: 10
+  m_Name: GrabEndPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &95506104847953089
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3937056238358366906}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.91, z: 31.09}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8608294137700710802}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8608294136795338244
 GameObject:
   m_ObjectHideFlags: 0
@@ -7989,7 +8020,9 @@ GameObject:
   - component: {fileID: 8608294136795366434}
   - component: {fileID: 8608294136798266376}
   - component: {fileID: 8608294136797267528}
-  m_Layer: 0
+  - component: {fileID: 5221997936361002482}
+  - component: {fileID: 3084169427935331287}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment053
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8061,6 +8094,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &5221997936361002482
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338754}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713933
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000012442437, y: -0.21873991, z: 0.00000057881766}
+--- !u!114 &3084169427935331287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 2
 --- !u!1 &8608294136795338756
 GameObject:
   m_ObjectHideFlags: 0
@@ -8155,7 +8231,9 @@ GameObject:
   - component: {fileID: 8608294136795366438}
   - component: {fileID: 8608294136798266380}
   - component: {fileID: 8608294136797267532}
-  m_Layer: 0
+  - component: {fileID: 9049858865062756230}
+  - component: {fileID: 2585242508034202570}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment051
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8227,6 +8305,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &9049858865062756230
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338758}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713941
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000014305115, y: -0.21873891, z: 0.00000057229886}
+--- !u!114 &2585242508034202570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 2
 --- !u!1 &8608294136795338760
 GameObject:
   m_ObjectHideFlags: 0
@@ -8321,7 +8442,9 @@ GameObject:
   - component: {fileID: 8608294136795366442}
   - component: {fileID: 8608294136798266416}
   - component: {fileID: 8608294136797267568}
-  m_Layer: 0
+  - component: {fileID: 4736716004425263035}
+  - component: {fileID: 7970289489940952490}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment049
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8393,6 +8516,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &4736716004425263035
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338762}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713945
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000016819678, y: -0.21873704, z: 0.00000005797834}
+--- !u!114 &7970289489940952490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 2
 --- !u!1 &8608294136795338764
 GameObject:
   m_ObjectHideFlags: 0
@@ -8487,7 +8653,9 @@ GameObject:
   - component: {fileID: 8608294136795366446}
   - component: {fileID: 8608294136798266420}
   - component: {fileID: 8608294136797267572}
-  m_Layer: 0
+  - component: {fileID: 8498947756260628737}
+  - component: {fileID: 8036698029665019756}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment047
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8559,6 +8727,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &8498947756260628737
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338766}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.2471394
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000019725371, y: -0.21873704, z: 0.000001999551}
+--- !u!114 &8036698029665019756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 2
 --- !u!1 &8608294136795338768
 GameObject:
   m_ObjectHideFlags: 0
@@ -8570,7 +8781,9 @@ GameObject:
   - component: {fileID: 8608294136795366448}
   - component: {fileID: 8608294136798266398}
   - component: {fileID: 8608294136797267550}
-  m_Layer: 0
+  - component: {fileID: 7340768532735772706}
+  - component: {fileID: 2144706875308394743}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment060
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8642,6 +8855,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &7340768532735772706
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338768}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713933
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000002151351, y: -0.21873741, z: 0.0000015549181}
+--- !u!114 &2144706875308394743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 3
 --- !u!1 &8608294136795338770
 GameObject:
   m_ObjectHideFlags: 0
@@ -8737,7 +8993,9 @@ GameObject:
   - component: {fileID: 8608294136795366452}
   - component: {fileID: 8608294136798266370}
   - component: {fileID: 8608294136797267522}
-  m_Layer: 0
+  - component: {fileID: 9087791302548623399}
+  - component: {fileID: 8989354758637616518}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment058
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8809,6 +9067,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &9087791302548623399
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338772}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713928
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.00000017695045, y: -0.21873796, z: 0.0000010767692}
+--- !u!114 &8989354758637616518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 3
 --- !u!1 &8608294136795338774
 GameObject:
   m_ObjectHideFlags: 0
@@ -9153,7 +9454,9 @@ GameObject:
   - component: {fileID: 8608294136795366462}
   - component: {fileID: 8608294136798266372}
   - component: {fileID: 8608294136797267524}
-  m_Layer: 0
+  - component: {fileID: 4077177387311986846}
+  - component: {fileID: 3310190415158142683}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment055
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9225,6 +9528,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &4077177387311986846
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338782}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713942
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000017210808, y: -0.21873704, z: 0.0000010344686}
+--- !u!114 &3310190415158142683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 2
 --- !u!1 &8608294136795338784
 GameObject:
   m_ObjectHideFlags: 0
@@ -9236,7 +9582,9 @@ GameObject:
   - component: {fileID: 8608294136795366464}
   - component: {fileID: 8608294136798266414}
   - component: {fileID: 8608294136797267566}
-  m_Layer: 0
+  - component: {fileID: 3035366898792671972}
+  - component: {fileID: 3971445548886235483}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment036
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9308,6 +9656,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &3035366898792671972
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338784}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713932
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000038798858, y: -0.21873789, z: 0.0000024845365}
+--- !u!114 &3971445548886235483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 1
 --- !u!1 &8608294136795338786
 GameObject:
   m_ObjectHideFlags: 0
@@ -9402,7 +9793,9 @@ GameObject:
   - component: {fileID: 8608294136795366468}
   - component: {fileID: 8608294136798266450}
   - component: {fileID: 8608294136797267858}
-  m_Layer: 0
+  - component: {fileID: 7403101679211364650}
+  - component: {fileID: 3641065356410890443}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment034
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9474,6 +9867,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &7403101679211364650
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338788}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713942
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000031776676, y: -0.21873885, z: 0.0000015271954}
+--- !u!114 &3641065356410890443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 1
 --- !u!1 &8608294136795338790
 GameObject:
   m_ObjectHideFlags: 0
@@ -9568,7 +10004,9 @@ GameObject:
   - component: {fileID: 8608294136795366472}
   - component: {fileID: 8608294136798266454}
   - component: {fileID: 8608294136797267862}
-  m_Layer: 0
+  - component: {fileID: 3130308069095705423}
+  - component: {fileID: 2635446751255301251}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment032
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9640,6 +10078,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &3130308069095705423
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338792}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713944
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.000002674755, y: -0.21874075, z: 0.0000029680964}
+--- !u!114 &2635446751255301251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 1
 --- !u!1 &8608294136795338794
 GameObject:
   m_ObjectHideFlags: 0
@@ -9734,7 +10215,9 @@ GameObject:
   - component: {fileID: 8608294136795366476}
   - component: {fileID: 8608294136798266458}
   - component: {fileID: 8608294136797267866}
-  m_Layer: 0
+  - component: {fileID: 2929084645824296987}
+  - component: {fileID: 8774212702056342609}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment030
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9806,6 +10289,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &2929084645824296987
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338796}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713947
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000014565868, y: -0.21873741, z: 0.000002971152}
+--- !u!114 &8774212702056342609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 1
 --- !u!1 &8608294136795338798
 GameObject:
   m_ObjectHideFlags: 0
@@ -9983,7 +10509,9 @@ GameObject:
   - component: {fileID: 8608294136795366482}
   - component: {fileID: 8608294136798266424}
   - component: {fileID: 8608294136797267576}
-  m_Layer: 0
+  - component: {fileID: 7559000965500903412}
+  - component: {fileID: 4074038236003175410}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment045
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10055,6 +10583,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &7559000965500903412
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338802}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713935
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000014696245, y: -0.218737, z: 0.0000015259732}
+--- !u!114 &4074038236003175410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 2
 --- !u!1 &8608294136795338804
 GameObject:
   m_ObjectHideFlags: 0
@@ -10149,7 +10720,9 @@ GameObject:
   - component: {fileID: 8608294136795366486}
   - component: {fileID: 8608294136798266428}
   - component: {fileID: 8608294136797267580}
-  m_Layer: 0
+  - component: {fileID: 7695200373009822334}
+  - component: {fileID: 294190330376460699}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment043
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10221,6 +10794,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &7695200373009822334
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338806}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.2471393
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.000000019556525, y: -0.21873547, z: 0.00000010198049}
+--- !u!114 &294190330376460699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 2
 --- !u!1 &8608294136795338808
 GameObject:
   m_ObjectHideFlags: 0
@@ -10315,7 +10931,9 @@ GameObject:
   - component: {fileID: 8608294136795366490}
   - component: {fileID: 8608294136798266400}
   - component: {fileID: 8608294136797267552}
-  m_Layer: 0
+  - component: {fileID: 3971736265995737288}
+  - component: {fileID: 4593584470793072412}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment041
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10387,6 +11005,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &3971736265995737288
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338810}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713932
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000007739253, y: -0.218736, z: 0.00000056089084}
+--- !u!114 &4593584470793072412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 2
 --- !u!1 &8608294136795338812
 GameObject:
   m_ObjectHideFlags: 0
@@ -10481,7 +11142,9 @@ GameObject:
   - component: {fileID: 8608294136795366494}
   - component: {fileID: 8608294136798266404}
   - component: {fileID: 8608294136797267556}
-  m_Layer: 0
+  - component: {fileID: 4660286638902385824}
+  - component: {fileID: 4735779867497842621}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment039
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10553,6 +11216,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &4660286638902385824
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338814}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713926
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000011250344, y: -0.21873643, z: 0.0000010458765}
+--- !u!114 &4735779867497842621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 2
 --- !u!1 &8608294136795338816
 GameObject:
   m_ObjectHideFlags: 0
@@ -10564,7 +11270,9 @@ GameObject:
   - component: {fileID: 8608294136795366496}
   - component: {fileID: 8608294136798266446}
   - component: {fileID: 8608294136797267854}
-  m_Layer: 0
+  - component: {fileID: 7725062164914349345}
+  - component: {fileID: 2995301963566664781}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment020
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10636,6 +11344,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &7725062164914349345
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338816}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713933
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.00000062212183, y: -0.21873623, z: 0.0000010483211}
+--- !u!114 &2995301963566664781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 1
 --- !u!1 &8608294136795338818
 GameObject:
   m_ObjectHideFlags: 0
@@ -10979,7 +11730,9 @@ GameObject:
   - component: {fileID: 8608294136795366506}
   - component: {fileID: 8608294136798266480}
   - component: {fileID: 8608294136797267888}
-  m_Layer: 0
+  - component: {fileID: 7600708776594652839}
+  - component: {fileID: 9173938728265039371}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment017
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11051,6 +11804,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &7600708776594652839
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338826}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713936
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000015329562, y: -0.21874362, z: 0.0000049048244}
+--- !u!114 &9173938728265039371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 0
 --- !u!1 &8608294136795338828
 GameObject:
   m_ObjectHideFlags: 0
@@ -11145,7 +11941,9 @@ GameObject:
   - component: {fileID: 8608294136795366510}
   - component: {fileID: 8608294136798266484}
   - component: {fileID: 8608294136797267892}
-  m_Layer: 0
+  - component: {fileID: 7334449522477477361}
+  - component: {fileID: 2386945207834236599}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment015
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11217,6 +12015,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &7334449522477477361
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338830}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713945
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000005066395, y: -0.2187417, z: 0.000002047038}
+--- !u!114 &2386945207834236599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 0
 --- !u!1 &8608294136795338832
 GameObject:
   m_ObjectHideFlags: 0
@@ -11228,7 +12069,9 @@ GameObject:
   - component: {fileID: 8608294136795366512}
   - component: {fileID: 8608294136798266462}
   - component: {fileID: 8608294136797267870}
-  m_Layer: 0
+  - component: {fileID: 5547972425480699446}
+  - component: {fileID: 2670372012936633446}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment028
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11300,6 +12143,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &5547972425480699446
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338832}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713942
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000014565868, y: -0.21873838, z: 0.0000005403158}
+--- !u!114 &2670372012936633446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 1
 --- !u!1 &8608294136795338834
 GameObject:
   m_ObjectHideFlags: 0
@@ -11394,7 +12280,9 @@ GameObject:
   - component: {fileID: 8608294136795366516}
   - component: {fileID: 8608294136798266434}
   - component: {fileID: 8608294136797267842}
-  m_Layer: 0
+  - component: {fileID: 1916594510257605133}
+  - component: {fileID: 5585785621334521274}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment026
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11466,6 +12354,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &1916594510257605133
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338836}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713935
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000012442437, y: -0.2187379, z: 0.0000015149726}
+--- !u!114 &5585785621334521274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 1
 --- !u!1 &8608294136795338838
 GameObject:
   m_ObjectHideFlags: 0
@@ -11560,7 +12491,9 @@ GameObject:
   - component: {fileID: 8608294136795366520}
   - component: {fileID: 8608294136798266438}
   - component: {fileID: 8608294136797267846}
-  m_Layer: 0
+  - component: {fileID: 8678115648913187513}
+  - component: {fileID: 2918703735713298796}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment024
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11632,6 +12565,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &8678115648913187513
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338840}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713941
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000007413311, y: -0.21873745, z: 0.00000056445583}
+--- !u!114 &2918703735713298796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 1
 --- !u!1 &8608294136795338842
 GameObject:
   m_ObjectHideFlags: 0
@@ -11726,7 +12702,9 @@ GameObject:
   - component: {fileID: 8608294136795366524}
   - component: {fileID: 8608294136798266442}
   - component: {fileID: 8608294136797267850}
-  m_Layer: 0
+  - component: {fileID: 6096319185851670752}
+  - component: {fileID: 2186242356475857111}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment022
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11798,6 +12776,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &6096319185851670752
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338844}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713932
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000009862686, y: -0.21873745, z: 0.0000010537195}
+--- !u!114 &2186242356475857111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 1
 --- !u!1 &8608294136795338846
 GameObject:
   m_ObjectHideFlags: 0
@@ -11975,7 +12996,9 @@ GameObject:
   - component: {fileID: 8608294136795366786}
   - component: {fileID: 8608294136798266472}
   - component: {fileID: 8608294136797267880}
-  m_Layer: 0
+  - component: {fileID: 222600221191315150}
+  - component: {fileID: 4885574319133926996}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12047,6 +13070,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &222600221191315150
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338850}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713935
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.00000031292439, y: -0.21873944, z: 0.0000015621902}
+--- !u!114 &4885574319133926996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 0
 --- !u!1 &8608294136795338852
 GameObject:
   m_ObjectHideFlags: 0
@@ -12141,7 +13207,9 @@ GameObject:
   - component: {fileID: 8608294136795366790}
   - component: {fileID: 8608294136798266476}
   - component: {fileID: 8608294136797267884}
-  m_Layer: 0
+  - component: {fileID: 4957009944417544597}
+  - component: {fileID: 283586710028868622}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12213,6 +13281,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &4957009944417544597
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338854}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713936
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.00000042188788, y: -0.21873748, z: 0.0000015393575}
+--- !u!114 &283586710028868622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 0
 --- !u!1 &8608294136795338856
 GameObject:
   m_ObjectHideFlags: 0
@@ -12307,7 +13418,9 @@ GameObject:
   - component: {fileID: 8608294136795366794}
   - component: {fileID: 8608294136798266768}
   - component: {fileID: 8608294136797267920}
-  m_Layer: 0
+  - component: {fileID: 6646962468092314177}
+  - component: {fileID: 3425777639816567579}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12379,6 +13492,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &6646962468092314177
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338858}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713933
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.00000034924554, y: -0.21873698, z: 0.0000010692372}
+--- !u!114 &3425777639816567579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 0
 --- !u!1 &8608294136795338860
 GameObject:
   m_ObjectHideFlags: 0
@@ -12390,7 +13546,9 @@ GameObject:
   - component: {fileID: 8608294136795366796}
   - component: {fileID: 8608294136798266778}
   - component: {fileID: 8608294136797267930}
-  m_Layer: 0
+  - component: {fileID: 6056440097826474961}
+  - component: {fileID: 1600441267976543637}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleBase004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12462,6 +13620,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &6056440097826474961
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338860}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.29099587
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.00000023841858, y: -0.3660781, z: 0.000001411419}
+--- !u!114 &1600441267976543637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 4
 --- !u!1 &8608294136795338862
 GameObject:
   m_ObjectHideFlags: 0
@@ -12473,7 +13674,9 @@ GameObject:
   - component: {fileID: 8608294136795366798}
   - component: {fileID: 8608294136798266772}
   - component: {fileID: 8608294136797267924}
-  m_Layer: 0
+  - component: {fileID: 2938374910397100453}
+  - component: {fileID: 4902942434119058038}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleBase005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12545,6 +13748,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &2938374910397100453
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338862}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.29099593
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000006396863, y: -0.366078, z: 0.0000007548043}
+--- !u!114 &4902942434119058038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 5
 --- !u!1 &8608294136795338864
 GameObject:
   m_ObjectHideFlags: 0
@@ -12639,7 +13885,9 @@ GameObject:
   - component: {fileID: 8608294136795366802}
   - component: {fileID: 8608294136798266488}
   - component: {fileID: 8608294136797267896}
-  m_Layer: 0
+  - component: {fileID: 1796032745622470891}
+  - component: {fileID: 6234774857292199979}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment013
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12711,6 +13959,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &1796032745622470891
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338866}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713942
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.00000026449393, y: -0.21873984, z: 0.0000039705296}
+--- !u!114 &6234774857292199979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 0
 --- !u!1 &8608294136795338868
 GameObject:
   m_ObjectHideFlags: 0
@@ -12805,7 +14096,9 @@ GameObject:
   - component: {fileID: 8608294136795366806}
   - component: {fileID: 8608294136798266492}
   - component: {fileID: 8608294136797267900}
-  m_Layer: 0
+  - component: {fileID: 3571456753497321212}
+  - component: {fileID: 3752428288177632571}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment011
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12877,6 +14170,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &3571456753497321212
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338870}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713942
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000010989589, y: -0.21873987, z: 0.0000020467073}
+--- !u!114 &3752428288177632571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 0
 --- !u!1 &8608294136795338872
 GameObject:
   m_ObjectHideFlags: 0
@@ -12971,7 +14307,9 @@ GameObject:
   - component: {fileID: 8608294136795366810}
   - component: {fileID: 8608294136798266464}
   - component: {fileID: 8608294136797267872}
-  m_Layer: 0
+  - component: {fileID: 7670856354785832871}
+  - component: {fileID: 8022068944446921611}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment009
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13043,6 +14381,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &7670856354785832871
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338874}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713942
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000008409839, y: -0.21873896, z: 0.0000010911568}
+--- !u!114 &8022068944446921611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 0
 --- !u!1 &8608294136795338876
 GameObject:
   m_ObjectHideFlags: 0
@@ -13137,7 +14518,9 @@ GameObject:
   - component: {fileID: 8608294136795366814}
   - component: {fileID: 8608294136798266468}
   - component: {fileID: 8608294136797267876}
-  m_Layer: 0
+  - component: {fileID: 9215772336913686336}
+  - component: {fileID: 2894450475647444216}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment007
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13209,6 +14592,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &9215772336913686336
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338878}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713936
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000009518108, y: -0.21873884, z: 0.000002048198}
+--- !u!114 &2894450475647444216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 0
 --- !u!1 &8608294136795338880
 GameObject:
   m_ObjectHideFlags: 0
@@ -13220,7 +14646,9 @@ GameObject:
   - component: {fileID: 8608294136795366560}
   - component: {fileID: 8608294136798266510}
   - component: {fileID: 8608294136797267662}
-  m_Layer: 0
+  - component: {fileID: 7276716493650766737}
+  - component: {fileID: 4122985490757640127}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleTip002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13292,6 +14720,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &7276716493650766737
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338880}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.34611267
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.000002433502, y: -0.413698, z: 0.0000018446617}
+--- !u!114 &4122985490757640127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 2
 --- !u!1 &8608294136795338882
 GameObject:
   m_ObjectHideFlags: 0
@@ -13303,7 +14774,9 @@ GameObject:
   - component: {fileID: 8608294136795366562}
   - component: {fileID: 8608294136798266504}
   - component: {fileID: 8608294136797267656}
-  m_Layer: 0
+  - component: {fileID: 3024768266899971616}
+  - component: {fileID: 5262576544541008826}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleTip003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13375,6 +14848,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &3024768266899971616
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338882}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.34611294
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000003052081, y: -0.41369778, z: 0.0000028529607}
+--- !u!114 &5262576544541008826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 3
 --- !u!1 &8608294136795338884
 GameObject:
   m_ObjectHideFlags: 0
@@ -13386,7 +14902,9 @@ GameObject:
   - component: {fileID: 8608294136795366564}
   - component: {fileID: 8608294136798266546}
   - component: {fileID: 8608294136797267698}
-  m_Layer: 0
+  - component: {fileID: 5578532830517795329}
+  - component: {fileID: 5872581944103410911}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13458,6 +14976,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &5578532830517795329
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338884}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.3461132
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000011299162, y: -0.4137027, z: 0.0000013414672}
+--- !u!114 &5872581944103410911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 0
 --- !u!1 &8608294136795338886
 GameObject:
   m_ObjectHideFlags: 0
@@ -13469,7 +15030,9 @@ GameObject:
   - component: {fileID: 8608294136795366566}
   - component: {fileID: 8608294136798266508}
   - component: {fileID: 8608294136797267660}
-  m_Layer: 0
+  - component: {fileID: 3968538278829017989}
+  - component: {fileID: 7921486640569591591}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleTip001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13541,6 +15104,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &3968538278829017989
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338886}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.34611318
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000017059173, y: -0.41369772, z: -0.0000010502662}
+--- !u!114 &7921486640569591591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 1
 --- !u!1 &8608294136795338888
 GameObject:
   m_ObjectHideFlags: 0
@@ -13552,7 +15158,9 @@ GameObject:
   - component: {fileID: 8608294136795366568}
   - component: {fileID: 8608294136798266550}
   - component: {fileID: 8608294136797267702}
-  m_Layer: 0
+  - component: {fileID: 4080088807850662344}
+  - component: {fileID: 2120384197641060853}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment112
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13624,6 +15232,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &4080088807850662344
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338888}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713948
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000021848803, y: -0.21874273, z: 0.0000020125885}
+--- !u!114 &2120384197641060853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 5
 --- !u!1 &8608294136795338890
 GameObject:
   m_ObjectHideFlags: 0
@@ -13718,7 +15369,9 @@ GameObject:
   - component: {fileID: 8608294136795366572}
   - component: {fileID: 8608294136798266554}
   - component: {fileID: 8608294136797267706}
-  m_Layer: 0
+  - component: {fileID: 2863337551651583297}
+  - component: {fileID: 938487443227784445}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment110
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13790,6 +15443,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &2863337551651583297
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338892}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.2471393
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000017210807, y: -0.21874082, z: 0.0000020174778}
+--- !u!114 &938487443227784445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 5
 --- !u!1 &8608294136795338894
 GameObject:
   m_ObjectHideFlags: 0
@@ -14382,7 +16078,9 @@ GameObject:
   - component: {fileID: 8608294136795366588}
   - component: {fileID: 8608294136798266506}
   - component: {fileID: 8608294136797267658}
-  m_Layer: 0
+  - component: {fileID: 790137479641320359}
+  - component: {fileID: 1726319906838269991}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleTip004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14454,6 +16152,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &790137479641320359
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338908}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.3461129
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000014058534, y: -0.41369691, z: 0.00000089753723}
+--- !u!114 &1726319906838269991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 4
 --- !u!1 &8608294136795338910
 GameObject:
   m_ObjectHideFlags: 0
@@ -14465,7 +16206,9 @@ GameObject:
   - component: {fileID: 8608294136795366590}
   - component: {fileID: 8608294136798266500}
   - component: {fileID: 8608294136797267652}
-  m_Layer: 0
+  - component: {fileID: 7091023831257794310}
+  - component: {fileID: 4282862412810679648}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleTip005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14537,6 +16280,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &7091023831257794310
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338910}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.3461129
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000031240997, y: -0.4137007, z: 0.0000013739891}
+--- !u!114 &4282862412810679648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 5
 --- !u!1 &8608294136795338912
 GameObject:
   m_ObjectHideFlags: 0
@@ -14548,7 +16334,9 @@ GameObject:
   - component: {fileID: 8608294136795366592}
   - component: {fileID: 8608294136798266542}
   - component: {fileID: 8608294136797267694}
-  m_Layer: 0
+  - component: {fileID: 2335719398699092055}
+  - component: {fileID: 8898980624999352788}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment100
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14620,6 +16408,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &2335719398699092055
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338912}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713932
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000012116494, y: -0.21873704, z: 0.0000005918553}
+--- !u!114 &8898980624999352788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 5
 --- !u!1 &8608294136795338914
 GameObject:
   m_ObjectHideFlags: 0
@@ -14714,7 +16545,9 @@ GameObject:
   - component: {fileID: 8608294136795366596}
   - component: {fileID: 8608294136798266578}
   - component: {fileID: 8608294136797267474}
-  m_Layer: 0
+  - component: {fileID: 7734264083636211342}
+  - component: {fileID: 2812854205916790234}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment098
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14786,6 +16619,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &7734264083636211342
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338916}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713933
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000009536743, y: -0.21873742, z: 0.0000010409874}
+--- !u!114 &2812854205916790234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 5
 --- !u!1 &8608294136795338918
 GameObject:
   m_ObjectHideFlags: 0
@@ -14880,7 +16756,9 @@ GameObject:
   - component: {fileID: 8608294136795366600}
   - component: {fileID: 8608294136798266582}
   - component: {fileID: 8608294136797267478}
-  m_Layer: 0
+  - component: {fileID: 7575957750555811703}
+  - component: {fileID: 317346149320154855}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment096
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14952,6 +16830,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &7575957750555811703
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338920}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713926
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.00000086705927, y: -0.21873724, z: 0.00000084005217}
+--- !u!114 &317346149320154855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 5
 --- !u!1 &8608294136795338922
 GameObject:
   m_ObjectHideFlags: 0
@@ -15212,7 +17133,9 @@ GameObject:
   - component: {fileID: 8608294136795366608}
   - component: {fileID: 8608294136798266558}
   - component: {fileID: 8608294136797267710}
-  m_Layer: 0
+  - component: {fileID: 5755978248924291291}
+  - component: {fileID: 7552627655882829037}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment108
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15284,6 +17207,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &5755978248924291291
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338928}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713932
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000023841858, y: -0.2187384, z: 0.0000024975743}
+--- !u!114 &7552627655882829037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 5
 --- !u!1 &8608294136795338930
 GameObject:
   m_ObjectHideFlags: 0
@@ -15378,7 +17344,9 @@ GameObject:
   - component: {fileID: 8608294136795366612}
   - component: {fileID: 8608294136798266530}
   - component: {fileID: 8608294136797267682}
-  m_Layer: 0
+  - component: {fileID: 6443580832553471888}
+  - component: {fileID: 5180815843445976499}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment106
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15450,6 +17418,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &6443580832553471888
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338932}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713933
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.000000013037665, y: -0.21873748, z: 0.0000025073525}
+--- !u!114 &5180815843445976499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 5
 --- !u!1 &8608294136795338934
 GameObject:
   m_ObjectHideFlags: 0
@@ -15544,7 +17555,9 @@ GameObject:
   - component: {fileID: 8608294136795366616}
   - component: {fileID: 8608294136798266534}
   - component: {fileID: 8608294136797267686}
-  m_Layer: 0
+  - component: {fileID: 3094919198856086510}
+  - component: {fileID: 8614405240705106400}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment104
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15616,6 +17629,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &3094919198856086510
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338936}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713933
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000021848803, y: -0.21873848, z: 0.0000015194543}
+--- !u!114 &8614405240705106400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 5
 --- !u!1 &8608294136795338938
 GameObject:
   m_ObjectHideFlags: 0
@@ -15710,7 +17766,9 @@ GameObject:
   - component: {fileID: 8608294136795366620}
   - component: {fileID: 8608294136798266538}
   - component: {fileID: 8608294136797267690}
-  m_Layer: 0
+  - component: {fileID: 879776865612319172}
+  - component: {fileID: 2688716691730958344}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment102
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15782,6 +17840,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &879776865612319172
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338940}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713925
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000017210808, y: -0.21873844, z: 0.0000020109587}
+--- !u!114 &2688716691730958344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 5
 --- !u!1 &8608294136795338942
 GameObject:
   m_ObjectHideFlags: 0
@@ -15959,7 +18060,9 @@ GameObject:
   - component: {fileID: 8608294136795366626}
   - component: {fileID: 8608294136798266568}
   - component: {fileID: 8608294136797267464}
-  m_Layer: 0
+  - component: {fileID: 3296962053380421521}
+  - component: {fileID: 2192349152335630551}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment085
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16031,6 +18134,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &3296962053380421521
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338946}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713928
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000009536743, y: -0.21873796, z: 0.0000025081674}
+--- !u!114 &2192349152335630551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 4
 --- !u!1 &8608294136795338948
 GameObject:
   m_ObjectHideFlags: 0
@@ -16125,7 +18271,9 @@ GameObject:
   - component: {fileID: 8608294136795366630}
   - component: {fileID: 8608294136798266572}
   - component: {fileID: 8608294136797267468}
-  m_Layer: 0
+  - component: {fileID: 7345080479241960473}
+  - component: {fileID: 8044625415876043818}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment083
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16197,6 +18345,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &7345080479241960473
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338950}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713928
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000018272524, y: -0.21873848, z: 0.0000015479742}
+--- !u!114 &8044625415876043818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 4
 --- !u!1 &8608294136795338952
 GameObject:
   m_ObjectHideFlags: 0
@@ -16291,7 +18482,9 @@ GameObject:
   - component: {fileID: 8608294136795366634}
   - component: {fileID: 8608294136798266608}
   - component: {fileID: 8608294136797267504}
-  m_Layer: 0
+  - component: {fileID: 1475272555139674251}
+  - component: {fileID: 333918148940705802}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment081
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16363,6 +18556,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &1475272555139674251
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338954}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.2471393
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000012116494, y: -0.21873796, z: 0.0000010607476}
+--- !u!114 &333918148940705802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 4
 --- !u!1 &8608294136795338956
 GameObject:
   m_ObjectHideFlags: 0
@@ -16457,7 +18693,9 @@ GameObject:
   - component: {fileID: 8608294136795366638}
   - component: {fileID: 8608294136798266612}
   - component: {fileID: 8608294136797267508}
-  m_Layer: 0
+  - component: {fileID: 1996334641060857625}
+  - component: {fileID: 4716574779429846219}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment079
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16529,6 +18767,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &1996334641060857625
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338958}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713935
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.00000071525574, y: -0.21873751, z: 0.000001051988}
+--- !u!114 &4716574779429846219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 4
 --- !u!1 &8608294136795338960
 GameObject:
   m_ObjectHideFlags: 0
@@ -16623,7 +18904,9 @@ GameObject:
   - component: {fileID: 8608294136795366642}
   - component: {fileID: 8608294136798266584}
   - component: {fileID: 8608294136797267480}
-  m_Layer: 0
+  - component: {fileID: 2072853925121041773}
+  - component: {fileID: 2863593795307383865}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment093
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16695,6 +18978,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &2072853925121041773
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338962}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.2471392
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000024037422, y: -0.21874182, z: 0.0000029678924}
+--- !u!114 &2863593795307383865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 4
 --- !u!1 &8608294136795338964
 GameObject:
   m_ObjectHideFlags: 0
@@ -16789,7 +19115,9 @@ GameObject:
   - component: {fileID: 8608294136795366646}
   - component: {fileID: 8608294136798266588}
   - component: {fileID: 8608294136797267484}
-  m_Layer: 0
+  - component: {fileID: 5017851360560837736}
+  - component: {fileID: 352047366546482928}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment091
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16861,6 +19189,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &5017851360560837736
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338966}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713928
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000009536743, y: -0.2187399, z: 0.0000039374563}
+--- !u!114 &352047366546482928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 4
 --- !u!1 &8608294136795338968
 GameObject:
   m_ObjectHideFlags: 0
@@ -16955,7 +19326,9 @@ GameObject:
   - component: {fileID: 8608294136795366650}
   - component: {fileID: 8608294136798266560}
   - component: {fileID: 8608294136797267456}
-  m_Layer: 0
+  - component: {fileID: 6400581411402762217}
+  - component: {fileID: 732921233493290176}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment089
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17027,6 +19400,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &6400581411402762217
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338970}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713938
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000014565868, y: -0.21874097, z: 0.0000020284783}
+--- !u!114 &732921233493290176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 4
 --- !u!1 &8608294136795338972
 GameObject:
   m_ObjectHideFlags: 0
@@ -17121,7 +19537,9 @@ GameObject:
   - component: {fileID: 8608294136795366654}
   - component: {fileID: 8608294136798266564}
   - component: {fileID: 8608294136797267460}
-  m_Layer: 0
+  - component: {fileID: 7423092183283940940}
+  - component: {fileID: 1004431625832935197}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment087
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17193,6 +19611,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &7423092183283940940
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338974}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713936
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.00000046379947, y: -0.2187399, z: 0.0000010915085}
+--- !u!114 &1004431625832935197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 4
 --- !u!1 &8608294136795338976
 GameObject:
   m_ObjectHideFlags: 0
@@ -17204,7 +19665,9 @@ GameObject:
   - component: {fileID: 8608294136795366400}
   - component: {fileID: 8608294136798266606}
   - component: {fileID: 8608294136797267502}
-  m_Layer: 0
+  - component: {fileID: 734058618229121888}
+  - component: {fileID: 3268830023993391317}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment068
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17277,6 +19740,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &734058618229121888
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338976}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713935
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000012973294, y: -0.218738, z: 0.0000010678641}
+--- !u!114 &3268830023993391317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 3
 --- !u!1 &8608294136795338978
 GameObject:
   m_ObjectHideFlags: 0
@@ -17371,7 +19877,9 @@ GameObject:
   - component: {fileID: 8608294136795366404}
   - component: {fileID: 8608294136798266386}
   - component: {fileID: 8608294136797267538}
-  m_Layer: 0
+  - component: {fileID: 4390178348385643195}
+  - component: {fileID: 6723890017973506768}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment066
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17444,6 +19952,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &4390178348385643195
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338980}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713938
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.00000054947947, y: -0.21874034, z: 0.0000029864723}
+--- !u!114 &6723890017973506768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 3
 --- !u!1 &8608294136795338982
 GameObject:
   m_ObjectHideFlags: 0
@@ -17539,7 +20090,9 @@ GameObject:
   - component: {fileID: 8608294136795366408}
   - component: {fileID: 8608294136798266390}
   - component: {fileID: 8608294136797267542}
-  m_Layer: 0
+  - component: {fileID: 683942690956159132}
+  - component: {fileID: 4677682978616103160}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment064
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17612,6 +20165,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &683942690956159132
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338984}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713933
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000003874302, y: -0.21873933, z: 0.0000020276555}
+--- !u!114 &4677682978616103160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 3
 --- !u!1 &8608294136795338986
 GameObject:
   m_ObjectHideFlags: 0
@@ -17707,7 +20303,9 @@ GameObject:
   - component: {fileID: 8608294136795366412}
   - component: {fileID: 8608294136798266394}
   - component: {fileID: 8608294136797267546}
-  m_Layer: 0
+  - component: {fileID: 7655275588674551851}
+  - component: {fileID: 4788717940030855069}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment062
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17780,6 +20378,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &7655275588674551851
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338988}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713938
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.00000046007253, y: -0.21873742, z: 0.000003006422}
+--- !u!114 &4788717940030855069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 3
 --- !u!1 &8608294136795338990
 GameObject:
   m_ObjectHideFlags: 0
@@ -17958,7 +20599,9 @@ GameObject:
   - component: {fileID: 8608294136795366418}
   - component: {fileID: 8608294136798266616}
   - component: {fileID: 8608294136797267512}
-  m_Layer: 0
+  - component: {fileID: 510543192863042788}
+  - component: {fileID: 538148095565686576}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment077
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18030,6 +20673,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &510543192863042788
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338994}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713929
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000007217746, y: -0.21873748, z: 0.0000015326957}
+--- !u!114 &538148095565686576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 4
 --- !u!1 &8608294136795338996
 GameObject:
   m_ObjectHideFlags: 0
@@ -18041,7 +20727,9 @@ GameObject:
   - component: {fileID: 8608294136795366420}
   - component: {fileID: 8608294136798266594}
   - component: {fileID: 8608294136797267490}
-  m_Layer: 0
+  - component: {fileID: 5481512489419660445}
+  - component: {fileID: 2752424873074276174}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment074
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18114,6 +20802,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &5481512489419660445
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338996}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713938
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000016540289, y: -0.21873888, z: 0.0000039597007}
+--- !u!114 &2752424873074276174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795338996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 3
 --- !u!1 &8608294136795338998
 GameObject:
   m_ObjectHideFlags: 0
@@ -18208,7 +20939,9 @@ GameObject:
   - component: {fileID: 8608294136795366424}
   - component: {fileID: 8608294136798266598}
   - component: {fileID: 8608294136797267494}
-  m_Layer: 0
+  - component: {fileID: 5950069207281491865}
+  - component: {fileID: 355906029537700286}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment072
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18281,6 +21014,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &5950069207281491865
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795339000}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24713936
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000007413311, y: -0.21873981, z: 0.0000029821176}
+--- !u!114 &355906029537700286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795339000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 3
 --- !u!1 &8608294136795339002
 GameObject:
   m_ObjectHideFlags: 0
@@ -18376,7 +21152,9 @@ GameObject:
   - component: {fileID: 8608294136795366428}
   - component: {fileID: 8608294136798266602}
   - component: {fileID: 8608294136797267498}
-  m_Layer: 0
+  - component: {fileID: 7077996447094906880}
+  - component: {fileID: 2791698693740630206}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleSegment070
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18449,6 +21227,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &7077996447094906880
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795339004}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.2471393
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.0000012479705, y: -0.21873991, z: 0.0000020433372}
+--- !u!114 &2791698693740630206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795339004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 3
 --- !u!1 &8608294136795339006
 GameObject:
   m_ObjectHideFlags: 0
@@ -18578,7 +21399,9 @@ GameObject:
   - component: {fileID: 8608294136795366832}
   - component: {fileID: 8608294136798266782}
   - component: {fileID: 8608294136797267934}
-  m_Layer: 0
+  - component: {fileID: 4901113185899762591}
+  - component: {fileID: 7251754847886431250}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleBase002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18650,6 +21473,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &4901113185899762591
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795339152}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.2909959
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.0000006396863, y: -0.36607763, z: 0.00000070980076}
+--- !u!114 &7251754847886431250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795339152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 2
 --- !u!1 &8608294136795339154
 GameObject:
   m_ObjectHideFlags: 0
@@ -18661,7 +21527,9 @@ GameObject:
   - component: {fileID: 8608294136795366834}
   - component: {fileID: 8608294136798266776}
   - component: {fileID: 8608294136797267928}
-  m_Layer: 0
+  - component: {fileID: 1814168631914533717}
+  - component: {fileID: 4227596670843197685}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleBase003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18733,6 +21601,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &1814168631914533717
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795339154}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.29099578
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: -0.00000024533733, y: -0.3660785, z: 0.0000019343688}
+--- !u!114 &4227596670843197685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795339154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 3
 --- !u!1 &8608294136795339156
 GameObject:
   m_ObjectHideFlags: 0
@@ -18744,7 +21655,9 @@ GameObject:
   - component: {fileID: 8608294136795366836}
   - component: {fileID: 8608294136798266754}
   - component: {fileID: 8608294136797267906}
-  m_Layer: 0
+  - component: {fileID: 6407125508784874623}
+  - component: {fileID: 2197537960639707183}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18816,6 +21729,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &6407125508784874623
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795339156}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.29099602
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.00000034565426, y: -0.36607778, z: 0.0000009703585}
+--- !u!114 &2197537960639707183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795339156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 0
 --- !u!1 &8608294136795339158
 GameObject:
   m_ObjectHideFlags: 0
@@ -18827,7 +21783,9 @@ GameObject:
   - component: {fileID: 8608294136795366838}
   - component: {fileID: 8608294136798266780}
   - component: {fileID: 8608294136797267932}
-  m_Layer: 0
+  - component: {fileID: 4353085100662278219}
+  - component: {fileID: 576856372546772797}
+  m_Layer: 27
   m_Name: SM_Titanockarce_TentacleBase001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18899,6 +21857,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &4353085100662278219
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795339158}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.29099602
+  m_Height: 1.1
+  m_Direction: 1
+  m_Center: {x: 0.00000091083473, y: -0.36607784, z: 0.000001401191}
+--- !u!114 &576856372546772797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294136795339158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e318f34c8c3dace4fbb9abb7e8e8d494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1696238861426240632}
+        m_TargetAssemblyTypeName: Entity.Unit.Special.SpecialMonster2, Assembly-CSharp
+        m_MethodName: GrabModeHit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsWeakPoint: 0
+  m_PartNumber: 1
 --- !u!1 &8608294136795339160
 GameObject:
   m_ObjectHideFlags: 0
@@ -19275,10 +22276,10 @@ GameObject:
   m_Component:
   - component: {fileID: 8608294137700710802}
   - component: {fileID: 3214166404393758438}
-  - component: {fileID: 2262542414540953317}
   - component: {fileID: 1696238861426240632}
   - component: {fileID: 630261199925254101}
-  m_Layer: 0
+  - component: {fileID: 4395002678294736540}
+  m_Layer: 10
   m_Name: SpecialMonster2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19298,6 +22299,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8608294136795366842}
+  - {fileID: 95506104847953089}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -19323,22 +22325,6 @@ NavMeshAgent:
   m_BaseOffset: -0.75
   m_WalkableMask: 5
   m_ObstacleAvoidanceType: 4
---- !u!54 &2262542414540953317
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8608294137700710803}
-  serializedVersion: 2
-  m_Mass: 20
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!114 &1696238861426240632
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19365,3 +22351,197 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f171b2c9b42a8ac41b9f9b9ad348dbc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4395002678294736540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608294137700710803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1325c58067c5c741a442aa670151d42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TentacleParts:
+  - m_GrabTentacles:
+    - {fileID: 8608294136795366792}
+    - {fileID: 8608294136795366794}
+    - {fileID: 8608294136795366788}
+    - {fileID: 8608294136795366790}
+    - {fileID: 8608294136795366784}
+    - {fileID: 8608294136795366786}
+    - {fileID: 8608294136795366812}
+    - {fileID: 8608294136795366814}
+    - {fileID: 8608294136795366808}
+    - {fileID: 8608294136795366810}
+    - {fileID: 8608294136795366804}
+    - {fileID: 8608294136795366806}
+    - {fileID: 8608294136795366800}
+    - {fileID: 8608294136795366802}
+    - {fileID: 8608294136795366508}
+    - {fileID: 8608294136795366510}
+    - {fileID: 8608294136795366504}
+    - {fileID: 8608294136795366506}
+    - {fileID: 8608294136795366500}
+    - {fileID: 8608294136795366564}
+    m_PathCreator: {fileID: 0}
+    m_StartTransform: {fileID: 8608294136795366836}
+    m_StartAnchorPointInterpolation: {x: 0, y: 0, z: 0}
+    m_StartControlPointInterpolation: {x: 2, y: -5, z: 1}
+    m_EndControlPointInterpolation: {x: 5, y: 4, z: 2}
+    m_EndAnchorPointInterpolation: {x: 0, y: 0.5, z: 0}
+    m_OriginalPosition: []
+    m_OriginalRotation: []
+    m_OriginalScale: []
+  - m_GrabTentacles:
+    - {fileID: 8608294136795366502}
+    - {fileID: 8608294136795366496}
+    - {fileID: 8608294136795366498}
+    - {fileID: 8608294136795366524}
+    - {fileID: 8608294136795366526}
+    - {fileID: 8608294136795366520}
+    - {fileID: 8608294136795366522}
+    - {fileID: 8608294136795366516}
+    - {fileID: 8608294136795366518}
+    - {fileID: 8608294136795366512}
+    - {fileID: 8608294136795366514}
+    - {fileID: 8608294136795366476}
+    - {fileID: 8608294136795366478}
+    - {fileID: 8608294136795366472}
+    - {fileID: 8608294136795366474}
+    - {fileID: 8608294136795366468}
+    - {fileID: 8608294136795366470}
+    - {fileID: 8608294136795366464}
+    - {fileID: 8608294136795366466}
+    - {fileID: 8608294136795366566}
+    m_PathCreator: {fileID: 0}
+    m_StartTransform: {fileID: 8608294136795366838}
+    m_StartAnchorPointInterpolation: {x: 0, y: 0, z: 0}
+    m_StartControlPointInterpolation: {x: 2, y: -4, z: 1}
+    m_EndControlPointInterpolation: {x: 5, y: 4, z: 2}
+    m_EndAnchorPointInterpolation: {x: 0, y: 0, z: 0}
+    m_OriginalPosition: []
+    m_OriginalRotation: []
+    m_OriginalScale: []
+  - m_GrabTentacles:
+    - {fileID: 8608294136795366492}
+    - {fileID: 8608294136795366494}
+    - {fileID: 8608294136795366488}
+    - {fileID: 8608294136795366490}
+    - {fileID: 8608294136795366484}
+    - {fileID: 8608294136795366486}
+    - {fileID: 8608294136795366480}
+    - {fileID: 8608294136795366482}
+    - {fileID: 8608294136795366444}
+    - {fileID: 8608294136795366446}
+    - {fileID: 8608294136795366440}
+    - {fileID: 8608294136795366442}
+    - {fileID: 8608294136795366436}
+    - {fileID: 8608294136795366438}
+    - {fileID: 8608294136795366432}
+    - {fileID: 8608294136795366434}
+    - {fileID: 8608294136795366460}
+    - {fileID: 8608294136795366462}
+    - {fileID: 8608294136795366456}
+    - {fileID: 8608294136795366560}
+    m_PathCreator: {fileID: 0}
+    m_StartTransform: {fileID: 8608294136795366832}
+    m_StartAnchorPointInterpolation: {x: 0, y: 0, z: 0}
+    m_StartControlPointInterpolation: {x: 2, y: -2, z: 1}
+    m_EndControlPointInterpolation: {x: 5, y: 4, z: 2}
+    m_EndAnchorPointInterpolation: {x: 0, y: -0.5, z: 0}
+    m_OriginalPosition: []
+    m_OriginalRotation: []
+    m_OriginalScale: []
+  - m_GrabTentacles:
+    - {fileID: 8608294136795366458}
+    - {fileID: 8608294136795366452}
+    - {fileID: 8608294136795366454}
+    - {fileID: 8608294136795366448}
+    - {fileID: 8608294136795366450}
+    - {fileID: 8608294136795366412}
+    - {fileID: 8608294136795366414}
+    - {fileID: 8608294136795366408}
+    - {fileID: 8608294136795366410}
+    - {fileID: 8608294136795366404}
+    - {fileID: 8608294136795366406}
+    - {fileID: 8608294136795366400}
+    - {fileID: 8608294136795366402}
+    - {fileID: 8608294136795366428}
+    - {fileID: 8608294136795366430}
+    - {fileID: 8608294136795366424}
+    - {fileID: 8608294136795366426}
+    - {fileID: 8608294136795366420}
+    - {fileID: 8608294136795366422}
+    - {fileID: 8608294136795366562}
+    m_PathCreator: {fileID: 0}
+    m_StartTransform: {fileID: 8608294136795366834}
+    m_StartAnchorPointInterpolation: {x: 0, y: 0, z: 0}
+    m_StartControlPointInterpolation: {x: 2, y: -5, z: 1}
+    m_EndControlPointInterpolation: {x: 5, y: 4, z: 2}
+    m_EndAnchorPointInterpolation: {x: 0, y: 0.5, z: 0}
+    m_OriginalPosition: []
+    m_OriginalRotation: []
+    m_OriginalScale: []
+  - m_GrabTentacles:
+    - {fileID: 8608294136795366416}
+    - {fileID: 8608294136795366418}
+    - {fileID: 8608294136795366636}
+    - {fileID: 8608294136795366638}
+    - {fileID: 8608294136795366632}
+    - {fileID: 8608294136795366634}
+    - {fileID: 8608294136795366628}
+    - {fileID: 8608294136795366630}
+    - {fileID: 8608294136795366624}
+    - {fileID: 8608294136795366626}
+    - {fileID: 8608294136795366652}
+    - {fileID: 8608294136795366654}
+    - {fileID: 8608294136795366648}
+    - {fileID: 8608294136795366650}
+    - {fileID: 8608294136795366644}
+    - {fileID: 8608294136795366646}
+    - {fileID: 8608294136795366640}
+    - {fileID: 8608294136795366642}
+    - {fileID: 8608294136795366604}
+    - {fileID: 8608294136795366588}
+    m_PathCreator: {fileID: 0}
+    m_StartTransform: {fileID: 8608294136795366796}
+    m_StartAnchorPointInterpolation: {x: 0, y: 0, z: 0}
+    m_StartControlPointInterpolation: {x: 2, y: -4, z: 1}
+    m_EndControlPointInterpolation: {x: 5, y: 4, z: 2}
+    m_EndAnchorPointInterpolation: {x: 0, y: 0, z: 0}
+    m_OriginalPosition: []
+    m_OriginalRotation: []
+    m_OriginalScale: []
+  - m_GrabTentacles:
+    - {fileID: 8608294136795366606}
+    - {fileID: 8608294136795366600}
+    - {fileID: 8608294136795366602}
+    - {fileID: 8608294136795366596}
+    - {fileID: 8608294136795366598}
+    - {fileID: 8608294136795366592}
+    - {fileID: 8608294136795366594}
+    - {fileID: 8608294136795366620}
+    - {fileID: 8608294136795366622}
+    - {fileID: 8608294136795366616}
+    - {fileID: 8608294136795366618}
+    - {fileID: 8608294136795366612}
+    - {fileID: 8608294136795366614}
+    - {fileID: 8608294136795366608}
+    - {fileID: 8608294136795366610}
+    - {fileID: 8608294136795366572}
+    - {fileID: 8608294136795366574}
+    - {fileID: 8608294136795366568}
+    - {fileID: 8608294136795366570}
+    - {fileID: 8608294136795366590}
+    m_PathCreator: {fileID: 0}
+    m_StartTransform: {fileID: 8608294136795366798}
+    m_StartAnchorPointInterpolation: {x: 0, y: 0, z: 0}
+    m_StartControlPointInterpolation: {x: 2, y: -2, z: 1}
+    m_EndControlPointInterpolation: {x: 5, y: 4, z: 2}
+    m_EndAnchorPointInterpolation: {x: 0, y: -0.5, z: 0}
+    m_OriginalPosition: []
+    m_OriginalRotation: []
+    m_OriginalScale: []
+  m_GrabForce: 25
