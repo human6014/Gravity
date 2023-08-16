@@ -50,7 +50,19 @@ namespace Scriptable.Monster
         [Tooltip("잡기 공격 최대 사거리")]
         public float m_GrabAttackMaxRange;
 
-        //[Header("Ground down")]
+        [Tooltip("잡기 공격 해제 거리")]
+        public float m_GrabCancellationDist = 1;
+
+        [Tooltip("잡기 공격 해제 누적 데미지")]
+        public int m_GrabCancellationDamage = 500;
+
+        [Header("Ground down")]
+        [Tooltip("")]
+        public float m_GroundDownForceMultiplier = 5;
+
+        [Tooltip("땅으로 끌기 최대 힘")]
+        public float m_MaxGroundDownForce = 35;
+
         [Header("Hide and Recovery")]
         [Tooltip("발동 체력 비율")] [Range(0,1)]
         public float m_RecoveryTriggerHP = 0.4f;

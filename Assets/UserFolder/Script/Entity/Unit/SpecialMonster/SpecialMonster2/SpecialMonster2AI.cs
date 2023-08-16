@@ -33,14 +33,15 @@ namespace Entity.Unit.Special
             //m_NavMeshAgent.updateRotation = false;
         }
 
-        public void Init()
+        public void Init(float movementSpeed)
         {
             m_IsInit = true;
+            m_NavMeshAgent.speed = movementSpeed;
         }
 
         public void OperateAIBehavior(Vector3 pos, MoveType moveType)
         {
-            if (!m_IsInit) return;
+            if (!m_IsInit || !m_NavMeshAgent.isActiveAndEnabled) return;
             m_NavMeshAgent.SetDestination(pos);
 
             switch (m_NavMeshAgent.pathStatus)
