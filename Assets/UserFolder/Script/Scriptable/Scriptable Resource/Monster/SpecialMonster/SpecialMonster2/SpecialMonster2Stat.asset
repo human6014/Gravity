@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08eafbf28b04655439fe19aefe31360f, type: 3}
   m_Name: SpecialMonster2Stat
   m_EditorClassIdentifier: 
-  m_HP: 1000
-  m_Def: 200
-  m_Damage: 300
+  m_HP: 30000
+  m_Def: 150
+  m_Damage: 250
   m_MovementSpeed: 3
   m_AttackSpeed: 7
   m_AttackRange: 10
-  m_ExplosionResistance: 1
-  m_MeleeResistance: 1
+  m_ExplosionResistance: 15
+  m_MeleeResistance: 2
   m_NoramlAttackType: 0
   m_HPMultiplier: 3000
-  m_DefMultiplier: 20
-  m_DamageMultiplier: 30
+  m_DefMultiplier: 15
+  m_DamageMultiplier: 25
   m_MonsterType: 1
   m_ObstacleDetectLayer:
     serializedVersion: 2
@@ -34,17 +34,22 @@ MonoBehaviour:
   m_RushObstacleLayer:
     serializedVersion: 2
     m_Bits: 417792
-  m_RushAttackDamage: 350
-  m_RushAttackTime: 20
+  m_RushAttackDamage: 300
+  m_RushAttackTime: 10
   m_RushAttackMinRange: 15
-  m_RushAttackMaxRange: 75
-  m_RushAttackMovementSpeed: 25
-  m_GrabAttackDamage: 100
-  m_GrabAttackTime: 30
-  m_GrabAttackMinRange: 20
-  m_GrabAttackMaxRange: 40
+  m_RushAttackMaxRange: 100
+  m_RushAttackMovementSpeed: 30
+  m_GrabAttackDamage: 150
+  m_GrabAttackTime: 25
+  m_GrabAttackMinRange: 15
+  m_GrabAttackMaxRange: 45
+  m_GrabCancellationDist: 3
+  m_GrabAttachedTime: 1
+  m_GrabForce: 30
   m_GrabCancellationDamage: 300
+  m_GroundDownForceMultiplier: 5
+  m_MaxGroundDownForce: 35
   m_RecoveryTriggerHP: 0.4
-  m_RecoveryMovementSpeed: 10
+  m_RecoveryMovementSpeed: 15
   m_RecoveryHPAmount: 0.5
   m_RecoveryTime: 20

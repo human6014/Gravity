@@ -26,22 +26,18 @@ namespace Entity.Unit.Special
         public System.Action MoveCompToPos { get; set; }
         public System.Action RushCompToPos { get; set; }
 
-        private void Awake()
-        {
-            m_NavMeshAgent = GetComponent<NavMeshAgent>();
-
-            //m_NavMeshAgent.updateRotation = false;
-        }
-
+        private void Awake() => m_NavMeshAgent = GetComponent<NavMeshAgent>();
+        
         public void Init(float movementSpeed)
         {
             m_IsInit = true;
+            m_NavMeshAgent.enabled = true;
             m_NavMeshAgent.speed = movementSpeed;
         }
 
         public void OperateAIBehavior(Vector3 pos, MoveType moveType)
         {
-            if (!m_IsInit || !m_NavMeshAgent.isActiveAndEnabled) return;
+            if (!m_IsInit) return;
             m_NavMeshAgent.SetDestination(pos);
 
             switch (m_NavMeshAgent.pathStatus)
@@ -59,8 +55,8 @@ namespace Entity.Unit.Special
             }
 
             
-            if (moveType == MoveType.RecoveryPos && m_NavMeshAgent.remainingDistance <= 3) MoveCompToPos?.Invoke();
-            else if (moveType == MoveType.Rush && m_NavMeshAgent.remainingDistance <= 3) RushCompToPos?.Invoke();
+            if (moveType == MoveType.RecoveryPos && Vector3.Distance(pos, transform.position) <= 3) MoveCompToPos?.Invoke();
+            else if (moveType == MoveType.Rush && Vector3.Distance(pos,transform.position) <= 3) RushCompToPos?.Invoke();
         }
 
         public void RotateToPlayer()
