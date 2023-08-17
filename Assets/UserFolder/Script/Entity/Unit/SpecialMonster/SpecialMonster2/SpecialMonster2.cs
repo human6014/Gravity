@@ -20,6 +20,8 @@ namespace Entity.Unit.Special
         private SP2AnimationController m_SP2AnimationController;
         private SpecialMonster2AI m_SpecialMonster2AI;
         private GrabController m_GrabController;
+
+        private PlayerData m_PlayerData;
         private List<Vector3> RecoveryPos;
         private Coroutine m_RecoveryCoroutine;
 
@@ -32,7 +34,6 @@ namespace Entity.Unit.Special
         private float m_RushAttackTimer;
 
         private float m_TargetDist;
-        private float m_GrabPointDist;
         private float m_GroundDownForce;
         private float m_RecoverPerSecond;
         private float m_StoppingDistance = 8;
@@ -43,6 +44,7 @@ namespace Entity.Unit.Special
         private bool m_IsMoveRecoveryPos;
         private bool m_IsNonMovePos;
         private bool m_IsRushMove;
+        private bool m_IsGetRushDamage;
         private bool m_IsUsingRecovery;
         private bool m_IsBehaviorWait;
 
@@ -57,15 +59,16 @@ namespace Entity.Unit.Special
 
         public System.Action EndSpecialMonsterAction { get; set; }
 
+        private bool CanNormalAttack() => m_Settings.CanNormalAttack(m_TargetDist, m_NormalAttackTimer) && CanAttackRotation(30);
+        private bool CanGrabAttack() => m_Settings.CanGrabAttack(m_TargetDist, m_GrabAttackTimer) && CanAttackRotation(15);
+        private bool CanRushAttack() => m_Settings.CanRushAttack(m_TargetDist, m_RushAttackTimer);
+
         private async void MoveWait(int time)
         {
             m_IsBehaviorWait = true;
             await Task.Delay(time);
             m_IsBehaviorWait = false;
         }
-        private bool CanNormalAttack() => m_Settings.CanNormalAttack(m_TargetDist, m_NormalAttackTimer) && CanAttackRotation(30);
-        private bool CanGrabAttack() => m_Settings.CanGrabAttack(m_TargetDist, m_GrabAttackTimer) && CanAttackRotation(10);
-        private bool CanRushAttack() => m_Settings.CanRushAttack(m_TargetDist, m_RushAttackTimer);
 
         private bool DetectObstacle()
         {
@@ -101,28 +104,29 @@ namespace Entity.Unit.Special
             m_SpecialMonster2AI = GetComponent<SpecialMonster2AI>();
             m_GrabController = GetComponent<GrabController>();
 
-            Transform groundDownTransform = GameObject.Find("SP2RecoveryPos").transform;
-
-            RecoveryPos = new List<Vector3>(groundDownTransform.childCount);
-            foreach (Transform t in groundDownTransform)
-                RecoveryPos.Add(t.position);
-
             m_SpecialMonster2AI.MoveCompToPos += HideAndRecovery;
             m_SpecialMonster2AI.RushCompToPos += RushAttackEnd;
+
+            m_GrabController.AttachedToPlayer += ()
+                => m_PlayerData.PlayerHit(transform, m_Settings.m_GrabAttackDamage + m_RealDamage, m_Settings.m_NoramlAttackType);
         }
 
         private void Start()
         {
             m_PlayerRigidbody = AIManager.PlayerTransform.GetComponent<Rigidbody>();
-            Init(1);
+            m_PlayerData = AIManager.PlayerTransform.GetComponent<PlayerData>();
         }
 
-        public void Init(float statMultiplier)
+        public void Init(Transform spawnPos, float statMultiplier)
         {
             SetRealStat(statMultiplier);
 
+            RecoveryPos = new List<Vector3>(spawnPos.childCount);
+            foreach (Transform t in spawnPos)
+                RecoveryPos.Add(t.position);
+
             m_SpecialMonster2AI.Init(m_Settings.m_MovementSpeed);
-            m_GrabController.Init();
+            m_GrabController.Init(m_Settings.m_GrabAttachedTime);
         }
 
         private void SetRealStat(float statMultiplier)
@@ -142,9 +146,8 @@ namespace Entity.Unit.Special
         {
             if (!m_IsAlive) return;
 
-            if (Input.GetKey(KeyCode.Backspace) || m_GrabController.IsAttachedPlayer)
+            if (m_GrabController.IsAttachedPlayer)
             {
-                m_GrabPointDist = Vector3.Distance(m_GrabEndPoint.position, AIManager.PlayerTransform.position);
                 m_GrabController.SetBezierPath();
                 return;
             }
@@ -152,16 +155,17 @@ namespace Entity.Unit.Special
             GroundDownCheck();
             UpdateTimer();
 
-            if (m_GroundDownForce != 0)
-            {
-                MoveSelf();
-                m_SP2AnimationController.SetRoar(true);
-                return;
-            }
-            else m_SP2AnimationController.SetRoar(false);
+            //if (m_GroundDownForce != 0)
+            //{
+            //    MoveSelf();
+            //    m_SP2AnimationController.SetRoar(true);
+            //    return;
+            //}
+            //else m_SP2AnimationController.SetRoar(false);
 
             if (!m_IsBehaviorWait)
             {
+                m_TargetDist = Vector3.Distance(transform.position, AIManager.PlayerTransform.position);
                 Attack();
                 Move();
             }
@@ -174,12 +178,10 @@ namespace Entity.Unit.Special
 
             if (m_GrabController.IsAttachedPlayer)
             {
-                if (m_GrabPointDist <= m_Settings.m_GrabCancellationDist)
-                {
-                    m_NormalAttackTimer = m_Settings.m_AttackSpeed;
-                    GrabEnd();
-                }
-                else ForceToPlayer(m_GrabController.GrabForce);
+                //가끔씩 안됨 여기
+                if (Vector3.Distance(m_GrabEndPoint.position, AIManager.PlayerTransform.position) <= m_Settings.m_GrabCancellationDist)
+                    GrabEnd(true);
+                else ForceToPlayer(m_Settings.m_GrabForce);
             }
             else if (m_IsRushMove)
             {
@@ -188,23 +190,13 @@ namespace Entity.Unit.Special
 
                 Vector3 dir = (AIManager.PlayerTransform.position - transform.position).normalized;
                 AIManager.PlayerTransform.GetComponent<Controller.Player.FirstPersonController>().PlayerCol(dir);
+                if (!m_IsGetRushDamage)
+                {
+                    m_PlayerData.PlayerHit(transform, m_Settings.m_RushAttackDamage + m_RealDamage, m_Settings.m_NoramlAttackType);
+                    m_IsGetRushDamage = true;
+                }
             }
             //한번만 맞도록 변경
-        }
-
-        private void GroundDownCheck()
-        {
-            if (!AIManager.OnFloor)
-            {
-                m_GroundTimer = 0;
-                GroundDown();
-            }
-            else
-            {
-                m_GroundTimer += Time.deltaTime;
-                if (m_GroundTimer <= 0.7f) GroundDown();
-                else m_GroundDownForce = 0;
-            }
         }
 
         private void UpdateTimer()
@@ -218,40 +210,32 @@ namespace Entity.Unit.Special
         {
             if (m_DoingBehaviour || m_IsMoveRecoveryPos || m_DoingRecovery || DetectObstacle()) return;
 
-            m_TargetDist = Vector3.Distance(transform.position, AIManager.PlayerTransform.position);
-
-            //if (Input.GetKeyDown(KeyCode.Backspace))
-            //{
-            //    GrabAttack();
-            //}
-
-            //if (CanGrabAttack())
-            //{
-            //    GrabAttack();
-            //}
-            //else if (CanRushAttack())
-            //    RushAttack();
-            //else if (CanNormalAttack())
-            //    NormalAttack();
+            if (CanGrabAttack()) GrabAttackStart();
+            else if (CanRushAttack()) RushAttackStart();
+            else if (CanNormalAttack()) NormalAttack();
         }
 
+        #region Move
         public void Move()
         {
-            if (m_DoingRecovery || m_IsNonMovePos) MoveSelf();
-            else if(m_TargetDist <= m_StoppingDistance)
+            if (m_DoingRecovery || m_IsNonMovePos)
+            {
+                MoveSelf();
+                return;
+            }
+
+            bool isWalkAnimation = true;
+            if (m_IsRushMove) m_SpecialMonster2AI.OperateAIBehavior(m_RushAttackPos, MoveType.Rush);
+            else if (m_IsMoveRecoveryPos) m_SpecialMonster2AI.OperateAIBehavior(m_RecoveryPos, MoveType.RecoveryPos);
+            else if (m_TargetDist <= m_StoppingDistance)
             {
                 m_SpecialMonster2AI.OperateAIBehavior(transform.position, MoveType.Self);
                 m_SpecialMonster2AI.RotateToPlayer();
-                if (CanAttackRotation(5)) m_SP2AnimationController.SetWalk(false);
-                else m_SP2AnimationController.SetWalk(true);
+                if (CanAttackRotation(5)) isWalkAnimation = false;
             }
-            else
-            {
-                if (m_IsMoveRecoveryPos) m_SpecialMonster2AI.OperateAIBehavior(m_RecoveryPos, MoveType.RecoveryPos);
-                else if (m_IsRushMove) m_SpecialMonster2AI.OperateAIBehavior(m_RushAttackPos, MoveType.Rush);
-                else m_SpecialMonster2AI.OperateAIBehavior(AIManager.PlayerGroundPosition, MoveType.ToPlayer);
-                m_SP2AnimationController.SetWalk(true);
-            }
+            else m_SpecialMonster2AI.OperateAIBehavior(AIManager.PlayerGroundPosition, MoveType.ToPlayer);
+            
+            m_SP2AnimationController.SetWalk(isWalkAnimation);
         }
 
         private void MoveSelf()
@@ -259,6 +243,7 @@ namespace Entity.Unit.Special
             m_SpecialMonster2AI.OperateAIBehavior(transform.position, MoveType.Self);
             m_SP2AnimationController.SetWalk(false);
         }
+        #endregion
 
         #region Hit
         public void Hit(int damage, AttackType bulletType)
@@ -273,7 +258,7 @@ namespace Entity.Unit.Special
             else
             {
                 if (m_DoingRecovery && m_RecoveryCoroutine != null) HitAndStopHeal();
-                else if (!m_IsUsingRecovery && m_CurrentHP <= m_RecoveryTriggerHP) FindRecoveryPos();
+                else if (!m_IsUsingRecovery && !m_GrabController.IsGrabbing && m_CurrentHP <= m_RecoveryTriggerHP) FindRecoveryPos();
             }
         }
 
@@ -290,22 +275,7 @@ namespace Entity.Unit.Special
                 if (m_IsHitParts[i] < m_Settings.m_GrabCancellationDamage) return;
             }
 
-            m_NormalAttackTimer = 0;
-            m_RushAttackTimer = 0;
-
-            GrabEnd();
-        }
-
-        private void GrabEnd()
-        {
-            for (int i = 0; i < m_IsHitParts.Length; i++)
-                m_IsHitParts[i] = 0;
-
-            m_GrabAttackTimer = 0;
-
-            m_GrabController.GrabEnd();
-            m_DoingBehaviour = false;
-            m_IsNonMovePos = false;
+            GrabEnd(false);
         }
 
         private void TypeToDamage(AttackType bulletType, int damage, out int realDamage)
@@ -314,15 +284,6 @@ namespace Entity.Unit.Special
             else if (bulletType == AttackType.Melee) realDamage = damage / m_Settings.m_MeleeResistance;
             else realDamage = damage - m_RealDef;
         }
-        #endregion
-
-        public void Die()
-        {
-            m_IsAlive = false;
-            StopAllCoroutines();
-            m_SpecialMonster2AI.Dispose();
-            m_SP2AnimationController.SetDeath(true);
-        }
 
         private async void HitAndStopHeal()
         {
@@ -330,44 +291,82 @@ namespace Entity.Unit.Special
             await m_SP2AnimationController.SetCriticalHit();
             m_DoingRecovery = false;
         }
+        #endregion
 
-        #region Patterns
+        #region NormalAttack
         private async void NormalAttack()
         {
-            //바라보는 각도로 판정 더해줘야함
             m_NormalAttackTimer = 0;
             m_DoingBehaviour = true;
             m_IsNonMovePos = true;
+
+            m_PlayerData.PlayerHit(transform, m_Settings.m_Damage + m_RealDamage, m_Settings.m_NoramlAttackType);
 
             await m_SP2AnimationController.SetNormalAttack();
 
             m_DoingBehaviour = false;
             m_IsNonMovePos = false;
         }
+        #endregion
 
-        private void GrabAttack()
+        #region GrabAttack
+        private void GrabAttackStart()
         {
             m_GrabAttackTimer = 0;
             m_DoingBehaviour = true;
             m_IsNonMovePos = true;
 
+            m_SP2AnimationController.SetWalk(false);
+            m_SP2AnimationController.SetIdleSpeed(0.5f);
+
             m_GrabController.SetBezierPath();
-            //촉수로 땡기는거
         }
 
-        private void RushAttack()
+        private void GrabEnd(bool isSuccessGrab)
+        {
+            for (int i = 0; i < m_IsHitParts.Length; i++)
+                m_IsHitParts[i] = 0;
+
+            m_SP2AnimationController.SetWalk(true);
+            m_SP2AnimationController.SetIdleSpeed(1);
+
+            m_RushAttackTimer = 0;
+            m_GrabAttackTimer = 0;
+
+            if (isSuccessGrab)
+            {
+                m_NormalAttackTimer = m_Settings.m_AttackSpeed;
+                m_GrabController.ImmediateGrabEnd();
+            }
+            else
+            {
+                m_NormalAttackTimer = 0;
+                StartCoroutine(m_GrabController.GrabEndCoroutine(2));
+            }
+
+            m_DoingBehaviour = false;
+            m_IsNonMovePos = false;
+        }
+        #endregion
+
+        #region RushAttack
+        private void RushAttackStart()
         {
             m_RushAttackTimer = 0;
 
             Vector3 dir = (AIManager.PlayerTransform.position - transform.position).normalized;
             dir.y = 0;
-            if (!Physics.SphereCast(transform.position + transform.up * 2.5f, m_RushCheckRadius, dir, out RaycastHit hit, Mathf.Infinity, m_Settings.m_RushObstacleLayer) ||
+            if (!Physics.SphereCast(transform.position + transform.up * 3f, m_RushCheckRadius, dir, out RaycastHit hit, Mathf.Infinity, m_Settings.m_RushObstacleLayer) ||
                 hit.distance <= 20)
                 return;
 
-            m_RushAttackPos = hit.point - (transform.up * 2.5f) - (dir * (m_RushCheckRadius + 1));
+            m_RushAttackPos = new Vector3(hit.point.x,transform.position.y,hit.point.z);
+            m_RushAttackPos -= dir * m_RushCheckRadius;
+
             m_DoingBehaviour = true;
             m_IsRushMove = true;
+            m_IsGetRushDamage = false;
+
             m_SpecialMonster2AI.MovementSpeed = m_Settings.m_RushAttackMovementSpeed;
             m_SP2AnimationController.SetMovementSpeed(4);
         }
@@ -376,19 +375,17 @@ namespace Entity.Unit.Special
         {
             m_DoingBehaviour = false;
             m_IsRushMove = false;
+
+            m_RushAttackTimer = 0;
+
             m_SpecialMonster2AI.MovementSpeed = m_Settings.m_MovementSpeed;
             m_SP2AnimationController.SetMovementSpeed(1);
+
             MoveWait(2000);
         }
+        #endregion
 
-        private void GroundDown()
-        {
-            m_RushAttackTimer = 0;
-            m_GroundDownForce = Mathf.Min(m_GroundDownForce + Time.deltaTime * m_Settings.m_GroundDownForceMultiplier, m_Settings.m_MaxGroundDownForce);
-            ForceToPlayer(m_GroundDownForce);
-            //소리 우아아앙 해서 땅으로 끌고 오기
-        }
-
+        #region Recovery
         private void FindRecoveryPos()
         {
             m_IsUsingRecovery = true;
@@ -433,17 +430,65 @@ namespace Entity.Unit.Special
                 yield return null;
             }
 
+            m_IsUsingRecovery = false;
+            //회복 중에 공격 안받으면 회복하러 계속 감
+            //난이도 보고 결정함
+
             m_DoingRecovery = false;
         }
-
         #endregion
+
+        #region GroundDown        
+        private void GroundDownCheck()
+        {
+            if (!AIManager.OnFloor)
+            {
+                m_GroundTimer = 0;
+                GroundDown();
+    }
+            else
+            {
+                m_GroundTimer += Time.deltaTime;
+                if (m_GroundTimer <= 0.7f) GroundDown();
+                else
+                {
+                    m_SP2AnimationController.SetRoar(false);
+                    m_GroundDownForce = 0;
+                }
+            }
+        }
+
+        private void GroundDown()
+        {
+            m_RushAttackTimer = 0;
+            m_GroundDownForce = Mathf.Min(m_GroundDownForce + Time.deltaTime * m_Settings.m_GroundDownForceMultiplier, m_Settings.m_MaxGroundDownForce);
+
+            MoveSelf();
+            m_SP2AnimationController.SetRoar(true);
+
+            ForceToPlayer(m_GroundDownForce);
+            //소리 우아아앙 해서 땅으로 끌고 오기
+        }
+        #endregion
+
+        public void Die()
+        {
+            m_IsAlive = false;
+            StopAllCoroutines();
+            m_SpecialMonster2AI.Dispose();
+            m_GrabController.Dispose();
+            m_SP2AnimationController.SetDeath(true);
+        }
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawWireSphere(transform.position + transform.up * 2.5f, m_RushCheckRadius);
+            Gizmos.DrawWireSphere(transform.position + transform.up * 3f, m_RushCheckRadius);
 
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position + transform.up * 1.5f, 3.5f);
+
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireSphere(m_RushAttackPos,1);
         }
     }
 }

@@ -135,7 +135,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_IsWeakPoint: 0
+  m_IsWeakPoint: 1
 --- !u!1 &8608294136795338250
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,7 +184,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8608294136795365932
 Transform:
   m_ObjectHideFlags: 0
@@ -22312,16 +22312,16 @@ NavMeshAgent:
   m_GameObject: {fileID: 8608294137700710803}
   m_Enabled: 1
   m_AgentTypeID: -1372625422
-  m_Radius: 20
+  m_Radius: 18
   m_Speed: 3
-  m_Acceleration: 8
+  m_Acceleration: 15
   avoidancePriority: 38
   m_AngularSpeed: 60
   m_StoppingDistance: 8
   m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 0
   m_AutoRepath: 1
-  m_Height: 30
+  m_Height: 28
   m_BaseOffset: -0.75
   m_WalkableMask: 5
   m_ObstacleAvoidanceType: 4
@@ -22338,6 +22338,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Settings: {fileID: 11400000, guid: e0d636d754aa13b469c3b1e483a52dcc, type: 2}
+  m_GrabEndPoint: {fileID: 95506104847953089}
   m_RushCheckRadius: 3
 --- !u!114 &630261199925254101
 MonoBehaviour:
@@ -22390,7 +22391,7 @@ MonoBehaviour:
     m_StartAnchorPointInterpolation: {x: 0, y: 0, z: 0}
     m_StartControlPointInterpolation: {x: 2, y: -5, z: 1}
     m_EndControlPointInterpolation: {x: 5, y: 4, z: 2}
-    m_EndAnchorPointInterpolation: {x: 0, y: 0.5, z: 0}
+    m_EndAnchorPointInterpolation: {x: 0.75, y: 0.6, z: 0}
     m_OriginalPosition: []
     m_OriginalRotation: []
     m_OriginalScale: []
@@ -22419,8 +22420,8 @@ MonoBehaviour:
     m_StartTransform: {fileID: 8608294136795366838}
     m_StartAnchorPointInterpolation: {x: 0, y: 0, z: 0}
     m_StartControlPointInterpolation: {x: 2, y: -4, z: 1}
-    m_EndControlPointInterpolation: {x: 5, y: 4, z: 2}
-    m_EndAnchorPointInterpolation: {x: 0, y: 0, z: 0}
+    m_EndControlPointInterpolation: {x: 7, y: 4, z: 2}
+    m_EndAnchorPointInterpolation: {x: 0.75, y: 0, z: 0}
     m_OriginalPosition: []
     m_OriginalRotation: []
     m_OriginalScale: []
@@ -22449,8 +22450,8 @@ MonoBehaviour:
     m_StartTransform: {fileID: 8608294136795366832}
     m_StartAnchorPointInterpolation: {x: 0, y: 0, z: 0}
     m_StartControlPointInterpolation: {x: 2, y: -2, z: 1}
-    m_EndControlPointInterpolation: {x: 5, y: 4, z: 2}
-    m_EndAnchorPointInterpolation: {x: 0, y: -0.5, z: 0}
+    m_EndControlPointInterpolation: {x: 5, y: 4, z: 0}
+    m_EndAnchorPointInterpolation: {x: 0.75, y: -0.6, z: 0}
     m_OriginalPosition: []
     m_OriginalRotation: []
     m_OriginalScale: []
@@ -22480,7 +22481,7 @@ MonoBehaviour:
     m_StartAnchorPointInterpolation: {x: 0, y: 0, z: 0}
     m_StartControlPointInterpolation: {x: 2, y: -5, z: 1}
     m_EndControlPointInterpolation: {x: 5, y: 4, z: 2}
-    m_EndAnchorPointInterpolation: {x: 0, y: 0.5, z: 0}
+    m_EndAnchorPointInterpolation: {x: 0.75, y: 0.6, z: 0}
     m_OriginalPosition: []
     m_OriginalRotation: []
     m_OriginalScale: []
@@ -22509,8 +22510,8 @@ MonoBehaviour:
     m_StartTransform: {fileID: 8608294136795366796}
     m_StartAnchorPointInterpolation: {x: 0, y: 0, z: 0}
     m_StartControlPointInterpolation: {x: 2, y: -4, z: 1}
-    m_EndControlPointInterpolation: {x: 5, y: 4, z: 2}
-    m_EndAnchorPointInterpolation: {x: 0, y: 0, z: 0}
+    m_EndControlPointInterpolation: {x: 7, y: 4, z: 2}
+    m_EndAnchorPointInterpolation: {x: 0.75, y: 0, z: 0}
     m_OriginalPosition: []
     m_OriginalRotation: []
     m_OriginalScale: []
@@ -22539,9 +22540,9 @@ MonoBehaviour:
     m_StartTransform: {fileID: 8608294136795366798}
     m_StartAnchorPointInterpolation: {x: 0, y: 0, z: 0}
     m_StartControlPointInterpolation: {x: 2, y: -2, z: 1}
-    m_EndControlPointInterpolation: {x: 5, y: 4, z: 2}
-    m_EndAnchorPointInterpolation: {x: 0, y: -0.5, z: 0}
+    m_EndControlPointInterpolation: {x: 5, y: 4, z: 0}
+    m_EndAnchorPointInterpolation: {x: 0.75, y: -0.6, z: 0}
     m_OriginalPosition: []
     m_OriginalRotation: []
     m_OriginalScale: []
-  m_GrabForce: 25
+  m_GrabForce: 30

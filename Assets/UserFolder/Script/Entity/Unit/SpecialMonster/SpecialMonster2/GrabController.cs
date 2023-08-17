@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using PathCreation;
+using System;
 
 public class GrabController : MonoBehaviour
 {
@@ -24,13 +25,15 @@ public class GrabController : MonoBehaviour
     }
 
     [SerializeField] private TentacleParts[] m_TentacleParts;
-    [SerializeField] private float m_GrabForce = 25;
 
+    private bool m_IsAlive;
+
+    private float m_GrabAttachedTime;
+    private readonly float m_ScaleSize = 7;
+
+    public Action AttachedToPlayer { get; set; }
     public bool IsGrabbing { get; set; }        //촉수가 갔다 오는 시간까지 포함해서 true
     public bool IsAttachedPlayer { get; set; }  //플레이어한테 촉수가 Grab됐을때만 true
-    public float GrabForce { get => m_GrabForce; }
-
-    private readonly float m_ScaleSize = 7;
 
     private void Awake()
     {
@@ -54,9 +57,10 @@ public class GrabController : MonoBehaviour
         }
     }
 
-    public void Init()
+    public void Init(float grabAttachedTime)
     {
-
+        m_IsAlive = true;
+        m_GrabAttachedTime = grabAttachedTime;
     }
 
     public void SetBezierPath()
@@ -98,12 +102,15 @@ public class GrabController : MonoBehaviour
             
             count++;
 
-            if (IsAttachedPlayer) ApplyToTentaclesImmediate(rightAngle, tp);
-            else StartCoroutine(ApplyToTentacles(1, rightAngle, tp));
+            if (IsAttachedPlayer) ImmediateGrabStart(rightAngle, tp);
+            else StartCoroutine(GrabStartCoroutine(m_GrabAttachedTime, rightAngle, tp));
         }
+        if(!IsAttachedPlayer) Invoke(nameof(GrabDamage), m_GrabAttachedTime);
     }
 
-    private IEnumerator ApplyToTentacles(float time, float rightAngle, TentacleParts tp)
+    private void GrabDamage() => AttachedToPlayer?.Invoke();
+
+    private IEnumerator GrabStartCoroutine(float time, float rightAngle, TentacleParts tp)
     {
         IsGrabbing = true;
 
@@ -130,10 +137,11 @@ public class GrabController : MonoBehaviour
 
             yield return null;
         }
+        
         IsAttachedPlayer = true;
     }
 
-    private void ApplyToTentaclesImmediate(float rightAngle, TentacleParts tp)
+    private void ImmediateGrabStart(float rightAngle, TentacleParts tp)
     {
         float amount;
         float ySize = tp.m_PathCreator.path.length / tp.m_GrabTentacles.Length * 9f;
@@ -150,37 +158,11 @@ public class GrabController : MonoBehaviour
         }
     }
 
-    [ContextMenu("GrabEnd")]
-    public void GrabEnd()
-    {
-        StartCoroutine(ReturnToOriginal(2));
-    }
-
-    private void ImmediateGrabEnd()
-    {
-        foreach (TentacleParts tp in m_TentacleParts)
-        {
-            for (int i = 0; i < tp.m_OriginalPosition.Length; i++)
-            {
-                tp.m_GrabTentacles[i].localPosition = tp.m_OriginalPosition[i];
-                tp.m_GrabTentacles[i].localRotation = tp.m_OriginalRotation[i];
-                tp.m_GrabTentacles[i].localScale = tp.m_OriginalScale[i];
-            }
-        }
-
-        IsAttachedPlayer = false;
-    }
-
-    public void Dispose()
-    {
-        StopAllCoroutines();
-        if (!IsAttachedPlayer) ImmediateGrabEnd();
-    }
-
-    private IEnumerator ReturnToOriginal(float time)
+    //수정 하도록
+    public IEnumerator GrabEndCoroutine(float time)
     {
         IsAttachedPlayer = false;
-        
+
         float elapsedTime = 0;
         float t;
 
@@ -225,5 +207,43 @@ public class GrabController : MonoBehaviour
         }
 
         IsGrabbing = false;
+    }
+
+    public void ImmediateGrabEnd()
+    {
+        foreach (TentacleParts tp in m_TentacleParts)
+        {
+            for (int i = 0; i < tp.m_OriginalPosition.Length; i++)
+            {
+                tp.m_GrabTentacles[i].localPosition = tp.m_OriginalPosition[i];
+                tp.m_GrabTentacles[i].localRotation = tp.m_OriginalRotation[i];
+                tp.m_GrabTentacles[i].localScale = tp.m_OriginalScale[i];
+            }
+        }
+
+        IsAttachedPlayer = false;
+    }
+
+    public void Dispose()
+    {
+        m_IsAlive = false;
+        StopAllCoroutines();
+        if (IsAttachedPlayer) ImmediateGrabEnd();
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        float dist = 3;
+        foreach(TentacleParts tp in m_TentacleParts)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(tp.m_StartTransform.position, tp.m_StartTransform.position+tp.m_StartTransform.forward * 3);
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(tp.m_StartTransform.position, tp.m_StartTransform.position + tp.m_StartTransform.right * 3);
+
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(tp.m_StartTransform.position, tp.m_StartTransform.position + tp.m_StartTransform.up * 3);
+        }
     }
 }

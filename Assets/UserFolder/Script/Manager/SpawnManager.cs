@@ -41,6 +41,9 @@ namespace Manager
         [Tooltip("스폰영역을 자식으로 가지는 Transform")]
         [SerializeField] private Transform [] spawnAreaTransform = new Transform[6];
 
+        [Tooltip("SpecialMonster2 스폰 위치 부모 Transform")]
+        [SerializeField] private Transform m_SP2SpawnPos;
+
         [Tooltip("SpecialMonster3 스폰 위치")]
         [SerializeField] private Transform m_SP3SpawnPos;
 
@@ -307,23 +310,6 @@ namespace Manager
         }
 
         #region SpawnUnit
-        private void SpawnSpecialMonster()
-        {
-            if (!m_IsActiveSpecialSpawn) return;
-            switch (CurrentStage)
-            {
-                case 1:
-                    SpawnSpecialMonster3();
-                    break;
-                case 2:
-                    //SpawnSpecialMonster2();
-                    break;
-                case 3:
-                    //SpawnSpecialMonster3();
-                    break;
-            }
-        }
-
         private void SpawnMonster()
         {
             if (m_IsActiveNormalSpawn)
@@ -368,6 +354,25 @@ namespace Manager
             currentFlyingMonster.gameObject.SetActive(true);
         }
 
+        #region SpawnSpecialMonsters
+        private void SpawnSpecialMonster()
+        {
+            if (!m_IsActiveSpecialSpawn) return;
+            switch (CurrentStage)
+            {
+                case 1:
+                    //SpawnSpecialMonster1();
+                    SpawnSpecialMonster2();
+                    break;
+                case 2:
+                    //SpawnSpecialMonster2();
+                    break;
+                case 3:
+                    //SpawnSpecialMonster3();
+                    break;
+            }
+        }
+
         public async void SpawnSpecialMonster1()
         {
             await m_EnvironmentManager.FogDensityChange(0.015f, 10);
@@ -389,21 +394,22 @@ namespace Manager
             await m_EnvironmentManager.FogDensityChange(0.05f, 10);
 
             //중력 바꿔야 함
-            BoxCollider boxCollider = GetClosetArea(m_CurrentAreaCollider);
-            Vector3 initPosition;
-            float dist;
-            while (true)
+            Vector3 initPosition = Vector3.zero;
+            float farDist = 0;
+            float dist = 0;
+            foreach(Transform t in m_SP2SpawnPos)
             {
-                initPosition = GetRandomPos(boxCollider, 4);
-                dist = Vector3.Distance(initPosition, AI.AIManager.PlayerTransform.position);
-                if (dist >= 20) break;
-                //바꾸기
+                dist = Vector3.SqrMagnitude(t.position - AI.AIManager.PlayerTransform.position);
+                if (dist > farDist)
+                {
+                    farDist = dist;
+                    initPosition = t.position;
+                }
             }
-            //pos 구하고 거리 체크
 
-            SpecialMonster2 specialMonster2 = Instantiate(m_EntityManager.GetSpecialMonster2, initPosition,Quaternion.identity).GetComponent<SpecialMonster2>();
+            SpecialMonster2 specialMonster2 = Instantiate(m_EntityManager.GetSpecialMonster2, initPosition, Quaternion.identity).GetComponent<SpecialMonster2>();
             specialMonster2.EndSpecialMonsterAction += () => IsSP2MonsterEnd = true;
-            specialMonster2.Init(m_StatMultiplier);
+            specialMonster2.Init(m_SP2SpawnPos,m_StatMultiplier);
 
             IsSP2MonsterSpawned = true;
 
@@ -426,6 +432,7 @@ namespace Manager
             IsSP3MonsterSpawned = true;
             await m_EnvironmentManager.FogDensityChange(0.04f,5);
         }
+        #endregion
         #endregion
     }
 }

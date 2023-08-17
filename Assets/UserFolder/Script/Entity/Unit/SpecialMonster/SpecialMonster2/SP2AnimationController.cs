@@ -22,6 +22,7 @@ namespace Entity.Unit.Special
         private const string m_CriticalHit = "CriticalHit";
 
         private const string m_MovementSpeed = "MovementSpeed";
+        private const string m_IdleSpeed = "IdleSpeed";
         #endregion
 
         private void Awake()
@@ -71,6 +72,11 @@ namespace Entity.Unit.Special
         public void SetMovementSpeed(float value)
         {
             m_Animator.SetFloat(m_MovementSpeed, value);
+        }
+
+        public void SetIdleSpeed(float value)
+        {
+            m_Animator.SetFloat(m_IdleSpeed, value);
         }
 
         private IEnumerator CheckForEndNormalAttack(TaskCompletionSource<bool> tcs)

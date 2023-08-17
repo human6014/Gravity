@@ -7,6 +7,7 @@ namespace Scriptable.Monster
     [CreateAssetMenu(fileName = "SpecialMonster2Setting", menuName = "Scriptable Object/SpecialMonster2Settings", order = int.MaxValue - 1)]
     public class SpecialMonster2Scriptable : UnitScriptable
     {
+        //Hitbox Tentacle제외하고 30개
         [Header("Child")]
         [Header("Script info")]
         [Tooltip("몬스터 타입")]
@@ -17,6 +18,7 @@ namespace Scriptable.Monster
 
         [Tooltip("공격 가능 레이어")]
         public LayerMask m_AttackableLayer;
+
 
         [Header("Rush Attack")]
         [Tooltip("돌진 공격 충돌 레이어")]
@@ -37,6 +39,7 @@ namespace Scriptable.Monster
         [Tooltip("돌진 공격 이동 속도")]
         public float m_RushAttackMovementSpeed;
 
+
         [Header("Grab Attack")]
         [Tooltip("잡기 공격 데미지")]
         public int m_GrabAttackDamage;
@@ -51,10 +54,17 @@ namespace Scriptable.Monster
         public float m_GrabAttackMaxRange;
 
         [Tooltip("잡기 공격 해제 거리")]
-        public float m_GrabCancellationDist = 1;
+        public float m_GrabCancellationDist = 3;
+
+        [Tooltip("잡기 공격 플레이어 도달 시간")]
+        public float m_GrabAttachedTime = 1;
+
+        [Tooltip("잡기 공격 당기는 힘")]
+        public float m_GrabForce = 30;
 
         [Tooltip("잡기 공격 해제 누적 데미지")]
         public int m_GrabCancellationDamage = 500;
+
 
         [Header("Ground down")]
         [Tooltip("")]
@@ -75,6 +85,7 @@ namespace Scriptable.Monster
 
         [Tooltip("회복 시간")]
         public float m_RecoveryTime = 20;
+
 
         public bool CanNormalAttack(float dist, float curTimer) 
             => dist <= m_AttackRange && curTimer >= m_AttackSpeed;
