@@ -22314,7 +22314,7 @@ NavMeshAgent:
   m_AgentTypeID: -1372625422
   m_Radius: 18
   m_Speed: 3
-  m_Acceleration: 15
+  m_Acceleration: 20
   avoidancePriority: 38
   m_AngularSpeed: 60
   m_StoppingDistance: 8
@@ -22545,4 +22545,3 @@ MonoBehaviour:
     m_OriginalPosition: []
     m_OriginalRotation: []
     m_OriginalScale: []
-  m_GrabForce: 30

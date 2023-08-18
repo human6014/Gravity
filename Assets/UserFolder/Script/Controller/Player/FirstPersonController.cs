@@ -240,6 +240,7 @@ namespace Controller.Player
             ReversePosCheck();
         }
         #endregion
+
         #region Grab
         private void GrabActionPoint(Transform grabCameraPosition, Transform grabBodyPosition, Transform grabRotation, Transform throwingPosition)
         {
@@ -269,7 +270,7 @@ namespace Controller.Player
         {
             transform.position = transform.position + transform.up * 1.25f;
             m_IsThrowing = true;
-            m_RigidBody.AddForce(dir * 25 + transform.up * 10, ForceMode.Impulse);
+            m_RigidBody.AddForce(dir * 20 + transform.up * 7.5f, ForceMode.Impulse);
             m_RigidBody.useGravity = true;
         }
         #endregion
@@ -277,7 +278,6 @@ namespace Controller.Player
         private bool GroundCheck(out RaycastHit hitInfo)
             => Physics.Raycast(transform.position, GravityManager.GravityVector, out hitInfo, m_CapsuleCollider.height * 0.5f + m_InterporationDist, m_GroundLayer);
 
-        
         private void ReversePosCheck()
         {
             bool isHitReverseGround = Physics.Raycast(transform.position, transform.up, out RaycastHit hit, 10, reversePosLayer);

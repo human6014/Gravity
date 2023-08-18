@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdaa71cd16782824781f0b156c406e93, type: 3}
   m_Name: SpecialMonster3Stat
   m_EditorClassIdentifier: 
-  m_HP: 4000
+  m_HP: 2000
   m_Def: 0
   m_Damage: 150
   m_MovementSpeed: 5

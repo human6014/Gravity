@@ -8,7 +8,6 @@ namespace Entity.Unit.Special
 {
     public class SpecialMonster2 : MonoBehaviour, IMonster
     {
-        //SpecialMonster³¢¸® ºÎ¸ð Å¬·¡½º ¸¸µé±â
         [Header("Data")]
         [SerializeField] private Scriptable.Monster.SpecialMonster2Scriptable m_Settings;
 
@@ -86,13 +85,12 @@ namespace Entity.Unit.Special
             targetVector.y = 0;
             targetVector.Normalize();
 
-            float angle = Vector3.Angle(forwardVector, targetVector);
-            return angle <= ableAngle;
+            return Vector3.Angle(forwardVector, targetVector) <= ableAngle;
         }
 
-        private void ForceToPlayer(float force)
+        private void ForceToPlayer(float force, Vector3 position)
         {
-            Vector3 dir = transform.position - AIManager.PlayerTransform.position;
+            Vector3 dir = position - AIManager.PlayerTransform.position;
             dir.y = 0;
             dir.Normalize();
             m_PlayerRigidbody.AddForce(dir * force, ForceMode.Impulse);
@@ -114,7 +112,7 @@ namespace Entity.Unit.Special
         private void Start()
         {
             m_PlayerRigidbody = AIManager.PlayerTransform.GetComponent<Rigidbody>();
-            m_PlayerData = AIManager.PlayerTransform.GetComponent<PlayerData>();
+            m_PlayerData = m_PlayerRigidbody.GetComponent<PlayerData>();
         }
 
         public void Init(Transform spawnPos, float statMultiplier)
@@ -181,7 +179,7 @@ namespace Entity.Unit.Special
                 //°¡²û¾¿ ¾ÈµÊ ¿©±â
                 if (Vector3.Distance(m_GrabEndPoint.position, AIManager.PlayerTransform.position) <= m_Settings.m_GrabCancellationDist)
                     GrabEnd(true);
-                else ForceToPlayer(m_Settings.m_GrabForce);
+                else ForceToPlayer(m_Settings.m_GrabForce, m_GrabEndPoint.position);
             }
             else if (m_IsRushMove)
             {
@@ -360,8 +358,7 @@ namespace Entity.Unit.Special
                 hit.distance <= 20)
                 return;
 
-            m_RushAttackPos = new Vector3(hit.point.x,transform.position.y,hit.point.z);
-            m_RushAttackPos -= dir * m_RushCheckRadius;
+            m_RushAttackPos = new Vector3(hit.point.x, transform.position.y, hit.point.z) - dir * m_RushCheckRadius;
 
             m_DoingBehaviour = true;
             m_IsRushMove = true;
@@ -466,7 +463,7 @@ namespace Entity.Unit.Special
             MoveSelf();
             m_SP2AnimationController.SetRoar(true);
 
-            ForceToPlayer(m_GroundDownForce);
+            ForceToPlayer(m_GroundDownForce, transform.position);
             //¼Ò¸® ¿ì¾Æ¾Æ¾Ó ÇØ¼­ ¶¥À¸·Î ²ø°í ¿À±â
         }
         #endregion
@@ -474,6 +471,8 @@ namespace Entity.Unit.Special
         public void Die()
         {
             m_IsAlive = false;
+            EndSpecialMonsterAction?.Invoke();
+
             StopAllCoroutines();
             m_SpecialMonster2AI.Dispose();
             m_GrabController.Dispose();
