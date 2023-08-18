@@ -34,12 +34,12 @@ MonoBehaviour:
   m_RushObstacleLayer:
     serializedVersion: 2
     m_Bits: 417792
-  m_RushAttackDamage: 300
+  m_RushAttackDamage: 350
   m_RushAttackTime: 10
   m_RushAttackMinRange: 15
   m_RushAttackMaxRange: 100
   m_RushAttackMovementSpeed: 30
-  m_GrabAttackDamage: 150
+  m_GrabAttackDamage: 50
   m_GrabAttackTime: 25
   m_GrabAttackMinRange: 15
   m_GrabAttackMaxRange: 45

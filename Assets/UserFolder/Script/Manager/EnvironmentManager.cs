@@ -15,22 +15,25 @@ namespace Manager {
             m_GravityManager = FindObjectOfType<GravityManager>();
         }
 
-        [ContextMenu("Rain On")]
         public void OnRainParticle()
         {
             m_RainParticle.transform.rotation = GravityManager.GetCurrentGravityRotation();
             m_GravityManager.SyncRotatingTransform.Add(m_RainParticle.transform);
-            m_RainParticle.gameObject.SetActive(true);
-            //Particle Play로 변경해야함
+            m_RainParticle.Play();
+        }
+
+        public void OffRainParticle()
+        {
+            m_GravityManager.SyncRotatingTransform.Remove(m_RainParticle.transform);
+            m_RainParticle.Stop();
         }
 
         public async Task FogDensityChange(float targetDensity, float changeTime)
         {
-            float startTime = Time.time;
             float elapsedTime = 0;
             float currentDensity = RenderSettings.fogDensity;
             while (elapsedTime < changeTime) {
-                elapsedTime = Time.time - startTime;
+                elapsedTime += Time.deltaTime;
                 RenderSettings.fogDensity = Mathf.Lerp(currentDensity, targetDensity, elapsedTime / changeTime);
                 await Task.Yield();
             }

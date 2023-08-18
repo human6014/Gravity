@@ -72,13 +72,23 @@ namespace Entity.Unit.Special
             Vector3 dir = (AIManager.PlayerTransform.position - currentPos).normalized;
 
             bool isHit = Physics.Raycast(currentPos, dir, out RaycastHit hit, m_TargetDist, m_Settings.m_ObstacleDetectLayer);
-            //hit가 없을 수가 없을탠데? 가끔 Null reference가 나와용
+
             if (!isHit)
             {
                 Debug.Log("Hit is Null");
                 return true;
             }
             return hit.transform.gameObject.layer != m_PlayerLayerNum;
+        }
+
+        private bool CanAttackRotation(float ableAngle)
+        {
+            Vector3 forwardVector = transform.forward;
+            Vector3 targetVector = AIManager.PlayerTransform.position - transform.position;
+            targetVector.y = 0;
+            targetVector.Normalize();
+
+            return Vector3.Angle(forwardVector, targetVector) <= ableAngle;
         }
 
         public System.Action EndSpecialMonsterAction { get; set; }

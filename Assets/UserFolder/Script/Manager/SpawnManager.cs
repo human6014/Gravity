@@ -95,7 +95,6 @@ namespace Manager
         #region Normal Value
         private EnumType.GravityType m_CurrentGravityType = EnumType.GravityType.yDown;
         private readonly float[] m_Probs = new float[] { 52, 21, 21, 4, 2 };
-        //private readonly float[] m_Probs = new float[] { 0, 0, 0, 0, 100 };
 
         private float m_Total = 0;
 
@@ -117,7 +116,6 @@ namespace Manager
         #region Property
         public static int NormalMonsterCount { get; set; }
         public static int FlyingMonsterCount { get; set; }
-        //static 없애고 Monster들한테 Action으로 처리 가능
 
         public bool IsSP1MonsterSpawned { get; private set; }
         public bool IsSP2MonsterSpawned { get; private set; }
@@ -284,6 +282,7 @@ namespace Manager
         }
         #endregion
 
+        #region Stage & Wave
         private void Update()
         {
             StageWaveCheck();
@@ -308,6 +307,7 @@ namespace Manager
                 if (currentStageInfo.m_WaveTiming.Length <= CurrentWave - 1) CurrentStage++;
             }
         }
+        #endregion
 
         #region SpawnUnit
         private void SpawnMonster()
@@ -361,14 +361,14 @@ namespace Manager
             switch (CurrentStage)
             {
                 case 1:
-                    //SpawnSpecialMonster1();
-                    SpawnSpecialMonster2();
-                    break;
-                case 2:
+                    SpawnSpecialMonster1();
                     //SpawnSpecialMonster2();
                     break;
+                case 2:
+                    SpawnSpecialMonster2();
+                    break;
                 case 3:
-                    //SpawnSpecialMonster3();
+                    SpawnSpecialMonster3();
                     break;
             }
         }
@@ -376,6 +376,7 @@ namespace Manager
         public async void SpawnSpecialMonster1()
         {
             await m_EnvironmentManager.FogDensityChange(0.015f, 10);
+
             BoxCollider[] initColliders = ExcludeRandomIndex((int)m_CurrentGravityType, out int specificIndex);
             BoxCollider initCollider = GetClosetArea(initColliders);
 
@@ -384,6 +385,7 @@ namespace Manager
 
             SpecialMonster1 specialMonster1 = Instantiate(m_EntityManager.GetSpecialMonster1, initPosition, Quaternion.identity).GetComponent<SpecialMonster1>();
             specialMonster1.EndSpecialMonsterAction += () => IsSP1MonsterEnd = true;
+            specialMonster1.EndSpecialMonsterAction += () => m_EnvironmentManager.OnRainParticle();
             specialMonster1.Init(initRotation, m_StatMultiplier);
 
             IsSP1MonsterSpawned = true;
@@ -393,7 +395,8 @@ namespace Manager
         {
             await m_EnvironmentManager.FogDensityChange(0.05f, 10);
 
-            //중력 바꿔야 함
+            StartCoroutine(ChangeGravityToYDown());
+            
             Vector3 initPosition = Vector3.zero;
             float farDist = 0;
             float dist = 0;
@@ -409,6 +412,7 @@ namespace Manager
 
             SpecialMonster2 specialMonster2 = Instantiate(m_EntityManager.GetSpecialMonster2, initPosition, Quaternion.identity).GetComponent<SpecialMonster2>();
             specialMonster2.EndSpecialMonsterAction += () => IsSP2MonsterEnd = true;
+            specialMonster2.EndSpecialMonsterAction += () => GravityManager.CantGravityChange = false;
             specialMonster2.Init(m_SP2SpawnPos,m_StatMultiplier);
 
             IsSP2MonsterSpawned = true;
@@ -416,8 +420,18 @@ namespace Manager
             await m_EnvironmentManager.FogDensityChange(0.025f, 10);
         }
 
+        private IEnumerator ChangeGravityToYDown()
+        {
+            GravityManager gravityManager = FindObjectOfType<GravityManager>();
+
+            yield return new WaitWhile(() => GravityManager.IsGravityChanging);
+            gravityManager.GravityChange(1, -0.1f);
+            GravityManager.CantGravityChange = true;
+        }
+
         public async void SpawnSpecialMonster3()
         {
+            m_EnvironmentManager.OffRainParticle();
             await m_EnvironmentManager.FogDensityChange(0.1f,15);
 
             Camera.main.farClipPlane = 120;
@@ -433,6 +447,7 @@ namespace Manager
             await m_EnvironmentManager.FogDensityChange(0.04f,5);
         }
         #endregion
+
         #endregion
     }
 }

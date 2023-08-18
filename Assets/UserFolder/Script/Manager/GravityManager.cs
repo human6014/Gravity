@@ -31,6 +31,8 @@ namespace Manager
         /// </summary>
         public static bool IsGravityChanging { get; private set; } = false;
 
+        public static bool CantGravityChange { get; set; } = false;
+
         /// <summary>
         /// 중력 백터 일반화
         /// </summary>
@@ -67,6 +69,7 @@ namespace Manager
         public bool GravityChange(int gravityKeyInput, float mouseScroll)
         {
             if (IsGravityChanging) return true;
+            if (CantGravityChange) return true;
 
             m_CurrentGravityAxis = (GravityDirection)gravityKeyInput;
             GravityChange(Mathf.FloorToInt(mouseScroll * 10));
