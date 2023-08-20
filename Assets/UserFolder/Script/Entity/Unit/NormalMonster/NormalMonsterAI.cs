@@ -124,6 +124,7 @@ namespace Entity.Unit.Normal
         public void AutoBehavior()
         {
             bool isMoving = true;
+            if (!m_NavMeshAgent.isActiveAndEnabled) return;
             if (!NormalMonsterState.CanMoveState)
             {
                 m_NavMeshAgent.SetDestination(transform.position);

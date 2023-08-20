@@ -8,17 +8,17 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: BigZombie_Clothes_MAT
-    second: {fileID: 2100000, guid: 58afaca4c8ba1fe46b1ea4998150d593, type: 2}
+    second: {fileID: 2100000, guid: 118cf4cdffad3b24eb07dd40c9228ee0, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: BigZombie_Skin_MAT
-    second: {fileID: 2100000, guid: 2e989d60019b86d4396f6dbc4335f10a, type: 2}
+    second: {fileID: 2100000, guid: fb11245686799904d9f1dd92d116fc98, type: 2}
   materials:
     materialImportMode: 1
     materialName: 1
     materialSearch: 1
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0

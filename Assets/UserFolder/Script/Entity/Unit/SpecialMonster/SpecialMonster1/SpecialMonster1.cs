@@ -323,6 +323,8 @@ namespace Entity.Unit.Special
         #endregion
 
         #endregion
+
+        #region Hit
         public void Hit(int damage, AttackType bulletType)
         {
             if (!m_IsAlive) return;
@@ -338,6 +340,14 @@ namespace Entity.Unit.Special
             if (m_CurrentHP <= 0) Die();
             else if (CanCriticalHit(realDamage)) CriticalHit();
         }
+        private async void CriticalHit()
+        {
+            m_DoingBehaviour = true;
+
+            await m_SP1AnimationController.SetHit();
+
+            m_DoingBehaviour = false;
+        }
 
         private void ChangeBaseColor()
         {
@@ -348,6 +358,7 @@ namespace Entity.Unit.Special
             m_MaterialPropertyBlock.SetColor("_BaseColor", newColor);
             m_SkinnedMeshRenderer.SetPropertyBlock(m_MaterialPropertyBlock);
         }
+        #endregion
 
         public void Die()
         {
@@ -358,15 +369,6 @@ namespace Entity.Unit.Special
             m_LegController.Dispose();
             if (m_IsGrabbing) m_PlayerData.EndGrab();
             m_SP1AnimationController.SetDie();
-        }
-
-        private async void CriticalHit()
-        {
-            m_DoingBehaviour = true;
-
-            await m_SP1AnimationController.SetHit();
-
-            m_DoingBehaviour = false;
         }
     }
 }

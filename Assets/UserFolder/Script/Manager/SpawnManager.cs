@@ -310,6 +310,8 @@ namespace Manager
         #endregion
 
         #region SpawnUnit
+
+        #region SpawnNormalMonster
         private void SpawnMonster()
         {
             if (m_IsActiveNormalSpawn)
@@ -353,6 +355,7 @@ namespace Manager
             currentFlyingMonster.Init(m_Octree.GetRandomSpawnableArea(), m_StatMultiplier, m_FlyingMonsterPoolingObjectArray[0], m_PoisonSpherePooling);
             currentFlyingMonster.gameObject.SetActive(true);
         }
+        #endregion
 
         #region SpawnSpecialMonsters
         private void SpawnSpecialMonster()
@@ -361,14 +364,14 @@ namespace Manager
             switch (CurrentStage)
             {
                 case 1:
-                    SpawnSpecialMonster1();
+                    SpawnSpecialMonster3();
                     //SpawnSpecialMonster2();
                     break;
                 case 2:
-                    SpawnSpecialMonster2();
+                    //SpawnSpecialMonster2();
                     break;
                 case 3:
-                    SpawnSpecialMonster3();
+                    //SpawnSpecialMonster3();
                     break;
             }
         }
@@ -422,10 +425,8 @@ namespace Manager
 
         private IEnumerator ChangeGravityToYDown()
         {
-            GravityManager gravityManager = FindObjectOfType<GravityManager>();
-
             yield return new WaitWhile(() => GravityManager.IsGravityChanging);
-            gravityManager.GravityChange(1, -0.1f);
+            FindObjectOfType<GravityManager>().GravityChange(1, -0.1f);
             GravityManager.CantGravityChange = true;
         }
 

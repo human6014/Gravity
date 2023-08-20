@@ -581,17 +581,17 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: OldManZombie_Clothes_MAT
-    second: {fileID: 2100000, guid: 4bb22423fa0af3342ad4a47ffd8cb849, type: 2}
+    second: {fileID: 2100000, guid: e03a781da90e51441a59daa77cfa5bc7, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: OldManZombie_Skin_MAT
-    second: {fileID: 2100000, guid: 61cecc3856fee1d45b31637d12a46741, type: 2}
+    second: {fileID: 2100000, guid: e5513555711e2d34a8e03d2f2274fce2, type: 2}
   materials:
     materialImportMode: 1
     materialName: 1
     materialSearch: 1
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
