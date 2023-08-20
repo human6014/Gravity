@@ -90,6 +90,13 @@ namespace Entity.Unit.Normal
         }
         #endregion
         #region Animation Event
+
+        public void DoDamage()
+        {
+            //데미지 주는 애니메이션 타이밍
+            Debug.Log("DoDamage");
+        }
+
         public void EndAttack()
         {
             IsEndAttack = true;

@@ -3,12 +3,22 @@ guid: f263560410702b24f819002bea6cd792
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ZombieGirl_B_Hair_MAT
+    second: {fileID: 2100000, guid: 69c11712d08f9c54a98c25dee7846e16, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ZombieGirl_B_MAT
+    second: {fileID: 2100000, guid: 3f6dc9933f9183643b2ad8c052adf0fd, type: 2}
   materials:
     materialImportMode: 1
     materialName: 1
     materialSearch: 1
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0

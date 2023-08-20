@@ -18,6 +18,7 @@ namespace Entity.Unit.Special
         private ObjectPoolManager.PoolingObject m_PollingObject;
         private SP3AnimationController m_SP3AnimationController;
         private BoidsController m_BoidsController;
+        private ParticleEndSystem m_ParticleEndSystem;
         private PathFollower m_PathFollower;
         private Rigidbody m_Rigidbody;
 
@@ -238,6 +239,7 @@ namespace Entity.Unit.Special
         {
             m_IsAlive = false;
             m_BoidsController.Dispose();
+            m_ParticleEndSystem.TurnOffParticles();
             StartCoroutine(RotateToDieMotion(m_DieRotateTime));
         }
 
