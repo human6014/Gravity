@@ -364,8 +364,8 @@ namespace Manager
             switch (CurrentStage)
             {
                 case 1:
-                    SpawnSpecialMonster3();
-                    //SpawnSpecialMonster2();
+                    //SpawnSpecialMonster3();
+                    SpawnSpecialMonster1();
                     break;
                 case 2:
                     //SpawnSpecialMonster2();

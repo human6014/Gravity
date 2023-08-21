@@ -15,17 +15,20 @@ namespace Scriptable.Monster
         [Tooltip("방어력")]
         public int m_Def;
 
-        [Tooltip("공격력")]
+        [Tooltip("일반 공격력")]
         public int m_Damage;
 
         [Tooltip("이동 속도")]
         public float m_MovementSpeed;
 
-        [Tooltip("공격 속도")]
+        [Tooltip("일반 공격 속도")]
         public float m_AttackSpeed;
 
-        [Tooltip("공격 사거리")]
+        [Tooltip("일반 공격 사거리")]
         public float m_AttackRange;
+
+        [Tooltip("일반 공격 가능한 각도")]
+        public float m_AttackAbleAngle;
 
         [Tooltip("폭발 저항")]
         [Range(1,50)]
@@ -47,5 +50,11 @@ namespace Scriptable.Monster
 
         [Tooltip("공격력 상승치")]
         public int m_DamageMultiplier;
+
+        public bool CanNormalAttack(float dist, float curTimer, float angle)
+            => dist <= m_AttackRange && curTimer >= m_AttackSpeed && angle <= m_AttackAbleAngle;
+
+        public bool CanNormalAttack(float dist, float angle)
+            => dist <= m_AttackRange && angle <= m_AttackAbleAngle;
     }
 }

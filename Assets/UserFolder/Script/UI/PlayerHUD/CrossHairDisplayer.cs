@@ -22,6 +22,7 @@ namespace UI.Player
         private const string m_CrouchState = "IsCrouching";
         private const string m_JumpState = "IsJumping";
         private const string m_AimState = "IsAiming";
+
         private const string m_CrouchFire = "CrouchFire";
         private const string m_IdleFire = "IdleFire";
         private const string m_WalkFire = "WalkFire";
@@ -34,6 +35,8 @@ namespace UI.Player
             m_PlayerState = FindObjectOfType<PlayerData>().PlayerState;
             m_Animator = GetComponent<Animator>();
             crossHairImage = GetComponentsInChildren<Image>();
+
+            m_PlayerState.SetBehaviorCrossHairAction += SetPlayerCrossHairAnimation;
 
             SetCrossHair(0);
         }
@@ -59,9 +62,7 @@ namespace UI.Player
             }
         }
 
-        private void FixedUpdate() => SetBehaviorState();   //??
-
-        private void SetBehaviorState()
+        private void SetPlayerCrossHairAnimation()
         {
             if (m_PlayerState.PlayerWeaponState == PlayerWeaponState.Aiming) CrossHairSetBool(m_AimState);
             else if (m_PlayerState.PlayerBehaviorState == PlayerBehaviorState.Crouching)
@@ -95,7 +96,7 @@ namespace UI.Player
 
         private void CrossHairSetBool(string state)
         {
-            if (state == m_CurrentAnimState || !m_Animator.isActiveAndEnabled) return;
+            if (state == m_CurrentAnimState || m_Animator.runtimeAnimatorController == null) return;
             if (m_CurrentAnimState != m_IdleState) m_Animator.SetBool(m_CurrentAnimState, false);
             if (state != m_IdleState) m_Animator.SetBool(state, true);
             m_CurrentAnimState = state;
@@ -103,24 +104,19 @@ namespace UI.Player
 
         public float GetCurrentAccurancy()
         {
-            float currentAccurancy = 0;
             switch (m_PlayerState.PlayerBehaviorState)
             {
                 case PlayerBehaviorState.Crouching:
-                    currentAccurancy = m_CurrentCrossHairScripatble.m_CrouchAccurancy;
-                    break;
+                    return m_CurrentCrossHairScripatble.m_CrouchAccurancy;
                 case PlayerBehaviorState.Jumping:
-                    currentAccurancy = m_CurrentCrossHairScripatble.m_JumpAccuracy;
-                    break;
+                    return m_CurrentCrossHairScripatble.m_JumpAccuracy;
                 case PlayerBehaviorState.Walking:
-                    currentAccurancy = m_CurrentCrossHairScripatble.m_WalkAccuracy;
-                    break;
+                    return m_CurrentCrossHairScripatble.m_WalkAccuracy;
                 case PlayerBehaviorState.Idle:
-                    currentAccurancy = m_CurrentCrossHairScripatble.m_IdleAccuracy;
-                    break;
+                    return m_CurrentCrossHairScripatble.m_IdleAccuracy;
+                default:
+                    return 0;
             }
-
-            return currentAccurancy;
         }
     }
 }

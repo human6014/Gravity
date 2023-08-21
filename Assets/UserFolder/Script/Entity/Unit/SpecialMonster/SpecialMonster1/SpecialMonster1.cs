@@ -21,7 +21,7 @@ namespace Entity.Unit.Special
         [SerializeField] private Transform m_ThrowingPoint;
         [SerializeField] private Transform m_LookPoint;
 
-        private Transform m_NavMeshTransform;
+        private Transform m_NavMeshTransform;   //transform말고 이거 써야대
         private SpecialMonsterAI m_SpecialMonsterAI;
         private SP1AnimationController m_SP1AnimationController;
         private MaterialPropertyBlock m_MaterialPropertyBlock;
@@ -44,18 +44,18 @@ namespace Entity.Unit.Special
         private bool m_DoingBehaviour;
         private bool m_IsGrabbing;
 
-        private int m_PlayerLayerNum;
-
         private int m_RealMaxHP;
         private int m_RealDef;
         private int m_RealCriticalHP;
         private int m_RealDamage;
 
-        private bool CanGrabAttack() => m_GrabAttackTimer >= m_Settings.m_GrabAttackSpeed &&
-            m_TargetDist <= m_Settings.m_GrabAttackRange;
+        public System.Action EndSpecialMonsterAction { get; set; }
 
-        private bool CanNormalAttack() => m_NormalAttackTimer >= m_Settings.m_AttackSpeed &&
-            m_TargetDist <= m_Settings.m_AttackRange;
+        private bool CanGrabAttack(float angle) 
+            => m_Settings.CanGrabAttack(m_TargetDist, m_GrabAttackTimer, angle);
+
+        private bool CanNormalAttack(float angle)
+            => m_Settings.CanNormalAttack(m_TargetDist, m_NormalAttackTimer, angle);
 
         private bool CanJumpAttack() => m_Settings.CanJumpAttack(m_TargetDist, m_JumpAttackTimer) && 
             AIManager.PlayerIsGround;
@@ -73,25 +73,9 @@ namespace Entity.Unit.Special
 
             bool isHit = Physics.Raycast(currentPos, dir, out RaycastHit hit, m_TargetDist, m_Settings.m_ObstacleDetectLayer);
 
-            if (!isHit)
-            {
-                Debug.Log("Hit is Null");
-                return true;
-            }
-            return hit.transform.gameObject.layer != m_PlayerLayerNum;
+            if (!isHit) return true;
+            return hit.transform.gameObject.layer != AIManager.PlayerLayerNum;
         }
-
-        private bool CanAttackRotation(float ableAngle)
-        {
-            Vector3 forwardVector = transform.forward;
-            Vector3 targetVector = AIManager.PlayerTransform.position - transform.position;
-            targetVector.y = 0;
-            targetVector.Normalize();
-
-            return Vector3.Angle(forwardVector, targetVector) <= ableAngle;
-        }
-
-        public System.Action EndSpecialMonsterAction { get; set; }
 
         private void Awake()
         {
@@ -103,7 +87,7 @@ namespace Entity.Unit.Special
             m_SP1AnimationController = m_NavMeshTransform.GetComponent<SP1AnimationController>();
             m_MaterialPropertyBlock = new MaterialPropertyBlock();
 
-            m_PlayerLayerNum = LayerMask.NameToLayer("Player");
+            m_SP1AnimationController.DoDamageAction += DoDamage;
         }
         
         public void Init(Quaternion rotation, float statMultiplier)
@@ -166,7 +150,8 @@ namespace Entity.Unit.Special
             m_TargetDist = Vector3.Distance(AIManager.PlayerTransform.position, m_NavMeshTransform.position);
 
             if (DetectObstacle()) return;
-
+            float toPlayerAngle = AIManager.AngleToPlayer(m_NavMeshTransform);
+            Debug.Log(toPlayerAngle);
             if (CanJumpAttack())
             {
                 if (!m_Settings.CanJumpAttackPercentage()) m_JumpAttackTimer = 0;
@@ -178,8 +163,8 @@ namespace Entity.Unit.Special
                 if (!m_Settings.CanJumpPercentage()) m_JumpTimer = 0;
                 else JumpBehavior(ref m_JumpTimer, m_Settings.m_JumpHeightRatio, 0, m_Settings.m_PreJumpTime, false);
             }
-            else if (CanGrabAttack()) GrabAttack();
-            else if (CanNormalAttack()) NormalAttack();
+            else if (CanGrabAttack(toPlayerAngle)) GrabAttack();
+            else if (CanNormalAttack(toPlayerAngle)) NormalAttack();
         }
 
         private async void NormalAttack()
@@ -187,10 +172,17 @@ namespace Entity.Unit.Special
             m_DoingBehaviour = true;
             m_NormalAttackTimer = 0;
             
-            m_PlayerData.PlayerHit(m_NavMeshTransform, (m_Settings.m_Damage + m_RealDamage), m_Settings.m_NoramlAttackType);
             await m_SP1AnimationController.SetClawsAttack();
+            m_GrabAttackTimer = Mathf.Min(m_GrabAttackTimer, m_Settings.m_GrabAttackSpeed - m_AttackBetweenTime);
 
             m_DoingBehaviour = false;
+        }
+
+        private void DoDamage()
+        {
+            if (!m_Settings.CanNormalAttack(m_TargetDist, AIManager.AngleToPlayer(m_NavMeshTransform))) return;
+            Debug.Log("DoDamage");
+            m_PlayerData.PlayerHit(m_NavMeshTransform, m_Settings.m_Damage + m_RealDamage, m_Settings.m_NoramlAttackType);
         }
 
         private async void GrabAttack()
@@ -202,7 +194,7 @@ namespace Entity.Unit.Special
 
             await m_SP1AnimationController.SetGrabAttack();
 
-            m_PlayerData.PlayerHit(m_GrabCameraPoint, (m_Settings.m_GrabAttackDamage + m_RealDamage), m_Settings.m_NoramlAttackType);
+            m_PlayerData.PlayerHit(m_GrabCameraPoint, m_Settings.m_GrabAttackDamage + m_RealDamage, m_Settings.m_NoramlAttackType);
 
             m_GrabAttackTimer = 0;
             m_NormalAttackTimer = m_Settings.m_AttackSpeed - m_AttackBetweenTime;
@@ -297,7 +289,7 @@ namespace Entity.Unit.Special
         private void CheckJumpAttackToPlayer()
         {
             if (Physics.CheckSphere(m_GrabCameraPoint.position, m_Settings.m_JumpAttackRange, m_Settings.m_AttackableLayer, QueryTriggerInteraction.Ignore))
-                m_PlayerData.PlayerHit(m_NavMeshTransform, (m_Settings.m_JumpAttackDamage + m_RealDamage), m_Settings.m_NoramlAttackType);
+                m_PlayerData.PlayerHit(m_NavMeshTransform, m_Settings.m_JumpAttackDamage + m_RealDamage, m_Settings.m_NoramlAttackType);
         }
 
         private void OnDrawGizmosSelected()

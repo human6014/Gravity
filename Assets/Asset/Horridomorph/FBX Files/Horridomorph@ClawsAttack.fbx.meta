@@ -68,6 +68,14 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.49285713
+        functionName: DoDamage
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: eb589b15d911a09448a7caefec67f2ca,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

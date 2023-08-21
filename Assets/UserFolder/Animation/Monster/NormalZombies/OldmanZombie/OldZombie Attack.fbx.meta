@@ -61,7 +61,7 @@ ModelImporter:
       curves: []
       events:
       - time: 0.52652687
-        functionName: NewEvent
+        functionName: DoDamage
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 3245133e4adcad84bb599911414719b5,
           type: 3}
@@ -69,7 +69,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 1
-        functionName: DoDamage
+        functionName: EndAttack
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 3245133e4adcad84bb599911414719b5,
           type: 3}

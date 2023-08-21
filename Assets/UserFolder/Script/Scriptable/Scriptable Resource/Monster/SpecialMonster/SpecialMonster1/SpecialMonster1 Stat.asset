@@ -16,8 +16,9 @@ MonoBehaviour:
   m_Def: 100
   m_Damage: 350
   m_MovementSpeed: 11
-  m_AttackSpeed: 4
+  m_AttackSpeed: 5
   m_AttackRange: 7.5
+  m_AttackAbleAngle: 35
   m_ExplosionResistance: 6
   m_MeleeResistance: 6
   m_NoramlAttackType: 0
@@ -35,6 +36,7 @@ MonoBehaviour:
   m_GrabAttackDamage: 500
   m_GrabAttackSpeed: 9
   m_GrabAttackRange: 7
+  m_GrabAttackAbleAngle: 45
   m_JumpAttackDamage: 350
   m_JumpAttackRange: 4
   m_JumpAttackSpeed: 9

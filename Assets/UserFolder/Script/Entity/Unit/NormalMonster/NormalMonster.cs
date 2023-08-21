@@ -27,15 +27,12 @@ namespace Entity.Unit.Normal
         
         private float m_AttackTimer;
 
-        private bool CanAttackRange
-        {
-            get => Vector3.Distance(AIManager.PlayerTransform.position, transform.position) <= m_Settings.m_AttackRange;
-        }
-
-        private bool CanAttack
-        {
-            get => m_AttackTimer >= m_Settings.m_AttackSpeed && m_NormalMonsterState.CanAttackState;
-        }
+        private bool CanAttackRange() 
+            => Vector3.Distance(AIManager.PlayerTransform.position, transform.position) <= m_Settings.m_AttackRange;
+        
+        private bool CanAttack() 
+            => m_AttackTimer >= m_Settings.m_AttackSpeed && m_NormalMonsterState.CanAttackState;
+        
         public NoramlMonsterType GetMonsterType { get => m_Settings.m_MonsterType; }
 
         public void OnOffRagdoll(bool isActive)
@@ -53,8 +50,10 @@ namespace Entity.Unit.Normal
             m_NormalMonsterAnimController = GetComponentInChildren<NormalMonsterAnimController>();
             
             m_NormalMonsterState = new NormalMonsterState(m_NormalMonsterAnimController);
-            m_NormalMonsterAI.RagdollOnOffAction += OnOffRagdoll;
+
             m_NormalMonsterAI.NormalMonsterState = m_NormalMonsterState;
+            m_NormalMonsterAI.RagdollOnOffAction += OnOffRagdoll;
+            m_NormalMonsterAnimController.DoDamageAction += DoDamage;
         }
 
         private void Start() => m_PlayerData = AIManager.PlayerTransform.GetComponent<PlayerData>();
@@ -101,9 +100,10 @@ namespace Entity.Unit.Normal
 
         public void Move()
         {
-            if (CanAttackRange)
+            if (CanAttackRange())
             {
-                if (CanAttack) Attack();
+                //Angleüũ �ؾߴ�
+                if (CanAttack()) Attack();
             }
             else m_NormalMonsterAI.AutoBehavior();
         }
@@ -113,6 +113,11 @@ namespace Entity.Unit.Normal
             m_AttackTimer = 0;
 
             m_NormalMonsterState.SetTriggerAttacking();
+        }
+
+        private void DoDamage()
+        {
+            if (!AIManager.IsInsideAngleToPlayer(transform, m_Settings.m_AttackAbleAngle)) return;
             m_PlayerData.PlayerHit(transform, m_RealDamage, m_Settings.m_NoramlAttackType);
         }
 
