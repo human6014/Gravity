@@ -58,9 +58,9 @@ namespace Entity.Unit.Special
 
         public System.Action EndSpecialMonsterAction { get; set; }
 
-        private bool CanNormalAttack() => m_Settings.CanNormalAttack(m_TargetDist, m_NormalAttackTimer) && CanAttackRotation(30);
-        private bool CanGrabAttack() => m_Settings.CanGrabAttack(m_TargetDist, m_GrabAttackTimer) && CanAttackRotation(15);
-        private bool CanRushAttack() => m_Settings.CanRushAttack(m_TargetDist, m_RushAttackTimer);
+        private bool CanNormalAttack(float angle) => m_Settings.CanNormalAttack(m_TargetDist, m_NormalAttackTimer, angle);
+        private bool CanGrabAttack(float angle) => m_Settings.CanGrabAttack(m_TargetDist, m_GrabAttackTimer, angle);
+        private bool CanRushAttack(float angle) => m_Settings.CanRushAttack(m_TargetDist, m_RushAttackTimer, angle);
 
         private async void MoveWait(int time)
         {
@@ -105,6 +105,7 @@ namespace Entity.Unit.Special
             m_SpecialMonster2AI.MoveCompToPos += HideAndRecovery;
             m_SpecialMonster2AI.RushCompToPos += RushAttackEnd;
 
+            m_SP2AnimationController.DoDamageAction += DoDamage;
             m_GrabController.AttachedToPlayer += ()
                 => m_PlayerData.PlayerHit(transform, m_Settings.m_GrabAttackDamage + m_RealDamage, m_Settings.m_NoramlAttackType);
         }
@@ -176,7 +177,6 @@ namespace Entity.Unit.Special
 
             if (m_GrabController.IsAttachedPlayer)
             {
-                //가끔씩 안됨 여기
                 if (Vector3.Distance(m_GrabEndPoint.position, AIManager.PlayerTransform.position) <= m_Settings.m_GrabCancellationDist)
                     GrabEnd(true);
                 else ForceToPlayer(m_Settings.m_GrabForce, m_GrabEndPoint.position);
@@ -194,7 +194,6 @@ namespace Entity.Unit.Special
                     m_IsGetRushDamage = true;
                 }
             }
-            //한번만 맞도록 변경
         }
 
         private void UpdateTimer()
@@ -208,9 +207,11 @@ namespace Entity.Unit.Special
         {
             if (m_DoingBehaviour || m_IsMoveRecoveryPos || m_DoingRecovery || DetectObstacle()) return;
 
-            if (CanGrabAttack()) GrabAttackStart();
-            else if (CanRushAttack()) RushAttackStart();
-            else if (CanNormalAttack()) NormalAttack();
+            float toPlayerAngle = AIManager.AngleToPlayer(transform);
+            Debug.Log(toPlayerAngle);
+            if (CanGrabAttack(toPlayerAngle)) GrabAttackStart();
+            else if (CanRushAttack(toPlayerAngle)) RushAttackStart();
+            else if (CanNormalAttack(toPlayerAngle)) NormalAttack();
         }
 
         #region Move
@@ -229,7 +230,7 @@ namespace Entity.Unit.Special
             {
                 m_SpecialMonster2AI.OperateAIBehavior(transform.position, MoveType.Self);
                 m_SpecialMonster2AI.RotateToPlayer();
-                if (CanAttackRotation(5)) isWalkAnimation = false;
+                if (AIManager.IsInsideAngleToPlayer(transform, m_Settings.m_SelfRotateAbleAngle)) isWalkAnimation = false;
             }
             else m_SpecialMonster2AI.OperateAIBehavior(AIManager.PlayerGroundPosition, MoveType.ToPlayer);
             
@@ -298,12 +299,16 @@ namespace Entity.Unit.Special
             m_DoingBehaviour = true;
             m_IsNonMovePos = true;
 
-            m_PlayerData.PlayerHit(transform, m_Settings.m_Damage + m_RealDamage, m_Settings.m_NoramlAttackType);
-
             await m_SP2AnimationController.SetNormalAttack();
 
             m_DoingBehaviour = false;
             m_IsNonMovePos = false;
+        }
+
+        private void DoDamage()
+        {
+            if (!m_Settings.CanNormalAttack(m_TargetDist, AIManager.AngleToPlayer(transform))) return;
+            m_PlayerData.PlayerHit(transform, m_Settings.m_Damage + m_RealDamage, m_Settings.m_NoramlAttackType);
         }
         #endregion
 

@@ -16,8 +16,9 @@ MonoBehaviour:
   m_Def: 150
   m_Damage: 250
   m_MovementSpeed: 3
-  m_AttackSpeed: 7
-  m_AttackRange: 10
+  m_AttackSpeed: 6
+  m_AttackRange: 10.5
+  m_AttackAbleAngle: 30
   m_ExplosionResistance: 15
   m_MeleeResistance: 2
   m_NoramlAttackType: 0
@@ -31,6 +32,7 @@ MonoBehaviour:
   m_AttackableLayer:
     serializedVersion: 2
     m_Bits: 128
+  m_SelfRotateAbleAngle: 5
   m_RushObstacleLayer:
     serializedVersion: 2
     m_Bits: 417792
@@ -39,17 +41,19 @@ MonoBehaviour:
   m_RushAttackMinRange: 15
   m_RushAttackMaxRange: 100
   m_RushAttackMovementSpeed: 30
+  m_RushAttackAbleAngle: 7.5
   m_GrabAttackDamage: 50
   m_GrabAttackTime: 25
   m_GrabAttackMinRange: 15
   m_GrabAttackMaxRange: 45
   m_GrabCancellationDist: 3
-  m_GrabAttachedTime: 1
+  m_GrabAttachedTime: 0.7
   m_GrabForce: 30
+  m_GrabAttackAbleAngle: 15
   m_GrabCancellationDamage: 300
   m_GroundDownForceMultiplier: 5
   m_MaxGroundDownForce: 35
   m_RecoveryTriggerHP: 0.4
   m_RecoveryMovementSpeed: 15
   m_RecoveryHPAmount: 0.5
-  m_RecoveryTime: 20
+  m_RecoveryTime: 30

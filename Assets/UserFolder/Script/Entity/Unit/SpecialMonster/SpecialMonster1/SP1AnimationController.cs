@@ -33,6 +33,8 @@ public class SP1AnimationController : MonoBehaviour
     private const string m_EndJumpAttack = "EndJump";
     #endregion
 
+    public System.Action DoDamageAction { get; set; }
+
     private void Awake()
     {
         m_Animator = GetComponent<Animator>();
@@ -160,6 +162,7 @@ public class SP1AnimationController : MonoBehaviour
     #endregion
     #region Animation End Event
 #pragma warning disable IDE0051 // 사용되지 않는 private 멤버 제거
+    private void DoDamage() => DoDamageAction?.Invoke();
     private void EndCrawsAttack() => m_DoCrawsAttacking = false;
     private void EndBiteAttack() => m_DoGrabAttacking = false;
     private void EndBiteAttackReverse() => m_DoGrabAttackingReverse = false;

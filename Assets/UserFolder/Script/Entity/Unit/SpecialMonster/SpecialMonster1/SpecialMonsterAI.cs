@@ -96,7 +96,6 @@ public class SpecialMonsterAI : MonoBehaviour
         if (isCloseToTarget)
         {
             m_NavMeshAgent.isStopped = true;
-            Debug.Log("Closer");
             
             changeFlag = true;
             isWalk = false;

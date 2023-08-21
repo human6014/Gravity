@@ -21,6 +21,8 @@ namespace Entity.Unit.Normal
         private bool IsEndAttack;
         private bool IsEndGettingUp;
 
+        public System.Action DoDamageAction { get; set; }
+
         private void Awake() => m_Animator = GetComponent<Animator>();
 
         public void Init()
@@ -91,19 +93,20 @@ namespace Entity.Unit.Normal
         #endregion
         #region Animation Event
 
-        public void DoDamage()
+        private void DoDamage()
         {
+            DoDamageAction?.Invoke();
             //데미지 주는 애니메이션 타이밍
             Debug.Log("DoDamage");
         }
 
-        public void EndAttack()
+        private void EndAttack()
         {
             IsEndAttack = true;
             Debug.Log("EndAttack");
         }
 
-        public void EndGettingUp()
+        private void EndGettingUp()
         {
             IsEndGettingUp = true;
             Debug.Log("EndGettingUp");

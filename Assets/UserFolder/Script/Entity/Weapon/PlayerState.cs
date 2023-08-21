@@ -21,9 +21,31 @@ public enum PlayerWeaponState
 
 public class PlayerState
 {
-    public PlayerBehaviorState PlayerBehaviorState { get; private set; }
-    public PlayerWeaponState PlayerWeaponState { get; private set; }
-    public PlayerWeaponState BeforePlayerWeaponState { get; private set; } 
+    private PlayerBehaviorState m_PlayerBehaviorState;
+    private PlayerWeaponState m_PlayerWeaponState;
+
+    public PlayerBehaviorState PlayerBehaviorState 
+    { 
+        get => m_PlayerBehaviorState;
+        private set 
+        {
+            m_PlayerBehaviorState = value;
+            SetBehaviorCrossHairAction?.Invoke();
+        } 
+    }
+    public PlayerWeaponState PlayerWeaponState 
+    {
+        get => m_PlayerWeaponState;
+        private set 
+        {
+            m_PlayerWeaponState = value;
+            SetBehaviorCrossHairAction?.Invoke();
+        } 
+    }
+    public PlayerWeaponState BeforePlayerWeaponState { get; private set; }
+
+    public System.Action SetBehaviorCrossHairAction { get; set; }
+
     public PlayerState()
     {
         PlayerBehaviorState = PlayerBehaviorState.Idle;
@@ -40,6 +62,7 @@ public class PlayerState
             PlayerBehaviorState = PlayerBehaviorState.Idle;
         }
     }
+
     public void SetBehaviorWalking()
     {
         if (PlayerBehaviorState != PlayerBehaviorState.Running &&
@@ -49,6 +72,7 @@ public class PlayerState
             PlayerBehaviorState = PlayerBehaviorState.Walking;
         }
     }
+
     public void SetBehaviorRunning(bool value)
     {
         if (PlayerBehaviorState != PlayerBehaviorState.Jumping &&
@@ -58,11 +82,13 @@ public class PlayerState
             else PlayerBehaviorState = PlayerBehaviorState.Walking;
         }
     }
+
     public void SetBehaviorCrouching(bool value)
     {
         if (value) PlayerBehaviorState = PlayerBehaviorState.Crouching;
         else PlayerBehaviorState = PlayerBehaviorState.Idle;
     }
+
     public void SetBehaviorJumping(bool value)
     {
         if (value) PlayerBehaviorState = PlayerBehaviorState.Jumping;
@@ -79,6 +105,7 @@ public class PlayerState
             PlayerWeaponState = PlayerWeaponState.Idle;
         }
     }
+
     public void SetWeaponAiming()
     {
         if (PlayerWeaponState != PlayerWeaponState.Changing &&
@@ -87,11 +114,13 @@ public class PlayerState
             PlayerWeaponState = PlayerWeaponState.Aiming;
         }
     }
+
     public void SetWeaponChanging(bool value)
     {
         if (value) PlayerWeaponState = PlayerWeaponState.Changing;
         else PlayerWeaponState = PlayerWeaponState.Idle;
     }
+
     public void SetWeaponFiring()
     {
         if (PlayerWeaponState == PlayerWeaponState.Changing ||
@@ -100,6 +129,7 @@ public class PlayerState
         BeforePlayerWeaponState = PlayerWeaponState;
         PlayerWeaponState = PlayerWeaponState.Firing;
     }
+
     public void SetBack() => PlayerWeaponState = BeforePlayerWeaponState;
     #endregion
 }

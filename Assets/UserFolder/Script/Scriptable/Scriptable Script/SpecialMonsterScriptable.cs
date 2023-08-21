@@ -32,6 +32,8 @@ namespace Scriptable.Monster
         [Tooltip("잡기 공격 사거리")]
         public float m_GrabAttackRange = 7;
 
+        [Tooltip("잡기 공격가능한 각도")]
+        public float m_GrabAttackAbleAngle = 45;
 
         [Header("Jump Attack")]
         [Tooltip("도약 공격 데미지")]
@@ -95,11 +97,14 @@ namespace Scriptable.Monster
         [Tooltip("체력별 BaseColor")]
         public Color m_MaxInjuryColor = new Color(255, 180, 180);
 
+        public bool CanGrabAttack(float dist, float curTimer, float angle)
+            => dist <= m_GrabAttackRange && curTimer >= m_GrabAttackSpeed && angle <= m_GrabAttackAbleAngle;
+
         public bool CanJumpAttack(float dist, float curTimer)
-            => dist > m_JumpAttackMinRange && dist < m_JumpAttackMaxRange && curTimer >= m_JumpAttackSpeed;
+            => dist >= m_JumpAttackMinRange && dist <= m_JumpAttackMaxRange && curTimer >= m_JumpAttackSpeed;
 
         public bool CanJump(float dist, float curTimer)
-            => dist > m_JumpMinRange && dist < m_JumpMaxRange && curTimer >= m_JumpSpeed;
+            => dist >= m_JumpMinRange && dist <= m_JumpMaxRange && curTimer >= m_JumpSpeed;
 
         public bool CanJumpPercentage() => Random.Range(0, 100) <= m_JumpPercentage;
 

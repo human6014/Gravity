@@ -25,6 +25,8 @@ namespace Entity.Unit.Special
         private const string m_IdleSpeed = "IdleSpeed";
         #endregion
 
+        public System.Action DoDamageAction { get; set; }
+
         private void Awake()
         {
             m_Animator = GetComponent<Animator>();
@@ -84,6 +86,7 @@ namespace Entity.Unit.Special
             while (m_DoNormalAttacking) yield return null;
             tcs.SetResult(true);
         }
+
         private IEnumerator CheckForEndCriticalHit(TaskCompletionSource<bool> tcs)
         {
             while (m_DoCriticalHitting) yield return null;
@@ -92,8 +95,9 @@ namespace Entity.Unit.Special
 
         #region Animation End Event
 #pragma warning disable IDE0051 // 사용되지 않는 private 멤버 제거
-        public void EndNormalAttack() => m_DoNormalAttacking = false;
-        public void EndCriticalHit() => m_DoCriticalHitting = false;
+        private void DoDamage() => DoDamageAction?.Invoke();
+        private void EndNormalAttack() => m_DoNormalAttacking = false;
+        private void EndCriticalHit() => m_DoCriticalHitting = false;
 #pragma warning restore IDE0051
         #endregion
     }

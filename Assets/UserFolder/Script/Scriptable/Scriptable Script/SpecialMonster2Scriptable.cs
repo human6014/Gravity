@@ -19,6 +19,8 @@ namespace Scriptable.Monster
         [Tooltip("공격 가능 레이어")]
         public LayerMask m_AttackableLayer;
 
+        [Tooltip("제자리 돌기 애니메이션 가능 각도")]
+        public float m_SelfRotateAbleAngle = 5;
 
         [Header("Rush Attack")]
         [Tooltip("돌진 공격 충돌 레이어")]
@@ -39,6 +41,8 @@ namespace Scriptable.Monster
         [Tooltip("돌진 공격 이동 속도")]
         public float m_RushAttackMovementSpeed;
 
+        [Tooltip("돌진 공격가능 각도")]
+        public float m_RushAttackAbleAngle = 7.5f;
 
         [Header("Grab Attack")]
         [Tooltip("잡기 공격 데미지")]
@@ -61,6 +65,9 @@ namespace Scriptable.Monster
 
         [Tooltip("잡기 공격 당기는 힘")]
         public float m_GrabForce = 30;
+
+        [Tooltip("잡기 공격가능 각도")]
+        public float m_GrabAttackAbleAngle = 15;
 
         [Tooltip("잡기 공격 해제 누적 데미지")]
         public int m_GrabCancellationDamage = 500;
@@ -86,14 +93,12 @@ namespace Scriptable.Monster
         [Tooltip("회복 시간")]
         public float m_RecoveryTime = 20;
 
+        public bool CanRushAttack(float dist, float curTimer, float angle)
+            => dist <= m_RushAttackMaxRange && dist >= m_RushAttackMinRange && 
+            curTimer >= m_RushAttackTime && angle <= m_RushAttackAbleAngle;
 
-        public bool CanNormalAttack(float dist, float curTimer) 
-            => dist <= m_AttackRange && curTimer >= m_AttackSpeed;
-
-        public bool CanRushAttack(float dist, float curTimer)
-            => dist <= m_RushAttackMaxRange && dist >= m_RushAttackMinRange && curTimer >= m_RushAttackTime;
-
-        public bool CanGrabAttack(float dist, float curTimer)
-            => dist <= m_GrabAttackMaxRange && dist >= m_GrabAttackMinRange && curTimer >= m_GrabAttackTime;
+        public bool CanGrabAttack(float dist, float curTimer, float angle)
+            => dist <= m_GrabAttackMaxRange && dist >= m_GrabAttackMinRange && 
+            curTimer >= m_GrabAttackTime && angle <= m_GrabAttackAbleAngle;
     }
 }
