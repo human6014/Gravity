@@ -7,20 +7,22 @@ namespace Manager
 {
     public class EnvironmentManager : MonoBehaviour
     {
+        [Header("Rain Particle")]
         [SerializeField] private ParticleSystem m_RainParticle;
+
+        [Header("Road Wetness Controll")]
         [SerializeField] private Renderer[] m_RoadRenderer;
 
-        [SerializeField] [Range(0, 2)] private float m_WetnessMin = 0.6f;
+        [SerializeField] [Range(0, 2)] private float m_WetnessMin = 0.8f;
         [SerializeField] [Range(0, 2)] private float m_WetnessMax = 1.8f;
 
         [SerializeField] [Range(0, 1)] private float m_RippleSpeedMin = 0.1f;
         [SerializeField] [Range(0, 1)] private float m_RippleSpeedMax = 0.75f;
 
-        [SerializeField] [Range(0, 1)] private float m_SplashMin = 0.4f;
+        [SerializeField] [Range(0, 1)] private float m_SplashMin = 0.1f;
         [SerializeField] [Range(0, 1)] private float m_SplashMax = 0.7f;
 
         private MaterialPropertyBlock m_MaterialPropertyBlock;
-        private GravityManager m_GravityManager;
 
         private const float m_InitialWetness = 0.8f;
         private const float m_InitialRippleSpeed = 0.1f;
@@ -30,22 +32,28 @@ namespace Manager
         private const string m_RippleSpeed = "Vector1_C9C81CCF";
         private const string m_Splash = "Vector1_24B8AC3D";
 
+
+        public ParticleSystem RainParticle 
+        { 
+            get => m_RainParticle; 
+            private set => m_RainParticle = value;
+        }
+
         private void Awake()
         {
-            m_GravityManager = FindObjectOfType<GravityManager>();
             m_MaterialPropertyBlock = new MaterialPropertyBlock();
         }
 
+        [ContextMenu("Rain on")]
         public void OnRainParticle()
         {
             m_RainParticle.transform.rotation = GravityManager.GetCurrentGravityRotation();
-            m_GravityManager.SyncRotatingTransform.Add(m_RainParticle.transform);
             m_RainParticle.Play();
         }
 
+        [ContextMenu("Rain off")]
         public void OffRainParticle()
         {
-            m_GravityManager.SyncRotatingTransform.Remove(m_RainParticle.transform);
             m_RainParticle.Stop();
         }
 
@@ -61,19 +69,40 @@ namespace Manager
             RenderSettings.fogDensity = targetDensity;
         }
 
-        public IEnumerator MaterialPropertyChange(float changeTime, bool isASC)
+        public IEnumerator RoadWetnessChange(float changeTime, bool isASC)
         {
             float elapsedTime = 0;
             float t;
             m_RoadRenderer[0].GetPropertyBlock(m_MaterialPropertyBlock);
 
-            //float startWetness = m_MaterialPropertyBlock.GetFloat(m_Wetness);
-            //float startRippleSpeed = m_MaterialPropertyBlock.GetFloat(m_RippleSpeed);
-            //float startSplash = m_MaterialPropertyBlock.GetFloat(m_Splash);
+            float startWetness;
+            float startRippleSpeed;
+            float startSplash;
 
-            float endWetness = isASC ? m_WetnessMax : m_WetnessMin;
-            float endRippleSpeed = isASC ? m_RippleSpeedMax : m_RippleSpeedMin;
-            float endSplash = isASC ? m_SplashMax : m_SplashMin;
+            float endWetness;
+            float endRippleSpeed;
+            float endSplash;
+            if (isASC)
+            {
+                startWetness = m_WetnessMin;
+                startRippleSpeed = m_RippleSpeedMin;
+                startSplash = m_SplashMin;
+
+                endWetness = m_WetnessMax;
+                endRippleSpeed = m_RippleSpeedMax;
+                endSplash = m_SplashMax;
+            }
+            else
+            {
+                startWetness = m_WetnessMax;
+                startRippleSpeed = m_RippleSpeedMax;
+                startSplash = m_SplashMax;
+
+                endWetness = m_WetnessMin;
+                endRippleSpeed = m_RippleSpeedMin;
+                endSplash = m_SplashMin;
+            }
+
 
             float newWetness;
             float newRippleSpeed;
@@ -83,9 +112,9 @@ namespace Manager
                 elapsedTime += Time.deltaTime;
                 t = elapsedTime / changeTime;
 
-                newWetness = Mathf.Lerp(m_InitialWetness, endWetness, t);
-                newRippleSpeed = Mathf.Lerp(m_InitialRippleSpeed, endRippleSpeed, t);
-                newSplash = Mathf.Lerp(m_InitialSplash, endSplash, t);
+                newWetness = Mathf.Lerp(startWetness, endWetness, t);
+                newRippleSpeed = Mathf.Lerp(startRippleSpeed, endRippleSpeed, t);
+                newSplash = Mathf.Lerp(startSplash, endSplash, t);
 
                 foreach (Renderer r in m_RoadRenderer)
                 {
@@ -110,7 +139,8 @@ namespace Manager
         [ContextMenu("WetChange")]
         private void RoadWetnessChange()
         {
-            StartCoroutine(MaterialPropertyChange(15, true));
+            //m_SpawnManager.GetStageTime
+            StartCoroutine(RoadWetnessChange(15, true));
         }
 
         private void ChangeRoadShaderValue(string propertyName, float value)

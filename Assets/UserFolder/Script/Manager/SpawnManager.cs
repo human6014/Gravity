@@ -9,13 +9,22 @@ using System.Linq;
 namespace Manager
 {
     [System.Serializable]
-    public struct StageInfo
+    public class StageInfo
     {
         [Tooltip("현재 스테이지에서 특수 몬스터가 출현하는 Wave")]
         public int m_SpawnSpecialWave;
 
         [Tooltip("다음 Wave로 넘어가기 위한 시간")]
         public float[] m_WaveTiming;
+
+        public float GetWaveTime(int startWave, int endWave)
+        {
+            if (endWave > m_WaveTiming.Length) return -1;
+            float sum = 0;
+            for (int i = startWave; i < endWave; i++)
+                sum += m_WaveTiming[i];
+            return sum;
+        }
     }
 
     [RequireComponent(typeof(EntityManager))]
@@ -307,9 +316,29 @@ namespace Manager
                 if (currentStageInfo.m_WaveTiming.Length <= CurrentWave - 1) CurrentStage++;
             }
         }
-        #endregion
 
-        #region SpawnUnit
+        public float GetStageTime(int startStage, int endStage, int startWave, int endWave)
+        {
+            float sum = 0;
+            float curSum;
+            int begin, end;
+            for(int i = startStage; i < endStage; i++)
+            {
+                if (i == startStage) begin = startWave;
+                else begin = 0;
+
+                if (i == endStage - 1) end = endWave;
+                else end = m_StageInfo[i].m_WaveTiming.Length;
+
+                curSum = m_StageInfo[i].GetWaveTime(begin, end);
+
+                if (curSum == -1) return -1;
+                sum += curSum;
+                
+            }
+            return sum;
+        }
+        #endregion
 
         #region SpawnNormalMonster
         private void SpawnMonster()
@@ -364,8 +393,11 @@ namespace Manager
             switch (CurrentStage)
             {
                 case 1:
+                    m_EnvironmentManager.OnRainParticle();
+                    float time = GetStageTime(CurrentStage - 1, 3, CurrentWave - 1, 1);
+                    StartCoroutine(m_EnvironmentManager.RoadWetnessChange(time, true));
                     //SpawnSpecialMonster3();
-                    SpawnSpecialMonster1();
+                    //SpawnSpecialMonster1();
                     break;
                 case 2:
                     //SpawnSpecialMonster2();
@@ -388,7 +420,6 @@ namespace Manager
 
             SpecialMonster1 specialMonster1 = Instantiate(m_EntityManager.GetSpecialMonster1, initPosition, Quaternion.identity).GetComponent<SpecialMonster1>();
             specialMonster1.EndSpecialMonsterAction += () => IsSP1MonsterEnd = true;
-            specialMonster1.EndSpecialMonsterAction += () => m_EnvironmentManager.OnRainParticle();
             specialMonster1.Init(initRotation, m_StatMultiplier);
 
             IsSP1MonsterSpawned = true;
@@ -447,8 +478,6 @@ namespace Manager
             IsSP3MonsterSpawned = true;
             await m_EnvironmentManager.FogDensityChange(0.04f,5);
         }
-        #endregion
-
         #endregion
     }
 }

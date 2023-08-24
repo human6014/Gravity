@@ -286,7 +286,7 @@ namespace Controller.Player
 
         private void ApplyToGravity(bool isDuple, float value)
         {
-            switch (GravityManager.m_CurrentGravityType)
+            switch (GravityManager.CurrentGravityType)
             {
                 case EnumType.GravityType.xUp:
                 case EnumType.GravityType.xDown:

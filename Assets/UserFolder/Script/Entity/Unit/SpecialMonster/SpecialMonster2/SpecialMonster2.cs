@@ -78,16 +78,6 @@ namespace Entity.Unit.Special
             return hit.transform.gameObject.layer != AIManager.PlayerLayerNum;
         }
 
-        private bool CanAttackRotation(float ableAngle)
-        {
-            Vector3 forwardVector = transform.forward;
-            Vector3 targetVector = AIManager.PlayerTransform.position - transform.position;
-            targetVector.y = 0;
-            targetVector.Normalize();
-
-            return Vector3.Angle(forwardVector, targetVector) <= ableAngle;
-        }
-
         private void ForceToPlayer(float force, Vector3 position)
         {
             Vector3 dir = position - AIManager.PlayerTransform.position;
@@ -208,7 +198,7 @@ namespace Entity.Unit.Special
             if (m_DoingBehaviour || m_IsMoveRecoveryPos || m_DoingRecovery || DetectObstacle()) return;
 
             float toPlayerAngle = AIManager.AngleToPlayer(transform);
-            Debug.Log(toPlayerAngle);
+
             if (CanGrabAttack(toPlayerAngle)) GrabAttackStart();
             else if (CanRushAttack(toPlayerAngle)) RushAttackStart();
             else if (CanNormalAttack(toPlayerAngle)) NormalAttack();

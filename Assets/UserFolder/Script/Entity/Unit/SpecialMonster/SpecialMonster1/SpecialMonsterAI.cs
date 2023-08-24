@@ -19,9 +19,6 @@ public class SpecialMonsterAI : MonoBehaviour
     [Tooltip("기본 이동 속도")]
     private float m_OriginalSpeed = 9;
 
-    [Tooltip("최대 이동 속도")]
-    private readonly float m_MaxSpeed = 10f;
-
     [Tooltip("최소 이동 속도")]
     private readonly float m_MinSpeed = 3f;
     #endregion

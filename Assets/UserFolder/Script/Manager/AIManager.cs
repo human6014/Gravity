@@ -56,7 +56,7 @@ namespace Manager.AI
         /// <returns>값을 구할 수 있을 경우 유효한 Vector3 값, 오류일 경우 Vector3.zero</returns>
         public static Vector3 GetCurrentGravityDirection(Vector3 direction)
         {
-            switch (GravityManager.m_CurrentGravityAxis)
+            switch (GravityManager.CurrentGravityAxis)
             {
                 case GravityDirection.X:
                     direction.x = 0;

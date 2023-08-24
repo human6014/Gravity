@@ -151,7 +151,7 @@ namespace Entity.Unit.Special
 
             if (DetectObstacle()) return;
             float toPlayerAngle = AIManager.AngleToPlayer(m_NavMeshTransform);
-            Debug.Log(toPlayerAngle);
+
             if (CanJumpAttack())
             {
                 if (!m_Settings.CanJumpAttackPercentage()) m_JumpAttackTimer = 0;
@@ -181,7 +181,6 @@ namespace Entity.Unit.Special
         private void DoDamage()
         {
             if (!m_Settings.CanNormalAttack(m_TargetDist, AIManager.AngleToPlayer(m_NavMeshTransform))) return;
-            Debug.Log("DoDamage");
             m_PlayerData.PlayerHit(m_NavMeshTransform, m_Settings.m_Damage + m_RealDamage, m_Settings.m_NoramlAttackType);
         }
 

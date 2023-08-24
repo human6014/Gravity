@@ -14,7 +14,7 @@ namespace Controller.Floor
         {
             AIManager.FloorDetector = this;
         }
-        public GameObject GetNowFloor() => floorObject[(int)GravityManager.m_CurrentGravityType];
+        public GameObject GetNowFloor() => floorObject[(int)GravityManager.CurrentGravityType];
         
     }
 }
