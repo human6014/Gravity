@@ -48,7 +48,6 @@ namespace Controller
         private bool m_Light;               //라이트장착      Q                 누르기
 
         private bool m_WasCrouch;
-        private bool m_WasTimeSlow;
 
         //keyDown Movement
         public Action<float, float> MouseMovement { get; set; }
@@ -63,7 +62,7 @@ namespace Controller
 
 
         public Action<bool> Crouch { get; set; }          //Toggle
-        public Action<bool> TimeSlow { get; set; }        //Toggle
+        public Action TimeSlow { get; set; }        //Toggle
 
 
         //keyDown
@@ -119,14 +118,8 @@ namespace Controller
             }
 
             m_TimeSlow = Input.GetKeyDown(KeyCode.F);
-            if (m_TimeSlow)
-            {
-                m_WasTimeSlow = !m_WasTimeSlow;
-                TimeSlow?.Invoke(m_WasTimeSlow);
-            }
+            if (m_TimeSlow) TimeSlow?.Invoke();
 
-
-            // FixedUpdate 에서 넘어옴
             m_IsAutoFiring = Input.GetKey(KeyCode.Mouse0);
             if (m_IsAutoFiring) AutoFire?.Invoke();
 
@@ -138,7 +131,6 @@ namespace Controller
 
             m_IsHeavyFiring = Input.GetKeyDown(KeyCode.Mouse1);
             if (m_IsHeavyFiring) HeavyFire?.Invoke();
-            //
         }
 
         private void FixedUpdate()

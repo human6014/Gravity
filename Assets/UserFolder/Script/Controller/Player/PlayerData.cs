@@ -19,7 +19,7 @@ public class PlayerData : MonoBehaviour
     [SerializeField] private int m_MaxPlayerHP = 1000;
 
     [Tooltip("특정 시간당 회복 할 HP계수")]
-    [SerializeField] private int m_AutoHPHealAmount = 1;
+    [SerializeField] private int m_AutoHPHealAmount = 2;
 
     [Tooltip("HP 회복 할 시간")]
     [SerializeField] private float m_AutoHPHealTime = 0.1f;
@@ -32,14 +32,14 @@ public class PlayerData : MonoBehaviour
     [Tooltip("특정 시간당 회복 할 MP계수")]
     [SerializeField] private int m_AutoMPHealAmount = 10;
 
-    [Tooltip("MP 회복 할 시간")]
-    [SerializeField] private float m_AutoMPHealTime = 0.1f;
+    [Tooltip("MP 회복, 소모 할 시간")]
+    [SerializeField] private float m_AutoMPTime = 0.1f;
 
     [Tooltip("점프 MP 소모량")]
-    [SerializeField] private int m_JumpingMP = 180;
+    [SerializeField] private int m_JumpingMPConsumeAmount = 170;
 
     [Tooltip("달리기 MP 소모량")]
-    [SerializeField] private int m_RunningMP = 4;
+    [SerializeField] private int m_RunningMPConsumeAmount = 17;
 
     [Tooltip("달리기를 시작할 최소 MP")]
     [SerializeField] private int m_StartRunningMP = 100;
@@ -53,7 +53,7 @@ public class PlayerData : MonoBehaviour
     [SerializeField] private int m_AutoGEHealAmount = 10;
 
     [Tooltip("중력 변경 회복 할 시간 단위")]
-    [SerializeField] private float m_AutoGEHealTime = 0.1f;
+    [SerializeField] private float m_AutoGETime = 0.1f;
 
     [Tooltip("중력 변경 에너지 소모량")]
     [SerializeField] private int m_GEConsumeAmount = 500;
@@ -64,13 +64,13 @@ public class PlayerData : MonoBehaviour
     [SerializeField] private int m_MaxPlayerTE = 1000;
 
     [Tooltip("시간 변경 에너지 단위당 회복량")]
-    [SerializeField] private int m_AutoTEHealAmount = 10;
-
-    [Tooltip("시간 변경 회복 할 시간 단위")]
-    [SerializeField] private float m_AutoTEHealTime = 0.1f;
+    [SerializeField] private int m_TEHealAmount = 8;
 
     [Tooltip("시간 변경 에너지 소모량")]
-    [SerializeField] private int m_TEConsumeAmount = 10;
+    [SerializeField] private int m_TEConsumeAmount = 16;
+
+    [Tooltip("시간 변경 회복, 소모 할 시간 단위")]
+    [SerializeField] private float m_AutoTETime = 0.1f;
 
     [Tooltip("시간 변경 시작할 최소 TE")]
     [SerializeField] private int m_StartTimeChangeTE = 100;
@@ -103,13 +103,16 @@ public class PlayerData : MonoBehaviour
 
     private int m_CallCount;
 
-    private bool m_IsTimeSlowing;
+    private int m_DeltaTimeInterporateValue;
+    private bool m_IsTimeSlow;
+    
     #region Property
     public Inventory Inventory { get => m_Inventory; }
     private WeaponInfo CurrentWeaponInfo { get; set; }
     public PlayerState PlayerState { get; } = new PlayerState();
 
     public Action ReInit { get; set; }
+    public Action StopSlowModeAction { get; set; }
     public Action<bool> GrabAction { get; set; }
     public Action<Transform, Transform, Transform, Transform> GrabPoint {get;set;}
     public Func<int, int, WeaponData> WeaponDataFunc { get; set; }
@@ -229,47 +232,55 @@ public class PlayerData : MonoBehaviour
             m_PlayerUIManager.UpdatePlayerHP(m_AmountPlayerHP);
         }
 
-        if ((m_MPTimer += Time.deltaTime) >= m_AutoMPHealTime &&
-            PlayerState.PlayerBehaviorState != PlayerBehaviorState.Running &&
-            PlayerState.PlayerBehaviorState != PlayerBehaviorState.Jumping)
+        if (PlayerState.PlayerBehaviorState != PlayerBehaviorState.Running &&
+            PlayerState.PlayerBehaviorState != PlayerBehaviorState.Jumping &&
+            (m_MPTimer += Time.deltaTime) >= m_AutoMPTime)
         {
             m_MPTimer = 0;
             PlayerMP += m_AutoMPHealAmount;
             m_PlayerUIManager.UpdatePlayerMP(m_AmountPlayerMP);
         }
 
-        if((m_GETimer += Time.deltaTime) >= m_AutoGEHealTime)
+        if((m_GETimer += Time.deltaTime) >= m_AutoGETime)
         {
             m_GETimer = 0;
             PlayerGE += m_AutoGEHealAmount;
         }
 
-        if((m_TETimer += Time.deltaTime) >= m_AutoTEHealTime &&
-            !m_IsTimeSlowing)
+        if (m_IsTimeSlow && (m_TETimer += Time.deltaTime * m_DeltaTimeInterporateValue) >= m_AutoTETime)
         {
             m_TETimer = 0;
-            PlayerTE += m_AutoTEHealAmount;
+            PlayerTE -= m_TEConsumeAmount;
+            if (PlayerTE <= 0) StopSlowModeAction?.Invoke();
+        }
+        else if(!m_IsTimeSlow && (m_TETimer += Time.deltaTime) >= m_AutoTETime)
+        {
+            m_TETimer = 0;
+            PlayerTE += m_TEHealAmount;
         }
     }
     #endregion
 
-    // HP, MP 소모하는거 deltaTime 안써서 이상할 수도 있음
-    //테스트 하고 변경 필요하면 변경할 것!!
     #region CheckBehaviour
     public bool CanStartRunning() => PlayerMP > m_StartRunningMP;
     public bool CanStartTimeSlow() => PlayerTE > m_StartTimeChangeTE;
 
     public bool CanRunning()
     {
-        if (PlayerMP < m_RunningMP) return false;
-        UpdatePlayerMP(m_RunningMP);
+        if (PlayerMP < m_RunningMPConsumeAmount) return false;
+
+        if ((m_MPTimer += Time.deltaTime) >= m_AutoMPTime)
+        {
+            m_MPTimer = 0;
+            UpdatePlayerMP(m_RunningMPConsumeAmount);
+        }
         return true;
     }
 
     public bool CanJumping()
     {
-        if (PlayerMP < m_JumpingMP) return false;
-        UpdatePlayerMP(m_JumpingMP);
+        if (PlayerMP < m_JumpingMPConsumeAmount) return false;
+        UpdatePlayerMP(m_JumpingMPConsumeAmount);
         return true;
     }
 
@@ -284,9 +295,13 @@ public class PlayerData : MonoBehaviour
         PlayerGE -= m_GEConsumeAmount;
     }
 
-    public bool CanTimeSlow()
+    public void UseTimeSlow(bool value, float time)
     {
-        return true;
+        m_IsTimeSlow = value;
+        m_DeltaTimeInterporateValue = Mathf.RoundToInt(1 / time);
+
+        Time.timeScale = value ? 0.25f : 1;
+        Time.fixedDeltaTime = Time.timeScale * 0.02f;
     }
     #endregion
 
@@ -390,10 +405,7 @@ public class PlayerData : MonoBehaviour
     {
         PlayerHP -= value;
         m_PlayerUIManager.UpdatePlayerHP(m_AmountPlayerHP);
-        if (PlayerHP <= 0)
-        {
-            Manager.GameManager.GameEnd();
-        }
+        if (PlayerHP <= 0) Manager.GameManager.GameEnd();
     }
 
     /// <summary>
@@ -511,18 +523,18 @@ public class PlayerData : MonoBehaviour
         m_CallCount++;
         if (m_CallCount == 1)
         {
-            m_RunningMP = 3;
-            m_JumpingMP = 150;
+            m_RunningMPConsumeAmount = 3;
+            m_JumpingMPConsumeAmount = 150;
         }
         else if (m_CallCount == 2)
         {
-            m_RunningMP = 2;
-            m_JumpingMP = 120;
+            m_RunningMPConsumeAmount = 2;
+            m_JumpingMPConsumeAmount = 120;
         }
         else if(m_CallCount == 3)
         {
-            m_RunningMP = 1;
-            m_JumpingMP = 90;
+            m_RunningMPConsumeAmount = 1;
+            m_JumpingMPConsumeAmount = 90;
         }
     }
 
