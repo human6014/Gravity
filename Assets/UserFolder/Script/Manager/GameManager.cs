@@ -15,6 +15,7 @@ namespace Manager
 
 
         public static bool IsGameEnd { get; private set; }
+
         private float EventTimer { get; set; }
 
         public static void GameClear()
@@ -34,7 +35,7 @@ namespace Manager
         {
             IsGameEnd = false;
 
-            Application.targetFrameRate = m_FrameRate;
+            //Application.targetFrameRate = m_FrameRate;
         }
 
         private void Update()

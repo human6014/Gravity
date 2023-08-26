@@ -130,7 +130,6 @@ namespace Controller.Player
         private bool m_WasWalking;
         private bool m_IsWalking;
 
-
         #region UnityFunction
         #region Init
         private void Awake()
@@ -173,6 +172,7 @@ namespace Controller.Player
             m_PlayerInputController.Crouch += TryCrouch;
             m_PlayerInputController.Jump += TryJump;
             m_PlayerInputController.DoGravityChange += TryChangeGravity;
+            m_PlayerInputController.TimeSlow += TryTimeSlow;
         }
         #endregion
 
@@ -286,7 +286,7 @@ namespace Controller.Player
 
         private void ApplyToGravity(bool isDuple, float value)
         {
-            switch (GravityManager.m_CurrentGravityType)
+            switch (GravityManager.CurrentGravityType)
             {
                 case EnumType.GravityType.xUp:
                 case EnumType.GravityType.xDown:
@@ -397,12 +397,7 @@ namespace Controller.Player
             m_IsMoving = m_Input != Vector2.zero;
 
             if (!m_IsMoving) m_PlayerData.PlayerState.SetBehaviorIdle();
-            else
-            {
-                //Debug.Log("Walk");
-                m_PlayerData.PlayerState.SetBehaviorWalking();
-            }
-            
+            else m_PlayerData.PlayerState.SetBehaviorWalking();
 
             if (m_Input.sqrMagnitude > 1) m_Input.Normalize();
 
@@ -412,6 +407,7 @@ namespace Controller.Player
                 StartCoroutine(!m_IsWalking ? m_FovKick.FOVKickUp() : m_FovKick.FOVKickDown());
             }
         }
+
         private void TryRun(bool isRunning)
         {
             m_WasWalking = m_IsWalking;
@@ -460,6 +456,13 @@ namespace Controller.Player
         {
             if (!m_PlayerData.CanChangeGravity()) return;
             if (!m_GravityManager.GravityChange(gravityKeyInput, mouseScroll)) m_PlayerData.UseGravityChange();
+        }
+        #endregion
+
+        #region TimeSlow
+        private void TryTimeSlow(bool isOnOff)
+        {
+            
         }
         #endregion
     }

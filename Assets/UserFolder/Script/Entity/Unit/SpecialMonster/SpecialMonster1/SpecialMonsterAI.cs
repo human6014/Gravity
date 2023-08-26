@@ -19,9 +19,6 @@ public class SpecialMonsterAI : MonoBehaviour
     [Tooltip("기본 이동 속도")]
     private float m_OriginalSpeed = 9;
 
-    [Tooltip("최대 이동 속도")]
-    private readonly float m_MaxSpeed = 10f;
-
     [Tooltip("최소 이동 속도")]
     private readonly float m_MinSpeed = 3f;
     #endregion
@@ -65,7 +62,7 @@ public class SpecialMonsterAI : MonoBehaviour
     public bool OperateAIBehavior(ref bool changeFlag)
     {
         bool isWalk = false;
-        if (!m_IsInit) return isWalk;
+        if (!m_IsInit || !m_NavMeshAgent.isActiveAndEnabled) return isWalk;
 
         m_NavMeshAgent.isStopped = false;
         SetDestination(out float remainingDistance);

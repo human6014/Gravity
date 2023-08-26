@@ -78,6 +78,7 @@ namespace Entity.Unit.Normal
             return tcs.Task;
         }
         #endregion
+
         #region CheckForEndAnimation
         private IEnumerator CheckForEndAttack(TaskCompletionSource<bool> tcs)
         {
@@ -91,27 +92,13 @@ namespace Entity.Unit.Normal
             tcs.SetResult(true);
         }
         #endregion
+
         #region Animation Event
-
-        private void DoDamage()
-        {
-            DoDamageAction?.Invoke();
-            //데미지 주는 애니메이션 타이밍
-            Debug.Log("DoDamage");
-        }
-
-        private void EndAttack()
-        {
-            IsEndAttack = true;
-            Debug.Log("EndAttack");
-        }
-
-        private void EndGettingUp()
-        {
-            IsEndGettingUp = true;
-            Debug.Log("EndGettingUp");
-        }
-
+        private void DoDamage() => DoDamageAction?.Invoke();
+        
+        private void EndAttack() => IsEndAttack = true;
+        
+        private void EndGettingUp() => IsEndGettingUp = true;
         #endregion
     }
 }

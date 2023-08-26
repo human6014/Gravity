@@ -18,7 +18,7 @@ public class Parabola : MonoBehaviour
     {
         Vector3 direction = target.position - m_NavMeshTransform.position;
         float dir = 0;
-        switch (GravityManager.m_CurrentGravityType)
+        switch (GravityManager.CurrentGravityType)
         {
             case GravityType.xUp:
             case GravityType.xDown:

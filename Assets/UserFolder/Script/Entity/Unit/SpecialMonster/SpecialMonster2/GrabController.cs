@@ -26,8 +26,6 @@ public class GrabController : MonoBehaviour
 
     [SerializeField] private TentacleParts[] m_TentacleParts;
 
-    private bool m_IsAlive;
-
     private float m_GrabAttachedTime;
     private readonly float m_ScaleSize = 7;
 
@@ -59,7 +57,6 @@ public class GrabController : MonoBehaviour
 
     public void Init(float grabAttachedTime)
     {
-        m_IsAlive = true;
         m_GrabAttachedTime = grabAttachedTime;
     }
 
@@ -226,14 +223,12 @@ public class GrabController : MonoBehaviour
 
     public void Dispose()
     {
-        m_IsAlive = false;
         StopAllCoroutines();
         if (IsAttachedPlayer) ImmediateGrabEnd();
     }
 
     private void OnDrawGizmosSelected()
     {
-        float dist = 3;
         foreach(TentacleParts tp in m_TentacleParts)
         {
             Gizmos.color = Color.blue;
