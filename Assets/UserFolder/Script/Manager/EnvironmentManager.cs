@@ -14,13 +14,13 @@ namespace Manager
         [SerializeField] private Renderer[] m_RoadRenderer;
 
         [SerializeField] [Range(0, 2)] private float m_WetnessMin = 0.8f;
-        [SerializeField] [Range(0, 2)] private float m_WetnessMax = 1.8f;
+        [SerializeField] [Range(0, 2)] private float m_WetnessMax = 1.7f;
 
         [SerializeField] [Range(0, 1)] private float m_RippleSpeedMin = 0.1f;
-        [SerializeField] [Range(0, 1)] private float m_RippleSpeedMax = 0.75f;
+        [SerializeField] [Range(0, 1)] private float m_RippleSpeedMax = 0.7f;
 
         [SerializeField] [Range(0, 1)] private float m_SplashMin = 0.1f;
-        [SerializeField] [Range(0, 1)] private float m_SplashMax = 0.7f;
+        [SerializeField] [Range(0, 1)] private float m_SplashMax = 0.6f;
 
         private MaterialPropertyBlock m_MaterialPropertyBlock;
 

@@ -13,7 +13,8 @@ namespace UI.Manager
         [SerializeField] private ItemSlotDisplayer m_ItemSlotDisplayer;
         [SerializeField] private WeaponPropertyDisplayer m_WeaponPropertyDisplayer;
         [SerializeField] private DamageDisplayer m_DamageDisplayer;
-        [SerializeField] private GravityEnergeDisplayer m_GravityEnergeDisplayer;
+        [SerializeField] private VerticalBarDisplayer m_GravityEnergeDisplayer;
+        [SerializeField] private VerticalBarDisplayer m_TimeEnergeDisplayer;
 
         public void Init(int playerMaxHP, int playerMaxMP, int amountToRealConst, float realToAmountConst, int havingHealKit)
         {
@@ -48,59 +49,42 @@ namespace UI.Manager
             m_HealDisplayer.DisplayHealNotification(hpAmount <= 0.5f);
         }
 
-        public void DisplayReloadImage(bool isActive)
-        {
-            m_WeaponPropertyDisplayer.DisplayReloadImage(isActive);
-        }
-
-        public void ChangeFireMode(int index)
-        {
-            m_WeaponPropertyDisplayer.UpdateFireMode(index);
-        }
-
         public void RangeWeaponFire(int currentRemainBullet, bool isActive)
         {
             m_WeaponPropertyDisplayer.UpdateRemainBulletIcon(currentRemainBullet);
             m_WeaponPropertyDisplayer.DisplayReloadImage(isActive);
         }
+        public void DisplayReloadImage(bool isActive)
+            => m_WeaponPropertyDisplayer.DisplayReloadImage(isActive);
+
+        public void ChangeFireMode(int index)
+            => m_WeaponPropertyDisplayer.UpdateFireMode(index);
 
         public void RangeWeaponReload(int magazineRemainBullet)
-        {
-            m_WeaponPropertyDisplayer.UpdateRemainBulletText(magazineRemainBullet);
-        }
+            => m_WeaponPropertyDisplayer.UpdateRemainBulletText(magazineRemainBullet);
+
         public void HitEnemy()
-        {
-            m_AttackCrossHairDisplayer.AttackCrossHairActive();
-        }
+            => m_AttackCrossHairDisplayer.AttackCrossHairActive();
 
         public void UpdateWeaponSlot(int equipingWeaponType, Sprite sprite)
-        {
-            m_ItemSlotDisplayer.UpdateWeaponSlotIcon(equipingWeaponType, sprite);
-        }
+            => m_ItemSlotDisplayer.UpdateWeaponSlotIcon(equipingWeaponType, sprite);
 
         public void UsingHealKit(int value)
-        {
-            m_HealDisplayer.UpdateRemainHeal(value);
-        }
+            => m_HealDisplayer.UpdateRemainHeal(value);
 
         public void DisplayHitDirection(Transform target)
-        {
-            m_DamageDisplayer.DisplayHitDirection(target);
-        }
+            => m_DamageDisplayer.DisplayHitDirection(target);
 
         public void UpdatePlayerMaxHP(int playerMaxHP, int amountToRealConst)
-        {
-            m_DamageDisplayer.ReCalcScreenAlpha(playerMaxHP, amountToRealConst);
-        }
+            => m_DamageDisplayer.ReCalcScreenAlpha(playerMaxHP, amountToRealConst);
 
         public void UpdatePlayerMP(float mpAmount)
-        {
-            m_PlayerStatDisplayer.UpdateMPImage(mpAmount);
-        }
+            => m_PlayerStatDisplayer.UpdateMPImage(mpAmount);
 
         public void UpdatePlayerGE(float geAmount)
-        {
-            m_GravityEnergeDisplayer.UpdateGEImage(geAmount);
-        }
+            => m_GravityEnergeDisplayer.UpdateBarImage(geAmount);
+
+        public void UpdatePlayerTE(float teAmount)
+            => m_TimeEnergeDisplayer.UpdateBarImage(teAmount);
     }
 }

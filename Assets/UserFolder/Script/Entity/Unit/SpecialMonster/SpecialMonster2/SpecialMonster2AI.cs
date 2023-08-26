@@ -47,10 +47,10 @@ namespace Entity.Unit.Special
                     break;
                 case NavMeshPathStatus.PathPartial:
                     CanMoveTarget = false;
-                    Debug.Log("PathPartical");
+                    //Debug.Log("PathPartical");
                     break;
                 case NavMeshPathStatus.PathInvalid:
-                    Debug.Log("PathInvalid");
+                    //Debug.Log("PathInvalid");
                     break;
             }
 

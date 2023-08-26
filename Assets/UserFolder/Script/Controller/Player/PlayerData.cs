@@ -49,38 +49,61 @@ public class PlayerData : MonoBehaviour
     [Tooltip("중력 변경 에너지 최대량")]
     [SerializeField] private int m_MaxPlayerGE = 1000;
 
-    [Tooltip("중력 변경 에너지 초당 회복량")]
+    [Tooltip("중력 변경 에너지 단위당 회복량")]
     [SerializeField] private int m_AutoGEHealAmount = 10;
 
-    [Tooltip("중력 변경 회복 할 시간")]
+    [Tooltip("중력 변경 회복 할 시간 단위")]
     [SerializeField] private float m_AutoGEHealTime = 0.1f;
 
     [Tooltip("중력 변경 에너지 소모량")]
     [SerializeField] private int m_GEConsumeAmount = 500;
+
+
+    [Header("TE")]
+    [Tooltip("시간 변경 에너지 최대량")]
+    [SerializeField] private int m_MaxPlayerTE = 1000;
+
+    [Tooltip("시간 변경 에너지 단위당 회복량")]
+    [SerializeField] private int m_AutoTEHealAmount = 10;
+
+    [Tooltip("시간 변경 회복 할 시간 단위")]
+    [SerializeField] private float m_AutoTEHealTime = 0.1f;
+
+    [Tooltip("시간 변경 에너지 소모량")]
+    [SerializeField] private int m_TEConsumeAmount = 10;
+
+    [Tooltip("시간 변경 시작할 최소 TE")]
+    [SerializeField] private int m_StartTimeChangeTE = 100;
     #endregion
 
     private int m_CurrentPlayerHP;
     private int m_CurrentPlayerMP;
     private int m_CurrentPlayerGE;
+    private int m_CurrentPlayerTE;
 
     private float m_AmountPlayerHP = 1;
     private float m_AmountPlayerMP = 1;
     private float m_AmountPlayerGE = 1;
+    private float m_AmountPlayerTE = 1;
 
     private float m_HPTimer;
     private float m_MPTimer;
     private float m_GETimer;
+    private float m_TETimer;
 
     private float m_RealToAmountHPConst = 0.001f;
     private float m_RealToAmountMPConst = 0.001f;
     private float m_RealToAmountGEConst = 0.001f;
+    private float m_RealToAmountTEConst = 0.001f;
 
     private int m_AmountToRealHPConst = 1000;
     private int m_AmountToRealMPConst = 1000;
     private int m_AmountToRealGEConst = 1000;
+    private int m_AmountToRealTEConst = 1000;
 
     private int m_CallCount;
 
+    private bool m_IsTimeSlowing;
     #region Property
     public Inventory Inventory { get => m_Inventory; }
     private WeaponInfo CurrentWeaponInfo { get; set; }
@@ -94,6 +117,8 @@ public class PlayerData : MonoBehaviour
 
     public bool IsAlive { get; set; } = true;
     public bool IsSameMaxCurrentHP { get => PlayerHP == PlayerMaxHP; }
+
+    #region Player current stat
     public int PlayerHP 
     {
         get => m_CurrentPlayerHP;
@@ -125,6 +150,18 @@ public class PlayerData : MonoBehaviour
         }
     }
 
+    private int PlayerTE
+    {
+        get => m_CurrentPlayerTE;
+        set
+        {
+            m_CurrentPlayerTE = Mathf.Clamp(value,0, m_MaxPlayerTE);
+            m_AmountPlayerTE = m_CurrentPlayerTE * m_RealToAmountTEConst;
+            m_PlayerUIManager.UpdatePlayerTE(m_AmountPlayerTE);
+        }
+    }
+    #endregion
+    #region Player max stat
     private int PlayerMaxHP
     {
         get => m_MaxPlayerHP;
@@ -158,6 +195,17 @@ public class PlayerData : MonoBehaviour
         }
     }
 
+    private int PlayerMaxTE
+    {
+        get => m_MaxPlayerTE;
+        set
+        {
+            m_MaxPlayerTE = value;
+            m_AmountToRealTEConst = m_MaxPlayerTE;
+            m_RealToAmountTEConst = 1 / (float)m_AmountToRealTEConst;
+        }
+    }
+    #endregion
     #endregion
 
     #region UnityFuction
@@ -166,6 +214,7 @@ public class PlayerData : MonoBehaviour
         PlayerHP = m_MaxPlayerHP;
         PlayerMP = m_MaxPlayerMP;
         PlayerGE = m_MaxPlayerGE;
+        PlayerTE = m_MaxPlayerTE;
         m_PlayerUIManager.Init(m_MaxPlayerHP, m_MaxPlayerMP, m_AmountToRealHPConst, m_RealToAmountHPConst, m_Inventory.HealKitHavingCount);
     }
 
@@ -194,11 +243,21 @@ public class PlayerData : MonoBehaviour
             m_GETimer = 0;
             PlayerGE += m_AutoGEHealAmount;
         }
+
+        if((m_TETimer += Time.deltaTime) >= m_AutoTEHealTime &&
+            !m_IsTimeSlowing)
+        {
+            m_TETimer = 0;
+            PlayerTE += m_AutoTEHealAmount;
+        }
     }
     #endregion
 
+    // HP, MP 소모하는거 deltaTime 안써서 이상할 수도 있음
+    //테스트 하고 변경 필요하면 변경할 것!!
     #region CheckBehaviour
     public bool CanStartRunning() => PlayerMP > m_StartRunningMP;
+    public bool CanStartTimeSlow() => PlayerTE > m_StartTimeChangeTE;
 
     public bool CanRunning()
     {
@@ -223,6 +282,11 @@ public class PlayerData : MonoBehaviour
     public void UseGravityChange()
     {
         PlayerGE -= m_GEConsumeAmount;
+    }
+
+    public bool CanTimeSlow()
+    {
+        return true;
     }
     #endregion
 

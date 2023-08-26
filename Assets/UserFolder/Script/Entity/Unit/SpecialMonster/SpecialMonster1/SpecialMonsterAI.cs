@@ -62,7 +62,7 @@ public class SpecialMonsterAI : MonoBehaviour
     public bool OperateAIBehavior(ref bool changeFlag)
     {
         bool isWalk = false;
-        if (!m_IsInit) return isWalk;
+        if (!m_IsInit || !m_NavMeshAgent.isActiveAndEnabled) return isWalk;
 
         m_NavMeshAgent.isStopped = false;
         SetDestination(out float remainingDistance);

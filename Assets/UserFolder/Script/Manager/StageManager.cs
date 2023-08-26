@@ -31,13 +31,18 @@ namespace Manager
         [Tooltip("무한 웨이브 시간")]
         [SerializeField] private float m_InfintyWaveTiming;
 
+        private StageInfo m_CurrentStageInfo;
+
         private float m_WaveTimer;
         private float m_StatMultiplier = 0;
 
         private int m_CurrentStage;
         private int m_CurrentWave;
 
-        public int CurrentStage
+        #region Property
+        public System.Action<int> SpawnSpecialAction { get; set; }
+
+        private int CurrentStage
         {
             get => m_CurrentStage;
             set
@@ -49,7 +54,7 @@ namespace Manager
             }
         }
 
-        public int CurrentWave
+        private int CurrentWave
         {
             get => m_CurrentWave;
             set
@@ -60,37 +65,54 @@ namespace Manager
             }
         }
 
+        public float StatMultiplier => m_StatMultiplier;
+        #endregion
+
+        private void Awake()
+        {
+            CurrentStage = 1;
+            m_CurrentStageInfo = m_StageInfo[CurrentStage - 1];
+        }
+
+        private void Update()
+        {
+            StageWaveCheck();
+        }
+
         private void StageWaveCheck()
         {
             m_WaveTimer += Time.deltaTime;
 
             if (CurrentStage - 1 >= m_StageInfo.Length)
             {
-                //if (IsSP3MonsterEnd) GameManager.GameClear();
-                //else if (m_InfintyWaveTiming <= m_WaveTimer) CurrentWave++;
+                if (m_InfintyWaveTiming <= m_WaveTimer) CurrentWave++;
                 return;
             }
-            StageInfo currentStageInfo = m_StageInfo[CurrentStage - 1];
-            if (currentStageInfo.m_WaveTiming[CurrentWave - 1] <= m_WaveTimer)
+
+            if (m_CurrentStageInfo.m_WaveTiming[CurrentWave - 1] <= m_WaveTimer)
             {
                 CurrentWave++;
-                //if (CurrentWave - 1 == currentStageInfo.m_SpawnSpecialWave - 1) SpawnSpecialMonster();
-                if (currentStageInfo.m_WaveTiming.Length <= CurrentWave - 1) CurrentStage++;
+                if (CurrentWave - 1 == m_CurrentStageInfo.m_SpawnSpecialWave - 1) SpawnSpecialAction?.Invoke(CurrentStage);
+                if (m_CurrentStageInfo.m_WaveTiming.Length <= CurrentWave - 1)
+                {
+                    CurrentStage++;
+                    if(CurrentStage < m_StageInfo.Length) m_CurrentStageInfo = m_StageInfo[CurrentStage - 1];
+                }
             }
         }
 
-        public float GetStageTime(int startStage, int endStage, int startWave, int endWave)
+        public float GetStageTime(int endStage, int endWave)
         {
             float sum = 0;
             float curSum;
+
+            int startStage = CurrentStage - 1;
+            int startWave = CurrentWave - 1;
             int begin, end;
             for (int i = startStage; i < endStage; i++)
             {
-                if (i == startStage) begin = startWave;
-                else begin = 0;
-
-                if (i == endStage - 1) end = endWave;
-                else end = m_StageInfo[i].m_WaveTiming.Length;
+                begin = (i == startStage) ? startWave : 0;
+                end = (i == endStage - 1) ? endWave : m_StageInfo[i].m_WaveTiming.Length;
 
                 curSum = m_StageInfo[i].GetWaveTime(begin, end);
 

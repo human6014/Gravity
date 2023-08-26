@@ -8,25 +8,6 @@ using System.Linq;
 
 namespace Manager
 {
-    [System.Serializable]
-    public class StageInfo
-    {
-        [Tooltip("현재 스테이지에서 특수 몬스터가 출현하는 Wave")]
-        public int m_SpawnSpecialWave;
-
-        [Tooltip("다음 Wave로 넘어가기 위한 시간")]
-        public float[] m_WaveTiming;
-
-        public float GetWaveTime(int startWave, int endWave)
-        {
-            if (endWave > m_WaveTiming.Length) return -1;
-            float sum = 0;
-            for (int i = startWave; i < endWave; i++)
-                sum += m_WaveTiming[i];
-            return sum;
-        }
-    }
-
     [RequireComponent(typeof(EntityManager))]
     public class SpawnManager : MonoBehaviour
     {
@@ -39,12 +20,6 @@ namespace Manager
 
         [Tooltip("공중 유닛 스폰 여부")]
         [SerializeField] private bool m_IsActiveFlyingSpawn;
-
-        [Tooltip("스테이지, 웨이브 정보")]
-        [SerializeField] private StageInfo[] m_StageInfo;
-
-        [Tooltip("무한 웨이브 시간")]
-        [SerializeField] private float m_InfintyWaveTiming;
 
         [Header("Spawn Area")]
         [Tooltip("스폰영역을 자식으로 가지는 Transform")]
@@ -92,6 +67,7 @@ namespace Manager
         private BoxCollider[] m_CurrentAreaCollider;
 
         private EnvironmentManager m_EnvironmentManager;
+        private StageManager m_StageManager;
         private EntityManager m_EntityManager;
         private Customization m_Customization;
         private Octree m_Octree;
@@ -110,15 +86,8 @@ namespace Manager
         private float m_NormalMonsterTimer;
         private float m_FlyingMonsterTimer;
 
-        private float m_WaveTimer;
-
-        private float m_StatMultiplier = 0;
-
         private int m_RandomNormalMonsterIndex;
         private int m_RandomFlyingMonsterIndex;
-
-        private int m_CurrentStage;
-        private int m_CurrentWave;
         
         #endregion
 
@@ -133,35 +102,13 @@ namespace Manager
         public bool IsSP1MonsterEnd { get; private set; }
         public bool IsSP2MonsterEnd { get; private set; }
         public bool IsSP3MonsterEnd { get; private set; }
-
-        public int CurrentStage 
-        {
-            get => m_CurrentStage;
-            set
-            {
-                m_CurrentStage = value;
-                m_CurrentWave = 1;
-                m_StatMultiplier = (m_CurrentStage - 1) + ((m_CurrentWave - 1) * 0.5f);
-                m_WaveTimer = 0;
-            }
-        }
-
-        public int CurrentWave
-        {
-            get => m_CurrentWave;
-            set
-            {
-                m_CurrentWave = value;
-                m_StatMultiplier = (m_CurrentStage - 1) + ((m_CurrentWave - 1) * 0.5f);
-                m_WaveTimer = 0;
-            }
-        }
         #endregion
 
         #region Init
         private void Awake()
         {
             m_EnvironmentManager = GetComponent<EnvironmentManager>();
+            m_StageManager = GetComponent<StageManager>();
             m_EntityManager = GetComponent<EntityManager>();
             m_Customization = GetComponent<Customization>();
             m_Octree = FindObjectOfType<Octree>();
@@ -171,12 +118,12 @@ namespace Manager
             
             m_CurrentAreaCollider = m_SpawnAreaCollider[2]; // YDown
 
-            CurrentStage = 1;
             NormalMonsterCount = 0;
             FlyingMonsterCount = 0;
 
             foreach (float elem in m_MonsterProbs) m_Total += elem;
 
+            m_StageManager.SpawnSpecialAction += SpawnSpecialMonster;
             GravityManager.GravityChangeAction += ChangeCurrentArea;
         }
 
@@ -219,7 +166,7 @@ namespace Manager
             m_PoisonSpherePooling.GenerateObj(poisonSpherePoolingCount);
         }
 
-        public void ChangeCurrentArea(EnumType.GravityType gravityType)
+        private void ChangeCurrentArea(EnumType.GravityType gravityType)
         {
             m_CurrentGravityType = gravityType;
             m_CurrentAreaCollider = m_SpawnAreaCollider[(int)gravityType];
@@ -291,54 +238,10 @@ namespace Manager
         }
         #endregion
 
-        #region Stage & Wave
         private void Update()
         {
-            StageWaveCheck();
             SpawnMonster();
         }
-
-        private void StageWaveCheck()
-        {
-            m_WaveTimer += Time.deltaTime;
-
-            if (CurrentStage - 1 >= m_StageInfo.Length)
-            {
-                if (IsSP3MonsterEnd) GameManager.GameClear();
-                else if (m_InfintyWaveTiming <= m_WaveTimer) CurrentWave++;
-                return;
-            }
-            StageInfo currentStageInfo = m_StageInfo[CurrentStage - 1];
-            if (currentStageInfo.m_WaveTiming[CurrentWave - 1] <= m_WaveTimer)
-            {
-                CurrentWave++;
-                if (CurrentWave - 1 == currentStageInfo.m_SpawnSpecialWave - 1) SpawnSpecialMonster();
-                if (currentStageInfo.m_WaveTiming.Length <= CurrentWave - 1) CurrentStage++;
-            }
-        }
-
-        public float GetStageTime(int startStage, int endStage, int startWave, int endWave)
-        {
-            float sum = 0;
-            float curSum;
-            int begin, end;
-            for(int i = startStage; i < endStage; i++)
-            {
-                if (i == startStage) begin = startWave;
-                else begin = 0;
-
-                if (i == endStage - 1) end = endWave;
-                else end = m_StageInfo[i].m_WaveTiming.Length;
-
-                curSum = m_StageInfo[i].GetWaveTime(begin, end);
-
-                if (curSum == -1) return -1;
-                sum += curSum;
-                
-            }
-            return sum;
-        }
-        #endregion
 
         #region SpawnNormalMonster
         private void SpawnMonster()
@@ -370,7 +273,7 @@ namespace Manager
             NormalMonster currentNormalMonster = (NormalMonster)m_NormalMonsterPoolingObjectArray[m_RandomNormalMonsterIndex].GetObject(false);
             m_Customization.Customize(currentNormalMonster);
 
-            currentNormalMonster.Init(initPosition, m_NormalMonsterPoolingObjectArray[m_RandomNormalMonsterIndex], m_StatMultiplier);
+            currentNormalMonster.Init(initPosition, m_NormalMonsterPoolingObjectArray[m_RandomNormalMonsterIndex], m_StageManager.StatMultiplier);
             currentNormalMonster.gameObject.SetActive(true);
         }
 
@@ -381,34 +284,35 @@ namespace Manager
             FlyingMonsterCount++;
 
             FlyingMonster currentFlyingMonster = (FlyingMonster)m_FlyingMonsterPoolingObjectArray[0].GetObject(false);
-            currentFlyingMonster.Init(m_Octree.GetRandomSpawnableArea(), m_StatMultiplier, m_FlyingMonsterPoolingObjectArray[0], m_PoisonSpherePooling);
+            currentFlyingMonster.Init(m_Octree.GetRandomSpawnableArea(), m_StageManager.StatMultiplier, m_FlyingMonsterPoolingObjectArray[0], m_PoisonSpherePooling);
             currentFlyingMonster.gameObject.SetActive(true);
         }
         #endregion
 
         #region SpawnSpecialMonsters
-        private void SpawnSpecialMonster()
+        private void SpawnSpecialMonster(int currentStage)
         {
             if (!m_IsActiveSpecialSpawn) return;
-            switch (CurrentStage)
+            switch (currentStage)
             {
                 case 1:
                     m_EnvironmentManager.OnRainParticle();
-                    float time = GetStageTime(CurrentStage - 1, 3, CurrentWave - 1, 1);
+                    float time = m_StageManager.GetStageTime(3, 1);
                     StartCoroutine(m_EnvironmentManager.RoadWetnessChange(time, true));
                     //SpawnSpecialMonster3();
-                    //SpawnSpecialMonster1();
+                    SpawnSpecialMonster1();
                     break;
                 case 2:
-                    //SpawnSpecialMonster2();
+                    SpawnSpecialMonster2();
                     break;
                 case 3:
+                    m_EnvironmentManager.OffRainParticle();
                     //SpawnSpecialMonster3();
                     break;
             }
         }
 
-        public async void SpawnSpecialMonster1()
+        private async void SpawnSpecialMonster1()
         {
             await m_EnvironmentManager.FogDensityChange(0.015f, 10);
 
@@ -420,12 +324,12 @@ namespace Manager
 
             SpecialMonster1 specialMonster1 = Instantiate(m_EntityManager.GetSpecialMonster1, initPosition, Quaternion.identity).GetComponent<SpecialMonster1>();
             specialMonster1.EndSpecialMonsterAction += () => IsSP1MonsterEnd = true;
-            specialMonster1.Init(initRotation, m_StatMultiplier);
+            specialMonster1.Init(initRotation, m_StageManager.StatMultiplier);
 
             IsSP1MonsterSpawned = true;
         }
 
-        public async void SpawnSpecialMonster2()
+        private async void SpawnSpecialMonster2()
         {
             await m_EnvironmentManager.FogDensityChange(0.05f, 10);
 
@@ -447,7 +351,7 @@ namespace Manager
             SpecialMonster2 specialMonster2 = Instantiate(m_EntityManager.GetSpecialMonster2, initPosition, Quaternion.identity).GetComponent<SpecialMonster2>();
             specialMonster2.EndSpecialMonsterAction += () => IsSP2MonsterEnd = true;
             specialMonster2.EndSpecialMonsterAction += () => GravityManager.CantGravityChange = false;
-            specialMonster2.Init(m_SP2SpawnPos,m_StatMultiplier);
+            specialMonster2.Init(m_SP2SpawnPos, m_StageManager.StatMultiplier);
 
             IsSP2MonsterSpawned = true;
 
@@ -461,9 +365,8 @@ namespace Manager
             GravityManager.CantGravityChange = true;
         }
 
-        public async void SpawnSpecialMonster3()
+        private async void SpawnSpecialMonster3()
         {
-            m_EnvironmentManager.OffRainParticle();
             await m_EnvironmentManager.FogDensityChange(0.1f,15);
 
             Camera.main.farClipPlane = 120;
@@ -473,7 +376,8 @@ namespace Manager
 
             SpecialMonster3 specialMonster3 = Instantiate(m_EntityManager.GetSpecialMonster3, initPosition, Quaternion.identity).GetComponent<SpecialMonster3>();
             specialMonster3.EndSpecialMonsterAction += () => IsSP3MonsterEnd = true;
-            specialMonster3.Init(pathCreator, m_StatMultiplier);
+            specialMonster3.EndSpecialMonsterAction += () => GameManager.GameClear();
+            specialMonster3.Init(pathCreator, m_StageManager.StatMultiplier);
 
             IsSP3MonsterSpawned = true;
             await m_EnvironmentManager.FogDensityChange(0.04f,5);

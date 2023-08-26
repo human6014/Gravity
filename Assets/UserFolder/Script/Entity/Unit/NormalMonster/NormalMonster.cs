@@ -103,7 +103,7 @@ namespace Entity.Unit.Normal
             if (CanAttackRange())
             {
                 //Angleüũ �ؾߴ�
-                if (CanAttack()) Attack();
+                if (CanAttack() && AIManager.IsInsideAngleToPlayer(transform, m_Settings.m_AttackAbleAngle)) Attack();
             }
             else m_NormalMonsterAI.AutoBehavior();
         }
@@ -117,7 +117,7 @@ namespace Entity.Unit.Normal
 
         private void DoDamage()
         {
-            if (!AIManager.IsInsideAngleToPlayer(transform, m_Settings.m_AttackAbleAngle)) return;
+            if (CanAttackRange() && !AIManager.IsInsideAngleToPlayer(transform, m_Settings.m_AttackAbleAngle)) return;
             m_PlayerData.PlayerHit(transform, m_RealDamage, m_Settings.m_NoramlAttackType);
         }
 
