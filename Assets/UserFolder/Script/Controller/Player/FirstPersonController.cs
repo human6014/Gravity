@@ -10,8 +10,6 @@ namespace Controller.Player
     [RequireComponent(typeof(AudioSource))]
     public class FirstPersonController : MonoBehaviour
     {
-        public MouseLook MouseLook { get => m_MouseLook;}
-
         #region SerializeField
         [Tooltip("°È±â ¼Óµµ")]
         [SerializeField] private float m_WalkSpeed = 5;
@@ -114,10 +112,12 @@ namespace Controller.Player
         private Vector2 m_Input;
 
         private readonly float m_InterporationDist = 0.3f;
+        private readonly float m_TimeSlowAmount = 0.25f;
         private float m_MovementMultiplier = 1;
         private float m_MovementSpeed;
         private float m_StepCycle;
         private float m_NextStep;
+        
 
         private bool m_IsGrabed;
         private bool m_IsThrowing;
@@ -129,6 +129,19 @@ namespace Controller.Player
 
         private bool m_WasWalking;
         private bool m_IsWalking;
+
+        private bool m_IsSlowMode;
+
+        public MouseLook MouseLook { get => m_MouseLook; }
+        private bool IsSlowMode 
+        { 
+            get => m_IsSlowMode; 
+            set
+            {
+                m_IsSlowMode = value;
+                m_PlayerData.UseTimeSlow(value, m_TimeSlowAmount);
+            }
+        }
 
         #region UnityFunction
         #region Init
@@ -163,16 +176,17 @@ namespace Controller.Player
         {
             m_PlayerData.GrabAction += GrabAction;
             m_PlayerData.GrabPoint += GrabActionPoint;
+            m_PlayerData.StopSlowModeAction += () => IsSlowMode = false;
 
             m_PlayerInputController.MouseMovement += (float mouseHorizontal, float mouseVertical) 
                 => m_MouseLook.LookRotation(mouseHorizontal, mouseVertical);
-
             m_PlayerInputController.PlayerMovement += TryMovement;
             m_PlayerInputController.Run += TryRun;
             m_PlayerInputController.Crouch += TryCrouch;
             m_PlayerInputController.Jump += TryJump;
             m_PlayerInputController.DoGravityChange += TryChangeGravity;
             m_PlayerInputController.TimeSlow += TryTimeSlow;
+            
         }
         #endregion
 
@@ -460,9 +474,20 @@ namespace Controller.Player
         #endregion
 
         #region TimeSlow
-        private void TryTimeSlow(bool isOnOff)
+        private void TryTimeSlow()
         {
-            
+            if (IsSlowMode) IsSlowMode = false;
+            else
+            {
+                if (!m_PlayerData.CanStartTimeSlow()) return;
+                IsSlowMode = true;
+            }
+        }
+
+        //UnityEvent
+        public void PauseSlowMode()
+        {
+            if (m_IsSlowMode) IsSlowMode = true;
         }
         #endregion
     }

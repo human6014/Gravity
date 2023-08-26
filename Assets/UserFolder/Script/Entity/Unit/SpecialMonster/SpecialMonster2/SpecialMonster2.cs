@@ -13,7 +13,7 @@ namespace Entity.Unit.Special
 
         [SerializeField] private Transform m_GrabEndPoint;
 
-        [SerializeField] private float m_RushCheckRadius = 3;
+        [SerializeField] private float m_RushCheckRadius = 3.5f;
 
         private Rigidbody m_PlayerRigidbody;
         private SP2AnimationController m_SP2AnimationController;

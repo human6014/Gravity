@@ -117,7 +117,7 @@ namespace Entity.Unit.Normal
 
         private void DoDamage()
         {
-            if (CanAttackRange() && !AIManager.IsInsideAngleToPlayer(transform, m_Settings.m_AttackAbleAngle)) return;
+            if (!CanAttackRange() || !AIManager.IsInsideAngleToPlayer(transform, m_Settings.m_AttackAbleAngle)) return;
             m_PlayerData.PlayerHit(transform, m_RealDamage, m_Settings.m_NoramlAttackType);
         }
 

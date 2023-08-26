@@ -1,18 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 
 namespace UI.Manager
 {
     public class SettingUIManager : MonoBehaviour
     {
         [SerializeField] private Game.SettingPanel m_SettingPanel;
+        [SerializeField] private UnityEvent PauseEvent;
 
         private bool m_IsActiveSkillEventUI;
         private bool m_IsActivePauseUI;
 
-        public bool IsPause { get => IsActiveSkillEventUI || IsActivePauseUI; private set => IsPause = value; }
+        public bool IsPause 
+        { 
+            get => IsActiveSkillEventUI || IsActivePauseUI; 
+            private set => IsPause = value; 
+        }
 
         public bool IsActiveSkillEventUI
         {
@@ -50,6 +55,7 @@ namespace UI.Manager
             Cursor.visible = IsPause;
             Cursor.lockState = IsPause ? CursorLockMode.None : CursorLockMode.Locked;
             Time.timeScale = IsPause ? 0 : 1;
+            if(!IsPause) PauseEvent?.Invoke();
         }
 
         #region UnityEvent
