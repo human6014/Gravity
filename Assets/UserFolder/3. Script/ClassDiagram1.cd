@@ -1,0 +1,1504 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CameraController" Collapsed="true">
+    <Position X="31.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAIBKEAAAAQAAQAAAAAAAAAEAgAAAAAAAA0AAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Controller\CameraController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerData" Collapsed="true">
+    <Position X="10" Y="13" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="m_PlayerUIManager" Type="UI.Manager.PlayerUIManager" FixedToPoint="true">
+      <Path>
+        <Point X="10.688" Y="13.691" />
+        <Point X="10.688" Y="15.25" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>DQ4SCEgAAEhIEAwAEACQAQAACYFAqAAAQABhAgIgQEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Controller\PlayerController\PlayerData.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_PlayerUIManager" />
+      <Field Name="m_Inventory" />
+      <Property Name="m_PlayerState" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Contoller.Floor.FloorController" Collapsed="true">
+    <Position X="24.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAACAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Controller\FloorController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Contoller.Player.Utility.CurveControlledBob" Collapsed="true">
+    <Position X="29.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAACAAAAAAAAASAwAAAAABASAAAABAABAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Controller\PlayerController\CurveControlledBob.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Contoller.Player.Utility.FOVKick" Collapsed="true">
+    <Position X="16" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgACQAAACAAAAAAAAAACAAABAIBAAgAAAAgAAAAEQAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Controller\PlayerController\FOVKick.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Contoller.Player.Utility.LerpControlledBob" Collapsed="true">
+    <Position X="14.25" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAACAAAABIgAAAAAAAAAAgAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Controller\PlayerController\LerpControlledBob.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Contoller.Player.Utility.MouseLook" Collapsed="true">
+    <Position X="17.75" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAGAACBAAAIEAAIAAggFAAAYAAAgEAQAAAACAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Controller\PlayerController\MouseLook.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Contoller.Player.FirstPersonController" Collapsed="true">
+    <Position X="15.25" Y="13" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="MouseLook" Type="Contoller.Player.Utility.MouseLook" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="15.938" Y="13.691" />
+        <Point X="15.938" Y="14.066" />
+        <Point X="18.5" Y="14.066" />
+        <Point X="18.5" Y="14.5" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="m_PlayerInputController" Type="Contoller.PlayerInputController" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="15.938" Y="13" />
+        <Point X="15.938" Y="12.062" />
+        <Point X="13.5" Y="12.062" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="m_FovKick" Type="Contoller.Player.Utility.FOVKick" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="15.938" Y="13.691" />
+        <Point X="15.938" Y="14.066" />
+        <Point X="16.75" Y="14.066" />
+        <Point X="16.75" Y="14.5" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="m_JumpBob" Type="Contoller.Player.Utility.LerpControlledBob" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="15.938" Y="13.691" />
+        <Point X="15.938" Y="14.066" />
+        <Point X="15" Y="14.066" />
+        <Point X="15" Y="14.5" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>sIQCLRMPmog8sIQEkQ0DTAAAAAACHAAUmDogRAABAkE=</HashCode>
+      <FileName>Assets\UserFolder\Script\Controller\PlayerController\FirstPersonController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_PlayerData" />
+      <Field Name="m_PlayerInputController" />
+      <Field Name="m_FovKick" />
+      <Field Name="m_JumpBob" />
+      <Property Name="MouseLook" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Contoller.Player.FirstPersonControllerTest" Collapsed="true">
+    <Position X="35" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kISCBRIPmkC0soQQEQ1jVAAAAAAinAAZiBIARAAAA0I=</HashCode>
+      <FileName>Assets\UserFolder\Script\Controller\PlayerController\FirstPersonControllerTest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Contoller.PlayerInputController" Collapsed="true">
+    <Position X="12" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQQAQEAICgECAICAkACBAgAaEBRAEAglahAAAwAAERI=</HashCode>
+      <FileName>Assets\UserFolder\Script\Controller\PlayerInputController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Contoller.AI.PlayerLookTarget" Collapsed="true">
+    <Position X="26.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>oAQBAAECAAAAAAAAAQAABAEAAAAAAAAAAIAgQAAAgEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Controller\PlayerLookTarget.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Unit.CustomizableScript" Collapsed="true">
+    <Position X="9.25" Y="19" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\Customize\CustomizableScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Unit.BigZomibeCustomize" Collapsed="true">
+    <Position X="5.75" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAIAAJAAAEAAAAAhAAAAAwAAEAQAAAAAAAAAEAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\Customize\NormalMonsterCustom\BigZomibeCustomize.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Unit.GiantZombieCustomize" Collapsed="true">
+    <Position X="7.5" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CgAAQAIiABIAAEIAQEAhgAAAA4QgAQBAAQQAAAgABAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\Customize\NormalMonsterCustom\GiantZombieCustomize.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Unit.OldManCustomize" Collapsed="true">
+    <Position X="9.25" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAIAABAAAEAAAAAhAAAAAwAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\Customize\NormalMonsterCustom\OldManCustomize.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Unit.UrbanZombieCustomize" Collapsed="true">
+    <Position X="11" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAUMYAABAAAMBAAEA5gAAEAwQAAAQAAJAAAgBAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\Customize\NormalMonsterCustom\UrbanZombieCustomize.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Unit.WomenZombieCustomize" Collapsed="true">
+    <Position X="12.75" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAoAABAAAAAAAAAhAAAAAQAAEAABAAAAAAAAEAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\Customize\NormalMonsterCustom\WomenZombieCustomize.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Customization" Collapsed="true">
+    <Position X="13.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\Customize\Customization.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="customizingAssetList" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="CustomizingAssetList" Collapsed="true">
+    <Position X="13.75" Y="6.5" Width="1.5" />
+    <NestedTypes>
+      <Struct Name="CustomizingAssetList.MaterialsStruct" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\UserFolder\Script\Entity\Unit\Customize\CustomizingAssetList.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+      <Struct Name="CustomizingAssetList.NormalZomibeComponentsStruct" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\UserFolder\Script\Entity\Unit\Customize\CustomizingAssetList.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\Customize\CustomizingAssetList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FlyingMovementController" Collapsed="true">
+    <Position X="26.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAgCIUBAICMQAgAAAAIAQAIgQAAAECQACAMEE=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\FlyingMonster\FlyingMovementController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FlyingRotationController" Collapsed="true">
+    <Position X="28" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAgAAJAAAAAAAAAAAAAAACQACAQEg=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\FlyingMonster\FlyingRotationController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HitBox" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAQAEAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\HitBox.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="NormalMonsterAI" Collapsed="true">
+    <Position X="21" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABACQABAAKAJAgQAgCACAGBAEBAAABAAhAAKQAgAFkA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\NormalMonster\NormalMonsterAI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhysicsHitBox" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAIAAAAAAAAAAAAAAACQAAAAAEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\PhysicsHitBox.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RagDollChanger" Collapsed="true">
+    <Position X="24.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEEAAAAAAQAIgAAACABQAAAQAAAAgEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\RagDoll\RagDollChanger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Leg" Collapsed="true">
+    <Position X="20.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AKEkAAAxkiAAAgAACQAiAAAAAEoCIAAAAwABEAhBAUI=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\SpecialMonster\SpecialMonster1\AnimationRigging\Leg.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LegController" Collapsed="true">
+    <Position X="20.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>wACOAQAAAiggAIACAIKAAAAAAgBKAQAAgQCEAkAABi0=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\SpecialMonster\SpecialMonster1\AnimationRigging\LegController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="legs" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="OriginalController" Collapsed="true">
+    <Position X="24.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAABAAAAAAAAAAAAAAIAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\SpecialMonster\SpecialMonster1\OriginalController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Parabola" Collapsed="true">
+    <Position X="18.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAIAAAAAAAAABAQAAAAAEgAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\SpecialMonster\SpecialMonster1\Parabola.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SP1AnimationController" Collapsed="true">
+    <Position X="15.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAIiAYMAIEGAQjIAghAhCARAhEAAMAhAABMCQFCBQMA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\SpecialMonster\SpecialMonster1\SP1AnimationController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpecialMonsterAI" Collapsed="true">
+    <Position X="17" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AoAEAAAEACQAACBAAiIEAAIEACAAAAAAgAAyAAEBQEE=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\SpecialMonster\SpecialMonster1\SpecialMonsterAI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SphereGizmo" Collapsed="true">
+    <Position X="31.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAIAAAIAAAAAAAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\SpecialMonster\SpecialMonster1\SphereGizmo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpecialMonster2" Collapsed="true">
+    <Position X="26.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\SpecialMonster\SpecialMonster2\SpecialMonster2.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Boids" Collapsed="true">
+    <Position X="28" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAEEAAAAAAgAAAAAACQAAAAEAIAAgAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\SpecialMonster\SpecialMonster3\Boids\Boids.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BoidsMonster" Collapsed="true">
+    <Position X="19.25" Y="8" Width="1.5" />
+    <InheritanceLine Type="PoolableScript" ManuallyRouted="true">
+      <Path>
+        <Point X="18.25" Y="7.191" />
+        <Point X="18.25" Y="7.645" />
+        <Point X="20" Y="7.645" />
+        <Point X="20" Y="8" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>BQRQAAgAHAIAQECAIAIAAQAAAACIiRgAAhACAAAAAEI=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\SpecialMonster\SpecialMonster3\Boids\BoidsMonster.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpecialMonster3" Collapsed="true">
+    <Position X="28" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAACAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\SpecialMonster\SpecialMonster3\SpecialMonster3.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ArmController" Collapsed="true">
+    <Position X="24.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\Common\ArmController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CameraSway" Collapsed="true">
+    <Position X="33.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\Common\CameraSway.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Inventory" Collapsed="true">
+    <Position X="7.75" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAMAAAAAAIAAAIBAAAAgAAAAAAAAAAgAAAAAAAAAEAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\Inventory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerState" Collapsed="true">
+    <Position X="7.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAEAIAAACAACQAAABEAIAAAAAAEAgAgAAAAAgAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\PlayerState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FireLight" Collapsed="true">
+    <Position X="2.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUAAAIAAQAAAQABAAAAAAAgAARAAAAIoAAAAAgAAUA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\RangeWeapon\FireLight.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Explosible" Collapsed="true">
+    <Position X="14" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEACACEAACIAACAAEEAAAIEAAAAAgAIAgACCSAAAEI=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\ThrowingWeapon\Explosible.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InstantExplosive" Collapsed="true">
+    <Position X="13.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\ThrowingWeapon\InstantExplosive.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PersistenceExplosive" Collapsed="true">
+    <Position X="15" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEABAAQAAIQAAAAAQAAAAKCAACAAAAEEQ=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\ThrowingWeapon\PersistenceExplosive.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Illuminant" Collapsed="true">
+    <Position X="24.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABQAAAAAAAAAQAAAAEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\ToolKit\Illuminant.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Unit.Flying.FlyingMonster" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAoAAAAAgAAIAAAAAAICAAAAAAAgCAEAAAEI=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\FlyingMonster\FlyingMonster.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.121" Collapsed="true" />
+  </Class>
+  <Class Name="Entity.Unit.Normal.NormalMonster" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21" Y="8" Width="1.5" />
+    <AssociationLine Name="m_PlayerData" Type="PlayerData" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="21.344" Y="8.691" />
+        <Point X="21.344" Y="9.047" />
+        <Point X="14.833" Y="9.047" Type="JumpStart" />
+        <Point X="14.667" Y="9.047" Type="JumpEnd" />
+        <Point X="13.054" Y="9.047" Type="JumpStart" />
+        <Point X="12.887" Y="9.047" Type="JumpEnd" />
+        <Point X="12.771" Y="9.047" Type="JumpStart" />
+        <Point X="12.604" Y="9.047" Type="JumpEnd" />
+        <Point X="11.333" Y="9.047" Type="JumpStart" />
+        <Point X="11.167" Y="9.047" Type="JumpEnd" />
+        <Point X="11.125" Y="9.047" />
+        <Point X="11.125" Y="13" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AIQAAQAAAIAAIAAgIBIBAAAAAICAABAABIASBAAAAEI=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\NormalMonster\NormalMonster.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_NormalMonsterAI" />
+      <Field Name="m_PlayerData" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Entity.Unit.Special.SpecialMonster1" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.25" Y="1.25" Width="1.5" />
+    <AssociationLine Name="m_Parabola" Type="Parabola" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="17.938" Y="1.941" />
+        <Point X="17.938" Y="2.316" />
+        <Point X="19.5" Y="2.316" />
+        <Point X="19.5" Y="2.75" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="m_SP1AnimationController" Type="SP1AnimationController" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="17.938" Y="1.941" />
+        <Point X="17.938" Y="2.316" />
+        <Point X="17.021" Y="2.316" Type="JumpStart" />
+        <Point X="16.854" Y="2.316" Type="JumpEnd" />
+        <Point X="16" Y="2.316" />
+        <Point X="16" Y="2.75" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="m_SpecialMonsterAI" Type="SpecialMonsterAI" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="17.938" Y="1.941" />
+        <Point X="17.938" Y="2.316" />
+        <Point X="17.844" Y="2.316" />
+        <Point X="17.844" Y="2.75" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="m_LegController" Type="LegController" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="17.938" Y="1.941" />
+        <Point X="17.938" Y="2.316" />
+        <Point X="21.25" Y="2.316" />
+        <Point X="21.25" Y="2.75" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="m_PlayerData" Type="PlayerData" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="17.25" Y="1.596" />
+        <Point X="17.021" Y="1.596" Type="JumpStart" />
+        <Point X="16.854" Y="1.596" Type="JumpEnd" />
+        <Point X="13.128" Y="1.596" />
+        <Point X="13.128" Y="9.047" />
+        <Point X="13.054" Y="9.047" Type="JumpStart" />
+        <Point X="12.887" Y="9.047" Type="JumpEnd" />
+        <Point X="12.771" Y="9.047" Type="JumpStart" />
+        <Point X="12.604" Y="9.047" Type="JumpEnd" />
+        <Point X="11.333" Y="9.047" Type="JumpStart" />
+        <Point X="11.167" Y="9.047" Type="JumpEnd" />
+        <Point X="11.125" Y="9.047" />
+        <Point X="11.125" Y="13" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AISFAUAhEoZAIowgAEIigAAAAICAQQYAhixDEAABEsA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\SpecialMonster\SpecialMonster1\SpecialMonster1.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_Parabola" />
+      <Field Name="m_PlayerData" />
+      <Field Name="m_SP1AnimationController" />
+      <Field Name="m_SpecialMonsterAI" />
+      <Field Name="m_LegController" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Entity.Object.DefaultPoolingScript" Collapsed="true">
+    <Position X="15.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAI=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\Common\DefaultPoolingScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Object.Weapon.Weapon" Collapsed="true">
+    <Position X="7.25" Y="2.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="m_PlayerData" Type="PlayerData" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.375" Y="3.441" />
+        <Point X="8.375" Y="7.5" />
+        <Point X="9.342" Y="7.5" Type="JumpStart" />
+        <Point X="9.508" Y="7.5" Type="JumpEnd" />
+        <Point X="11.01" Y="7.5" Type="JumpStart" />
+        <Point X="11.177" Y="7.5" Type="JumpEnd" />
+        <Point X="11.25" Y="7.5" />
+        <Point X="11.25" Y="12.625" />
+        <Point X="11.208" Y="12.625" Type="JumpStart" />
+        <Point X="11.01" Y="12.625" Type="JumpEnd" />
+        <Point X="10.75" Y="12.625" />
+        <Point X="10.75" Y="13" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="m_PlayerInputController" Type="Contoller.PlayerInputController" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.375" Y="3.441" />
+        <Point X="8.375" Y="7.5" />
+        <Point X="9.342" Y="7.5" Type="JumpStart" />
+        <Point X="9.508" Y="7.5" Type="JumpEnd" />
+        <Point X="11.01" Y="7.5" Type="JumpStart" />
+        <Point X="11.177" Y="7.5" Type="JumpEnd" />
+        <Point X="12.688" Y="7.5" />
+        <Point X="12.688" Y="11.75" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>gIBACAAAAiIAgABABwAigAAEADhAACACCJACjMAAAsI=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\Common\Weapon.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_WeaponStatScriptable" />
+      <Field Name="m_WeaponSoundScriptable" />
+      <Field Name="m_WeaponSway" />
+      <Property Name="m_PlayerData" />
+      <Property Name="m_WeaponManager" />
+      <Property Name="m_PlayerInputController" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Entity.Object.Weapon.Attackable" Collapsed="true">
+    <Position X="5.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AJAAAIAACAABAAAAAAACAAAAACAAAAAACAAAAAAAgAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\MeleeWeapon\Attackable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Object.Weapon.MeleeWeapon" Collapsed="true">
+    <Position X="5.75" Y="7.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <InheritanceLine Type="Entity.Object.Weapon.Weapon" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8" Y="3.441" />
+        <Point X="8" Y="6.732" />
+        <Point X="6.357" Y="6.732" />
+        <Point X="6.357" Y="7.75" />
+        <Point X="6.375" Y="7.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AVSAABAgACAABAAAAAAEEAACAKgAAAIQBIQgBIEBkEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\MeleeWeapon\MeleeWeapon.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_Attackable" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Entity.Object.Weapon.NonPenetratingAttack" Collapsed="true">
+    <Position X="4.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\MeleeWeapon\NonPenetratingAttack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Object.Weapon.PenetratingAttack" Collapsed="true">
+    <Position X="6.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\MeleeWeapon\PenetratingAttack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Object.Weapon.Fireable" Collapsed="true">
+    <Position X="2.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AJEEQEAACASBiQAIAAgAAQAMACAAAAABCEAMBAAACEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\RangeWeapon\Fireable.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_FireLight" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Entity.Object.Weapon.FullInteractableReload" Collapsed="true">
+    <Position X="0.5" Y="10.75" Width="1.5" />
+    <InheritanceLine Type="Entity.Object.Weapon.Reloadable" FixedFromPoint="true">
+      <Path>
+        <Point X="2.5" Y="9.625" />
+        <Point X="2.26" Y="9.625" />
+        <Point X="2.26" Y="11.096" />
+        <Point X="2" Y="11.096" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAKAAAAAAAAAAAEAAAAAAAEAEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\RangeWeapon\FullInteractableReload.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Object.Weapon.NonInteractableReload" Collapsed="true">
+    <Position X="0.5" Y="8.75" Width="1.5" />
+    <InheritanceLine Type="Entity.Object.Weapon.Reloadable" FixedFromPoint="true">
+      <Path>
+        <Point X="2.5" Y="9.625" />
+        <Point X="2.26" Y="9.625" />
+        <Point X="2.26" Y="9.096" />
+        <Point X="2" Y="9.096" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAACAAAAAAAAAAAECAAAAAAAAEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\RangeWeapon\NonInteractableReload.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Object.Weapon.NormalFire" Collapsed="true">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <InheritanceLine Type="Entity.Object.Weapon.Fireable" FixedFromPoint="true">
+      <Path>
+        <Point X="2.5" Y="7.437" />
+        <Point X="2.26" Y="7.437" />
+        <Point X="2.26" Y="6.846" />
+        <Point X="2" Y="6.846" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\RangeWeapon\NormalFire.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Object.Weapon.RangeWeapon" Collapsed="true">
+    <Position X="4" Y="7.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <InheritanceLine Type="Entity.Object.Weapon.Weapon" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="8" Y="3.441" />
+        <Point X="8" Y="6.749" />
+        <Point X="4.969" Y="6.749" />
+        <Point X="4.969" Y="8.441" />
+      </Path>
+    </InheritanceLine>
+    <AssociationLine Name="m_Fireable" Type="Entity.Object.Weapon.Fireable" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.375" Y="7.75" />
+        <Point X="4.375" Y="7.187" />
+        <Point X="4" Y="7.187" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="m_Reloadable" Type="Entity.Object.Weapon.Reloadable" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.375" Y="8.441" />
+        <Point X="4.375" Y="9.344" />
+        <Point X="4" Y="9.344" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AUSCQREAASAhAhABkAAAAAAEAAiAAiIEAIAgFgkCkEQ=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\RangeWeapon\RangeWeapon.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_Fireable" />
+      <Field Name="m_Reloadable" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Entity.Object.Weapon.Reloadable" Collapsed="true">
+    <Position X="2.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QoQAEFAACkIECAAAAgACAAAAAAJAAAAECAAAAAAEIEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\RangeWeapon\Reloadable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Object.Weapon.SemiInteractableReload" Collapsed="true">
+    <Position X="0.5" Y="9.75" Width="1.5" />
+    <InheritanceLine Type="Entity.Object.Weapon.Reloadable" FixedFromPoint="true">
+      <Path>
+        <Point X="2.5" Y="9.625" />
+        <Point X="2.26" Y="9.625" />
+        <Point X="2.26" Y="10.096" />
+        <Point X="2" Y="10.096" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAKAAAAAAAAAAAEAAAAAAAEAEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\RangeWeapon\SemiInteractableReload.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Object.Weapon.ShotFire" Collapsed="true">
+    <Position X="0.5" Y="7.75" Width="1.5" />
+    <InheritanceLine Type="Entity.Object.Weapon.Fireable" FixedFromPoint="true">
+      <Path>
+        <Point X="2.5" Y="7.437" />
+        <Point X="2.26" Y="7.437" />
+        <Point X="2.26" Y="8.096" />
+        <Point X="2" Y="8.096" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAIAAAAAAQAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\RangeWeapon\ShotFire.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Object.Weapon.ThrowingWeapon" Collapsed="true">
+    <Position X="7.75" Y="7.75" Width="1.5" />
+    <InheritanceLine Type="Entity.Object.Weapon.Weapon" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="8" Y="3.441" />
+        <Point X="8" Y="6.704" />
+        <Point X="7.675" Y="6.704" />
+        <Point X="7.675" Y="8.096" />
+        <Point X="7.75" Y="8.096" />
+      </Path>
+    </InheritanceLine>
+    <AssociationLine Name="m_Explosive" Type="Explosible" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.938" Y="8.441" />
+        <Point X="8.938" Y="8.625" />
+        <Point X="11.01" Y="8.625" Type="JumpStart" />
+        <Point X="11.333" Y="8.625" Type="JumpEnd" />
+        <Point X="12.604" Y="8.625" Type="JumpStart" />
+        <Point X="12.771" Y="8.625" Type="JumpEnd" />
+        <Point X="12.887" Y="8.625" Type="JumpStart" />
+        <Point X="13.212" Y="8.625" Type="JumpEnd" />
+        <Point X="14" Y="8.625" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>ARQAAAIAgCAAiAAIEAAQAAgAAAwBAKIAAYgChAMAiNA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\ThrowingWeapon\ThrowingWeapon.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_Explosive" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Entity.Object.Weapon.FlashLight" Collapsed="true">
+    <Position X="9.5" Y="7.75" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="Entity.Object.Weapon.FlashLight.LightMode" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\UserFolder\Script\Entity\Weapon\ToolKit\FlashLight.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <InheritanceLine Type="Entity.Object.Weapon.Weapon" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="8" Y="3.441" />
+        <Point X="8" Y="6.714" />
+        <Point X="8.292" Y="6.714" Type="JumpStart" />
+        <Point X="8.458" Y="6.714" Type="JumpEnd" />
+        <Point X="9.425" Y="6.714" />
+        <Point X="9.425" Y="8.096" />
+        <Point X="9.5" Y="8.096" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAALAIAAAgAAAAAAAAAAgAgEAAQAACBAgAAEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\ToolKit\FlashLight.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Contoller.Util.WeaponSway" Collapsed="true">
+    <Position X="3.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAIAAABAAAAAAAAABAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\Common\WeaponSway.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity.Object.Util.Syringe" Collapsed="true">
+    <Position X="36.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAACgIAAAAAAQAAAAAAAAAAAAACCAAAAAAAAEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\ToolKit\Syringe.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Manager.Weapon.WeaponManager" Collapsed="true">
+    <Position X="7.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QIADAAAAACAAiAIAAAAhCAAAAAQACcQACAAAAAAAgkA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\WeaponManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_PlayerData" />
+      <Field Name="m_PlayerInputController" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Manager.AI.AIManager" Collapsed="true">
+    <Position X="29.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAACAAAAIAAAAAAIAAAAAAAAAAAgAECA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Manager\AIManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Manager.EntityManager" Collapsed="true">
+    <Position X="17.5" Y="4.5" Width="1.5" />
+    <AssociationLine Name="normalZombies" Type="Entity.Unit.Normal.NormalMonster" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="19" Y="4.75" />
+        <Point X="21.75" Y="4.75" />
+        <Point X="21.75" Y="8" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="specialMonster1" Type="UnityEngine.GameObject" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="17.5" Y="4.75" />
+        <Point X="16.938" Y="4.75" />
+        <Point X="16.938" Y="0.846" />
+        <Point X="17.25" Y="0.846" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAEAAAABAAcAAAAAAAEAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Manager\EntityManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="normalZombies" />
+      <Field Name="specialMonster1" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Manager.GameManager" Collapsed="true">
+    <Position X="33.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAAAAABEABAEAAAAAAAAAAAAAAAAACAAAAAEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Manager\GameManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Manager.GravityManager" Collapsed="true">
+    <Position X="35" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACABAAAABAgAACAgAAAAAAAAAAAAAAADAAEAAQAgAmQ=</HashCode>
+      <FileName>Assets\UserFolder\Script\Manager\GravityManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Manager.ObjectPoolManager" Collapsed="true">
+    <Position X="19.25" Y="6.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Manager.ObjectPoolManager.PoolingObject" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\UserFolder\Script\Manager\ObjectPoolManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAACAAAAAAAAAAAAAABCAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Manager\ObjectPoolManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Manager.SpawnManager" Collapsed="true">
+    <Position X="13.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gCRAhIAKIGFAAAECBEAABAIAABC5CEsBAAIAAgBgAHQ=</HashCode>
+      <FileName>Assets\UserFolder\Script\Manager\SpawnManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_EntityManager" />
+      <Field Name="m_Customization" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Manager.SurfaceManager" Collapsed="true">
+    <Position X="33.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IIAAAAAgAARAAAQAAAAAAgAAAAAAABAAAAAAAAAABEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Manager\SurfaceManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UI.Manager.FixedNonSpecificEvent" Collapsed="true">
+    <Position X="4" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Manager\SkillEventManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UI.Manager.FixedSpecificEvent" Collapsed="true">
+    <Position X="0.5" Y="17" Width="1.5" />
+    <AssociationLine Name="m_SkillEvent" Type="UI.Event.SkillEvent" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.25" Y="17.562" />
+        <Point X="1.25" Y="17.937" />
+        <Point X="2.25" Y="17.937" />
+        <Point X="2.25" Y="19.5" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Manager\SkillEventManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_SkillEvent" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="UI.Manager.SkillEventSet" Collapsed="true">
+    <Position X="2.25" Y="17" Width="1.5" />
+    <AssociationLine Name="m_SkillEvent" Type="UI.Event.SkillEvent" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.875" Y="17.562" />
+        <Point X="2.875" Y="17.937" />
+        <Point X="2.25" Y="17.937" />
+        <Point X="2.25" Y="19.5" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Manager\SkillEventManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_SkillEvent" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="UI.Manager.SkillEventManager" Collapsed="true">
+    <Position X="2.25" Y="15.5" Width="1.5" />
+    <AssociationLine Name="m_SkillEvent" Type="UI.Manager.SkillEventSet" FixedFromPoint="true">
+      <Path>
+        <Point X="2.938" Y="16.191" />
+        <Point X="2.938" Y="16.566" />
+        <Point X="3.344" Y="16.566" />
+        <Point X="3.344" Y="17" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="m_FixedNonSpecificEvents" Type="UI.Manager.FixedNonSpecificEvent" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.938" Y="16.191" />
+        <Point X="2.938" Y="16.566" />
+        <Point X="4.75" Y="16.566" />
+        <Point X="4.75" Y="17" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="m_FixedSpecificEvents" Type="UI.Manager.FixedSpecificEvent" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.938" Y="16.191" />
+        <Point X="2.938" Y="16.566" />
+        <Point X="1.25" Y="16.566" />
+        <Point X="1.25" Y="17" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AKAAAYAAAAAAQAAAEABAAAAEAMAACACAAiggAAAAIUA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Manager\SkillEventManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_SkillEvent" />
+      <Field Name="m_FixedNonSpecificEvents" />
+      <Field Name="m_FixedSpecificEvents" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Scriptable.Monster.BoidsScriptable" Collapsed="true">
+    <Position X="29.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEIAAAEAEAAAAAAAAgIAAEABAgAAAgAAAgABgAAACA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Scriptable\Scriptable Script\BoidsScriptable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scriptable.Monster.FlyingMonsterScriptable" Collapsed="true">
+    <Position X="17" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Scriptable\Scriptable Script\FlyingMonsterScriptable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scriptable.Monster.NormalMonsterScriptable" Collapsed="true">
+    <Position X="18.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Scriptable\Scriptable Script\NormalMonsterScriptable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scriptable.Monster.SpecialMonsterScriptable" Collapsed="true">
+    <Position X="20.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABABQABQAJQEIBAAAICFgiEAIAQAgAIAiCIAEAAAgg=</HashCode>
+      <FileName>Assets\UserFolder\Script\Scriptable\Scriptable Script\SpecialMonsterScriptable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scriptable.Monster.UnitScriptable" Collapsed="true">
+    <Position X="18.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAIAMAAAAAAAAIAAAAAAAAAAAAAQAQAAAAIAAAAI=</HashCode>
+      <FileName>Assets\UserFolder\Script\Scriptable\Scriptable Script\UnitScriptable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scriptable.UI.CrossHairScripatble" Collapsed="true">
+    <Position X="36.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAIIAAAAAQAAAgAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Scriptable\Scriptable Script\CrossHairScripatble.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scriptable.UI.SkillEventScriptable" Collapsed="true">
+    <Position X="33.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAgAAAAAAAAAgAAAAAAAAAAAAAAkAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Scriptable\Scriptable Script\SkillEventScriptable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scriptable.Equipment.FlashLightSoundScriptable" Collapsed="true">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <InheritanceLine Type="Scriptable.Equipment.WeaponSoundScriptable" FixedFromPoint="true">
+      <Path>
+        <Point X="3.75" Y="3.125" />
+        <Point X="3.375" Y="3.125" />
+        <Point X="3.375" Y="3.596" />
+        <Point X="2" Y="3.596" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Scriptable\Scriptable Script\FlashLightSoundScriptable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scriptable.Equipment.FlashLightStatScriptable" Collapsed="true">
+    <Position X="11.25" Y="4.25" Width="1.5" />
+    <InheritanceLine Type="Scriptable.Equipment.WeaponStatScriptable" FixedFromPoint="true">
+      <Path>
+        <Point X="10.75" Y="3.062" />
+        <Point X="10.99" Y="3.062" />
+        <Point X="10.99" Y="4.596" />
+        <Point X="11.01" Y="4.596" Type="JumpStart" />
+        <Point X="11.177" Y="4.596" Type="JumpEnd" />
+        <Point X="11.25" Y="4.596" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Scriptable\Scriptable Script\FlashLightStatScriptable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scriptable.Equipment.MeleeWeaponSoundScripatble" Collapsed="true">
+    <Position X="0.5" Y="1.25" Width="1.5" />
+    <InheritanceLine Type="Scriptable.Equipment.WeaponSoundScriptable" FixedFromPoint="true">
+      <Path>
+        <Point X="3.75" Y="3.125" />
+        <Point X="3.375" Y="3.125" />
+        <Point X="3.375" Y="1.596" />
+        <Point X="2" Y="1.596" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Scriptable\Scriptable Script\MeleeWeaponSoundScripatble.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scriptable.Equipment.MeleeWeaponStatScriptable" Collapsed="true">
+    <Position X="11.25" Y="2.25" Width="1.5" />
+    <InheritanceLine Type="Scriptable.Equipment.WeaponStatScriptable" FixedFromPoint="true">
+      <Path>
+        <Point X="10.75" Y="3.062" />
+        <Point X="10.99" Y="3.062" />
+        <Point X="10.99" Y="2.596" />
+        <Point X="11.01" Y="2.596" Type="JumpStart" />
+        <Point X="11.177" Y="2.596" Type="JumpEnd" />
+        <Point X="11.25" Y="2.596" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAQAAAAAAAAACAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Scriptable\Scriptable Script\MeleeWeaponStatScriptable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scriptable.Equipment.RangeWeaponSoundScriptable" Collapsed="true">
+    <Position X="0.5" Y="2.25" Width="1.5" />
+    <InheritanceLine Type="Scriptable.Equipment.WeaponSoundScriptable" FixedFromPoint="true">
+      <Path>
+        <Point X="3.75" Y="3.125" />
+        <Point X="3.375" Y="3.125" />
+        <Point X="3.375" Y="2.596" />
+        <Point X="2" Y="2.596" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AACAAAEAAAAAAAAAACAgAAAACAAAAQgABACAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Scriptable\Scriptable Script\RangeWeaponSoundScriptable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scriptable.Equipment.RangeWeaponStatScriptable" Collapsed="true">
+    <Position X="11.25" Y="3.25" Width="1.5" />
+    <InheritanceLine Type="Scriptable.Equipment.WeaponStatScriptable" FixedFromPoint="true">
+      <Path>
+        <Point X="10.75" Y="3.062" />
+        <Point X="10.99" Y="3.062" />
+        <Point X="10.99" Y="3.596" />
+        <Point X="11.01" Y="3.596" Type="JumpStart" />
+        <Point X="11.177" Y="3.596" Type="JumpEnd" />
+        <Point X="11.25" Y="3.596" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AECAQAIAAAAAAAEJAIAAAAEAgAAAAAABAEAAAAAAAAI=</HashCode>
+      <FileName>Assets\UserFolder\Script\Scriptable\Scriptable Script\RangeWeaponStatScriptable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scriptable.Equipment.ThrowingWeaponSoundScriptable" Collapsed="true">
+    <Position X="0.5" Y="4.25" Width="1.5" />
+    <InheritanceLine Type="Scriptable.Equipment.WeaponSoundScriptable" FixedFromPoint="true">
+      <Path>
+        <Point X="3.75" Y="3.125" />
+        <Point X="3.375" Y="3.125" />
+        <Point X="3.375" Y="4.596" />
+        <Point X="2" Y="4.596" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Scriptable\Scriptable Script\ThrowingWeaponSoundScriptable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scriptable.Equipment.ThrowingWeaponStatScriptable" Collapsed="true">
+    <Position X="11.25" Y="1.25" Width="1.5" />
+    <InheritanceLine Type="Scriptable.Equipment.WeaponStatScriptable" FixedFromPoint="true">
+      <Path>
+        <Point X="10.75" Y="3.062" />
+        <Point X="10.99" Y="3.062" />
+        <Point X="10.99" Y="1.596" />
+        <Point X="11.25" Y="1.596" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAAAAAAAAJAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Scriptable\Scriptable Script\ThrowingWeaponStatScriptable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scriptable.Equipment.WeaponSoundScriptable" Collapsed="true">
+    <Position X="3.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Scriptable\Scriptable Script\WeaponSoundScriptable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scriptable.Equipment.WeaponStatScriptable" Collapsed="true">
+    <Position X="9.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEACAAAAAAgAACAAAAAAAAEAgIEAAAgAAAAAQAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Scriptable\Scriptable Script\WeaponStatScriptable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scriptable.SurfaceScriptable" Collapsed="true">
+    <Position X="35" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEgAAAAAGAIAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Scriptable\Scriptable Script\SurfaceScriptable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UI.Event.GetSupplyEvent" Collapsed="true">
+    <Position X="0.5" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAIIAAAAAIAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\UI\Event\GetSupplyEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UI.Event.GetWeaponEvent" Collapsed="true">
+    <Position X="2.75" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAIIAAAAAIAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\UI\Event\GetWeaponEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UI.Event.SkillEvent" Collapsed="true">
+    <Position X="1.5" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIEKAIgAAAAAAAAAAAAAAgACAAAAACAQgBAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\UI\Event\SkillEvent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="UI.Game.FPSDisplayer" Collapsed="true">
+    <Position X="31.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAAAgAAAAAAAAAAAQAAAAAAAAIAAAAAQAAAEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\UI\Game\FPSDisplayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UI.Game.ScreenFader" Collapsed="true">
+    <Position X="26.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAACCAAAAAAAAAAAAAAABAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\UI\Game\ScreenFader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UI.Game.SettingPanel" Collapsed="true">
+    <Position X="28" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAQAABAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\UI\Game\SettingPanel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UI.Manager.PlayerUIManager" Collapsed="true">
+    <Position X="10" Y="15.25" Width="1.5" />
+    <AssociationLine Name="m_AttackCrossHairDisplayer" Type="UI.Player.AttackCrossHairDisplayer" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.688" Y="15.941" />
+        <Point X="10.688" Y="16.316" />
+        <Point X="6.5" Y="16.316" />
+        <Point X="6.5" Y="17" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="m_HealDisplayer" Type="UI.Player.HealDisplayer" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.688" Y="15.941" />
+        <Point X="10.688" Y="16.316" />
+        <Point X="8.25" Y="16.316" />
+        <Point X="8.25" Y="17" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="m_DamageDisplayer" Type="UI.Player.DamageDisplayer" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.688" Y="15.941" />
+        <Point X="10.688" Y="16.316" />
+        <Point X="10.219" Y="16.316" />
+        <Point X="10.219" Y="17" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="m_ItemSlotDisplayer" Type="UI.Player.ItemSlotDisplayer" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.688" Y="15.941" />
+        <Point X="10.688" Y="16.316" />
+        <Point X="15.219" Y="16.316" />
+        <Point X="15.219" Y="17" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="m_PlayerStatDisplayer" Type="UI.Player.PlayerStatDisplayer" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.688" Y="15.941" />
+        <Point X="10.688" Y="16.316" />
+        <Point X="12" Y="16.316" />
+        <Point X="12" Y="17" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="m_WeaponPropertyDisplayer" Type="UI.Player.WeaponPropertyDisplayer" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.688" Y="15.941" />
+        <Point X="10.688" Y="16.316" />
+        <Point X="13.75" Y="16.316" />
+        <Point X="13.75" Y="17" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AQACAAAAAAABEAgBEAAADgAQCAFAABAAAAACAIKAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\UI\Manager\PlayerUIManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_AttackCrossHairDisplayer" />
+      <Field Name="m_HealDisplayer" />
+      <Field Name="m_DamageDisplayer" />
+      <Field Name="m_ItemSlotDisplayer" />
+      <Field Name="m_PlayerStatDisplayer" />
+      <Field Name="m_WeaponPropertyDisplayer" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="UI.Manager.SettingUIManager" Collapsed="true">
+    <Position X="29.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAEAACAAAAAAAAAAAABAAEAAAAAAAAAAAAgAAFA=</HashCode>
+      <FileName>Assets\UserFolder\Script\UI\Manager\SettingUIManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UI.Player.AttackCrossHairDisplayer" Collapsed="true">
+    <Position X="5.75" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAkAQAAAAAAAAAAAAAAAAAAAAAIAABAAAAAAAAEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\UI\Player\AttackCrossHairDisplayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UI.Player.CrossHairDisplayer" Collapsed="true">
+    <Position X="35" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAQSAhEgAIQBAAABgIAQAAAAAAwAAAAQAgAAAEAMg=</HashCode>
+      <FileName>Assets\UserFolder\Script\UI\Player\CrossHairDisplayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UI.Player.DamageDisplayer" Collapsed="true">
+    <Position X="9.5" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAACAAAaAEAAAACJAQACEAUAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\UI\Player\DamageDisplayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UI.Player.HealDisplayer" Collapsed="true">
+    <Position X="7.5" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAEASAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\UI\Player\HealDisplayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UI.Player.ItemSlotDisplayer" Collapsed="true">
+    <Position X="14.75" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEIAAAAAAAAAAAAAAAAAAAQBAoAAAAABAAAAAAAAABA=</HashCode>
+      <FileName>Assets\UserFolder\Script\UI\Player\ItemSlotDisplayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UI.Player.PlayerStatDisplayer" Collapsed="true">
+    <Position X="11.25" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAACAAAAADA=</HashCode>
+      <FileName>Assets\UserFolder\Script\UI\Player\PlayerStatDisplayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UI.Player.WeaponPropertyDisplayer" Collapsed="true">
+    <Position X="13" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAIAABAQBAACAADAAAAgABAAADAAAFAACCFAAAEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\UI\Player\WeaponPropertyDisplayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PoolableScript" Collapsed="true">
+    <Position X="17.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Assets\UserFolder\Script\PoolableScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnityEngine.GameObject" Collapsed="true">
+    <Position X="17.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Struct Name="Manager.Weapon.CustomKey" Collapsed="true">
+    <Position X="22.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\WeaponManager.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="IMonster" Collapsed="true">
+    <Position X="26.25" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAgAAIAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\IMonster.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IPhysicsable" Collapsed="true">
+    <Position X="28" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\IPhysicsable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IDamageable" Collapsed="true">
+    <Position X="22.75" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Unit\SpecialMonster\IDamageable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Entity.Object.Weapon.IFireable" Collapsed="true">
+    <Position X="24.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAABAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\RangeWeapon\IFireable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="EquipingWeaponType" Collapsed="true">
+    <Position X="33.25" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAEAAgAAAAQAAABAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\Common\Weapon.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="FireMode" Collapsed="true">
+    <Position X="36.75" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAEAAAAAAAAAACEAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\Common\Weapon.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PlayerBehaviorState" Collapsed="true">
+    <Position X="31.5" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAJAABAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAIAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\PlayerState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PlayerWeaponState" Collapsed="true">
+    <Position X="33.25" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAACAAAAAEAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\PlayerState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Interactabe" Collapsed="true">
+    <Position X="28" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAACAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Entity\Weapon\RangeWeapon\Reloadable.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EnumType.GravityType" Collapsed="true">
+    <Position X="26.25" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACwCAAAAAAAAAAgAAAAQAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\EnumType\EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EnumType.GravityDirection" Collapsed="true">
+    <Position X="24.5" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAE=</HashCode>
+      <FileName>Assets\UserFolder\Script\EnumType\EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EnumType.NoramlMonsterType" Collapsed="true">
+    <Position X="29.75" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAgAAAAAAQACAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\EnumType\EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EnumType.FlyingMonsterType" Collapsed="true">
+    <Position X="22.75" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgABAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\EnumType\EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EnumType.SpecialMonsterType" Collapsed="true">
+    <Position X="35" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\EnumType\EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EnumType.Boss1" Collapsed="true">
+    <Position X="26.25" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAAAAAAAACAAAAAEACQAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\EnumType\EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EnumType.Boss2" Collapsed="true">
+    <Position X="28" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\EnumType\EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EnumType.Boss3" Collapsed="true">
+    <Position X="29.75" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAQAAAAAAAAAAACAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\EnumType\EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EnumType.AnimationStates" Collapsed="true">
+    <Position X="22.75" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\EnumType\EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EnumType.SurfaceType" Collapsed="true">
+    <Position X="36.75" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAQAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\EnumType\EnumTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Scriptable.UI.EventType" Collapsed="true">
+    <Position X="35" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAACAAAAAAAgBAAAAAAAAAAIAAAAgAAAAAAgAAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Scriptable\Scriptable Script\SkillEventScriptable.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CrossHair" Collapsed="true">
+    <Position X="31.5" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAgIAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Scriptable\Scriptable Script\WeaponStatScriptable.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="AttackType" Collapsed="true">
+    <Position X="24.5" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAIAAAAAAAAAAAAAAQAQAAEAABAAAAAAAAAAAEAAEA=</HashCode>
+      <FileName>Assets\UserFolder\Script\Scriptable\Scriptable Script\WeaponStatScriptable.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>

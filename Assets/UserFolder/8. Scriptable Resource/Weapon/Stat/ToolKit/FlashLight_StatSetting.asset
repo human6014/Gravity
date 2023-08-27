@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e13b64bed565f37478a9c1e4b96cd568, type: 3}
+  m_Name: FlashLight_StatSetting
+  m_EditorClassIdentifier: 
+  m_AttackTime: 0.1
+  m_Damage: 0
+  m_AttackableLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  m_RunningPosTime: 0.5
+  m_DefaultCrossHair: 1
+  m_RunningPivotPosition: {x: 0, y: 0, z: 0}
+  m_RunningPivotDirection: {x: 0, y: 0, z: 0}
+  m_FOVMultiplier: 4
+  m_WeaponIcon: {fileID: 21300000, guid: f367ad88aa929aa408d770a439010f30, type: 3}
+  m_BulletType: 0
+  m_ZoomAngle:
+  - m_InnerAngle: 30
+    m_OuterAngle: 45
+    m_Intensity: 60
+    m_Range: 45
+  - m_InnerAngle: 60
+    m_OuterAngle: 90
+    m_Intensity: 45
+    m_Range: 30
