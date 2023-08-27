@@ -1,0 +1,65 @@
+#pragma kernel CalculateVectors
+
+struct BoidInfo {
+    float3 position;
+    float3 forward;
+
+    float3 cohesionVector;
+    float3 alignmentVector;
+    float3 separationVector;
+};
+
+struct BoidOutput {
+    float3 cohesionVector;
+    float3 alignmentVector;
+    float3 separationVector;
+};
+
+
+RWStructuredBuffer<BoidInfo> boidInfo;
+RWStructuredBuffer<BoidOutput> boidOutput;
+
+float cohesionWeight;
+float alignmentWeight;
+float separationWeight;
+float detectDist;
+uint numberBoids;
+[numthreads(1024, 1, 1)]
+void CalculateVectors(uint3 id : SV_DispatchThreadID)
+{
+	boidInfo[id.x].cohesionVector = float3(0, 0, 0);
+	boidInfo[id.x].alignmentVector = boidInfo[id.x].forward;
+	boidInfo[id.x].separationVector = float3(0, 0, 0);
+
+    float3 offset;
+    float sqrDist;
+    uint currentNeighbourCount = 0;
+    for (uint i = 0; i < numberBoids; i++) {
+        if (id.x == i) continue;
+
+        BoidInfo currentBoidInfo = boidInfo[i];
+        offset = currentBoidInfo.position - boidInfo[id.x].position;
+        sqrDist = offset.x * offset.x + offset.y * offset.y + offset.z * offset.z;
+
+		if (sqrDist <= detectDist) {
+            currentNeighbourCount++;
+
+			boidInfo[id.x].cohesionVector += currentBoidInfo.position;
+			boidInfo[id.x].alignmentVector += currentBoidInfo.forward;
+			boidInfo[id.x].separationVector += boidInfo[id.x].position - currentBoidInfo.position;
+
+            if (currentNeighbourCount >= 4) break;
+		}
+    }
+
+    if (currentNeighbourCount > 0) {
+        boidInfo[id.x].cohesionVector /= currentNeighbourCount;
+        boidInfo[id.x].alignmentVector /= currentNeighbourCount;
+        boidInfo[id.x].separationVector /= currentNeighbourCount;
+        boidInfo[id.x].cohesionVector -= boidInfo[id.x].position;
+    }
+
+    boidInfo[id.x].cohesionVector *= cohesionWeight;
+    boidInfo[id.x].alignmentVector *= alignmentWeight;
+    boidInfo[id.x].separationVector *= separationWeight;
+}
