@@ -130,17 +130,17 @@ namespace Entity.Object.Weapon
         
         private IEnumerator PosChange(Vector3 EndPosition, Quaternion EndRotation)
         {
-            float currentTime = 0;
-            float elapsedTime;
+            float elapsedTime = 0;
+            float t;
             Vector3 startLocalPosition = m_Pivot.localPosition;
             Quaternion startLocalRotation = m_Pivot.localRotation;
-            while (currentTime < m_RangeWeaponStat.m_RunningPosTime)
+            while (elapsedTime < m_RangeWeaponStat.m_RunningPosTime)
             {
-                currentTime += Time.deltaTime;
+                elapsedTime += Time.deltaTime;
 
-                elapsedTime = currentTime / m_RangeWeaponStat.m_RunningPosTime;
-                m_Pivot.localPosition = Vector3.Lerp(startLocalPosition, EndPosition, elapsedTime);
-                m_Pivot.localRotation = Quaternion.Lerp(startLocalRotation, EndRotation, elapsedTime);
+                t = elapsedTime / m_RangeWeaponStat.m_RunningPosTime;
+                m_Pivot.localPosition = Vector3.Lerp(startLocalPosition, EndPosition, t);
+                m_Pivot.localRotation = Quaternion.Lerp(startLocalRotation, EndRotation, t);
 
                 yield return null;
             }
