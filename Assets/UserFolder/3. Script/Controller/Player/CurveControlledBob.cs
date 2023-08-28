@@ -6,38 +6,53 @@ namespace Controller.Player.Utility
     [Serializable]
     public class CurveControlledBob
     {
-        public float HorizontalBobRange = 0.33f;
-        public float VerticalBobRange = 0.33f;
-        public AnimationCurve Bobcurve = new(new Keyframe(0f, 0f), new Keyframe(0.5f, 1f),
-                                             new Keyframe(1f, 0f), new Keyframe(1.5f, -1f),
-                                             new Keyframe(2f, 0f)); // sin curve for head bob
-        public float VerticaltoHorizontalRatio = 1f;
+        [SerializeField] private string m_InspectorText = "";
+        [SerializeField] private float m_HorizontalBobRange = 0.1f;
+        [SerializeField] private float m_VerticalBobRange = 0.1f;
 
-        private Vector3 m_OriginalCameraPosition;
+        [SerializeField] private AnimationCurve m_BobcurveX = 
+            new(new Keyframe(0f, 0f), new Keyframe(0.5f, 1f),
+                new Keyframe(1f, 0f), new Keyframe(1.5f, -1f),
+                new Keyframe(2f, 0f));
+
+        [SerializeField] private AnimationCurve m_BobcurveY =
+            new(new Keyframe(0f, 0f), new Keyframe(0.5f, 1f),
+                new Keyframe(1f, 0f), new Keyframe(1.5f, -1f),
+                new Keyframe(2f, 0f));
+
+        private Vector3 m_OriginalPosition;
+
+        private float m_BobBaseInterval;
+
         private float m_CyclePositionX;
         private float m_CyclePositionY;
-        private float m_BobBaseInterval;
-        private float m_Time;
         
-        public void Setup(Transform camera, float bobBaseInterval)
+        private float m_XTime;
+        private float m_YTime;
+        
+        public void Setup(Transform tr, float bobBaseInterval)
         {
+            m_OriginalPosition = tr.localPosition;
             m_BobBaseInterval = bobBaseInterval;
-            m_OriginalCameraPosition = camera.localPosition;
 
-            // get the length of the curve in time
-            m_Time = Bobcurve[Bobcurve.length - 1].time;
+            m_XTime = m_BobcurveX[m_BobcurveX.length - 1].time;
+            m_YTime = m_BobcurveY[m_BobcurveY.length - 1].time;
         }
 
-        public Vector3 DoHeadBob(float speed)
+        public virtual bool CanState(PlayerBehaviorState playerBehaviorState) => false;
+        
+        public virtual bool CanState(PlayerWeaponState playerWeaponState)  => false;
+        
+        public Vector3 DoMoveHeadBob(float speed = 1)
         {
-            float xPos = m_OriginalCameraPosition.x + (Bobcurve.Evaluate(m_CyclePositionX) * HorizontalBobRange);
-            float yPos = m_OriginalCameraPosition.y + (Bobcurve.Evaluate(m_CyclePositionY) * VerticalBobRange);
+            float xPos = m_OriginalPosition.x + (m_BobcurveX.Evaluate(m_CyclePositionX) * m_HorizontalBobRange);
+            float yPos = m_OriginalPosition.y + (m_BobcurveY.Evaluate(m_CyclePositionY) * m_VerticalBobRange);
 
-            m_CyclePositionX += (speed * Time.deltaTime) / m_BobBaseInterval;
-            m_CyclePositionY += ((speed * Time.deltaTime) / m_BobBaseInterval) * VerticaltoHorizontalRatio;
+            m_CyclePositionX += ((speed * Time.deltaTime) / m_BobBaseInterval);
+            m_CyclePositionY += ((speed * Time.deltaTime) / m_BobBaseInterval);
 
-            if (m_CyclePositionX > m_Time) m_CyclePositionX -= m_Time;
-            if (m_CyclePositionY > m_Time) m_CyclePositionY -= m_Time;
+            if (m_CyclePositionX > m_XTime) m_CyclePositionX -= m_XTime;
+            if (m_CyclePositionY > m_YTime) m_CyclePositionY -= m_YTime;
 
             return new Vector3(xPos, yPos, 0f);
         }

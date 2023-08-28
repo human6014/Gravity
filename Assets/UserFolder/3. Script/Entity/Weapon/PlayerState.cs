@@ -46,11 +46,17 @@ public class PlayerState
 
     public System.Action SetBehaviorCrossHairAction { get; set; }
 
+    public int PlayerBehaviorStateLength { get; }
+    public int PlayerWeaponStateLength { get; }
+
     public PlayerState()
     {
         PlayerBehaviorState = PlayerBehaviorState.Idle;
         PlayerWeaponState = PlayerWeaponState.Idle;
         BeforePlayerWeaponState = PlayerWeaponState.Idle;
+
+        PlayerBehaviorStateLength = System.Enum.GetValues(typeof(PlayerBehaviorState)).Length;
+        PlayerWeaponStateLength = System.Enum.GetValues(typeof(PlayerWeaponState)).Length;
     }
 
     #region SetPlayerBehaviorState

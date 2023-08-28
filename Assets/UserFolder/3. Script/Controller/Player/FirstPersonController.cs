@@ -34,7 +34,7 @@ namespace Controller.Player
         [SerializeField] private float m_GravityMultiplier = 1;
 
         [Space(15)]
-        [Tooltip("마우스 입력 감지 클래스")]
+        [Tooltip("마우스 입력 처리 클래스")]
         [SerializeField] private MouseLook m_MouseLook;
 
 
@@ -43,19 +43,19 @@ namespace Controller.Player
         [SerializeField] private bool m_UseFovKick;
 
         [Tooltip("시야각 변경 클래스")]
-        [SerializeField] private FOVKick m_FovKick;// = new FOVKick();
+        [SerializeField] private FOVKick m_FovKick;
 
 
         [Space(15)]
-        [Tooltip("움직일 때 화면 흔들림")]
-        [SerializeField] private bool m_UseHeadBob;
-
         [Tooltip("이동 시 흔들림 클래스")]
-        [SerializeField] private CurveControlledBob m_HeadBob;// = new CurveControlledBob();
+        [SerializeField] private CurveControlledBob m_HeadMoveBob;
+
+        [Tooltip("정지 시 흔들림 클래스")]
+        [SerializeField] private CurveControlledBob m_HeadIdleBob;
 
         [Space(15)]
         [Tooltip("점프 시 흔들림 클래스")]
-        [SerializeField] private LerpControlledBob m_JumpBob;// = new LerpControlledBob();
+        [SerializeField] private LerpControlledBob m_JumpBob;
 
         [Tooltip("걸을 때 발 간격 보정치")]
         [SerializeField] private float m_StepInterval = 5;
@@ -143,6 +143,9 @@ namespace Controller.Player
             }
         }
 
+        public float BobSpeed() =>
+            m_RigidBody.velocity.magnitude + (m_MovementSpeed * (m_IsWalking ? m_WalkStepLenghten : m_RunStepLenghten));
+
         #region UnityFunction
         #region Init
         private void Awake()
@@ -168,7 +171,8 @@ namespace Controller.Player
         private void SupporterSetup()
         {
             m_FovKick.Setup(m_Camera);
-            m_HeadBob.Setup(m_UpAxisTransfrom, m_StepInterval);
+            m_HeadMoveBob.Setup(m_UpAxisTransfrom, m_StepInterval);
+            m_HeadIdleBob.Setup(m_UpAxisTransfrom, m_StepInterval);
             m_MouseLook.Setup(m_RightAxisTransform, m_UpAxisTransfrom);
         }
 
@@ -250,7 +254,7 @@ namespace Controller.Player
             m_RigidBody.velocity = m_MoveDir;
 
             ProgressStepCycle(m_MovementSpeed);
-            UpdateCameraPosition(m_MovementSpeed);
+            UpdateCameraPosition();
             ReversePosCheck();
         }
         #endregion
@@ -357,16 +361,15 @@ namespace Controller.Player
 
             PlayFootStepAudio();
         }
-        private void UpdateCameraPosition(float speed)
+
+        private void UpdateCameraPosition()
         {
-            if (!m_UseHeadBob) return;
             Vector3 newCameraPosition = m_UpAxisTransfrom.localPosition;
 
-            if (m_IsMoving && m_IsGround &&
-                m_PlayerData.PlayerState.PlayerWeaponState != PlayerWeaponState.Aiming)
+            if (m_IsGround)
             {
-                m_UpAxisTransfrom.localPosition = m_HeadBob.DoHeadBob(m_RigidBody.velocity.magnitude +
-                                      (speed * (m_IsWalking ? m_WalkStepLenghten : m_RunStepLenghten)));
+                float speed = m_IsMoving ? BobSpeed() : 1.5f;
+                m_UpAxisTransfrom.localPosition = m_HeadMoveBob.DoMoveHeadBob(speed);
                 newCameraPosition.y = m_UpAxisTransfrom.localPosition.y - m_JumpBob.Offset();
             }
             else newCameraPosition.y = m_OriginalCameraPosition.y - m_JumpBob.Offset();
