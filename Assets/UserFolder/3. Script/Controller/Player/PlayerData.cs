@@ -114,6 +114,7 @@ public class PlayerData : MonoBehaviour
     public Inventory Inventory { get => m_Inventory; }
     public PlayerState PlayerState { get; } = new PlayerState();
 
+
     public Action ReInit { get; set; }
     public Action StopSlowModeAction { get; set; }
     public Action<bool> GrabAction { get; set; }

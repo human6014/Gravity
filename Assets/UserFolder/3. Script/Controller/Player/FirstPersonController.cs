@@ -39,9 +39,6 @@ namespace Controller.Player
 
 
         [Space(15)]
-        [Tooltip("달릴 때 시야(FOV) 변경")]
-        [SerializeField] private bool m_UseFovKick;
-
         [Tooltip("시야각 변경 클래스")]
         [SerializeField] private FOVKick m_FovKick;
 
@@ -71,6 +68,7 @@ namespace Controller.Player
         [Tooltip("착지 사운드")]
         [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
 
+
         [Space(15)]
         [Tooltip("좌우 담당 Transform(몸체)")]
         [SerializeField] private Transform m_RightAxisTransform;
@@ -93,6 +91,7 @@ namespace Controller.Player
 
         #endregion
         private PlayerInputController m_PlayerInputController;
+        private PlayerShakeController m_PlayerShakeController;
         private GravityManager m_GravityManager;
         private AudioSource m_AudioSource;
         private PlayerData m_PlayerData;
@@ -151,6 +150,7 @@ namespace Controller.Player
         private void Awake()
         {
             m_GravityManager = FindObjectOfType<GravityManager>();
+            m_PlayerShakeController = GetComponent<PlayerShakeController>();
             m_PlayerInputController = GetComponent<PlayerInputController>();
             m_Camera = m_RightAxisTransform.GetComponentInChildren<Camera>();
             m_PlayerData = GetComponent<PlayerData>();
@@ -209,6 +209,7 @@ namespace Controller.Player
                     ApplyToGravity(false, 0);
                     m_IsJumping = false;
                     m_PlayerData.PlayerState.SetBehaviorJumping(false);
+                    m_PlayerShakeController.ShakeAllTransform(ShakeType.Landing);
                 }
                 StartCoroutine(m_JumpBob.DoBobCycle());
                 PlayLandingSound();
@@ -272,6 +273,10 @@ namespace Controller.Player
         {
             m_IsGrabed = isActive;
             if (!isActive) PlayerThrowing();
+            else
+            {
+                Debug.Log("Grab Start");
+            }
         }
         
         private void PlayerThrowing()
@@ -368,8 +373,9 @@ namespace Controller.Player
 
             if (m_IsGround)
             {
-                float speed = m_IsMoving ? BobSpeed() : 1.5f;
-                m_UpAxisTransfrom.localPosition = m_HeadMoveBob.DoMoveHeadBob(speed);
+                if (m_IsMoving) m_UpAxisTransfrom.localPosition = m_HeadMoveBob.DoMoveHeadBob(BobSpeed());
+                else m_UpAxisTransfrom.localPosition = m_HeadIdleBob.DoMoveHeadBob(3);
+                
                 newCameraPosition.y = m_UpAxisTransfrom.localPosition.y - m_JumpBob.Offset();
             }
             else newCameraPosition.y = m_OriginalCameraPosition.y - m_JumpBob.Offset();
@@ -418,7 +424,7 @@ namespace Controller.Player
 
             if (m_Input.sqrMagnitude > 1) m_Input.Normalize();
 
-            if (m_IsWalking != m_WasWalking && m_UseFovKick && m_IsMoving)
+            if (m_IsWalking != m_WasWalking && m_IsMoving)
             {
                 StopAllCoroutines();
                 StartCoroutine(!m_IsWalking ? m_FovKick.FOVKickUp() : m_FovKick.FOVKickDown());

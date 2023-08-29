@@ -197,10 +197,12 @@ namespace HQFPSTemplate
 				m_Transform.localPosition = m_LerpedPosition;
 			else if(m_Type == Type.AddToLocalPosition)
 				m_Transform.localPosition += m_LerpedPosition;
+
 			else if(m_Type == Type.OverrideLocalRotation)
 				m_Transform.localEulerAngles = m_LerpedPosition;
 			else if(m_Type == Type.AddToLocalRotation)
 				m_Transform.localEulerAngles += m_LerpedPosition;
+
 			else if (m_Type == Type.OverrideLocalScale)
 				m_Transform.localScale = m_LerpedPosition;
 			else if (m_Type == Type.AddToLocalScale)

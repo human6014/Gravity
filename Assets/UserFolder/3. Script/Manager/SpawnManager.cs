@@ -308,7 +308,7 @@ namespace Manager
                     break;
                 case 3:
                     m_EnvironmentManager.OffRainParticle();
-                    //SpawnSpecialMonster3();
+                    SpawnSpecialMonster3();
                     break;
             }
         }
