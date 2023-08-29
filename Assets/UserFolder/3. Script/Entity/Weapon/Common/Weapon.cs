@@ -5,6 +5,7 @@ using Manager.Weapon;
 using System.Threading.Tasks;
 using Scriptable.Equipment;
 using Controller.Util;
+using Controller.Player.Utility;
 
 public enum EquipingWeaponType
 {
@@ -100,6 +101,7 @@ namespace Entity.Object.Weapon
         /// 무기 아이콘
         /// </summary>
         public Sprite WeaponIcon { get => m_WeaponStatScriptable.m_WeaponIcon; }
+
         public virtual int MaxBullet { get => 0; set => MaxBullet = value; }
         public virtual bool CanChangeWeapon { get => !IsEquiping && !IsUnequiping; }
         public bool IsEquiping { get; private set; }
@@ -174,6 +176,7 @@ namespace Entity.Object.Weapon
             m_ArmAnimator.SetTrigger("Unequip");
             EquipmentAnimator.SetTrigger("Unequip");
             AudioSource.PlayOneShot(m_WeaponSoundScriptable.unequipSound);
+            WeaponManager.PlayerShakeController.ShakeAllTransform(ShakeType.Changing);
 
             await Task.Delay(m_UnequipingTime);
 

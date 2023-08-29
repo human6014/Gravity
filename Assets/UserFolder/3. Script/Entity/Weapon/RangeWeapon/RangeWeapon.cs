@@ -226,6 +226,13 @@ namespace Entity.Object.Weapon
 
             bool isEmpty = WeaponInfo.m_CurrentRemainBullet <= 0;
 
+            //WeaponManager.PlayerShakeController.ShakeAllTransform(ShakeType.Reloading);
+            //재장전은 Shake좀 복잡함
+            //일부 총기는 한발씩 장전,
+            //총기마다 장전 시간 다 다름,
+            //빈 탄알집 장전 시간 다름,
+            //Skill up으로 장전 시간 변동
+            //등등 고려해야할게 많으니 대기
             WeaponInfo.GetDifferenceValue(out int difference);
             m_Reloadable.SetReloadSpeedPercentage(WeaponManager.ReloadSpeedUpPercentage);
             m_Reloadable.DoReload(isEmpty, difference);

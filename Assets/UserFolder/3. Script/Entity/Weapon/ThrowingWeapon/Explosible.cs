@@ -30,6 +30,7 @@ public class Explosible : PoolableScript
     private WaitForSeconds m_AutoExplosionSecond;
     protected WaitForSeconds m_DestroyObjectSecond;
 
+    protected float AttackRadius { get => m_AttackRadius; }
     protected AttackType m_BulletType;
     protected bool m_IsExploded;
 
@@ -75,7 +76,6 @@ public class Explosible : PoolableScript
         {
             if (col[i].TryGetComponent(out IDamageable damageable))
             {
-                //일단 보류
                 if (usePhysics) dir = (col[i].transform.position - transform.position).normalized * m_AttackForce;
                 damageable.Hit(m_Damage, m_BulletType, dir);
             }

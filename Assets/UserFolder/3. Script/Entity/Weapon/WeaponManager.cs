@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Entity.Object.Weapon;
 using Entity.Object.Util;
+using Controller.Player.Utility;
 using EntityWeapon = Entity.Object.Weapon.Weapon;
+
 
 namespace Manager.Weapon
 {
@@ -41,10 +43,13 @@ namespace Manager.Weapon
         private const int m_ToolKitToEquipIndex = 5;
         private bool m_IsInteracting;
 
+        public ObjectPoolManager.PoolingObject[] EffectPoolingObjectArray { get; private set; }
+        public PlayerShakeController PlayerShakeController { get; private set; }
+
         public Vector3 OriginalPivotPosition { get; private set; }            //위치 조정용 부모 오브젝트 원래 위치
         public Quaternion OriginalPivotRotation { get; private set; }         //위치 조정용 부모 오브젝트 원래 각도
         public float OriginalFOV { get; private set; }
-        public ObjectPoolManager.PoolingObject[] EffectPoolingObjectArray { get; private set; }
+
         public float DamageUpPercentage { get; private set; } = 1;  //배수 표시 -> 1배
         public float AttackSpeedUpPercentage { get; private set; } = 1;
         public float ReloadSpeedUpPercentage { get; private set; } = 1;
@@ -61,6 +66,8 @@ namespace Manager.Weapon
                 m_WeaponDictionary.Add(new (weapon.EquipingType, weapon.GetItemIndex), weapon);
                 weapon.PreAwake();
             }
+
+            PlayerShakeController = transform.root.GetComponent<PlayerShakeController>();
 
             m_PlayerInputController.ChangeEquipment += TryWeaponChange;
             m_PlayerInputController.Heal += TryHealInteract;
@@ -85,7 +92,11 @@ namespace Manager.Weapon
             Sprite spriteIcon = weapon.WeaponIcon;
             int maxBullet = weapon.MaxBullet;
             int magazineBullet = maxBullet * 3;
-            if (slotNumber == 0) ChangeWeapon(slotNumber,weaponIndex);
+            if (slotNumber == 0)
+            {
+                PlayerShakeController.ShakeCameraTransform(ShakeType.Changing);
+                ChangeWeapon(slotNumber, weaponIndex);
+            }
             return new WeaponData(spriteIcon,maxBullet,magazineBullet);
         }
 

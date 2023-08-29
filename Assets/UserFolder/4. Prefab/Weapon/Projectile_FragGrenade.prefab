@@ -38594,3 +38594,11 @@ MonoBehaviour:
   m_Layer:
     serializedVersion: 2
     m_Bits: 268438016
+  m_ShakeRadiusAdd: 20
+  m_DistanceShakeController:
+    m_ShakeLayer:
+      serializedVersion: 2
+      m_Bits: 128
+    m_ShakeRadiusAdd: 20
+    m_MaxShakeMagnitude: 6
+    m_MinShakeMagnitude: 0.01
