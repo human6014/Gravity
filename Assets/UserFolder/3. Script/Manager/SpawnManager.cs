@@ -291,24 +291,44 @@ namespace Manager
         #endregion
 
         #region SpawnSpecialMonsters
+        //Original
+        //private void SpawnSpecialMonster(int currentStage)
+        //{
+        //    if (!m_IsActiveSpecialSpawn) return;
+        //    switch (currentStage)
+        //    {
+        //        case 1:
+        //            m_EnvironmentManager.OnRainParticle();
+        //            float time = m_StageManager.GetStageTime(3, 1);
+        //            StartCoroutine(m_EnvironmentManager.RoadWetnessChange(time, true));
+        //            //SpawnSpecialMonster3();
+        //            SpawnSpecialMonster1();
+        //            break;
+        //        case 2:
+        //            SpawnSpecialMonster2();
+        //            break;
+        //        case 3:
+        //            m_EnvironmentManager.OffRainParticle();
+        //            SpawnSpecialMonster3();
+        //            break;
+        //    }
+        //}
+
+        //CustomTest
         private void SpawnSpecialMonster(int currentStage)
         {
             if (!m_IsActiveSpecialSpawn) return;
             switch (currentStage)
             {
                 case 1:
-                    m_EnvironmentManager.OnRainParticle();
-                    float time = m_StageManager.GetStageTime(3, 1);
-                    StartCoroutine(m_EnvironmentManager.RoadWetnessChange(time, true));
-                    //SpawnSpecialMonster3();
-                    SpawnSpecialMonster1();
+                    SpawnSpecialMonster2();
+                    //SpawnSpecialMonster1();
                     break;
                 case 2:
-                    SpawnSpecialMonster2();
+                    //SpawnSpecialMonster2();
                     break;
                 case 3:
-                    m_EnvironmentManager.OffRainParticle();
-                    SpawnSpecialMonster3();
+                    //SpawnSpecialMonster3();
                     break;
             }
         }

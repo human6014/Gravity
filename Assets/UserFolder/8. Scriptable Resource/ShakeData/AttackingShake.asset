@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: AttackingShake
   m_EditorClassIdentifier: 
   m_ShakeType: 3
-  m_PosShake: {x: 0.15, y: 0.15, z: 0.15}
-  m_RotShake: {x: 1, y: 1, z: 1}
-  m_Magnitude: 1
-  m_Roughness: 1
-  m_FadeInTime: 0.1
-  m_FadeOutTime: 0.1
+  m_PosShake: {x: 0.3, y: 0.3, z: 0.1}
+  m_RotShake: {x: 6, y: 6, z: 6}
+  m_Magnitude: 1.2
+  m_Roughness: 1.2
+  m_FadeInTime: 0.4
+  m_FadeOutTime: 1

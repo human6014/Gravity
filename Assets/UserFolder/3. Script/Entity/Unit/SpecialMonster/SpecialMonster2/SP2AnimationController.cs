@@ -71,16 +71,11 @@ namespace Entity.Unit.Special
             return tcs.Task;
         }
 
-        public void SetMovementSpeed(float value)
-        {
-            m_Animator.SetFloat(m_MovementSpeed, value);
-        }
+        public void SetMovementSpeed(float value) 
+            => m_Animator.SetFloat(m_MovementSpeed, value);
 
-        public void SetIdleSpeed(float value)
-        {
-            m_Animator.SetFloat(m_IdleSpeed, value);
-        }
-
+        public void SetIdleSpeed(float value) => m_Animator.SetFloat(m_IdleSpeed, value);
+        
         private IEnumerator CheckForEndNormalAttack(TaskCompletionSource<bool> tcs)
         {
             while (m_DoNormalAttacking) yield return null;

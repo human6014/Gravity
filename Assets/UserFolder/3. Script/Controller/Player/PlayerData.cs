@@ -117,8 +117,9 @@ public class PlayerData : MonoBehaviour
 
     public Action ReInit { get; set; }
     public Action StopSlowModeAction { get; set; }
-    public Action<bool> GrabAction { get; set; }
-    public Action<Transform, Transform, Transform, Transform> GrabPoint {get;set;}
+    public Action<bool,Vector3> GrabAction { get; set; }
+    public Action<Vector3, Vector3> ThrowingAction { get; set; }
+    public Action<Transform, Transform, Transform> GrabPointAssign {get;set;}
     public Func<int, int, WeaponData> WeaponDataFunc { get; set; }
     
 
@@ -433,8 +434,8 @@ public class PlayerData : MonoBehaviour
     /// <param name="attackType">공격 종류</param>
     public void PlayerHit(Transform target, int damage, AttackType attackType)
     {
-        if(attackType == AttackType.Grab) GrabAction?.Invoke(true);
-        else if (attackType == AttackType.Explosion) damage = (int)(damage * 0.5f);
+        if(attackType == AttackType.Grab) GrabAction?.Invoke(true, Vector3.zero);
+        else if (attackType == AttackType.Explosion) damage = (int)(damage * 0.33f);
         else if (attackType == AttackType.OnlyDamage && PlayerHP - damage <= 0) damage = PlayerHP - 1;
         damage = Mathf.Max(damage - m_Defense, 0);
 
@@ -456,8 +457,6 @@ public class PlayerData : MonoBehaviour
 
         UpdatePlayerHP(damage);
     }
-    
-    public void EndGrab() => GrabAction?.Invoke(false);
     #endregion
 
     #region SkillEventUI related

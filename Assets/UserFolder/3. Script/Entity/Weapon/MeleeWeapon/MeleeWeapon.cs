@@ -122,6 +122,9 @@ namespace Entity.Object.Weapon
 
         private void Attack(int swingIndex)
         {
+            if(m_MeleeWeaponStat.m_DoShake) 
+                WeaponManager.PlayerShakeController.ShakeAllTransform(ShakeType.Attacking);
+
             m_SwingIndex = swingIndex;
             m_ArmAnimator.SetFloat("Swing Index", swingIndex);
             EquipmentAnimator.SetFloat("Swing Index", swingIndex);

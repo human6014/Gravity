@@ -1,4 +1,3 @@
-using Controller.Player.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +9,12 @@ public class InstantExplosive : Explosible
     [SerializeField] private float m_ShakeRadiusAdd = 20;
     [SerializeField] private DistanceShakeController m_DistanceShakeController;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        m_DistanceShakeController.Init(FindObjectOfType<Controller.Player.Utility.PlayerShakeController>());
+    }
+
     public override void Init(Manager.ObjectPoolManager.PoolingObject poolingObject, Vector3 pos, Quaternion rot, AttackType bulletType)
     {
         base.Init(poolingObject, pos, rot, bulletType);
@@ -19,7 +24,7 @@ public class InstantExplosive : Explosible
     private IEnumerator InstantExplosion()
     {
         yield return base.Explosion();
-        m_DistanceShakeController.CheckPlayerShake(transform.position, m_ShakeRadiusAdd + AttackRadius);
+        m_DistanceShakeController.CheckPlayerShake(ShakeType.Explosion, transform.position, m_ShakeRadiusAdd + AttackRadius, 20);
         base.Damage(true);
         yield return m_DestroyObjectSecond;
 

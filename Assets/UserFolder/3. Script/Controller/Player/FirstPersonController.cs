@@ -85,6 +85,9 @@ namespace Controller.Player
         [Tooltip("플레이어 지면 감지 레이어")]
         [SerializeField] private LayerMask m_GroundLayer;
 
+        [Tooltip("플레이어 던져짐 끝 감지 레이어")]
+        [SerializeField] private LayerMask m_ThrowingLayer;
+
         [Tooltip("앉기, 일어나기")]
         [SerializeField] Vector3 m_CrouchInterporatePos;          //앉기, 일어나기 증감값
         [SerializeField] float m_CrouchTime = 0.3f;               //앉기, 일어나기 자세 전환 시간
@@ -101,7 +104,6 @@ namespace Controller.Player
         private Transform m_GrabCameraPosition;
         private Transform m_GrabBodyPosition;
         private Transform m_GrabRotation;
-        private Transform m_ThrowingPosition;
 
         private Vector3 m_IdlePos;                                //일어난 상태 원래 위치
         private Vector3 m_CrouchPos;                              //앉은 상태 위치
@@ -179,7 +181,8 @@ namespace Controller.Player
         private void AssignAction()
         {
             m_PlayerData.GrabAction += GrabAction;
-            m_PlayerData.GrabPoint += GrabActionPoint;
+            m_PlayerData.GrabPointAssign += GrabActionPoint;
+            m_PlayerData.ThrowingAction += Throwing;
             m_PlayerData.StopSlowModeAction += () => IsSlowMode = false;
 
             m_PlayerInputController.MouseMovement += (float mouseHorizontal, float mouseVertical) 
@@ -231,7 +234,7 @@ namespace Controller.Player
 
             if (m_IsThrowing)
             {
-                if (m_IsGround)
+                if (ThrowingEndCheck())
                 {
                     m_RigidBody.useGravity = false;
                     m_IsThrowing = false;
@@ -261,45 +264,47 @@ namespace Controller.Player
         #endregion
 
         #region Grab
-        private void GrabActionPoint(Transform grabCameraPosition, Transform grabBodyPosition, Transform grabRotation, Transform throwingPosition)
+        private void GrabActionPoint(Transform grabCameraPosition, Transform grabBodyPosition, Transform grabRotation)
         {
             m_GrabCameraPosition = grabCameraPosition;
             m_GrabBodyPosition = grabBodyPosition;
             m_GrabRotation = grabRotation;
-            m_ThrowingPosition = throwingPosition;
         }
 
-        private void GrabAction(bool isActive)
+        private void GrabAction(bool isActive, Vector3 force)
         {
             m_IsGrabed = isActive;
-            if (!isActive) PlayerThrowing();
+            if (!isActive) PlayerThrowing(force);
             else
             {
                 Debug.Log("Grab Start");
             }
         }
         
-        private void PlayerThrowing()
+        private void PlayerThrowing(Vector3 force)
         {
-            transform.position = m_GrabBodyPosition.position;
+            Vector3 pos = m_GrabBodyPosition.position;
             m_Camera.transform.localRotation = Quaternion.identity;
-            m_IsThrowing = true;
-            Vector3 throwingVector = (m_GrabCameraPosition.position - m_ThrowingPosition.position).normalized;
-            m_RigidBody.AddForce(throwingVector * 50, ForceMode.Impulse);
-            m_RigidBody.useGravity = true;
+            Throwing(pos, force);
         }
 
-        public void PlayerCol(Vector3 dir)
+        private void Throwing(Vector3 startPos, Vector3 force)
         {
-            transform.position = transform.position + transform.up * 1.25f;
             m_IsThrowing = true;
-            m_RigidBody.AddForce(dir * 20 + transform.up * 7.5f, ForceMode.Impulse);
+
+            if (startPos == Vector3.zero) startPos = transform.position + transform.up * 1.25f;
+
+            transform.position = startPos;
+            m_RigidBody.AddForce(force, ForceMode.Impulse);
             m_RigidBody.useGravity = true;
         }
         #endregion
 
         private bool GroundCheck(out RaycastHit hitInfo)
             => Physics.Raycast(transform.position, GravityManager.GravityVector, out hitInfo, m_CapsuleCollider.height * 0.5f + m_InterporationDist, m_GroundLayer);
+
+        private bool ThrowingEndCheck()
+            => Physics.Raycast(transform.position, GravityManager.GravityVector, m_CapsuleCollider.height * 0.5f + m_InterporationDist, m_ThrowingLayer);
 
         private void ReversePosCheck()
         {

@@ -35,6 +35,9 @@ namespace Scriptable.Monster
         [Tooltip("잡기 공격가능한 각도")]
         public float m_GrabAttackAbleAngle = 45;
 
+        [Tooltip("잡기 공격 후 던지는 힘")]
+        public float m_GrabThrowingForce = 50;
+
         [Header("Jump Attack")]
         [Tooltip("도약 공격 데미지")]
         public int m_JumpAttackDamage = 350;

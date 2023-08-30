@@ -23,6 +23,7 @@ namespace Entity.Unit.Special
         public bool IsCloseToTarget { get; private set; }
         public bool CanMoveTarget { get; private set; }
         public float MovementSpeed { get => m_NavMeshAgent.speed; set => m_NavMeshAgent.speed = value; }
+        public float AngularSpeed { get => m_NavMeshAgent.angularSpeed; set => m_NavMeshAgent.angularSpeed = value; }
         public System.Action MoveCompToPos { get; set; }
         public System.Action RushCompToPos { get; set; }
 

@@ -25,5 +25,8 @@ namespace Scriptable.Equipment
 
         [Tooltip("평타 캔슬 여부")]
         public bool m_CanComboAttack;
+
+        [Tooltip("공격시 화면 흔들림 여부")]
+        public bool m_DoShake;
     }
 }

@@ -41,8 +41,11 @@ namespace Scriptable.Monster
         [Tooltip("돌진 공격 이동 속도")]
         public float m_RushAttackMovementSpeed;
 
-        [Tooltip("돌진 공격가능 각도")]
+        [Tooltip("돌진 공격 가능 각도")]
         public float m_RushAttackAbleAngle = 7.5f;
+
+        [Tooltip("돌긴 공격 레이 Radius")]
+        public float m_RushCheckRadius = 3.5f;
 
         [Header("Grab Attack")]
         [Tooltip("잡기 공격 데미지")]
@@ -86,6 +89,9 @@ namespace Scriptable.Monster
 
         [Tooltip("회복 이동 속도")]
         public float m_RecoveryMovementSpeed = 12;
+
+        [Tooltip("회복 회전 속도")]
+        public float m_RecoveryAngularSpeed = 120;
 
         [Tooltip("회복량 비율")] [Range(0,1)]
         public float m_RecoveryHPAmount = 0.4f;
