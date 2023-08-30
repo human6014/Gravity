@@ -30,3 +30,4 @@ MonoBehaviour:
   m_SwingRadius: 0.6
   m_MaxDistance: 2.4
   m_CanComboAttack: 1
+  m_DoShake: 1

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7c789772375c3e4f90f6ba1a8339401, type: 3}
   m_Name: UrbanZombieStat
   m_EditorClassIdentifier: 
-  m_HP: 1000
-  m_Def: 25
+  m_HP: 900
+  m_Def: 20
   m_Damage: 100
   m_MovementSpeed: 4.5
   m_AttackSpeed: 1
@@ -22,7 +22,7 @@ MonoBehaviour:
   m_ExplosionResistance: 10
   m_MeleeResistance: 10
   m_NoramlAttackType: 0
-  m_HPMultiplier: 100
+  m_HPMultiplier: 90
   m_DefMultiplier: 2
   m_DamageMultiplier: 10
   m_MonsterType: 0

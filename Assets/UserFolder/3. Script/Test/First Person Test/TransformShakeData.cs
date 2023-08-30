@@ -10,7 +10,10 @@ public enum ShakeType
     Attacking,
     Explosion,
     SP1Grab,
-    SP2Roar
+    SP2Roar,
+    SP2RushEnd,
+    SP2Walk,
+    SP2NormalAttack
 }
 
 namespace Scriptable 

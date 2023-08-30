@@ -7,24 +7,21 @@ using UnityEngine;
 public class DistanceShakeController
 {
     [Header("Shake")]
-    [SerializeField] private LayerMask m_ShakeLayer;
-    [SerializeField] private float m_ShakeRadiusAdd = 20;
     [SerializeField] private float m_MaxShakeMagnitude = 6;
     [SerializeField] private float m_MinShakeMagnitude = 0.01f;
 
-    public void CheckPlayerShake(Vector3 pos, float radius)
+    private PlayerShakeController m_PlayerShakeController;
+
+    public void Init(PlayerShakeController playerShakeController)
+        => m_PlayerShakeController = playerShakeController;
+
+    public void CheckPlayerShake(ShakeType shakeType, Vector3 pos, float range, float multiplier = 15)
     {
-        Collider[] col = Physics.OverlapSphere(pos, radius, m_ShakeLayer);
+        float dist = Vector3.Distance(m_PlayerShakeController.transform.position, pos);
+        if (dist > range) return;
 
-        if (col.Length == 0) return;
+        float magnitude = Mathf.Clamp(1 / Mathf.Max(dist, 0.01f) * multiplier, m_MinShakeMagnitude, m_MaxShakeMagnitude);
 
-        //Only Player
-        Transform playerTransform = col[0].transform;
-
-        float dist = Vector3.Distance(playerTransform.position, pos);
-        float magnitude = Mathf.Clamp(1 / Mathf.Max(dist, 0.01f) * 15, m_MinShakeMagnitude, m_MaxShakeMagnitude);
-
-        playerTransform.TryGetComponent(out PlayerShakeController psc);
-        psc.ShakeAllTransform(ShakeType.Explosion, magnitude);
+        m_PlayerShakeController.ShakeAllTransform(shakeType, magnitude);
     }
 }

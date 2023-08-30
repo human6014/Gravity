@@ -37,11 +37,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 417792
   m_RushAttackDamage: 350
-  m_RushAttackTime: 10
+  m_RushAttackTime: 9
   m_RushAttackMinRange: 15
   m_RushAttackMaxRange: 100
   m_RushAttackMovementSpeed: 30
   m_RushAttackAbleAngle: 7.5
+  m_RushCheckRadius: 3.5
   m_GrabAttackDamage: 50
   m_GrabAttackTime: 25
   m_GrabAttackMinRange: 15
@@ -50,7 +51,7 @@ MonoBehaviour:
   m_GrabAttachedTime: 0.7
   m_GrabForce: 30
   m_GrabAttackAbleAngle: 15
-  m_GrabCancellationDamage: 300
+  m_GrabCancellationDamage: 250
   m_GroundDownForceMultiplier: 5
   m_MaxGroundDownForce: 35
   m_RecoveryTriggerHP: 0.4

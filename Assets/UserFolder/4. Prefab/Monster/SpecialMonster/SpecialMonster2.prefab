@@ -22339,7 +22339,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Settings: {fileID: 11400000, guid: e0d636d754aa13b469c3b1e483a52dcc, type: 2}
   m_GrabEndPoint: {fileID: 95506104847953089}
-  m_RushCheckRadius: 3.5
+  m_DistanceShakeController:
+    m_ShakeType: 7
+    m_ShakeLayer:
+      serializedVersion: 2
+      m_Bits: 128
+    m_MaxShakeMagnitude: 7.5
+    m_MinShakeMagnitude: 0.1
 --- !u!114 &630261199925254101
 MonoBehaviour:
   m_ObjectHideFlags: 0

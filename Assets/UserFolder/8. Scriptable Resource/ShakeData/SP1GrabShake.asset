@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SP1GrabShake
   m_EditorClassIdentifier: 
   m_ShakeType: 5
-  m_PosShake: {x: 0.15, y: 0.15, z: 0.15}
-  m_RotShake: {x: 1, y: 1, z: 1}
-  m_Magnitude: 1
-  m_Roughness: 1
-  m_FadeInTime: 0.1
-  m_FadeOutTime: 0.1
+  m_PosShake: {x: 0.5, y: 0.5, z: 0}
+  m_RotShake: {x: 10, y: 10, z: 10}
+  m_Magnitude: 5
+  m_Roughness: 10
+  m_FadeInTime: 2
+  m_FadeOutTime: 2

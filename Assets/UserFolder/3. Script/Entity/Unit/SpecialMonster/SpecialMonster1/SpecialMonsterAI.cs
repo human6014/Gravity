@@ -11,6 +11,7 @@ public class SpecialMonsterAI : MonoBehaviour
     private NavMeshAgent m_NavMeshAgent;
 
     private bool m_IsInit;
+    private bool m_IsCloseToTarget;
 
     #region Adjustment factor
     [Tooltip("회전 강도")]
@@ -79,9 +80,12 @@ public class SpecialMonsterAI : MonoBehaviour
             m_NavMeshAgent.speed = m_OriginalSpeed;
             //navMeshAgent.updateUpAxis = true;
         }
-        bool isCloseToTarget = remainingDistance <= m_NavMeshAgent.stoppingDistance;
+        if(!m_IsCloseToTarget) m_IsCloseToTarget = remainingDistance <= m_NavMeshAgent.stoppingDistance;
+        else m_IsCloseToTarget = remainingDistance <= 6.5f;
+        
+        //m_IsCloseToTarget = remainingDistance <= m_NavMeshAgent.stoppingDistance;
 
-        Vector3 targetVec = isCloseToTarget ? AIManager.PlayerGroundPosition : m_NavMeshAgent.steeringTarget;
+        Vector3 targetVec = m_IsCloseToTarget ? AIManager.PlayerGroundPosition : m_NavMeshAgent.steeringTarget;
         Vector3 targetDirection = (targetVec - transform.position).normalized;
         //targetForward = IsOnMeshLink == true ? ProceduralForwardAngle : targetDirection;
         Vector3 targetForward = (ProceduralForwardAngle + targetDirection).normalized;
@@ -90,7 +94,7 @@ public class SpecialMonsterAI : MonoBehaviour
         Quaternion navRotation = Quaternion.LookRotation(targetForward, ProceduralUpAngle);
         transform.rotation = Quaternion.Slerp(transform.rotation, navRotation, m_RotAdjustRatio);
 
-        if (isCloseToTarget)
+        if (m_IsCloseToTarget)
         {
             m_NavMeshAgent.isStopped = true;
             

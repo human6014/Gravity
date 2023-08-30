@@ -27,6 +27,7 @@ namespace Entity.Unit.Special
         private MaterialPropertyBlock m_MaterialPropertyBlock;
         private LegController m_LegController;
         private PlayerData m_PlayerData;
+        private Controller.Player.Utility.PlayerShakeController m_PlayerShakeController;
         private Parabola m_Parabola;
 
         private Vector3 m_GroundDirection;
@@ -89,16 +90,22 @@ namespace Entity.Unit.Special
 
             m_SP1AnimationController.DoDamageAction += DoDamage;
         }
-        
+
+        private void Start()
+        {
+
+        }
+
         public void Init(Quaternion rotation, float statMultiplier)
         {
             m_PlayerData = AIManager.PlayerTransform.GetComponent<PlayerData>();
+            m_PlayerShakeController = m_PlayerData.GetComponent<Controller.Player.Utility.PlayerShakeController>();
 
             SetRealStat(statMultiplier);
 
             m_SpecialMonsterAI.Init(rotation);
             m_SP1AnimationController.SetWalk(true);
-            m_PlayerData.GrabPoint(m_GrabCameraPoint, m_GrabBodyPoint, m_LookPoint, m_ThrowingPoint);
+            m_PlayerData.GrabPointAssign(m_GrabCameraPoint, m_GrabBodyPoint, m_LookPoint);
         }
 
         private void SetRealStat(float statMultiplier)
@@ -194,11 +201,13 @@ namespace Entity.Unit.Special
             await m_SP1AnimationController.SetGrabAttack();
 
             m_PlayerData.PlayerHit(m_GrabCameraPoint, m_Settings.m_GrabAttackDamage + m_RealDamage, m_Settings.m_NoramlAttackType);
+            m_PlayerData.GrabAction(false, (m_GrabCameraPoint.position - m_ThrowingPoint.position).normalized * m_Settings.m_GrabThrowingForce);
 
             m_GrabAttackTimer = 0;
             m_NormalAttackTimer = m_Settings.m_AttackSpeed - m_AttackBetweenTime;
             m_IsGrabbing = false;
-            m_PlayerData.EndGrab();
+            
+            await Task.Delay(1500);
             m_DoingBehaviour = false;
         }
 
@@ -358,7 +367,7 @@ namespace Entity.Unit.Special
 
             m_SpecialMonsterAI.Dispose();
             m_LegController.Dispose();
-            if (m_IsGrabbing) m_PlayerData.EndGrab();
+            if (m_IsGrabbing) m_PlayerData.GrabAction(false, Vector3.zero);
             m_SP1AnimationController.SetDie();
         }
     }

@@ -24,8 +24,6 @@ namespace Manager.Weapon
     public class WeaponManager : MonoBehaviour
     {
         #region SerializeField
-        [SerializeField] private PlayerData m_PlayerData;
-        [SerializeField] private Controller.PlayerInputController m_PlayerInputController;
         [SerializeField] private Transform m_Pivot;
         [SerializeField] private Syringe m_Syringe;
         [SerializeField] private FlashLight m_FlashLight; 
@@ -38,6 +36,7 @@ namespace Manager.Weapon
 
         private readonly Dictionary<CustomKey, EntityWeapon> m_WeaponDictionary = new();
         private EntityWeapon m_CurrentWeapon = null;
+        private PlayerData m_PlayerData;
 
         private int m_CurrentEquipIndex = -1; //현재 장착하고 있는 무기 슬롯 번호
         private const int m_ToolKitToEquipIndex = 5;
@@ -67,11 +66,15 @@ namespace Manager.Weapon
                 weapon.PreAwake();
             }
 
-            PlayerShakeController = transform.root.GetComponent<PlayerShakeController>();
+            Transform root = transform.root;
 
-            m_PlayerInputController.ChangeEquipment += TryWeaponChange;
-            m_PlayerInputController.Heal += TryHealInteract;
-            m_PlayerInputController.Light += () => TryWeaponChange(m_ToolKitToEquipIndex);
+            Controller.PlayerInputController playerInputController = root.GetComponent<Controller.PlayerInputController>();
+            PlayerShakeController = root.GetComponent<PlayerShakeController>();
+            m_PlayerData = root.GetComponent<PlayerData>();
+
+            playerInputController.ChangeEquipment += TryWeaponChange;
+            playerInputController.Heal += TryHealInteract;
+            playerInputController.Light += () => TryWeaponChange(m_ToolKitToEquipIndex);
             m_PlayerData.WeaponDataFunc += RegisterWeapon;
             m_PlayerData.ReInit += () => ((ThrowingWeapon)m_CurrentWeapon).ReInit();
         }

@@ -218,13 +218,14 @@ public class GrabController : MonoBehaviour
             }
         }
 
+        IsGrabbing = false;
         IsAttachedPlayer = false;
     }
 
     public void Dispose()
     {
         StopAllCoroutines();
-        if (IsAttachedPlayer) ImmediateGrabEnd();
+        if (IsGrabbing || IsAttachedPlayer) ImmediateGrabEnd();
     }
 
     private void OnDrawGizmosSelected()
