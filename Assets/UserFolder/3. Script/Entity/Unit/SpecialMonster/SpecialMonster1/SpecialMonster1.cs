@@ -21,6 +21,9 @@ namespace Entity.Unit.Special
         [SerializeField] private Transform m_ThrowingPoint;
         [SerializeField] private Transform m_LookPoint;
 
+        [Header("Shake")]
+        [SerializeField] private DistanceShakeController m_DistanceShakeController;
+
         private Transform m_NavMeshTransform;   //transform말고 이거 써야대
         private SpecialMonsterAI m_SpecialMonsterAI;
         private SP1AnimationController m_SP1AnimationController;
@@ -91,15 +94,12 @@ namespace Entity.Unit.Special
             m_SP1AnimationController.DoDamageAction += DoDamage;
         }
 
-        private void Start()
-        {
-
-        }
-
         public void Init(Quaternion rotation, float statMultiplier)
         {
             m_PlayerData = AIManager.PlayerTransform.GetComponent<PlayerData>();
             m_PlayerShakeController = m_PlayerData.GetComponent<Controller.Player.Utility.PlayerShakeController>();
+
+            m_DistanceShakeController.Init(m_PlayerShakeController);
 
             SetRealStat(statMultiplier);
 
@@ -178,7 +178,9 @@ namespace Entity.Unit.Special
         {
             m_DoingBehaviour = true;
             m_NormalAttackTimer = 0;
-            
+
+            m_DistanceShakeController.CheckPlayerShake(ShakeType.SP1NormalAttack, m_NavMeshTransform.position + m_NavMeshTransform.forward * 3, 20);
+
             await m_SP1AnimationController.SetClawsAttack();
             m_GrabAttackTimer = Mathf.Min(m_GrabAttackTimer, m_Settings.m_GrabAttackSpeed - m_AttackBetweenTime);
 
@@ -227,6 +229,7 @@ namespace Entity.Unit.Special
         private async void Jump(Vector3 direction, float v0, float angle, float preJumpTime, float jumpTime, bool hasAnimation)
         {
             float upDist = hasAnimation ? 0.5f : 1;
+            float shakeMultiplier = 15;
 
             await PreJump(preJumpTime, upDist);
             if (hasAnimation) m_SP1AnimationController.SetJumpBiteAttack();
@@ -236,9 +239,13 @@ namespace Entity.Unit.Special
             if (hasAnimation)
             {
                 m_NormalAttackTimer = 3;
-
+                shakeMultiplier = 10;
                 CheckJumpAttackToPlayer();
             }
+
+            m_DistanceShakeController.CheckPlayerShake(ShakeType.SP1Landing, m_NavMeshTransform.position, 25, shakeMultiplier);
+
+            await Task.Delay(500);
 
             m_DoingBehaviour = false;
         }

@@ -65,7 +65,6 @@ public class SpecialMonsterAI : MonoBehaviour
         bool isWalk = false;
         if (!m_IsInit || !m_NavMeshAgent.isActiveAndEnabled) return isWalk;
 
-        m_NavMeshAgent.isStopped = false;
         SetDestination(out float remainingDistance);
 
         if (m_NavMeshAgent.isOnOffMeshLink)
@@ -83,8 +82,7 @@ public class SpecialMonsterAI : MonoBehaviour
         if(!m_IsCloseToTarget) m_IsCloseToTarget = remainingDistance <= m_NavMeshAgent.stoppingDistance;
         else m_IsCloseToTarget = remainingDistance <= 6.5f;
         
-        //m_IsCloseToTarget = remainingDistance <= m_NavMeshAgent.stoppingDistance;
-
+        //È¸Àü ¼ÕÁ» º¾½Ã´ÙÀ×
         Vector3 targetVec = m_IsCloseToTarget ? AIManager.PlayerGroundPosition : m_NavMeshAgent.steeringTarget;
         Vector3 targetDirection = (targetVec - transform.position).normalized;
         //targetForward = IsOnMeshLink == true ? ProceduralForwardAngle : targetDirection;
@@ -96,8 +94,6 @@ public class SpecialMonsterAI : MonoBehaviour
 
         if (m_IsCloseToTarget)
         {
-            m_NavMeshAgent.isStopped = true;
-            
             changeFlag = true;
             isWalk = false;
             m_NavMeshAgent.destination = transform.position;
@@ -109,6 +105,16 @@ public class SpecialMonsterAI : MonoBehaviour
             m_NavMeshAgent.nextPosition = ProceduralPosition + Time.deltaTime * m_NavMeshAgent.speed * targetDirection;
             transform.position = m_NavMeshAgent.nextPosition;
         }
+        return isWalk;
+    }
+
+    public bool TestOperateAIBehavior(ref bool changeFlag)
+    {
+        bool isWalk = false;
+        if (!m_IsInit || !m_NavMeshAgent.isActiveAndEnabled) return isWalk;
+
+
+
         return isWalk;
     }
 

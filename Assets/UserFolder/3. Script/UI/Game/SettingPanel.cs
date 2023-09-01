@@ -27,6 +27,7 @@ namespace UI.Game
             m_CanvasGroup.interactable = isActive;
             m_CanvasGroup.blocksRaycasts = isActive;
 
+            if (m_Animator == null) return;
             m_Animator.SetTrigger(isActive ? "Show" : "Hide");
         }
     }
