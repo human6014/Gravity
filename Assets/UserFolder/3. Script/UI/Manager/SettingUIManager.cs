@@ -13,6 +13,7 @@ namespace UI.Manager
         private bool m_IsActiveSkillEventUI;
         private bool m_IsActivePauseUI;
 
+        private bool m_IsActiveNewSkillEventUI;
         public bool IsPause 
         { 
             get => IsActiveSkillEventUI || IsActivePauseUI; 
@@ -25,6 +26,16 @@ namespace UI.Manager
             set
             {
                 m_IsActiveSkillEventUI = value;
+                PauseMode();
+            }
+        }
+
+        public bool IsActiveNewSkillEventUI
+        {
+            get => m_IsActiveNewSkillEventUI;
+            set
+            {
+                m_IsActiveNewSkillEventUI = value;
                 PauseMode();
             }
         }
@@ -48,6 +59,7 @@ namespace UI.Manager
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape)) IsActivePauseUI = !IsActivePauseUI;
+            if (Input.GetKeyDown(KeyCode.Tab)) IsActiveNewSkillEventUI = !IsActiveNewSkillEventUI;
         }
 
         private void PauseMode()
