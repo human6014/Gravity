@@ -40,6 +40,7 @@ namespace UI.Manager
     public class SkillEventManager : MonoBehaviour
     {
         #region SerializeField
+        [SerializeField] private PauseModeController m_PauseModeController;
         [SerializeField] private SettingUIManager m_SettingUIManager;
         [SerializeField] private PlayerData m_PlayerData;
         [SerializeField] private RectTransform m_SkillPos;
@@ -67,7 +68,7 @@ namespace UI.Manager
         private void Awake()
         {
             m_Animator = m_SkillPos.GetComponent<Animator>();
-            m_SettingUIManager.PauseUIAction += PauseUI;
+            m_SettingUIManager.SettingUIAction += PauseUI;
             SetFixedEvent();
         }
 
@@ -86,7 +87,7 @@ namespace UI.Manager
             m_SkillPos.gameObject.SetActive(true);
             m_Animator.SetTrigger("Show");
 
-            m_SettingUIManager.IsActiveSkillEventUI = true;
+            m_PauseModeController.IsActiveSkillEventUI = true;
 
             m_GameEventCount++;
 
@@ -192,7 +193,7 @@ namespace UI.Manager
                 m_CurrentVisibleSkillEvents[i].Dispose();
             m_CurrentVisibleSkillEvents.Clear();
 
-            m_SettingUIManager.IsActiveSkillEventUI = false;
+            m_PauseModeController.IsActiveSkillEventUI = false;
         }
 
         #region Animation Event
