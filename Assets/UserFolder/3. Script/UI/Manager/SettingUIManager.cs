@@ -7,71 +7,36 @@ namespace UI.Manager
 {
     public class SettingUIManager : MonoBehaviour
     {
-        [SerializeField] private Game.SettingPanel m_SettingPanel;
+        [SerializeField] private PanelController m_SettingPanel;
         [SerializeField] private UnityEvent PauseEvent;
 
-        private bool m_IsActiveSkillEventUI;
-        private bool m_IsActivePauseUI;
+        private PauseModeController m_PauseModeController;
 
-        private bool m_IsActiveNewSkillEventUI;
-        public bool IsPause 
-        { 
-            get => IsActiveSkillEventUI || IsActivePauseUI; 
-            private set => IsPause = value; 
-        }
+        public System.Action<bool> SettingUIAction { get; set; }
 
-        public bool IsActiveSkillEventUI
+        private void Awake()
         {
-            get => m_IsActiveSkillEventUI;
-            set
-            {
-                m_IsActiveSkillEventUI = value;
-                PauseMode();
-            }
+            m_PauseModeController = transform.root.GetComponent<PauseModeController>();
         }
-
-        public bool IsActiveNewSkillEventUI
-        {
-            get => m_IsActiveNewSkillEventUI;
-            set
-            {
-                m_IsActiveNewSkillEventUI = value;
-                PauseMode();
-            }
-        }
-
-        public bool IsActivePauseUI 
-        {
-            get => m_IsActivePauseUI;
-            set
-            {
-                m_IsActivePauseUI = value;
-                m_SettingPanel.TryActive(value);
-                PauseUIAction?.Invoke(value);
-                PauseMode();
-            }
-        }
-
-        public System.Action<bool> PauseUIAction { get; set; }
-
-        private void Awake() => PauseMode();
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape)) IsActivePauseUI = !IsActivePauseUI;
-            if (Input.GetKeyDown(KeyCode.Tab)) IsActiveNewSkillEventUI = !IsActiveNewSkillEventUI;
+            if (Input.GetKeyDown(KeyCode.Escape))
+                SetActiveUI(!m_PauseModeController.IsActiveSettingUI);
         }
 
-        private void PauseMode()
+        private void SetActiveUI(bool isActive)
         {
-            Cursor.visible = IsPause;
-            Cursor.lockState = IsPause ? CursorLockMode.None : CursorLockMode.Locked;
-            Time.timeScale = IsPause ? 0 : 1;
-            if(!IsPause) PauseEvent?.Invoke();
+            m_PauseModeController.IsActiveSettingUI = isActive;
+            m_SettingPanel.TryActive(isActive);
+            SettingUIAction?.Invoke(isActive);
         }
 
         #region UnityEvent
-        public void Resume() => IsActivePauseUI = false;
+        public void Resume()
+        {
+            SetActiveUI(false);
+        }
         
         public void Setting()
         {

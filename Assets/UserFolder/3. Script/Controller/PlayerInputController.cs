@@ -7,7 +7,7 @@ namespace Controller
 {
     public class PlayerInputController : MonoBehaviour
     {
-        [SerializeField] private UI.Manager.SettingUIManager m_SettingUIManager;
+        [SerializeField] private UI.PauseModeController m_PauseModeController;
 
         private readonly KeyCode[] m_GravityChangeInput =
         {
@@ -82,7 +82,7 @@ namespace Controller
 
         private void Update()
         {
-            if (m_SettingUIManager.IsPause) return;
+            if (m_PauseModeController.IsPause) return;
 
             m_MouseX = Input.GetAxis("Mouse X");
             m_MouseY = Input.GetAxis("Mouse Y");
@@ -135,7 +135,7 @@ namespace Controller
 
         private void FixedUpdate()
         {
-            if (m_SettingUIManager.IsPause) return;
+            if (m_PauseModeController.IsPause) return;
 
             m_Horizontal = Input.GetAxis("Horizontal");
             m_Vertical = Input.GetAxis("Vertical");
