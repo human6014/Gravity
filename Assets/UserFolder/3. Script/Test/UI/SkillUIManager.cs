@@ -17,7 +17,7 @@ namespace UI.Manager
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Tab)) 
+            if (Input.GetKeyDown(KeyCode.Tab) && !m_PauseModeController.IsActiveSettingUI) 
                 SetActiveUI(!m_PauseModeController.IsActiveNewSkillEventUI);
         }
 
