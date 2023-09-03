@@ -6,9 +6,17 @@ public class WeaponSlotUIController : MonoBehaviour
 {
     [SerializeField] private GameObject [] m_WeaponSlots;
     [SerializeField] private GameObject [] m_ClickedHideObject;
+    [SerializeField] private GameObject [] m_ClickedShowbject;
+
+    private SlotStateDisplayer m_SlotStateDisplayer;
 
     private bool m_IsSelectWeapon;
     private int m_CurrentWeaponSlotIndex = 0;
+
+    private void Awake()
+    {
+        m_SlotStateDisplayer = GetComponentInParent<SlotStateDisplayer>();
+    }
 
     public void ChangeWeaponSlot()
     {
@@ -23,7 +31,10 @@ public class WeaponSlotUIController : MonoBehaviour
 
         foreach (GameObject go in m_ClickedHideObject)
             go.SetActive(false);
-        
-        //m_CurrentWeaponSlotIndex µî·Ï
+
+        foreach(GameObject go in m_ClickedShowbject)
+            go.SetActive(true);
+
+        m_SlotStateDisplayer.RegisterPlayerSlot(m_CurrentWeaponSlotIndex);
     }
 }
