@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UI.Event;
 
 public class PlayerSkillReceiver : MonoBehaviour
 {
@@ -22,19 +23,19 @@ public class PlayerSkillReceiver : MonoBehaviour
         => m_GetSupplyEvent?.Invoke(slotNumber, amount);
     
 
-    public void AttackSkillEvent(UI.Event.AttackEventType eventType, float amount)
+    public void AttackSkillEvent(AttackEventType eventType, float amount)
         => m_AttackEvents[(int)eventType]?.Invoke(amount);
     
-    public void DefenseSkillEvent(UI.Event.DefenseEventType eventType, int amount)
+    public void DefenseSkillEvent(DefenseEventType eventType, int amount)
         => m_DefenseEvents[(int)eventType]?.Invoke(amount);
     
-    public void SupportSkillEvent(UI.Event.SupportEventType eventType, int amount)
+    public void SupportSkillEvent(SupportEventType eventType, int amount)
         => m_SupportEvents[(int)eventType]?.Invoke(amount);
     
 
-    public void SpecificSkillEvent(UI.Event.SpecificEventType eventType, int amount)
+    public void SpecificSkillEvent(SpecificEventType eventType, int amount)
         => m_SpecificEvents[(int)eventType]?.Invoke();
     
-    public void SpecialSkillEvent(UI.Event.SpeciaEventType eventType, int amount)
+    public void SpecialSkillEvent(SpeciaEventType eventType, int amount)
         => m_SpecialEvents[(int)eventType]?.Invoke(amount);
 }

@@ -95,11 +95,11 @@ namespace Manager.Weapon
             Sprite spriteIcon = weapon.WeaponIcon;
             int maxBullet = weapon.MaxBullet;
             int magazineBullet = maxBullet * 3;
-            if (slotNumber == 0)
-            {
-                PlayerShakeController.ShakeCameraTransform(ShakeType.Changing);
-                ChangeWeapon(slotNumber, weaponIndex);
-            }
+            //if (slotNumber == 0)
+            //{
+            //    PlayerShakeController.ShakeCameraTransform(ShakeType.Changing);
+            //    ChangeWeapon(slotNumber, weaponIndex);
+            //}
             return new WeaponData(spriteIcon,maxBullet,magazineBullet);
         }
 

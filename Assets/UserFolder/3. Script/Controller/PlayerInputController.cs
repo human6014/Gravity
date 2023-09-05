@@ -7,7 +7,7 @@ namespace Controller
 {
     public class PlayerInputController : MonoBehaviour
     {
-        [SerializeField] private UI.PauseModeController m_PauseModeController;
+        [SerializeField] private UI.Controller.PauseModeController m_PauseModeController;
 
         private readonly KeyCode[] m_GravityChangeInput =
         {

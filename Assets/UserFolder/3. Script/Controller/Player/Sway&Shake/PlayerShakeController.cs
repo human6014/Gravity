@@ -30,15 +30,13 @@ namespace Controller.Player.Utility
 
         private readonly int ShakeTypeLength = System.Enum.GetValues(typeof(ShakeType)).Length;
 
-        public void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.V))
-                ShakeAllTransform(ShakeType.Landing);
-        }
-
         public void ShakeAllTransform(ShakeType shakeType, float magnitudeMultiplier = 1, float roughnessMultiplier = 1)
         {
-            if ((int)shakeType >= ShakeTypeLength) shakeType = ShakeType.Landing;
+            if ((int)shakeType >= ShakeTypeLength)
+            {
+                shakeType = ShakeType.Landing;
+                Debug.LogWarning("Length diffrent");
+            }
 
             foreach (TransformShake cs in m_CameraShakes)
                 cs.ShakeOnce(m_CameraShakeData[(int)shakeType], magnitudeMultiplier, roughnessMultiplier);

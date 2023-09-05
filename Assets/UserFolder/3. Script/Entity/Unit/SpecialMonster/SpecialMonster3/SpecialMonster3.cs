@@ -70,6 +70,7 @@ namespace Entity.Unit.Special
         private void Awake()
         {
             m_SP3AnimationController = GetComponentInChildren<SP3AnimationController>();
+            m_ParticleEndSystem = GetComponentInChildren<ParticleEndSystem>();
             m_BoidsController = GetComponent<BoidsController>();
             m_PathFollower = GetComponent<PathFollower>();
             m_Rigidbody = GetComponent<Rigidbody>();

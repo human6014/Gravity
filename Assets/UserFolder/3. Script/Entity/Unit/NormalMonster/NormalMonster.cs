@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Manager.AI;
+using Scriptable.Monster;
 
 namespace Entity.Unit.Normal
 {
     public class NormalMonster : PoolableScript, IMonster, IPhysicsable
     {
-        [SerializeField] private Scriptable.Monster.NormalMonsterScriptable m_Settings;
+        [SerializeField] private NormalMonsterScriptable m_Settings;
 
         private CapsuleCollider m_CapsuleCollider;
         private RagDollChanger m_RagDollChanger;
@@ -25,13 +26,16 @@ namespace Entity.Unit.Normal
         
         private float m_AttackTimer;
 
+        public System.Action<NoramlMonsterType> KilledNormalMonsterAction { get; set; }
+        public System.Action EndNormalMonsterAction { get; set; }
+
         private bool CanAttackRange(float plusRange = 0) 
             => Vector3.Distance(AIManager.PlayerTransform.position, transform.position) <= m_Settings.m_AttackRange + plusRange;
         
         private bool CanAttack() 
             => m_AttackTimer >= m_Settings.m_AttackSpeed && m_NormalMonsterState.CanAttackState;
         
-        public Scriptable.Monster.NoramlMonsterType GetMonsterType { get => m_Settings.m_MonsterType; }
+        public NoramlMonsterType GetMonsterType { get => m_Settings.m_MonsterType; }
 
         public void OnOffRagdoll(bool isActive)
         {
@@ -75,7 +79,7 @@ namespace Entity.Unit.Normal
 
             m_RealMaxHP = m_Settings.m_HP + (int)(statMultiplier * m_Settings.m_HPMultiplier);
             m_RealDef = m_Settings.m_Def + (int)(statMultiplier * m_Settings.m_DefMultiplier);
-            m_RealDamage = m_Settings.m_Damage + (int)(statMultiplier * m_Settings.m_Damage);
+            m_RealDamage = m_Settings.m_Damage + (int)(statMultiplier * m_Settings.m_DamageMultiplier);
             m_CanRun = statMultiplier >= m_Settings.m_CanRunStat;
 
             m_CurrentHP = m_RealMaxHP;
@@ -160,12 +164,13 @@ namespace Entity.Unit.Normal
             m_NormalMonsterAI.Dispose();
             if (!m_NormalMonsterAI.IsFalling) OnOffRagdoll(true);
             else m_CapsuleCollider.enabled = true;
+            KilledNormalMonsterAction?.Invoke(m_Settings.m_MonsterType);
             Invoke(nameof(ReturnObject),10);
         }
 
         public override void ReturnObject()
         {
-            Manager.SpawnManager.NormalMonsterCount--;
+            EndNormalMonsterAction?.Invoke();
             m_PoolingObject.ReturnObject(this);
         }
     }

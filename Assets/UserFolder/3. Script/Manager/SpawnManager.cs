@@ -66,6 +66,7 @@ namespace Manager
         private readonly BoxCollider[][] m_SpawnAreaCollider = new BoxCollider[6][];
         private BoxCollider[] m_CurrentAreaCollider;
 
+        private StatisticsManager m_StatisticsManager;
         private EnvironmentManager m_EnvironmentManager;
         private StageManager m_StageManager;
         private EntityManager m_EntityManager;
@@ -88,12 +89,16 @@ namespace Manager
 
         private int m_RandomNormalMonsterIndex;
         private int m_RandomFlyingMonsterIndex;
-        
+
+        private bool m_IsSP1OnTime;
+        private bool m_IsSP2OnTime;
+        private bool m_IsSP3OnTime;
+
         #endregion
 
         #region Property
-        public static int NormalMonsterCount { get; set; }
-        public static int FlyingMonsterCount { get; set; }
+        public int NormalMonsterCount { get; set; }
+        public int FlyingMonsterCount { get; set; }
 
         public bool IsSP1MonsterSpawned { get; private set; }
         public bool IsSP2MonsterSpawned { get; private set; }
@@ -107,6 +112,7 @@ namespace Manager
         #region Init
         private void Awake()
         {
+            m_StatisticsManager = GetComponent<StatisticsManager>();
             m_EnvironmentManager = GetComponent<EnvironmentManager>();
             m_StageManager = GetComponent<StageManager>();
             m_EntityManager = GetComponent<EntityManager>();
@@ -274,6 +280,9 @@ namespace Manager
             m_Customization.Customize(currentNormalMonster);
 
             currentNormalMonster.Init(initPosition, m_NormalMonsterPoolingObjectArray[m_RandomNormalMonsterIndex], m_StageManager.StatMultiplier);
+            currentNormalMonster.KilledNormalMonsterAction += (normalMonsterType) 
+                => m_StatisticsManager.NormalMonsterKillCount((int)normalMonsterType);
+            currentNormalMonster.EndNormalMonsterAction += () => NormalMonsterCount--;
             currentNormalMonster.gameObject.SetActive(true);
             currentNormalMonster.PlayStartAnimation();
         }
@@ -285,6 +294,9 @@ namespace Manager
             FlyingMonsterCount++;
 
             FlyingMonster currentFlyingMonster = (FlyingMonster)m_FlyingMonsterPoolingObjectArray[0].GetObject(false);
+            currentFlyingMonster.KilledFlyingMonsterAction += (flyingMonsterType) 
+                => m_StatisticsManager.FlyingMonsterKillCount((int)flyingMonsterType);
+            currentFlyingMonster.EndFlyingMonsterAction += () => FlyingMonsterCount--;
             currentFlyingMonster.Init(m_Octree.GetRandomSpawnableArea(), m_StageManager.StatMultiplier, m_FlyingMonsterPoolingObjectArray[0], m_PoisonSpherePooling);
             currentFlyingMonster.gameObject.SetActive(true);
         }
@@ -292,49 +304,54 @@ namespace Manager
 
         #region SpawnSpecialMonsters
         //Original
-        //private void SpawnSpecialMonster(int currentStage)
-        //{
-        //    if (!m_IsActiveSpecialSpawn) return;
-        //    switch (currentStage)
-        //    {
-        //        case 1:
-        //            m_EnvironmentManager.OnRainParticle();
-        //            float time = m_StageManager.GetStageTime(3, 1);
-        //            StartCoroutine(m_EnvironmentManager.RoadWetnessChange(time, true));
-        //            //SpawnSpecialMonster3();
-        //            SpawnSpecialMonster1();
-        //            break;
-        //        case 2:
-        //            SpawnSpecialMonster2();
-        //            break;
-        //        case 3:
-        //            m_EnvironmentManager.OffRainParticle();
-        //            SpawnSpecialMonster3();
-        //            break;
-        //    }
-        //}
-
-        //CustomTest
+        
         private void SpawnSpecialMonster(int currentStage)
         {
             if (!m_IsActiveSpecialSpawn) return;
             switch (currentStage)
             {
                 case 1:
+                    m_EnvironmentManager.OnRainParticle();
+                    float time = m_StageManager.GetStageTime(3, 1);
+                    StartCoroutine(m_EnvironmentManager.RoadWetnessChange(time, true));
+                    //SpawnSpecialMonster3();
                     SpawnSpecialMonster1();
-                    //SpawnSpecialMonster1();
                     break;
                 case 2:
-                    //SpawnSpecialMonster2();
+                    SpawnSpecialMonster2();
                     break;
                 case 3:
-                    //SpawnSpecialMonster3();
+                    m_EnvironmentManager.OffRainParticle();
+                    SpawnSpecialMonster3();
                     break;
             }
         }
+        
+        //private void SpawnSpecialMonster(int currentStage)
+        //{
+        //    if (!m_IsActiveSpecialSpawn) return;
+        //    switch (currentStage)
+        //    {
+        //        case 1:
+        //            //m_EnvironmentManager.OnRainParticle();
+        //            //float time = m_StageManager.GetStageTime(3, 1);
+        //            //StartCoroutine(m_EnvironmentManager.RoadWetnessChange(time, true));
+        //            SpawnSpecialMonster3();
+        //            //SpawnSpecialMonster1();
+        //            break;
+        //        case 2:
+        //            //SpawnSpecialMonster2();
+        //            break;
+        //        case 3:
+        //            //m_EnvironmentManager.OffRainParticle();
+        //            //SpawnSpecialMonster3();
+        //            break;
+        //    }
+        //}
 
         private async void SpawnSpecialMonster1()
         {
+            IsSP1MonsterSpawned = true;
             await m_EnvironmentManager.FogDensityChange(0.015f, 10);
 
             BoxCollider[] initColliders = ExcludeRandomIndex((int)m_CurrentGravityType, out int specificIndex);
@@ -344,14 +361,18 @@ namespace Manager
             Quaternion initRotation = GravityManager.GetSpecificGravityRotation(specificIndex);
 
             SpecialMonster1 specialMonster1 = Instantiate(m_EntityManager.GetSpecialMonster1, initPosition, Quaternion.identity).GetComponent<SpecialMonster1>();
-            specialMonster1.EndSpecialMonsterAction += () => IsSP1MonsterEnd = true;
+            specialMonster1.EndSpecialMonsterAction += () => 
+            {
+                IsSP1MonsterEnd = true;
+                if (!IsSP2MonsterSpawned) SpawnSpecialMonster2();
+            };
             specialMonster1.Init(initRotation, m_StageManager.StatMultiplier);
-
-            IsSP1MonsterSpawned = true;
         }
 
         private async void SpawnSpecialMonster2()
         {
+            if (!IsSP1MonsterEnd) return;
+            IsSP2MonsterSpawned = true;
             await m_EnvironmentManager.FogDensityChange(0.05f, 10);
 
             StartCoroutine(ChangeGravityToYDown());
@@ -370,11 +391,13 @@ namespace Manager
             }
 
             SpecialMonster2 specialMonster2 = Instantiate(m_EntityManager.GetSpecialMonster2, initPosition, Quaternion.identity).GetComponent<SpecialMonster2>();
-            specialMonster2.EndSpecialMonsterAction += () => IsSP2MonsterEnd = true;
-            specialMonster2.EndSpecialMonsterAction += () => GravityManager.CantGravityChange = false;
+            specialMonster2.EndSpecialMonsterAction += () => 
+            {
+                IsSP2MonsterEnd = true;
+                GravityManager.CantGravityChange = false;
+                if (!IsSP3MonsterSpawned) SpawnSpecialMonster3();
+            };
             specialMonster2.Init(m_SP2SpawnPos, m_StageManager.StatMultiplier);
-
-            IsSP2MonsterSpawned = true;
 
             await m_EnvironmentManager.FogDensityChange(0.025f, 10);
         }
@@ -388,6 +411,8 @@ namespace Manager
 
         private async void SpawnSpecialMonster3()
         {
+            if (!IsSP2MonsterEnd) return;
+            IsSP3MonsterSpawned = true;
             await m_EnvironmentManager.FogDensityChange(0.1f,15);
 
             Camera.main.farClipPlane = 120;
@@ -400,7 +425,6 @@ namespace Manager
             specialMonster3.EndSpecialMonsterAction += () => GameManager.GameClear();
             specialMonster3.Init(pathCreator, m_StageManager.StatMultiplier);
 
-            IsSP3MonsterSpawned = true;
             await m_EnvironmentManager.FogDensityChange(0.04f,5);
         }
         #endregion
