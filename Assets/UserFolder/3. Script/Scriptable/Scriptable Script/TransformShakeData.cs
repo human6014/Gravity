@@ -34,12 +34,3 @@ namespace Scriptable
         public float m_FadeOutTime = 0.1f;
     }
 }
-/*
- * Camera Shake 요소들
- * 
- * SP1 Grab
- * 수류탄
- * SP2 Roar
- * Falling
- * 등등....
- */

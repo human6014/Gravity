@@ -1,3 +1,4 @@
+using Scriptable.Monster;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,7 @@ namespace Entity.Unit.Flying
     [RequireComponent(typeof(FlyingMovementController), typeof(FlyingRotationController))]
     public class FlyingMonster : PoolableScript, IMonster
     {
-        [SerializeField] private Scriptable.Monster.FlyingMonsterScriptable settings;
+        [SerializeField] private FlyingMonsterScriptable settings;
 
         private FlyingMovementController m_FlyingMovementController;
         private FlyingRotationController m_FlyingRotationController;
@@ -22,6 +23,9 @@ namespace Entity.Unit.Flying
         private int m_CurrentHP;
 
         private float m_AttackTimer;
+
+        public System.Action<FlyingMonsterType> KilledFlyingMonsterAction { get; set; }
+        public System.Action EndFlyingMonsterAction { get; set; }
 
         private void Awake()
         {
@@ -101,6 +105,7 @@ namespace Entity.Unit.Flying
             m_IsAlive = false;
             m_Rigidbody.useGravity = true;
             m_Rigidbody.constraints = RigidbodyConstraints.None;
+            KilledFlyingMonsterAction?.Invoke(settings.m_MonsterType);
 
             Invoke(nameof(ReturnObject),5);
         }
@@ -108,7 +113,7 @@ namespace Entity.Unit.Flying
 
         public override void ReturnObject()
         {
-            Manager.SpawnManager.FlyingMonsterCount--;
+            EndFlyingMonsterAction?.Invoke();
             m_FlyingMovementController.Dispose();
             m_FlyingRotationController.Dispose();
             m_PoolingObject.ReturnObject(this);

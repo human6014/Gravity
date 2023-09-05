@@ -10,6 +10,14 @@ public class PlayerData : MonoBehaviour
     [SerializeField] private UI.Manager.PlayerUIManager m_PlayerUIManager;
     [SerializeField] private Inventory m_Inventory;
 
+    [Header("SkillPoint")]
+    [Tooltip("플레이어가 소유한 스킬 포인트")]
+    [SerializeField] private int m_SkillPoint = 100;
+
+    [Tooltip("스킬 포인트를 얻기 위한 킬 수")]
+    [SerializeField] private int m_GetSkillKillCount = 5;
+
+    [Header("")]
     [Tooltip("힐 킷 회복량")]
     [SerializeField] private int m_HealKitAmount = 400;
 
@@ -53,13 +61,13 @@ public class PlayerData : MonoBehaviour
     [SerializeField] private int m_MaxPlayerGE = 1000;
 
     [Tooltip("중력 변경 에너지 단위당 회복량")]
-    [SerializeField] private int m_AutoGEHealAmount = 10;
+    [SerializeField] private int m_AutoGEHealAmount = 3;
 
     [Tooltip("중력 변경 회복 할 시간 단위")]
     [SerializeField] private float m_AutoGETime = 0.1f;
 
     [Tooltip("중력 변경 에너지 소모량")]
-    [SerializeField] private int m_GEConsumeAmount = 500;
+    [SerializeField] private int m_GEConsumeAmount = 600;
 
 
     [Header("TE")]
@@ -67,16 +75,18 @@ public class PlayerData : MonoBehaviour
     [SerializeField] private int m_MaxPlayerTE = 1000;
 
     [Tooltip("시간 변경 에너지 단위당 회복량")]
-    [SerializeField] private int m_TEHealAmount = 8;
+    [SerializeField] private int m_TEHealAmount = 6;
 
     [Tooltip("시간 변경 에너지 소모량")]
-    [SerializeField] private int m_TEConsumeAmount = 16;
+    [SerializeField] private int m_TEConsumeAmount = 20;
 
     [Tooltip("시간 변경 회복, 소모 할 시간 단위")]
     [SerializeField] private float m_AutoTETime = 0.1f;
 
     [Tooltip("시간 변경 시작할 최소 TE")]
     [SerializeField] private int m_StartTimeChangeTE = 100;
+
+    [SerializeField] UnityEngine.Events.UnityEvent<int> ChangeSkillPointEvent;
     #endregion
 
     private int m_CurrentPlayerHP;
@@ -104,8 +114,6 @@ public class PlayerData : MonoBehaviour
     private int m_AmountToRealGEConst = 1000;
     private int m_AmountToRealTEConst = 1000;
 
-    private int m_CallCount;
-
     private int m_DeltaTimeInterporateValue;
     private bool m_IsTimeSlow;
 
@@ -125,7 +133,16 @@ public class PlayerData : MonoBehaviour
 
     public bool IsAlive { get; set; } = true;
     public bool IsSameMaxCurrentHP { get => PlayerHP == PlayerMaxHP; }
-
+    private int PlayerSkillPoint 
+    { 
+        get => m_SkillPoint;
+        set
+        {
+            m_SkillPoint = value;
+            ChangeSkillPointEvent?.Invoke(m_SkillPoint);
+        }
+    }
+    
     #region Player current stat
     private int PlayerHP 
     {
@@ -225,6 +242,7 @@ public class PlayerData : MonoBehaviour
         PlayerGE = m_MaxPlayerGE;
         PlayerTE = m_MaxPlayerTE;
         m_PlayerUIManager.Init(m_MaxPlayerHP, m_MaxPlayerMP, m_AmountToRealHPConst, m_RealToAmountHPConst, m_Inventory.HealKitHavingCount);
+        ChangeSkillPointEvent?.Invoke(PlayerSkillPoint);
     }
 
     private void Update()
@@ -348,7 +366,7 @@ public class PlayerData : MonoBehaviour
 
     #region Hit and Attack
     /// <summary>
-    /// 공격 시 적에게 맞았을 때 발동
+    /// 플레이어가 공격 시 적에게 맞았을 때 발동
     /// </summary>
     public void HitEnemy() => m_PlayerUIManager.HitEnemy();
     
@@ -435,7 +453,7 @@ public class PlayerData : MonoBehaviour
     public void PlayerHit(Transform target, int damage, AttackType attackType)
     {
         if(attackType == AttackType.Grab) GrabAction?.Invoke(true, Vector3.zero);
-        else if (attackType == AttackType.Explosion) damage = (int)(damage * 0.33f);
+        else if (attackType == AttackType.Explosion) damage = (int)(damage * 0.25f);
         else if (attackType == AttackType.OnlyDamage && PlayerHP - damage <= 0) damage = PlayerHP - 1;
         damage = Mathf.Max(damage - m_Defense, 0);
 
@@ -452,14 +470,34 @@ public class PlayerData : MonoBehaviour
     {
         //가끔 자기가 쏘고 자기가 맞는거 방지
         if ((int)attackType >= 1 && (int)attackType <= 4) return;
-        if (attackType == AttackType.Explosion) damage = (int)(damage * 0.5f);
+        if (attackType == AttackType.Explosion) damage = (int)(damage * 0.25f);
         damage = Mathf.Max(damage- m_Defense, 0);
 
         UpdatePlayerHP(damage);
     }
     #endregion
 
-    #region SkillEventUI related
+    #region SkillEvent related
+    public void GetSkillPoint(int monsterType, int monsterNumber, int allKillCount)
+    {
+        if (monsterType == 1) PlayerSkillPoint++;
+        else
+        {
+            if (monsterNumber == 4) PlayerSkillPoint += 2;
+            else if (monsterNumber == 3) PlayerSkillPoint++;
+        }
+        if(allKillCount % 5 == 0) PlayerSkillPoint++;
+    }
+
+    public void GetSkillPoint(int point) => PlayerSkillPoint += point;
+    
+    public bool CanSkillUpPoint(int point)
+    {
+        if (PlayerSkillPoint < point) return false;
+        PlayerSkillPoint -= point;
+        return true;
+    }
+
     /// <summary>
     /// UnityEvent로 호출
     /// UI로 무기 획득 이벤트 클릭시 발동
@@ -491,7 +529,7 @@ public class PlayerData : MonoBehaviour
             }
         }
         else m_Inventory.WeaponInfo[slotNumber].m_MagazineRemainBullet += amount;
-        m_PlayerUIManager.RangeWeaponReload(CurrentWeaponInfo.m_MagazineRemainBullet);
+        if(CurrentWeaponInfo != null) m_PlayerUIManager.RangeWeaponReload(CurrentWeaponInfo.m_MagazineRemainBullet);
     }
 
     public void MaxBulletUp(float amount)
@@ -529,22 +567,8 @@ public class PlayerData : MonoBehaviour
 
     public void StaminaConsumeDown(int amount)
     {
-        m_CallCount++;
-        if (m_CallCount == 1)
-        {
-            m_RunningMPConsumeAmount = 3;
-            m_JumpingMPConsumeAmount = 150;
-        }
-        else if (m_CallCount == 2)
-        {
-            m_RunningMPConsumeAmount = 2;
-            m_JumpingMPConsumeAmount = 120;
-        }
-        else if(m_CallCount == 3)
-        {
-            m_RunningMPConsumeAmount = 1;
-            m_JumpingMPConsumeAmount = 90;
-        }
+        m_RunningMPConsumeAmount -= amount;
+        m_JumpingMPConsumeAmount -= amount * 10;
     }
 
     public void StaminaRecoverUp(int amount)

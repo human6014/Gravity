@@ -15,6 +15,9 @@ namespace Manager
             [Tooltip("다음 Wave로 넘어가기 위한 시간")]
             public float[] m_WaveTiming;
 
+            [Tooltip("현재 Stage | Wave 도달 시 지급되는 SkillPoint")]
+            public int[] m_Point;
+
             public float GetWaveTime(int startWave, int endWave)
             {
                 if (endWave > m_WaveTiming.Length) return -1;
@@ -29,7 +32,12 @@ namespace Manager
         [SerializeField] private StageInfo[] m_StageInfo;
 
         [Tooltip("무한 웨이브 시간")]
-        [SerializeField] private float m_InfintyWaveTiming;
+        [SerializeField] private float m_InfinityWaveTiming;
+
+        [Tooltip("무한 웨이브 시간당 지급할 스킬 포인트")]
+        [SerializeField] private int m_InfinityWavePoint;
+
+        [SerializeField] private UnityEngine.Events.UnityEvent<int> WaveChangeEvnet;
 
         private StageInfo m_CurrentStageInfo;
 
@@ -65,7 +73,7 @@ namespace Manager
             }
         }
 
-        public float StatMultiplier => m_StatMultiplier;
+        public float StatMultiplier { get => m_StatMultiplier; }
         #endregion
 
         private void Awake()
@@ -85,7 +93,11 @@ namespace Manager
 
             if (CurrentStage - 1 >= m_StageInfo.Length)
             {
-                if (m_InfintyWaveTiming <= m_WaveTimer) CurrentWave++;
+                if (m_InfinityWaveTiming <= m_WaveTimer)
+                {
+                    CurrentWave++;
+                    WaveChangeEvnet?.Invoke(m_InfinityWavePoint);
+                }
                 return;
             }
 
@@ -96,8 +108,11 @@ namespace Manager
                 if (m_CurrentStageInfo.m_WaveTiming.Length <= CurrentWave - 1)
                 {
                     CurrentStage++;
-                    if(CurrentStage < m_StageInfo.Length) m_CurrentStageInfo = m_StageInfo[CurrentStage - 1];
+                    if (CurrentStage - 1 < m_StageInfo.Length) 
+                        m_CurrentStageInfo = m_StageInfo[CurrentStage - 1];
                 }
+                if (CurrentStage - 1 < m_StageInfo.Length)
+                    WaveChangeEvnet?.Invoke(m_CurrentStageInfo.m_Point[m_CurrentWave - 1]);
             }
         }
 
