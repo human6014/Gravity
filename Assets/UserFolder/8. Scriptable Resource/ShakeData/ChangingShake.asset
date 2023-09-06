@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5de8aa0d21632e4ab3efab46d9966bc, type: 3}
   m_Name: ChangingShake
   m_EditorClassIdentifier: 
-  m_ShakeType: 1
+  m_ShakeType: 2
   m_PosShake: {x: 0.15, y: 0.15, z: 0}
   m_RotShake: {x: 6, y: 8, z: 8}
   m_Magnitude: 1

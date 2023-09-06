@@ -89,6 +89,7 @@ public class PlayerData : MonoBehaviour
     [SerializeField] UnityEngine.Events.UnityEvent<int> ChangeSkillPointEvent;
     #endregion
 
+    #region Field
     private int m_CurrentPlayerHP;
     private int m_CurrentPlayerMP;
     private int m_CurrentPlayerGE;
@@ -116,6 +117,7 @@ public class PlayerData : MonoBehaviour
 
     private int m_DeltaTimeInterporateValue;
     private bool m_IsTimeSlow;
+    #endregion
 
     #region Property
     private WeaponInfo CurrentWeaponInfo { get; set; }
@@ -452,10 +454,17 @@ public class PlayerData : MonoBehaviour
     /// <param name="attackType">공격 종류</param>
     public void PlayerHit(Transform target, int damage, AttackType attackType)
     {
-        if(attackType == AttackType.Grab) GrabAction?.Invoke(true, Vector3.zero);
-        else if (attackType == AttackType.Explosion) damage = (int)(damage * 0.25f);
-        else if (attackType == AttackType.OnlyDamage && PlayerHP - damage <= 0) damage = PlayerHP - 1;
-        damage = Mathf.Max(damage - m_Defense, 0);
+        if (attackType == AttackType.OnlyDamage)
+        {
+            if (PlayerHP - damage <= 0) damage = PlayerHP - 1;
+        }
+        else
+        {
+            if (attackType == AttackType.Grab) GrabAction?.Invoke(true, Vector3.zero);
+            else if (attackType == AttackType.Explosion) damage = (int)(damage * 0.25f);
+            
+            damage = Mathf.Max(damage - m_Defense, 0);
+        }
 
         UpdatePlayerHP(damage);
         m_PlayerUIManager.DisplayHitDirection(target);

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5de8aa0d21632e4ab3efab46d9966bc, type: 3}
   m_Name: SP2RoarShake
   m_EditorClassIdentifier: 
-  m_ShakeType: 7
+  m_ShakeType: 8
   m_PosShake: {x: 0.15, y: 0.15, z: 0.15}
   m_RotShake: {x: 1, y: 1, z: 1}
   m_Magnitude: 1

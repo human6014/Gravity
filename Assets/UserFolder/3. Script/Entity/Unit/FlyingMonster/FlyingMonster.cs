@@ -110,7 +110,6 @@ namespace Entity.Unit.Flying
             Invoke(nameof(ReturnObject),5);
         }
 
-
         public override void ReturnObject()
         {
             EndFlyingMonsterAction?.Invoke();

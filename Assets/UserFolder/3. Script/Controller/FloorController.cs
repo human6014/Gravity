@@ -8,12 +8,8 @@ namespace Controller.Floor
 {
     public class FloorController : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject[] floorObject;
-        public void Start()
-        {
-            AIManager.FloorDetector = this;
-        }
+        [SerializeField] private GameObject[] floorObject;
+        public void Start() => AIManager.FloorDetector = this;
         public GameObject GetNowFloor() => floorObject[(int)GravityManager.CurrentGravityType];
         
     }

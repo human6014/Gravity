@@ -133,7 +133,6 @@ namespace Manager
 
                 if (curSum == -1) return -1;
                 sum += curSum;
-
             }
             return sum;
         }
