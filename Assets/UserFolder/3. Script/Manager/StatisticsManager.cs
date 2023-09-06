@@ -110,7 +110,7 @@ namespace Manager
         {
             switch (type)
             {
-                case 0:
+                case 1:
                     RangeFlyingMonsterKillCount++;
                     break;
             }

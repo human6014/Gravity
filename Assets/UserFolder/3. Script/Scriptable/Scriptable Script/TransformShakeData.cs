@@ -5,6 +5,7 @@ using UnityEngine;
 public enum ShakeType
 {
     Landing,
+    Crouching,
     Changing,
     Reloading,
     Attacking,

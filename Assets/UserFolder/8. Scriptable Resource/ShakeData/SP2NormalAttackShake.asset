@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5de8aa0d21632e4ab3efab46d9966bc, type: 3}
   m_Name: SP2NormalAttackShake
   m_EditorClassIdentifier: 
-  m_ShakeType: 10
+  m_ShakeType: 11
   m_PosShake: {x: 0.03, y: 0.03, z: 0.01}
   m_RotShake: {x: 7.5, y: 7.5, z: 5}
   m_Magnitude: 1

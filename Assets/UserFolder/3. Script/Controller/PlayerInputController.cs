@@ -47,8 +47,6 @@ namespace Controller
         private bool m_ChangeFireMode;      //사격 방식 변경  N                 누르기
         private bool m_Light;               //라이트장착      Q                 누르기
 
-        private bool m_WasCrouch;
-
         //keyDown Movement
         public Action<float, float> MouseMovement { get; set; }
 
@@ -61,7 +59,7 @@ namespace Controller
         public Action<int> ChangeEquipment { get; set; }
 
 
-        public Action<bool> Crouch { get; set; }          //Toggle
+        public Action Crouch { get; set; }        //Toggle
         public Action TimeSlow { get; set; }        //Toggle
 
 
@@ -111,11 +109,7 @@ namespace Controller
             if (m_ChangeFireMode) ChangeFireMode?.Invoke();
 
             m_IsCrouch = Input.GetKeyDown(KeyCode.LeftControl);
-            if (m_IsCrouch)
-            {
-                m_WasCrouch = !m_WasCrouch;
-                Crouch?.Invoke(m_WasCrouch);
-            }
+            if (m_IsCrouch) Crouch?.Invoke();
 
             m_TimeSlow = Input.GetKeyDown(KeyCode.F);
             if (m_TimeSlow) TimeSlow?.Invoke();

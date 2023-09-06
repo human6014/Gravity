@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5de8aa0d21632e4ab3efab46d9966bc, type: 3}
   m_Name: ReloadingShake
   m_EditorClassIdentifier: 
-  m_ShakeType: 2
+  m_ShakeType: 3
   m_PosShake: {x: 0.2, y: 0.2, z: 0}
   m_RotShake: {x: 5, y: 5, z: 1}
   m_Magnitude: 1

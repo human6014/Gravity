@@ -100,6 +100,7 @@ namespace Controller.Player
         private PlayerData m_PlayerData;
         private Camera m_Camera;
         private Rigidbody m_RigidBody;
+        private Coroutine m_CrouchCoroutine;
 
         private Transform m_GrabCameraPosition;
         private Transform m_GrabBodyPosition;
@@ -131,6 +132,8 @@ namespace Controller.Player
         private bool m_WasWalking;
         private bool m_IsWalking;
 
+        private bool m_IsCrouch;
+
         private bool m_IsSlowMode;
 
         public MouseLook MouseLook { get => m_MouseLook; }
@@ -147,7 +150,6 @@ namespace Controller.Player
         public float BobSpeed() =>
             m_RigidBody.velocity.magnitude + (m_MovementSpeed * (m_IsWalking ? m_WalkStepLenghten : m_RunStepLenghten));
 
-        #region UnityFunction
         #region Init
         private void Awake()
         {
@@ -197,6 +199,7 @@ namespace Controller.Player
         }
         #endregion
 
+        #region Update & FixedUpdate
         private void Update()
         {
             if (m_IsGrabed)
@@ -300,6 +303,7 @@ namespace Controller.Player
         }
         #endregion
 
+        #region ETC
         private bool GroundCheck(out RaycastHit hitInfo)
             => Physics.Raycast(transform.position, GravityManager.GravityVector, out hitInfo, m_CapsuleCollider.height * 0.5f + m_InterporationDist, m_GroundLayer);
 
@@ -347,10 +351,14 @@ namespace Controller.Player
                     break;
             }
         }
+        #endregion
 
+        #region Jump
         private void TryJump()
         {
             if (!m_IsGround || m_IsJumping || !m_PlayerData.CanJumping()) return;
+
+            if (m_IsCrouch) DoCrouch(false);
 
             ApplyToGravity(false, m_JumpSpeed * -GravityManager.GravityDirectionValue);
             m_PlayerData.PlayerState.SetBehaviorJumping(true);
@@ -358,6 +366,7 @@ namespace Controller.Player
 
             m_IsJumping = true;
         }
+        #endregion
 
         #region Add Detail
         private void ProgressStepCycle(float speed)
@@ -425,7 +434,11 @@ namespace Controller.Player
             m_IsMoving = m_Input != Vector2.zero;
 
             if (!m_IsMoving) m_PlayerData.PlayerState.SetBehaviorIdle();
-            else m_PlayerData.PlayerState.SetBehaviorWalking();
+            else
+            {
+                if (m_IsCrouch) DoCrouch(false);
+                m_PlayerData.PlayerState.SetBehaviorWalking();
+            }
 
             if (m_Input.sqrMagnitude > 1) m_Input.Normalize();
 
@@ -456,13 +469,25 @@ namespace Controller.Player
         #endregion
 
         #region Crouch
-        private void TryCrouch(bool isCrouch)
+        private void TryCrouch()
         {
-            m_PlayerData.PlayerState.SetBehaviorCrouching(isCrouch);
+            if (m_PlayerData.PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running ||
+                m_PlayerData.PlayerState.PlayerBehaviorState == PlayerBehaviorState.Jumping) return;
 
-            Vector3 posture = isCrouch ? m_CrouchPos : m_IdlePos;
-            StopAllCoroutines();
-            StartCoroutine(CrouchPos(m_CrouchTime, m_RightAxisTransform, posture));
+            DoCrouch(!m_IsCrouch);
+        }
+
+        private void DoCrouch(bool state)
+        {
+            m_IsCrouch = state;
+            m_PlayerData.PlayerState.SetBehaviorCrouching(m_IsCrouch);
+
+            m_PlayerShakeController.ShakeAllTransform(ShakeType.Crouching);
+
+            Vector3 posture = m_IsCrouch ? m_CrouchPos : m_IdlePos;
+
+            if (m_CrouchCoroutine != null) StopCoroutine(m_CrouchCoroutine);
+            m_CrouchCoroutine = StartCoroutine(CrouchPos(m_CrouchTime, m_RightAxisTransform, posture));
         }
 
         private IEnumerator CrouchPos(float runTotalTime, Transform target, Vector3 endLocalPosition)

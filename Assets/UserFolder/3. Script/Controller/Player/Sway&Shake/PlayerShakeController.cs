@@ -32,11 +32,7 @@ namespace Controller.Player.Utility
 
         public void ShakeAllTransform(ShakeType shakeType, float magnitudeMultiplier = 1, float roughnessMultiplier = 1)
         {
-            if ((int)shakeType >= ShakeTypeLength)
-            {
-                shakeType = ShakeType.Landing;
-                Debug.LogWarning("Length diffrent");
-            }
+            if ((int)shakeType >= ShakeTypeLength) shakeType = ShakeType.Landing;
 
             foreach (TransformShake cs in m_CameraShakes)
                 cs.ShakeOnce(m_CameraShakeData[(int)shakeType], magnitudeMultiplier, roughnessMultiplier);
