@@ -1510,7 +1510,7 @@ GameObject:
   - component: {fileID: 6589044442732873841}
   - component: {fileID: 1535986689438265578}
   m_Layer: 26
-  m_Name: poison_aura_flies (1)
+  m_Name: poison_aura_flies
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
