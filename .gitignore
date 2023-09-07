@@ -74,8 +74,8 @@ crashlytics-build.properties
 #Custom
 !*.meta
 *.tga
-*.png
 Assets/Asset/AutoLOD.meta
 Assets/Asset/AutoLOD/*
 Assets/Asset/**/*.png
 Assets/Asset/Titanockarce/Materials/Textures/T_Titanockarce_MetallicSmoothness.tga
+Assets/UserFolder/7. Material/Entity/Monster
