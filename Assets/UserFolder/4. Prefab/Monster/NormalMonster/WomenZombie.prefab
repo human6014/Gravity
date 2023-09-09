@@ -2742,7 +2742,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_OriginalObject: {fileID: 1572683703547560980}
   m_RagDollObject: {fileID: 5896112819602313812}
-  m_MaxDepth: 8
+  m_MaxDepth: 7
 --- !u!54 &736458410580074433
 Rigidbody:
   m_ObjectHideFlags: 0
