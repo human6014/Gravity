@@ -44,7 +44,7 @@ namespace Entity.Unit
                 mat[0] = materialStructs[0].partMaterials[bodyType];
                 mat[1] = materialStructs[1].partMaterials[trouserType];
 
-                skinnedRenderer.materials = mat;
+                skinnedRenderer.sharedMaterials = mat;
             }
         }
     }

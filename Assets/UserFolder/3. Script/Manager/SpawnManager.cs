@@ -80,7 +80,7 @@ namespace Manager
 
         #region Normal Value
         private GravityType m_CurrentGravityType = GravityType.yDown;
-        private readonly float[] m_Probs = new float[] { 52, 21, 21, 4, 2 };
+        private readonly float[] m_Probs = new float[] { 50, 19, 19, 8, 4 };
 
         private float m_Total = 0;
 
@@ -142,12 +142,6 @@ namespace Manager
         {
             int normalMonsterArrayLength = m_EntityManager.GetNormalMonsterArrayLength();
             int flyingMonsterArrayLength = m_EntityManager.GetFlyingMonsterArrayLength();
-
-            if (normalMonsterArrayLength != normalMonsterPoolingCount.Length)
-                Debug.LogError("Normal monster pooling count is different from the number of pooling object's length");
-            if (flyingMonsterArrayLength != flyingMonsterPoolingCount.Length)
-                Debug.LogError("Flying monster pooling count is different from the number of pooling object's length");
-
 
             //normal monster ÀÎµ¦½º ¼ø¼­
             //urban -> oldman -> women -> big -> giant
@@ -311,48 +305,26 @@ namespace Manager
             switch (currentStage)
             {
                 case 1:
-                    m_EnvironmentManager.OnRainParticle();
-                    float time = m_StageManager.GetStageTime(3, 1);
-                    StartCoroutine(m_EnvironmentManager.RoadWetnessChange(time, true));
-                    //SpawnSpecialMonster3();
-                    SpawnSpecialMonster1();
+                    //m_EnvironmentManager.OnRainParticle();
+                    //float time = m_StageManager.GetStageTime(3, 1);
+                    //StartCoroutine(m_EnvironmentManager.RoadWetnessChange(time, true));
+                    IsSP2MonsterEnd = true;
+                    SpawnSpecialMonster3();
+                    //SpawnSpecialMonster1();
                     break;
                 case 2:
-                    SpawnSpecialMonster2();
+                    //SpawnSpecialMonster2();
                     break;
                 case 3:
-                    m_EnvironmentManager.OffRainParticle();
-                    SpawnSpecialMonster3();
+                    //m_EnvironmentManager.OffRainParticle();
+                    //SpawnSpecialMonster3();
                     break;
             }
         }
-        
-        //private void SpawnSpecialMonster(int currentStage)
-        //{
-        //    if (!m_IsActiveSpecialSpawn) return;
-        //    switch (currentStage)
-        //    {
-        //        case 1:
-        //            //m_EnvironmentManager.OnRainParticle();
-        //            //float time = m_StageManager.GetStageTime(3, 1);
-        //            //StartCoroutine(m_EnvironmentManager.RoadWetnessChange(time, true));
-        //            SpawnSpecialMonster3();
-        //            //SpawnSpecialMonster1();
-        //            break;
-        //        case 2:
-        //            //SpawnSpecialMonster2();
-        //            break;
-        //        case 3:
-        //            //m_EnvironmentManager.OffRainParticle();
-        //            //SpawnSpecialMonster3();
-        //            break;
-        //    }
-        //}
 
-        private async void SpawnSpecialMonster1()
+        private void SpawnSpecialMonster1()
         {
             IsSP1MonsterSpawned = true;
-            await m_EnvironmentManager.FogDensityChange(0.015f, 10);
 
             BoxCollider[] initColliders = ExcludeRandomIndex((int)m_CurrentGravityType, out int specificIndex);
             BoxCollider initCollider = GetClosetArea(initColliders);
@@ -399,7 +371,7 @@ namespace Manager
             };
             specialMonster2.Init(m_SP2SpawnPos, m_StageManager.StatMultiplier);
 
-            await m_EnvironmentManager.FogDensityChange(0.025f, 10);
+            await m_EnvironmentManager.FogDensityChange(0.03f, 10);
         }
 
         private IEnumerator ChangeGravityToYDown()

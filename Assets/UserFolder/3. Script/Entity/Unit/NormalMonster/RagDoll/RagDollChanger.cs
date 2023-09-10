@@ -8,12 +8,10 @@ public class RagDollChanger : MonoBehaviour
     [SerializeField] private GameObject m_RagDollObject;
     [SerializeField] private int m_MaxDepth = 8;
 
-    private Transform m_OriginalRoot;
+    private Transform m_OriginalRoot; 
+    private Transform m_OriginalChild;
     private Transform m_RagDollRoot;
     private Transform m_RagChild;
-    private Transform m_OriginalChild;
-
-    
 
     private void Awake()
     {
@@ -37,6 +35,7 @@ public class RagDollChanger : MonoBehaviour
     }
     
     // 성능 이슈 심할 경우 케싱 해서 사용
+    // 그래도 심할 경우 Bone만 위치 변경
     public void CopyToRagDoll(Transform original, Transform ragDoll, int depth)
     {
         for(int i = 0; i < original.childCount; i++)

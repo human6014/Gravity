@@ -10940,8 +10940,8 @@ GameObject:
   - component: {fileID: 5514971311717915326}
   - component: {fileID: 524821502989327513}
   - component: {fileID: 524821502989327512}
+  - component: {fileID: 1399818473419949721}
   - component: {fileID: 5686195968241137655}
-  - component: {fileID: 4750412438935421244}
   m_Layer: 10
   m_Name: SpecialMonster3
   m_TagString: Untagged
@@ -11034,6 +11034,24 @@ MonoBehaviour:
   m_AlighnmentWeight: 5
   m_SeparationWeight: 4.5
   m_NeighbourDist: 3
+--- !u!114 &1399818473419949721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6224329036923724208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6d5374ba03d5344e8a47a0cc3a82e90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BoidUnitPrefab: {fileID: 7676677955049140313, guid: 2b192943e52c3184e9eb80241fa23f25,
+    type: 3}
+  m_BoidPollingCount: 450
+  m_SpawnRange: 3
+  m_BoidsMonsterTraceTime: 10
+  m_PatrolTime: 25
 --- !u!114 &5686195968241137655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11046,26 +11064,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12d7cf1e785428c429304c4b2d5c1934, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!205 &4750412438935421244
-LODGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6224329036923724208}
-  serializedVersion: 2
-  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
-  m_Size: 1
-  m_FadeMode: 0
-  m_AnimateCrossFading: 0
-  m_LastLODIsBillboard: 0
-  m_LODs:
-  - screenRelativeHeight: 0.053059258
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 0}
-  - screenRelativeHeight: 0.004976331
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 0}
-  m_Enabled: 1

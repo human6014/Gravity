@@ -75,14 +75,14 @@ namespace Entity.Unit
             foreach (Transform child in activeHead)
             {
                 skinRend = child.GetComponent<Renderer>();
-                skinRend.material = materialStructs[0].partMaterials[bodyType];
+                skinRend.sharedMaterial = materialStructs[0].partMaterials[bodyType];
             }
 
             // Body_Exposed arms
             foreach (Transform child in arm)
             {
                 skinRend = child.GetComponent<Renderer>();
-                skinRend.material = materialStructs[0].partMaterials[bodyType];
+                skinRend.sharedMaterial = materialStructs[0].partMaterials[bodyType];
             }
 
 
@@ -90,20 +90,20 @@ namespace Entity.Unit
             foreach (Transform child in torso)
             {
                 skinRend = child.GetComponent<Renderer>();
-                skinRend.material = materialStructs[0].partMaterials[bodyType];
+                skinRend.sharedMaterial = materialStructs[0].partMaterials[bodyType];
             }
 
             foreach (Transform child in footL)
             {
                 skinRend = child.GetComponent<Renderer>();
-                skinRend.material = materialStructs[0].partMaterials[bodyType];
+                skinRend.sharedMaterial = materialStructs[0].partMaterials[bodyType];
             }
 
             //Trousers
             foreach (Transform child in trousers)
             {
                 skinRend = child.GetComponent<Renderer>();
-                skinRend.material = materialStructs[1].partMaterials[trouserType];
+                skinRend.sharedMaterial = materialStructs[1].partMaterials[trouserType];
             }
 
 
@@ -121,7 +121,7 @@ namespace Entity.Unit
                 foreach (Transform child in tshirt)
                 {
                     skinRend = child.GetComponent<Renderer>();
-                    skinRend.material = materialStructs[2].partMaterials[tshirtType - 1];
+                    skinRend.sharedMaterial = materialStructs[2].partMaterials[tshirtType - 1];
                 }
             }
 
@@ -139,7 +139,7 @@ namespace Entity.Unit
                 foreach (Transform child in tanktopT)
                 {
                     skinRend = child.GetComponent<Renderer>();
-                    skinRend.material = materialStructs[3].partMaterials[tanktopType - 1];
+                    skinRend.sharedMaterial = materialStructs[3].partMaterials[tanktopType - 1];
                 }
             }
         }

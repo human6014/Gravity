@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: BoidMonsterSetting
   m_EditorClassIdentifier: 
   speedRange: {x: 7, y: 9}
-  cohesionWeight: 3
-  alignmentWeight: 5
+  cohesionWeight: 4
+  alignmentWeight: 6
   separationWeight: 4
   targetWeight: 6
   boundsWeight: 10
@@ -22,7 +22,7 @@ MonoBehaviour:
   egoWeight: 1
   obstacleDistance: 4
   FOVAngle: 120
-  maxNeighbourCount: 4
+  maxNeighbourCount: 3
   neighbourDistance: 3
   maxMovementRange: 9
   patrolMovementRange: 90

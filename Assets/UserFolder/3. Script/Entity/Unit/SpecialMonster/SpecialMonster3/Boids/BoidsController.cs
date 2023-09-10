@@ -57,7 +57,7 @@ namespace Entity.Unit.Special
         private WaitForSeconds m_TraceOffSeconds;
         private WaitForSeconds m_PatrolOffSeconds;
 
-        private BoidData[] m_BoidData;
+        private BoidData[] m_BoidData = new BoidData[600];
         private ComputeBuffer m_ComputeBuffer;
 
         private readonly List<BoidsMonster> m_BoidMonsters = new List<BoidsMonster>();
@@ -101,9 +101,6 @@ namespace Entity.Unit.Special
             int numBoids = m_BoidMovement.Count;
             if (numBoids <= 1) return;
 
-            if (m_BoidData == null || m_BoidData.Length != numBoids)
-                m_BoidData = new BoidData[numBoids];
-
 
             for (int i = 0; i < numBoids; i++)
             {
@@ -111,7 +108,7 @@ namespace Entity.Unit.Special
                 m_BoidData[i].m_Foward = m_BoidMovement[i].transform.forward;
             }
 
-            m_ComputeBuffer = new ComputeBuffer(numBoids, BoidData.Size);
+            m_ComputeBuffer = new ComputeBuffer(m_BoidData.Length, BoidData.Size);
             m_ComputeBuffer.SetData(m_BoidData);
             m_ComputeShader.SetBuffer(0, "boidInfo", m_ComputeBuffer);
             m_ComputeShader.SetInt("numberBoids", numBoids);

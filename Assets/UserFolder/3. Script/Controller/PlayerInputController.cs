@@ -45,7 +45,6 @@ namespace Controller
         private bool m_Heal;                //회복            E                 누르기
         private bool m_TimeSlow;            //시간 슬로우     F                 누르기
         private bool m_ChangeFireMode;      //사격 방식 변경  N                 누르기
-        private bool m_Light;               //라이트장착      Q                 누르기
 
         //keyDown Movement
         public Action<float, float> MouseMovement { get; set; }
@@ -67,7 +66,6 @@ namespace Controller
         public Action Reload { get; set; }          //Trigger
         public Action Jump { get; set; }            //Trigger
         public Action Heal { get; set; }            //Trigger
-        public Action Light { get; set; }
 
         //key
         public Action<bool> Aiming { get; set; }        //Down
@@ -101,9 +99,6 @@ namespace Controller
 
             m_Heal = Input.GetKeyDown(KeyCode.E);
             if (m_Heal) Heal?.Invoke();
-
-            m_Light = Input.GetKeyDown(KeyCode.Q);
-            if (m_Light) Light?.Invoke();
 
             m_ChangeFireMode = Input.GetKeyDown(KeyCode.N);
             if (m_ChangeFireMode) ChangeFireMode?.Invoke();
