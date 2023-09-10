@@ -1116,7 +1116,7 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.29928184
+  - screenRelativeHeight: 0.30253002
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 1581823979088502788}
@@ -9472,7 +9472,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_OriginalObject: {fileID: 823408897669662156}
   m_RagDollObject: {fileID: 3734599987646485557}
-  m_MaxDepth: 8
+  m_MaxDepth: 7
 --- !u!54 &3657077992934031410
 Rigidbody:
   m_ObjectHideFlags: 0

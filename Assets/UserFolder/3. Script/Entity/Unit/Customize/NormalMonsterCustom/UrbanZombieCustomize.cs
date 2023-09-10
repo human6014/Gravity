@@ -65,13 +65,13 @@ namespace Entity.Unit
             foreach (Transform child in bodyExposedHand)
             {
                 skinRend = child.GetComponent<Renderer>();
-                skinRend.material = materialStructs[0].partMaterials[bodyType];
+                skinRend.sharedMaterial = materialStructs[0].partMaterials[bodyType];
             }
 
             foreach (Transform child in bodyExposedTrouser)
             {
                 skinRend = child.GetComponent<Renderer>();
-                skinRend.material = materialStructs[1].partMaterials[trouserType];
+                skinRend.sharedMaterial = materialStructs[1].partMaterials[trouserType];
             }
 
             if (headType == 0)
@@ -80,7 +80,7 @@ namespace Entity.Unit
                 foreach (Transform child in head_A)
                 {
                     skinRend = child.GetComponent<Renderer>();
-                    skinRend.material = materialStructs[0].partMaterials[bodyType];
+                    skinRend.sharedMaterial = materialStructs[0].partMaterials[bodyType];
                 }
             }
             else
@@ -89,7 +89,7 @@ namespace Entity.Unit
                 foreach (Transform child in head_B)
                 {
                     skinRend = child.GetComponent<Renderer>();
-                    skinRend.material = materialStructs[0].partMaterials[bodyType];
+                    skinRend.sharedMaterial = materialStructs[0].partMaterials[bodyType];
                 }
             }
             //Head Type
@@ -104,7 +104,7 @@ namespace Entity.Unit
                 mat[0] = materialStructs[0].partMaterials[bodyType];
                 mat[1] = materialStructs[1].partMaterials[trouserType];
 
-                skinRend.materials = mat;
+                skinRend.sharedMaterials = mat;
             }
 
             // TankTop
@@ -117,7 +117,7 @@ namespace Entity.Unit
                 foreach (Transform child in tanktop)
                 {
                     skinRend = child.GetComponent<Renderer>();
-                    skinRend.material = materialStructs[3].partMaterials[tanktopType - 1];
+                    skinRend.sharedMaterial = materialStructs[3].partMaterials[tanktopType - 1];
                 }
                 return;
             }
@@ -135,7 +135,7 @@ namespace Entity.Unit
                 foreach (Transform child in hoodie)
                 {
                     skinRend = child.GetComponent<Renderer>();
-                    skinRend.material = materialStructs[2].partMaterials[hoodieType - 1];
+                    skinRend.sharedMaterial = materialStructs[2].partMaterials[hoodieType - 1];
                 }
                 tanktop.gameObject.SetActive(false);
             }

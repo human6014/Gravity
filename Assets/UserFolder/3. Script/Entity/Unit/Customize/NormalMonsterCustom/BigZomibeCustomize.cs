@@ -48,7 +48,7 @@ namespace Entity.Unit
 
                 mat[0] = materialStructs[1].partMaterials[trouserType];
                 mat[1] = materialStructs[0].partMaterials[bodyType];
-                skinRend.materials = mat;
+                skinRend.sharedMaterials = mat;
             }
 
             if (shirtType < 1) shirt.gameObject.SetActive(false);
@@ -58,7 +58,7 @@ namespace Entity.Unit
                 foreach (Transform child in shirt)
                 {
                     skinRend = child.GetComponent<Renderer>();
-                    skinRend.material = materialStructs[0].partMaterials[shirtType - 1];
+                    skinRend.sharedMaterial = materialStructs[0].partMaterials[shirtType - 1];
                 }
             }
         }

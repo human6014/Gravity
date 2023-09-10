@@ -1029,7 +1029,7 @@ LODGroup:
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 8144110605145061942}
-  - screenRelativeHeight: 0.006
+  - screenRelativeHeight: 0.024626618
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 6470709865276983570}
@@ -2742,7 +2742,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_OriginalObject: {fileID: 1572683703547560980}
   m_RagDollObject: {fileID: 5896112819602313812}
-  m_MaxDepth: 7
+  m_MaxDepth: 6
 --- !u!54 &736458410580074433
 Rigidbody:
   m_ObjectHideFlags: 0

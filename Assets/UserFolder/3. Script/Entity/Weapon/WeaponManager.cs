@@ -26,7 +26,6 @@ namespace Manager.Weapon
         #region SerializeField
         [SerializeField] private Transform m_Pivot;
         [SerializeField] private Syringe m_Syringe;
-        [SerializeField] private FlashLight m_FlashLight; 
 
         [Header("Pooling")]
         [SerializeField] private Transform m_ActiveObjectPool;
@@ -39,7 +38,6 @@ namespace Manager.Weapon
         private PlayerData m_PlayerData;
 
         private int m_CurrentEquipIndex = -1; //현재 장착하고 있는 무기 슬롯 번호
-        private const int m_ToolKitToEquipIndex = 5;
         private bool m_IsInteracting;
 
         public ObjectPoolManager.PoolingObject[] EffectPoolingObjectArray { get; private set; }
@@ -74,7 +72,6 @@ namespace Manager.Weapon
 
             playerInputController.ChangeEquipment += TryWeaponChange;
             playerInputController.Heal += TryHealInteract;
-            playerInputController.Light += () => TryWeaponChange(m_ToolKitToEquipIndex);
             m_PlayerData.WeaponDataFunc += RegisterWeapon;
             m_PlayerData.ReInit += () => ((ThrowingWeapon)m_CurrentWeapon).ReInit();
         }
