@@ -31,7 +31,12 @@ namespace Manager
         {
             IsGameEnd = false;
 
-            if(m_IsFixedFrameRate) Application.targetFrameRate = m_FrameRate;
+            
+        }
+
+        private void Start()
+        {
+            if (m_IsFixedFrameRate) Application.targetFrameRate = m_FrameRate;
         }
     }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e06f8beb6c4af3c4cb7824f60e80ff08, type: 3}
   m_Name: BoidMonsterSetting
   m_EditorClassIdentifier: 
-  speedRange: {x: 7, y: 9}
+  speedRange: {x: 7, y: 8}
   cohesionWeight: 4
   alignmentWeight: 6
   separationWeight: 4

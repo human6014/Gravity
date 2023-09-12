@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class OrientationRotate : MonoBehaviour
 {
-    private void Update() 
-        => transform.rotation = Quaternion.LookRotation(Vector3.forward,Vector3.up);
+    private void Update()
+    {
+        transform.forward = Vector3.forward;
+        transform.up = Vector3.up;
+    }
 }
