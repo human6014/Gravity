@@ -232,8 +232,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 6.9211564, y: 1.6125445, z: 0.5291959}
-  m_Center: {x: -0.04949762, y: 0.13684535, z: 0.044315554}
+  m_Size: {x: 6.9211564, y: 1.6125445, z: 0.67309153}
+  m_Center: {x: -0.049497537, y: 0.13684535, z: 0.041758075}
 --- !u!65 &3975603662071940249
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -245,8 +245,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 6.942245, y: 0.64501524, z: 2.3718657}
-  m_Center: {x: -0.02829028, y: 0.767328, z: 0.016360523}
+  m_Size: {x: 6.9422455, y: 0.64501524, z: 3.3224318}
+  m_Center: {x: -0.028290443, y: 0.767328, z: -0.02364362}
 --- !u!65 &3235815786971677857
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -258,8 +258,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 6.942245, y: 0.64501524, z: 1.5295719}
-  m_Center: {x: -0.028290281, y: 0.17, z: 0.04085315}
+  m_Size: {x: 6.9422455, y: 0.64501524, z: 1.956726}
+  m_Center: {x: -0.02829039, y: 0.17000003, z: -0.025224732}
 --- !u!1 &3396433348247100363
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,8 +305,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 6.9211564, y: 1.5796514, z: 0.5291959}
-  m_Center: {x: -0.049497616, y: 0.15329194, z: 0.04431557}
+  m_Size: {x: 6.9211564, y: 1.5796514, z: 0.6599255}
+  m_Center: {x: -0.049497467, y: 0.15329194, z: 0.0356968}
 --- !u!65 &1859329621052645323
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -318,8 +318,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 6.942245, y: 0.64501524, z: 2.3718657}
-  m_Center: {x: -0.02829028, y: 0.767328, z: 0.016360523}
+  m_Size: {x: 6.942245, y: 0.64501524, z: 2.6736207}
+  m_Center: {x: -0.028290333, y: 0.76732796, z: -0.021112634}
 --- !u!65 &1002692956871470032
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -331,8 +331,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 6.942245, y: 0.64501524, z: 1.5295719}
-  m_Center: {x: -0.028290281, y: 0.17, z: 0.04085315}
+  m_Size: {x: 6.942245, y: 0.64501524, z: 1.7197223}
+  m_Center: {x: -0.028290344, y: 0.17, z: 0.035829727}
 --- !u!1 &3938430041375095973
 GameObject:
   m_ObjectHideFlags: 0

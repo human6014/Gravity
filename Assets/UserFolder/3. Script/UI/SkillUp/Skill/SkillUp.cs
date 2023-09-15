@@ -11,6 +11,7 @@ namespace UI.Event
         [SerializeField] private Text m_PointCostText;
 
         [SerializeField] private int m_SkillPointCost = 5;
+        [SerializeField] private int m_SkillPointIncreseRate = 0;
         [SerializeField] private int m_MaxLevel = 10;
 
         private PlayerData m_PlayerData;

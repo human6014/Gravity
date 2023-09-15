@@ -4,6 +4,8 @@ using UnityEngine;
 using Entity.Unit.Flying;
 using System.Linq;
 using Manager;
+using System.Threading.Tasks;
+using UnityEngine.Rendering;
 
 namespace Entity.Unit.Special
 {
@@ -71,7 +73,7 @@ namespace Entity.Unit.Special
 
         public bool IsTraceAndBackPlayer { get; private set; }
         public bool IsPatrolBoids { get; private set; }
-
+        public bool CanDispatch { get; private set; }
         public System.Action<int> ReturnChildObject { get; set; }
 
         private void Awake()
@@ -96,36 +98,41 @@ namespace Entity.Unit.Special
             poolingObj.GenerateObj(m_BoidPollingCount);
         }
 
-        public void BoidsDispatch()
+        public IEnumerator BoidsDispatch()
         {
-            int numBoids = m_BoidMovement.Count;
-            if (numBoids <= 1) return;
-
-
-            for (int i = 0; i < numBoids; i++)
+            while (true)
             {
-                m_BoidData[i].m_Position = m_BoidMovement[i].transform.position;
-                m_BoidData[i].m_Foward = m_BoidMovement[i].transform.forward;
+                int numBoids = m_BoidMovement.Count;
+                if (numBoids <= 1) yield break;
+                for (int i = 0; i < numBoids; i++)
+                {
+                    m_BoidData[i].m_Position = m_BoidMovement[i].transform.position;
+                    m_BoidData[i].m_Foward = m_BoidMovement[i].transform.forward;
+                }
+
+                m_ComputeBuffer = new ComputeBuffer(m_BoidData.Length, BoidData.Size);
+                m_ComputeBuffer.SetData(m_BoidData);
+                m_ComputeShader.SetBuffer(0, "boidInfo", m_ComputeBuffer);
+                m_ComputeShader.SetInt("numberBoids", numBoids);
+
+                int threadGroups = Mathf.CeilToInt(numBoids / (float)m_ThreadGroupSize);
+
+                m_ComputeShader.Dispatch(0, threadGroups, 1, 1);
+
+                AsyncGPUReadbackRequest req = AsyncGPUReadback.Request(m_ComputeBuffer);
+
+                yield return new WaitUntil(() => req.done);
+                m_ComputeBuffer.GetData(m_BoidData);
+
+                for (int i = 0; i < m_BoidMovement.Count; i++)
+                {
+                    m_BoidMovement[i].CohesionVector = m_BoidData[i].cohesionVector;
+                    m_BoidMovement[i].AlignmentVector = m_BoidData[i].alignmentVector;
+                    m_BoidMovement[i].SeparationVector = m_BoidData[i].separationVector;
+                }
+
+                m_ComputeBuffer.Release();
             }
-
-            m_ComputeBuffer = new ComputeBuffer(m_BoidData.Length, BoidData.Size);
-            m_ComputeBuffer.SetData(m_BoidData);
-            m_ComputeShader.SetBuffer(0, "boidInfo", m_ComputeBuffer);
-            m_ComputeShader.SetInt("numberBoids", numBoids);
-
-            int threadGroups = Mathf.CeilToInt(numBoids / (float)m_ThreadGroupSize);
-            m_ComputeShader.Dispatch(0, threadGroups, 1, 1);
-
-            m_ComputeBuffer.GetData(m_BoidData);
-
-            for (int i = 0; i < m_BoidMovement.Count; i++)
-            {
-                m_BoidMovement[i].CohesionVector = m_BoidData[i].cohesionVector;
-                m_BoidMovement[i].AlignmentVector = m_BoidData[i].alignmentVector;
-                m_BoidMovement[i].SeparationVector = m_BoidData[i].separationVector;
-            }
-
-            m_ComputeBuffer.Release();
         }
 
         public int GenerateBoidMonster(int spawnCount)

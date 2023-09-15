@@ -398,15 +398,15 @@ LODGroup:
   m_AnimateCrossFading: 1
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.213
+  - screenRelativeHeight: 0.24052604
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 8851200482830047611}
-  - screenRelativeHeight: 0.045369
+  - screenRelativeHeight: 0.09900731
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 4347257962201188701}
-  - screenRelativeHeight: 0.01
+  - screenRelativeHeight: 0.0446571
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7688802174443677184}
@@ -437,7 +437,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7702937224451520632}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 7.225, z: -2.917}
+  m_LocalPosition: {x: 0, y: 7.196, z: -2.938}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -456,13 +456,13 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 28
-  m_Range: 12
-  m_SpotAngle: 165.00407
-  m_InnerSpotAngle: 90.59884
+  m_Intensity: 45
+  m_Range: 14
+  m_SpotAngle: 145
+  m_InnerSpotAngle: 100
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 1
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -490,7 +490,7 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 1568641
@@ -520,7 +520,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Version: 1
   m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 1
+  m_AdditionalLightsShadowResolutionTier: 2
   m_LightLayerMask: 1
   m_CustomShadowLayers: 0
   m_ShadowLayerMask: 1

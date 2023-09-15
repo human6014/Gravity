@@ -13,7 +13,8 @@ namespace Entity.Unit.Flying
 
         private Rigidbody m_Rigidbody;
         private CapsuleCollider m_CapsuleCollider;
-        private BoidsMovementCPU m_BoidsMovement;
+        //private BoidsMovementCPU m_BoidsMovement;
+        private BoidsMovement m_BoidsMovement;
         private PlayerData m_PlayerData;
 
         private int m_CurrentHP;
@@ -27,7 +28,7 @@ namespace Entity.Unit.Flying
 
         private void Awake()
         {
-            m_BoidsMovement = GetComponent<BoidsMovementCPU>();
+            m_BoidsMovement = GetComponent<BoidsMovement>();
             m_Rigidbody = GetComponent<Rigidbody>();
             m_CapsuleCollider = GetComponent<CapsuleCollider>();
 

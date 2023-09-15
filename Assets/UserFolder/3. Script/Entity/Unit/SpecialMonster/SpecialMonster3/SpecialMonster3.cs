@@ -17,8 +17,8 @@ namespace Entity.Unit.Special
         private WaitForSeconds m_NormalAttackWait;
         private ObjectPoolManager.PoolingObject m_PollingObject;
         private SP3AnimationController m_SP3AnimationController;
-        //private BoidsController m_BoidsController;
-        private BoidsContollerCPU m_BoidsController;
+        private BoidsController m_BoidsController;
+        //private BoidsContollerCPU m_BoidsController;
         private ParticleEndSystem m_ParticleEndSystem;
         private PathFollower m_PathFollower;
         private Rigidbody m_Rigidbody;
@@ -72,8 +72,8 @@ namespace Entity.Unit.Special
         {
             m_SP3AnimationController = GetComponentInChildren<SP3AnimationController>();
             m_ParticleEndSystem = GetComponentInChildren<ParticleEndSystem>();
-            //m_BoidsController = GetComponent<BoidsController>();
-            m_BoidsController = GetComponent<BoidsContollerCPU>();
+            m_BoidsController = GetComponent<BoidsController>();
+            //m_BoidsController = GetComponent<BoidsContollerCPU>();
             m_PathFollower = GetComponent<PathFollower>();
             m_Rigidbody = GetComponent<Rigidbody>();
 
@@ -97,6 +97,8 @@ namespace Entity.Unit.Special
             m_CurrentHP += m_BoidsController.GenerateBoidMonster(m_Setting.m_BoidsSpawnCount);
             
             m_RespawnBoidsHP = (int)(m_CurrentHP * 0.3f);
+
+            StartCoroutine(m_BoidsController.BoidsDispatch());
         }
 
         private void SetRealStat(float statMultiplier)
@@ -116,7 +118,7 @@ namespace Entity.Unit.Special
             UpdateTimer();
             Attack();
             if(m_CanMove) Move();
-            //m_BoidsController.BoidsDispatch();
+            //if(m_BoidsController.CanDispatch) m_BoidsController.BoidsDispatch();
         }
 
         private void UpdateTimer()

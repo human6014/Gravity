@@ -8,8 +8,9 @@ namespace Manager
 {
     public class GameManager : MonoBehaviour
     {
+        [SerializeField] private bool m_IsFixedFrameRate;
         [SerializeField] private int m_FrameRate = 60;
-
+        
 
         public static bool IsGameEnd { get; private set; }
 
@@ -30,7 +31,12 @@ namespace Manager
         {
             IsGameEnd = false;
 
-            //Application.targetFrameRate = m_FrameRate;
+            
+        }
+
+        private void Start()
+        {
+            if (m_IsFixedFrameRate) Application.targetFrameRate = m_FrameRate;
         }
     }
 }

@@ -22,6 +22,8 @@ namespace Entity.Unit.Normal
         private const float m_MaximumFallingTime = 10;
         private float m_FallingTimer;
 
+        private int m_OriginalAvoidancePriority;
+
         private bool m_GravityChangeFlag;
         private bool m_isBatch;
         private bool m_isAutoMode;
@@ -47,6 +49,8 @@ namespace Entity.Unit.Normal
 
             m_NavMeshAgent.updateRotation = false;
             m_NavMeshAgent.updateUpAxis = false;
+
+            m_OriginalAvoidancePriority = m_NavMeshAgent.avoidancePriority;
         }
 
         public void Init(Vector3 pos, bool CanRunning, float movementSpeed)
@@ -91,6 +95,11 @@ namespace Entity.Unit.Normal
         private void FixedUpdate()
         {
             if (IsFalling) DetectWalkableArea();
+            if (NormalMonsterState.BehaviorState == NormalMonsterBehaviorState.Attacking ||
+                NormalMonsterState.BehaviorState == NormalMonsterBehaviorState.Attacking)
+                m_NavMeshAgent.avoidancePriority = 43;
+            else
+                m_NavMeshAgent.avoidancePriority = m_OriginalAvoidancePriority;
         }
         
         private void DetectWalkableArea()
