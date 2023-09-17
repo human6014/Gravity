@@ -10,6 +10,8 @@ namespace Entity.Object.Weapon
     public abstract class Attackable : MonoBehaviour
     {
         [SerializeField] private Transform m_ForcePoint;
+        [SerializeField] private int m_BloodEffectIndex;
+
         protected Transform m_CameraTransform;
         protected MeleeWeaponStatScriptable m_MeleeWeaponStat;
 
@@ -33,6 +35,7 @@ namespace Entity.Object.Weapon
         {
             if (hit.transform.TryGetComponent(out IDamageable damageable))
             {
+                m_SurfaceManager.InstanceBloodEffect(ref hit, m_BloodEffectIndex);
                 Vector3 dir = (hit.point - m_ForcePoint.position).normalized * m_MeleeWeaponStat.m_AttackForce;
                 damageable.Hit(m_RealDamage, m_MeleeWeaponStat.m_BulletType, dir);
                 return true;

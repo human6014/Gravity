@@ -151,84 +151,84 @@ half4 _SpecColor;
         //you can optimize it by removing shadow rendering and depth writing
         //start remove line
 
-        Pass
-        {
-            Tags {"LightMode" = "ShadowCaster"}
-
-            CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma multi_compile_shadowcaster
-            #pragma multi_compile_instancing
-
-            #include "UnityCG.cginc"
-
-            sampler2D _GrabTexture;
-            sampler2D _posTex;
-            sampler2D _nTex;
-            uniform float _boundingMax;
-            uniform float _boundingMin;
-            uniform float _speed;
-            uniform int _numOfFrames;
-            half4 _Color;
-
-            float4 _HeightOffset;
-
-            UNITY_INSTANCING_BUFFER_START(Props)
-                UNITY_DEFINE_INSTANCED_PROP(float, _TimeInFrames)
-            UNITY_INSTANCING_BUFFER_END(Props)
-
-            struct appdata
-            {
-                float2 uv : TEXCOORD0;
-                float4 vertex : POSITION;
-                float3 normal : NORMAL;
-                UNITY_VERTEX_INPUT_INSTANCE_ID
-            };
-
-            struct v2f {
-                V2F_SHADOW_CASTER;
-                UNITY_VERTEX_INPUT_INSTANCE_ID
-                UNITY_VERTEX_OUTPUT_STEREO
-            };
-
-            v2f vert(appdata v)
-            {
-                v2f o;
-
-                UNITY_INITIALIZE_OUTPUT(v2f, o);
-
-                UNITY_SETUP_INSTANCE_ID(v);
-                UNITY_TRANSFER_INSTANCE_ID(v, o);
-                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
-
-                float timeInFrames;
-                float currentSpeed = 1.0f / (_numOfFrames / _speed);
-                timeInFrames = UNITY_ACCESS_INSTANCED_PROP(Props, _TimeInFrames);
-                float4 texturePos = tex2Dlod(_posTex, float4(v.uv.x, (timeInFrames + v.uv.y), 0, 0));
-
-#if !UNITY_COLORSPACE_GAMMA
-                texturePos.xyz = LinearToGammaSpace(texturePos.xyz);
-#endif
-
-                float expand = _boundingMax - _boundingMin;
-                texturePos.xyz *= expand;
-                texturePos.xyz += _boundingMin;
-                texturePos.x *= -1;
-                v.vertex.xyz = texturePos.xzy;
-                v.vertex.xyz += _HeightOffset.xyz;
-
-                TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
-                return o;
-            }
-
-            float4 frag(v2f i) : SV_Target
-            {
-                UNITY_SETUP_INSTANCE_ID(i);
-                SHADOW_CASTER_FRAGMENT(i)
-            }
-            ENDCG
-        }
+//        Pass
+//        {
+//            Tags {"LightMode" = "ShadowCaster"}
+//
+//            CGPROGRAM
+//            #pragma vertex vert
+//            #pragma fragment frag
+//            #pragma multi_compile_shadowcaster
+//            #pragma multi_compile_instancing
+//
+//            #include "UnityCG.cginc"
+//
+//            sampler2D _GrabTexture;
+//            sampler2D _posTex;
+//            sampler2D _nTex;
+//            uniform float _boundingMax;
+//            uniform float _boundingMin;
+//            uniform float _speed;
+//            uniform int _numOfFrames;
+//            half4 _Color;
+//
+//            float4 _HeightOffset;
+//
+//            UNITY_INSTANCING_BUFFER_START(Props)
+//                UNITY_DEFINE_INSTANCED_PROP(float, _TimeInFrames)
+//            UNITY_INSTANCING_BUFFER_END(Props)
+//
+//            struct appdata
+//            {
+//                float2 uv : TEXCOORD0;
+//                float4 vertex : POSITION;
+//                float3 normal : NORMAL;
+//                UNITY_VERTEX_INPUT_INSTANCE_ID
+//            };
+//
+//            struct v2f {
+//                V2F_SHADOW_CASTER;
+//                UNITY_VERTEX_INPUT_INSTANCE_ID
+//                UNITY_VERTEX_OUTPUT_STEREO
+//            };
+//
+//            v2f vert(appdata v)
+//            {
+//                v2f o;
+//
+//                UNITY_INITIALIZE_OUTPUT(v2f, o);
+//
+//                UNITY_SETUP_INSTANCE_ID(v);
+//                UNITY_TRANSFER_INSTANCE_ID(v, o);
+//                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+//
+//                float timeInFrames;
+//                float currentSpeed = 1.0f / (_numOfFrames / _speed);
+//                timeInFrames = UNITY_ACCESS_INSTANCED_PROP(Props, _TimeInFrames);
+//                float4 texturePos = tex2Dlod(_posTex, float4(v.uv.x, (timeInFrames + v.uv.y), 0, 0));
+//
+//#if !UNITY_COLORSPACE_GAMMA
+//                texturePos.xyz = LinearToGammaSpace(texturePos.xyz);
+//#endif
+//
+//                float expand = _boundingMax - _boundingMin;
+//                texturePos.xyz *= expand;
+//                texturePos.xyz += _boundingMin;
+//                texturePos.x *= -1;
+//                v.vertex.xyz = texturePos.xzy;
+//                v.vertex.xyz += _HeightOffset.xyz;
+//
+//                TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
+//                return o;
+//            }
+//
+//            float4 frag(v2f i) : SV_Target
+//            {
+//                UNITY_SETUP_INSTANCE_ID(i);
+//                SHADOW_CASTER_FRAGMENT(i)
+//            }
+//            ENDCG
+//        }
 
         //end remove light
     }

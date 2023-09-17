@@ -174,9 +174,8 @@ MonoBehaviour:
   AutomaticGroundHeightDetection: 1
   GroundHeight: 0
   LightIntensityMultiplier: 1
-  FreezeDecalDisappearance: 0
-  DecalRenderinMode: 0
-  ClampDecalSideSurface: 0
+  DecalLifeTimeSeconds: 30
+  DecalRenderingMode: 0
   DebugAnimationTime: 0.25
 --- !u!1 &7843370407151631037
 GameObject:
@@ -363,7 +362,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 0a5e89a738a55fc4093a1ef2695a6bdd, type: 2}
-  m_DrawDistance: 1000
+  m_DrawDistance: 50
   m_FadeScale: 0.9
   m_StartAngleFade: 180
   m_EndAngleFade: 180

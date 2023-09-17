@@ -37,6 +37,11 @@ namespace Entity.Object.Weapon
         [SerializeField] private float m_LightOffTime = 0.3f;
         [SerializeField] private float m_InstanceCasingTime = 1f;
 
+        [Header("Effect")]
+        [Tooltip("«˜»Á ¿Ã∆Â∆Æ π¯»£")]
+        [SerializeField] private int m_BloodEffectIndex;
+        //¿Ã∞≈ æ»«ﬂ¿∏¥œ º≥¡§«ÿ∂Û¿’
+
         protected Transform m_CameraTransform;
         protected RangeWeaponStatScriptable m_RangeWeaponStat;
 
@@ -109,10 +114,11 @@ namespace Entity.Object.Weapon
 
         protected abstract bool FireRay();
 
-        protected bool ProcessingRay(RaycastHit hit, int i)
+        protected bool ProcessingRay(ref RaycastHit hit, int i)
         {
             if (hit.transform.TryGetComponent(out IDamageable damageable))
             {
+                m_SurfaceManager.InstanceBloodEffect(ref hit, m_BloodEffectIndex);
                 Vector3 dir = (hit.point - transform.position).normalized * m_RangeWeaponStat.m_AttackForce;
                 damageable.Hit(m_RealDamage, m_RangeWeaponStat.m_BulletType, dir);
                 return true;

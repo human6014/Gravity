@@ -309,7 +309,7 @@ namespace Manager
                     //float time = m_StageManager.GetStageTime(3, 1);
                     //StartCoroutine(m_EnvironmentManager.RoadWetnessChange(time, true));
                     IsSP2MonsterEnd = true;
-                    SpawnSpecialMonster3();
+                    SpawnSpecialMonster1();
                     //SpawnSpecialMonster1();
                     break;
                 case 2:

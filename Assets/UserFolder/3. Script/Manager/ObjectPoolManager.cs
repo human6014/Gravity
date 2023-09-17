@@ -62,13 +62,13 @@ namespace Manager
             /// </summary>
             /// <param name="preActive">오브젝트를 미리 활성화 할것인가</param>
             /// <returns>PoolableScript로 반환</returns>
-            public PoolableScript GetObject(bool preActive)
+            public PoolableScript GetObject(bool preActive, bool preSetParent = true)
             {
                 PoolableScript obj;
                 if (poolableQueue.Count > 0) obj = poolableQueue.Dequeue();
                 else                         obj = CreateNewObject();
 
-                obj.transform.SetParent(parent);
+                if (preSetParent) obj.transform.SetParent(parent);
                 obj.gameObject.SetActive(preActive);
 
                 return obj;

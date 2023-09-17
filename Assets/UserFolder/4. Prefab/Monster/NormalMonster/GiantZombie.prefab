@@ -8780,14 +8780,14 @@ GameObject:
   m_Component:
   - component: {fileID: 6495589272798634245}
   - component: {fileID: 7500330024229283057}
+  - component: {fileID: 3657077992934031410}
+  - component: {fileID: 8582661977190729596}
+  - component: {fileID: 2304298008378855443}
   - component: {fileID: 6602246692695085894}
   - component: {fileID: 6788990093087940451}
   - component: {fileID: -6130877166836249328}
-  - component: {fileID: 5262254899861945277}
-  - component: {fileID: 3657077992934031410}
-  - component: {fileID: 8582661977190729596}
+  - component: {fileID: 95552699477681972}
   - component: {fileID: 4536985374821006359}
-  - component: {fileID: 2304298008378855443}
   m_Layer: 8
   m_Name: GiantZombie
   m_TagString: Untagged
@@ -8834,80 +8834,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 29
   m_ObstacleAvoidanceType: 2
---- !u!114 &6602246692695085894
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5867953557993454527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce5ed18794e00e84691d5ca76ed189ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Settings: {fileID: 11400000, guid: 6677a81546760b04295fd09c36b760b1, type: 2}
---- !u!114 &6788990093087940451
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5867953557993454527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90eeb1bbc96b9d549a00e0922bf160b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  climbingDetectLayer:
-    serializedVersion: 2
-    m_Bits: 417792
-  m_FallingDetectLayer:
-    serializedVersion: 2
-    m_Bits: 155648
-  m_RayStartY: 1.5
-  m_RayDist: 1
---- !u!114 &-6130877166836249328
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5867953557993454527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe5a5aebdba20494b9a00747c362dc65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tshirtT: {fileID: 5796632077063506300}
-  tanktopT: {fileID: 2010582627239745756}
-  torsoT: {fileID: 5228419112923082936}
-  armT: {fileID: 5086628582287184346}
-  trousersT: {fileID: 6619629466583712958}
-  footL_T: {fileID: 5432228071362329415}
-  headsT: {fileID: 5305230590085324976}
-  tshirtT_RagDoll: {fileID: 2841365544456774495}
-  tanktopT_RagDoll: {fileID: 1075464135230560625}
-  torsoT_RagDoll: {fileID: 4841296039233233119}
-  armT_RagDoll: {fileID: 5397981428023073089}
-  trousersT_RagDoll: {fileID: 8053933355120166619}
-  footL_T_RagDoll: {fileID: 2810838980945656281}
-  headsT_RagDoll: {fileID: 1580017045160234224}
---- !u!114 &5262254899861945277
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5867953557993454527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffabece1f50abbe4b937a601acfc4aed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_OriginalObject: {fileID: 823408897669662156}
-  m_RagDollObject: {fileID: 3734599987646485557}
-  m_MaxDepth: 7
 --- !u!54 &3657077992934031410
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8938,19 +8864,6 @@ CapsuleCollider:
   m_Height: 2.3
   m_Direction: 1
   m_Center: {x: 0, y: 1.0347571, z: 0}
---- !u!114 &4536985374821006359
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5867953557993454527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e005c03dc2448644abb53248102ed6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AudioClips: []
 --- !u!82 &2304298008378855443
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9047,6 +8960,133 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6602246692695085894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5867953557993454527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce5ed18794e00e84691d5ca76ed189ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Settings: {fileID: 11400000, guid: 6677a81546760b04295fd09c36b760b1, type: 2}
+--- !u!114 &6788990093087940451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5867953557993454527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90eeb1bbc96b9d549a00e0922bf160b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  climbingDetectLayer:
+    serializedVersion: 2
+    m_Bits: 417792
+  m_FallingDetectLayer:
+    serializedVersion: 2
+    m_Bits: 155648
+  m_RayStartY: 1.5
+  m_RayDist: 1
+--- !u!114 &-6130877166836249328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5867953557993454527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe5a5aebdba20494b9a00747c362dc65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tshirtT: {fileID: 5796632077063506300}
+  tanktopT: {fileID: 2010582627239745756}
+  torsoT: {fileID: 5228419112923082936}
+  armT: {fileID: 5086628582287184346}
+  trousersT: {fileID: 6619629466583712958}
+  footL_T: {fileID: 5432228071362329415}
+  headsT: {fileID: 5305230590085324976}
+  tshirtT_RagDoll: {fileID: 2841365544456774495}
+  tanktopT_RagDoll: {fileID: 1075464135230560625}
+  torsoT_RagDoll: {fileID: 4841296039233233119}
+  armT_RagDoll: {fileID: 5397981428023073089}
+  trousersT_RagDoll: {fileID: 8053933355120166619}
+  footL_T_RagDoll: {fileID: 2810838980945656281}
+  headsT_RagDoll: {fileID: 1580017045160234224}
+--- !u!114 &95552699477681972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5867953557993454527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54b3e5d80b78ead4d9d3317d2738a773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OriginalObject: {fileID: 823408897669662156}
+  m_RagDollObject: {fileID: 3734599987646485557}
+  m_RagdollStructs:
+  - m_OriginalTransform: {fileID: 2756892043499152363}
+    m_RagdollTransform: {fileID: 4307859031907682492}
+  - m_OriginalTransform: {fileID: 4649015072197796904}
+    m_RagdollTransform: {fileID: 3914636897899228890}
+  - m_OriginalTransform: {fileID: 5159892255454018781}
+    m_RagdollTransform: {fileID: 6245028213415814499}
+  - m_OriginalTransform: {fileID: 7754308466734405749}
+    m_RagdollTransform: {fileID: 2454150114971265254}
+  - m_OriginalTransform: {fileID: 1786527242808442861}
+    m_RagdollTransform: {fileID: 4411914776439530980}
+  - m_OriginalTransform: {fileID: 4927461741316531216}
+    m_RagdollTransform: {fileID: 8529722602982289462}
+  - m_OriginalTransform: {fileID: 5362168798882860094}
+    m_RagdollTransform: {fileID: 6469416946381661238}
+  - m_OriginalTransform: {fileID: 8445722652138831848}
+    m_RagdollTransform: {fileID: 3241177800333627168}
+  - m_OriginalTransform: {fileID: 3942854398843572877}
+    m_RagdollTransform: {fileID: 6002805717984095891}
+  - m_OriginalTransform: {fileID: 4386093053387722761}
+    m_RagdollTransform: {fileID: 5656215075881947726}
+  - m_OriginalTransform: {fileID: 3661749169057385458}
+    m_RagdollTransform: {fileID: 2754688125668449706}
+  - m_OriginalTransform: {fileID: 2392309743349305957}
+    m_RagdollTransform: {fileID: 3398817316613358732}
+  - m_OriginalTransform: {fileID: 4262299172741420574}
+    m_RagdollTransform: {fileID: 7124399330487533256}
+  - m_OriginalTransform: {fileID: 16058321403407971}
+    m_RagdollTransform: {fileID: 4409721807045671273}
+  - m_OriginalTransform: {fileID: 1138043031302463072}
+    m_RagdollTransform: {fileID: 715803575146282820}
+  - m_OriginalTransform: {fileID: 6120352183599069252}
+    m_RagdollTransform: {fileID: 2370705180296970697}
+  - m_OriginalTransform: {fileID: 3021511402279658813}
+    m_RagdollTransform: {fileID: 8152698899124982603}
+  - m_OriginalTransform: {fileID: 1837276517188855251}
+    m_RagdollTransform: {fileID: 5658883870669897012}
+  - m_OriginalTransform: {fileID: 5371717287924744774}
+    m_RagdollTransform: {fileID: 5995803135993218121}
+  - m_OriginalTransform: {fileID: 8662547524625851580}
+    m_RagdollTransform: {fileID: 661437220530468713}
+--- !u!114 &4536985374821006359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5867953557993454527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e005c03dc2448644abb53248102ed6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AudioClips: []
 --- !u!1 &5927479122158827235
 GameObject:
   m_ObjectHideFlags: 0
