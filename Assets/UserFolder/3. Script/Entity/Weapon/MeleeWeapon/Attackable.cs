@@ -31,11 +31,11 @@ namespace Entity.Object.Weapon
             m_SurfaceManager = FindObjectOfType<SurfaceManager>();
         }
 
-        protected bool ProcessEffect(ref RaycastHit hit, ref bool doEffect)
+        protected bool ProcessEffect(ref RaycastHit hit, ref bool doEffect, int inSameTargtIndex)
         {
             if (hit.transform.TryGetComponent(out IDamageable damageable))
             {
-                m_SurfaceManager.InstanceBloodEffect(ref hit, m_BloodEffectIndex);
+                if (inSameTargtIndex == 0) m_SurfaceManager.InstanceBloodEffect(ref hit, m_BloodEffectIndex);
                 Vector3 dir = (hit.point - m_ForcePoint.position).normalized * m_MeleeWeaponStat.m_AttackForce;
                 damageable.Hit(m_RealDamage, m_MeleeWeaponStat.m_BulletType, dir);
                 return true;
