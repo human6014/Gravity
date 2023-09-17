@@ -46,7 +46,6 @@ public class BFX_ShaderProperies : MonoBehaviour
         float eval = FloatCurve.Evaluate(0) * GraphIntensityMultiplier;
         decalMat.SetFloat(cutoutPropertyID, eval);
         decalMat.SetVector(forwardDirPropertyID, transform.up);
-
     }
 
     private void OnDisable()
@@ -61,7 +60,6 @@ public class BFX_ShaderProperies : MonoBehaviour
     private void Update()
     {
         if (!canUpdate) return;
-
 
         var deltaTime = BloodSettings == null ? Time.deltaTime : Time.deltaTime * BloodSettings.AnimationSpeed;
         _timeLapsedBeforeFadeout += deltaTime;

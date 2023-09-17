@@ -23,7 +23,7 @@ namespace Entity.Object.Weapon
             for (int i = 0; i < m_RayNum; i++)
             {
                 if (Physics.Raycast(m_CameraTransform.position, GetFireDirection() + base.GetCurrentAccuracy(), out RaycastHit hit, m_RangeWeaponStat.m_MaxRange, m_RangeWeaponStat.m_AttackableLayer, QueryTriggerInteraction.Ignore))
-                    temp = base.ProcessingRay(hit, i);
+                    temp = base.ProcessingRay(ref hit, i);
                 if (temp) isHitEnemy = true;
             }
             return isHitEnemy;

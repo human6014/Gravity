@@ -21,13 +21,13 @@ public class BFX_DemoTest : MonoBehaviour
 
     private Transform GetNearestObject(Transform hit, Vector3 hitPos)
     {
-        float closestPos = 100f;
+        float closestPos = float.MaxValue;
         Transform closestBone = null;
         var childs = hit.GetComponentsInChildren<Transform>();
 
         foreach (var child in childs)
         {
-            var dist = Vector3.Distance(child.position, hitPos);
+            var dist = Vector3.SqrMagnitude(child.position - hitPos);
             if (dist < closestPos)
             {
                 closestPos = dist;
@@ -35,16 +35,8 @@ public class BFX_DemoTest : MonoBehaviour
             }
         }
 
-        var distRoot = Vector3.Distance(hit.position, hitPos);
-        if (distRoot < closestPos)
-        {
-            closestPos = distRoot;
-            closestBone = hit;
-        }
         return closestBone;
     }
-
-
 
     private void Update()
     {
@@ -55,17 +47,14 @@ public class BFX_DemoTest : MonoBehaviour
             {
                 // var randRotation = new Vector3(0, Random.value * 360f, 0);
                 // var dir = CalculateAngle(Vector3.forward, hit.normal);
-                float angle = Mathf.Atan2(hit.normal.x, hit.normal.z) * Mathf.Rad2Deg + 180;
+                //float angle = Mathf.Atan2(hit.normal.x, hit.normal.z) * Mathf.Rad2Deg - 90;
 
-                //var effectIdx = Random.Range(0, BloodFX.Length);
-                if (m_EffectIndex == BloodFX.Length) m_EffectIndex = 0;
+                Quaternion rotation = Quaternion.LookRotation(hit.normal, -Manager.GravityManager.GravityVector);
+                rotation *= Quaternion.Euler(0,-90,0);
+                int effectIdx = Random.Range(0, BloodFX.Length);
 
-                var instance = Instantiate(BloodFX[m_EffectIndex], hit.point, Quaternion.Euler(0, angle + 90, 0));
-                m_EffectIndex++;
+                Instantiate(BloodFX[effectIdx], hit.point, rotation);
                 m_ActiveBloods++;
-                var settings = instance.GetComponent<BFX_BloodSettings>();
-                //settings.FreezeDecalDisappearance = InfiniteDecal;
-                //settings.LightIntensityMultiplier = DirLight.intensity;
 
                 var nearestBone = GetNearestObject(hit.transform.root, hit.point);
                 if (nearestBone != null)
@@ -75,7 +64,7 @@ public class BFX_DemoTest : MonoBehaviour
                     bloodT.position = hit.point;
                     bloodT.localRotation = Quaternion.identity;
                     bloodT.localScale = Vector3.one * Random.Range(0.75f, 1.2f);
-                    bloodT.LookAt(hit.point + hit.normal, direction);
+                    bloodT.LookAt(hit.point + hit.normal);
                     bloodT.Rotate(90, 0, 0);
                     bloodT.transform.parent = nearestBone;
                     //Destroy(attachBloodInstance, 20);
@@ -86,12 +75,8 @@ public class BFX_DemoTest : MonoBehaviour
         }
     }
 
-
     public float CalculateAngle(Vector3 from, Vector3 to)
     {
-
         return Quaternion.FromToRotation(Vector3.up, to - from).eulerAngles.z;
-
     }
-
 }

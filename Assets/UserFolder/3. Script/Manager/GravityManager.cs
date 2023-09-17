@@ -138,7 +138,7 @@ namespace Manager
             else
             {
                 GravityChangeAction?.Invoke(CurrentGravityType);
-                Physics.gravity = GravityVector * Physics.gravity.magnitude;
+                Physics.gravity = GravityVector * 9.81f;
 
                 IsGravityChanging = true;
                 m_IsGravityDupleicated = false;

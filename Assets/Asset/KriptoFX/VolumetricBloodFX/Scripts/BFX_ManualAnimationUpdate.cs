@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-[ExecuteAlways]
 public class BFX_ManualAnimationUpdate : MonoBehaviour
 {
     public BFX_BloodSettings BloodSettings;
@@ -14,18 +13,17 @@ public class BFX_ManualAnimationUpdate : MonoBehaviour
 
     private float currentTime;
 
-    Renderer rend;
+    private Renderer rend;
     private MaterialPropertyBlock propertyBlock;
 
+    private void Awake()
+    {
+        rend = GetComponent<Renderer>();
+    }
 
     void OnEnable()
     {
-        if (propertyBlock == null)
-        {
-            propertyBlock = new MaterialPropertyBlock();
-
-            rend = GetComponent<Renderer>();
-        }
+        if (propertyBlock == null) propertyBlock = new MaterialPropertyBlock();
 
         rend.enabled = true;
 

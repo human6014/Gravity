@@ -11,7 +11,7 @@ namespace Entity.Unit.Normal
         [SerializeField] private NormalMonsterScriptable m_Settings;
 
         private CapsuleCollider m_CapsuleCollider;
-        private RagDollChanger m_RagDollChanger;
+        private RagDollCachedChanger m_RagDollChanger;
         private NormalMonsterAI m_NormalMonsterAI;
         private NormalMonsterState m_NormalMonsterState;
         private PlayerData m_PlayerData;
@@ -47,7 +47,7 @@ namespace Entity.Unit.Normal
         private void Awake()
         {
             m_CapsuleCollider = GetComponent<CapsuleCollider>();
-            m_RagDollChanger = GetComponent<RagDollChanger>();
+            m_RagDollChanger = GetComponent<RagDollCachedChanger>();
             m_NormalMonsterAI = GetComponent<NormalMonsterAI>();
             NormalMonsterAnimController normalMonsterAnimController = GetComponentInChildren<NormalMonsterAnimController>();
             
