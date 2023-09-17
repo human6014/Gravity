@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: R870_Stat Setting
   m_EditorClassIdentifier: 
   m_AttackTime: 0.75
-  m_Damage: 220
+  m_Damage: 200
   m_AttackableLayer:
     serializedVersion: 2
     m_Bits: 939977216

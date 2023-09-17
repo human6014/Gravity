@@ -14,7 +14,7 @@ namespace Entity.Object.Weapon
             bool doEffect = false;
             for (int i = 0; i < hitInfo.Length; i++)
             {
-                isHit = base.ProcessEffect(ref hitInfo[i], ref doEffect) | isHit;
+                isHit = base.ProcessEffect(ref hitInfo[i], ref doEffect, i) | isHit;
             }
             return isHit;
         }

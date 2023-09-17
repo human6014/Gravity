@@ -11,7 +11,7 @@ namespace Entity.Object.Weapon
             bool doEffect = false;
             if (Physics.SphereCast(m_CameraTransform.position, m_MeleeWeaponStat.m_SwingRadius, m_CameraTransform.forward, out RaycastHit hit, m_MeleeWeaponStat.m_MaxDistance, m_MeleeWeaponStat.m_AttackableLayer, QueryTriggerInteraction.Ignore))
             {
-                return base.ProcessEffect(ref hit, ref doEffect);
+                return base.ProcessEffect(ref hit, ref doEffect, 0);
             }
             return false;
         }

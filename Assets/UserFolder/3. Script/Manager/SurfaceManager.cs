@@ -54,8 +54,14 @@ namespace Manager
         [SerializeField] private int m_BloodAttachPoolingCount;
         [SerializeField] private int m_BloodFXPoolingCount;
 
+        [SerializeField] private int m_ActiveAttachEffectMaxCount = 30;
+        [SerializeField] private int m_ActiveNonAttachEffectMaxCount = 30;
+
         private ObjectPoolManager.PoolingObject m_BloodAttachPool;
         private ObjectPoolManager.PoolingObject[] m_BloodFXPool;
+
+        private int m_ActiveAttachEffectCount;
+        private int m_ActiveNonAttachEffectCount;
 
         private void Start()
         {
@@ -95,33 +101,55 @@ namespace Manager
 
         public void InstanceBloodEffect(ref RaycastHit hit, int effectIndex)
         {
-            Quaternion rotation = Quaternion.LookRotation(hit.normal, -GravityManager.GravityVector) * Quaternion.Euler(0, -90, 0);
-            if(effectIndex >= BloodFX.Length)
+            if (m_ActiveAttachEffectMaxCount >= m_ActiveNonAttachEffectCount)
+                InstanceAttachBloodEffect(ref hit, effectIndex);
+
+            if (m_ActiveNonAttachEffectMaxCount >= m_ActiveAttachEffectCount)
+                InstanceNonAttachBloodEffect(ref hit);
+        }
+
+        private void InstanceAttachBloodEffect(ref RaycastHit hit, int effectIndex)
+        {
+            if (m_ActiveAttachEffectMaxCount >= m_ActiveNonAttachEffectCount)
             {
-                effectIndex = Random.Range(0, BloodFX.Length);
-                Debug.LogWarning("Effect index out of range");
+                Quaternion rotation = Quaternion.LookRotation(hit.normal, -GravityManager.GravityVector) * Quaternion.Euler(0, -90, 0);
+                if (effectIndex >= BloodFX.Length)
+                {
+                    effectIndex = Random.Range(0, BloodFX.Length);
+                    Debug.LogWarning("Effect index out of range");
+                }
+
+                BloodEffectController bloodFX = (BloodEffectController)m_BloodFXPool[effectIndex].GetObject(false);
+                bloodFX.transform.SetPositionAndRotation(hit.point, rotation);
+                bloodFX.gameObject.SetActive(true);
+                bloodFX.ReturnObjectAction += () => m_ActiveNonAttachEffectCount--;
+                bloodFX.Init(m_BloodFXPool[effectIndex]);
+                m_ActiveNonAttachEffectCount++;
             }
+        }
 
-            BloodEffectController bloodFX = (BloodEffectController)m_BloodFXPool[effectIndex].GetObject(false);
-            bloodFX.transform.SetPositionAndRotation(hit.point, rotation);
-            bloodFX.gameObject.SetActive(true);
-            bloodFX.Init(m_BloodFXPool[effectIndex]);
-
-            Transform nearestBone = GetNearestObject(hit.transform.root, hit.point);
-            if (nearestBone != null)
+        private void InstanceNonAttachBloodEffect(ref RaycastHit hit)
+        {
+            if (m_ActiveNonAttachEffectMaxCount >= m_ActiveAttachEffectCount)
             {
-                BloodEffectController attachBloodInstance = (BloodEffectController)m_BloodAttachPool.GetObject(false, false);
-                Transform bloodT = attachBloodInstance.transform;
+                Transform nearestBone = GetNearestObject(hit.transform.root, hit.point);
+                if (nearestBone != null)
+                {
+                    BloodEffectController attachBloodInstance = (BloodEffectController)m_BloodAttachPool.GetObject(false, false);
+                    Transform bloodT = attachBloodInstance.transform;
 
-                bloodT.position = hit.point;
-                bloodT.localRotation = Quaternion.identity;
-                bloodT.localScale = Vector3.one * Random.Range(0.75f, 1.2f);
-                bloodT.LookAt(hit.point + hit.normal);
-                bloodT.Rotate(90, 0, 0);
-                bloodT.parent = nearestBone;
+                    bloodT.position = hit.point;
+                    bloodT.localRotation = Quaternion.identity;
+                    bloodT.localScale = Vector3.one * Random.Range(0.75f, 1.2f);
+                    bloodT.LookAt(hit.point + hit.normal);
+                    bloodT.Rotate(90, 0, 0);
+                    bloodT.parent = nearestBone;
 
-                attachBloodInstance.gameObject.SetActive(true);
-                attachBloodInstance.Init(m_BloodAttachPool);
+                    attachBloodInstance.gameObject.SetActive(true);
+                    attachBloodInstance.ReturnObjectAction += () => m_ActiveAttachEffectCount--;
+                    attachBloodInstance.Init(m_BloodAttachPool);
+                    m_ActiveAttachEffectCount++;
+                }
             }
         }
 

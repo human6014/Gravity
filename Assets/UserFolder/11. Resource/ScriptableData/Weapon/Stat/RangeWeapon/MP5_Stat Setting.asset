@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4838d5a76f4fdc4a877d2e4faa3128e, type: 3}
   m_Name: MP5_Stat Setting
   m_EditorClassIdentifier: 
-  m_AttackTime: 0.11
-  m_Damage: 240
+  m_AttackTime: 0.1
+  m_Damage: 260
   m_AttackableLayer:
     serializedVersion: 2
     m_Bits: 939977216

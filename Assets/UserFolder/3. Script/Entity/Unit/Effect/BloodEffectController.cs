@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BloodEffectController : PoolableScript
 {
+    public Action ReturnObjectAction { get; set; }
+
     public void Init(Manager.ObjectPoolManager.PoolingObject poolingObject)
     {
         m_PoolingObject = poolingObject;
@@ -12,6 +15,7 @@ public class BloodEffectController : PoolableScript
 
     public override void ReturnObject()
     {
+        ReturnObjectAction?.Invoke();
         m_PoolingObject.ReturnObject(this);
     }
 }
