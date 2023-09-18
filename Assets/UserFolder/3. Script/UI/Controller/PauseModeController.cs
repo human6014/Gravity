@@ -9,13 +9,14 @@ namespace UI.Controller
     {
         [SerializeField] private UnityEvent PauseEvent;
 
-        private bool m_IsActiveSkillEventUI;
         private bool m_IsActivePauseUI;
-        private bool m_IsActiveNewSkillEventUI;
+        private bool m_IsActiveSkillEventUI;
+
+        public System.Action<bool> BlockRaycastAction { get; set; }
 
         public bool IsPause
         {
-            get => IsActiveSkillEventUI || IsActiveSettingUI || m_IsActiveNewSkillEventUI;
+            get => IsActiveSettingUI || m_IsActiveSkillEventUI;
             private set => IsPause = value;
         }
 
@@ -29,22 +30,13 @@ namespace UI.Controller
             }
         }
 
-        public bool IsActiveNewSkillEventUI
-        {
-            get => m_IsActiveNewSkillEventUI;
-            set
-            {
-                m_IsActiveNewSkillEventUI = value;
-                PauseMode();
-            }
-        }
-
         public bool IsActiveSettingUI
         {
             get => m_IsActivePauseUI;
             set
             {
                 m_IsActivePauseUI = value;
+                if(m_IsActiveSkillEventUI) BlockRaycastAction?.Invoke(!value);
                 PauseMode();
             }
         }

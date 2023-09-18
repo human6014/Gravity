@@ -15,17 +15,18 @@ namespace UI.Manager
         private void Awake()
         {
             m_PauseModeController = transform.root.GetComponent<PauseModeController>();
+            m_PauseModeController.BlockRaycastAction += (bool isActive) => m_SkillPanel.BlockPanel(isActive);
         }
 
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Tab) && !m_PauseModeController.IsActiveSettingUI) 
-                SetActiveUI(!m_PauseModeController.IsActiveNewSkillEventUI);
+                SetActiveUI(!m_PauseModeController.IsActiveSkillEventUI);
         }
 
         private void SetActiveUI(bool isActive)
         {
-            m_PauseModeController.IsActiveNewSkillEventUI = isActive;
+            m_PauseModeController.IsActiveSkillEventUI = isActive;
             m_SkillPanel.TryActive(isActive);
         }
 

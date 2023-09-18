@@ -395,6 +395,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CorrespondingParts: {fileID: 8745706031686122559}
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &266441516380776717
 GameObject:
   m_ObjectHideFlags: 0
@@ -2117,6 +2118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CorrespondingParts: {fileID: 6752878129269204974}
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2171422700466809469
 GameObject:
   m_ObjectHideFlags: 0
@@ -2230,6 +2232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CorrespondingParts: {fileID: 7471661234186890270}
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2208245377551767943
 GameObject:
   m_ObjectHideFlags: 0
@@ -3220,6 +3223,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 0
 --- !u!1 &3031883544168739834
 GameObject:
   m_ObjectHideFlags: 0
@@ -3425,6 +3429,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 0
 --- !u!1 &3199718298946506946
 GameObject:
   m_ObjectHideFlags: 0
@@ -4038,6 +4043,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 0
 --- !u!1 &3762369874983480261
 GameObject:
   m_ObjectHideFlags: 0
@@ -5514,6 +5520,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 0
 --- !u!1 &5169193614913995909
 GameObject:
   m_ObjectHideFlags: 0
@@ -6126,6 +6133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CorrespondingParts: {fileID: 1979529454765773869}
   m_IsWeakPoint: 1
+  m_IsEffect: 1
 --- !u!1 &5281872558206665584
 GameObject:
   m_ObjectHideFlags: 0
@@ -6298,6 +6306,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 0
 --- !u!1 &5398672991532073288
 GameObject:
   m_ObjectHideFlags: 0
@@ -6567,6 +6576,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 0
 --- !u!1 &5679013722613196808
 GameObject:
   m_ObjectHideFlags: 0
@@ -7585,6 +7595,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CorrespondingParts: {fileID: 4450185268634814299}
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &6504892784025998684
 GameObject:
   m_ObjectHideFlags: 0
@@ -7763,6 +7774,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CorrespondingParts: {fileID: 3256313336672469523}
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &6704502191645055026
 GameObject:
   m_ObjectHideFlags: 0
@@ -7999,6 +8011,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 0
 --- !u!1 &7007668370426394756
 GameObject:
   m_ObjectHideFlags: 0
@@ -8142,6 +8155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CorrespondingParts: {fileID: 62904766890002468}
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &7073539949153449721
 GameObject:
   m_ObjectHideFlags: 0
@@ -8721,6 +8735,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CorrespondingParts: {fileID: 2227478074697074284}
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &7651790891770957815
 GameObject:
   m_ObjectHideFlags: 0
@@ -9079,6 +9094,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 0
 --- !u!1 &7783413262004121829
 GameObject:
   m_ObjectHideFlags: 0
@@ -9254,6 +9270,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 1
+  m_IsEffect: 0
 --- !u!1 &7836307466457474918
 GameObject:
   m_ObjectHideFlags: 0
@@ -9334,6 +9351,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CorrespondingParts: {fileID: 8053066906931474685}
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &7891555491652113104
 GameObject:
   m_ObjectHideFlags: 0
@@ -10662,6 +10680,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CorrespondingParts: {fileID: 8479755818918449700}
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &8629864789986067503
 GameObject:
   m_ObjectHideFlags: 0
@@ -11255,6 +11274,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 0
 --- !u!1 &9021307643688280638
 GameObject:
   m_ObjectHideFlags: 0
@@ -11513,3 +11533,4 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 0

@@ -118,9 +118,9 @@ namespace Entity.Object.Weapon
         {
             if (hit.transform.TryGetComponent(out IDamageable damageable))
             {
-                if (i % 2 == 0) m_SurfaceManager.InstanceBloodEffect(ref hit, m_BloodEffectIndex);
                 Vector3 dir = (hit.point - transform.position).normalized * m_RangeWeaponStat.m_AttackForce;
-                damageable.Hit(m_RealDamage, m_RangeWeaponStat.m_BulletType, dir);
+                bool isEffect = damageable.Hit(m_RealDamage, m_RangeWeaponStat.m_BulletType, dir);
+                if (isEffect && i % 2 == 0) m_SurfaceManager.InstanceBloodEffect(ref hit, m_BloodEffectIndex);
                 return true;
             }
 

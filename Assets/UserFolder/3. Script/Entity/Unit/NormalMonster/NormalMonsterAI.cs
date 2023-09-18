@@ -19,13 +19,13 @@ namespace Entity.Unit.Normal
         private NavMeshAgent m_NavMeshAgent;
         private Rigidbody m_Rigidbody;
 
-        private const float m_MaximumFallingTime = 10;
+        private const float m_MaximumFallingTime = 15;
         private float m_FallingTimer;
 
         private int m_OriginalAvoidancePriority;
 
         private bool m_GravityChangeFlag;
-        private bool m_isBatch;
+        private bool m_IsAlive;
         private bool m_isAutoMode;
         private bool m_isClimbing;
         private bool m_CanRunning;
@@ -56,7 +56,7 @@ namespace Entity.Unit.Normal
         public void Init(Vector3 pos, bool CanRunning, float movementSpeed)
         {
             m_FallingTimer = 0;
-            m_isBatch = true;
+            m_IsAlive = true;
             IsFalling = false;
             m_isAutoMode = true;
             m_isClimbing = false;
@@ -72,7 +72,7 @@ namespace Entity.Unit.Normal
         public bool CheckCanBehaviorState(out bool isMalfunction)
         {
             isMalfunction = false;
-            if (!m_isBatch) return false;
+            if (!m_IsAlive) return false;
 
             if (GravityManager.IsGravityChanging && !m_GravityChangeFlag)
             {
@@ -94,9 +94,14 @@ namespace Entity.Unit.Normal
 
         private void FixedUpdate()
         {
-            if (IsFalling) DetectWalkableArea();
+            if (IsFalling)
+            {
+                DetectWalkableArea();
+                return;
+            }
+
             if (NormalMonsterState.BehaviorState == NormalMonsterBehaviorState.Attacking ||
-                NormalMonsterState.BehaviorState == NormalMonsterBehaviorState.Attacking)
+                NormalMonsterState.BehaviorState == NormalMonsterBehaviorState.GettingUp)
                 m_NavMeshAgent.avoidancePriority = 43;
             else
                 m_NavMeshAgent.avoidancePriority = m_OriginalAvoidancePriority;
@@ -106,8 +111,7 @@ namespace Entity.Unit.Normal
         {
             if (Physics.Raycast(transform.position + transform.up * m_RayStartY, GravityManager.GravityVector, out RaycastHit hitInfo, m_RayDist, m_FallingDetectLayer))
             {
-                //Need normal check
-                if (m_isBatch)
+                if (m_IsAlive)
                 {
                     SetFallingMode(false);
                     NormalMonsterState.SetBoolIdle();
@@ -143,16 +147,25 @@ namespace Entity.Unit.Normal
 
             if (!m_NavMeshAgent.isOnOffMeshLink && !AIManager.IsSameFloor(m_NavMeshAgent))
             {
-                if (!m_isClimbing) Debug.Log("Climbing Start");
+                if (!m_isClimbing) SetClimbingRotation();
                 else SetClimbingRotation();
                 m_isClimbing = true;
             }
             else
             {
-                if (m_isClimbing) NormalMonsterState.SetTriggerGettingUp();
+                if (m_isClimbing)
+                {
+                    if (CheckClimbingEnd()) NormalMonsterState.SetBoolIdle();
+                    else NormalMonsterState.SetTriggerGettingUp();
+                }
                 else SetNormalRotation(isMoving);
                 m_isClimbing = false;
             }
+        }
+
+        private bool CheckClimbingEnd()
+        {
+            return Physics.Raycast(transform.position + transform.up, GravityManager.GravityVector, 5, climbingDetectLayer);
         }
 
         private void SetClimbingRotation()
@@ -165,6 +178,7 @@ namespace Entity.Unit.Normal
         {
             if (m_CanRunning) NormalMonsterState.SetBoolRunning();
             else NormalMonsterState.SetBoolWalking();
+
             Vector3 target = isMoving ? m_NavMeshAgent.steeringTarget : AIManager.PlayerTransform.position;
             Vector3 autoTargetDir = AIManager.GetCurrentGravityDirection((target - transform.position));
 
@@ -180,7 +194,7 @@ namespace Entity.Unit.Normal
         {
             if (!IsFalling) RigidSet = true;
             m_NavMeshAgent.enabled = false;
-            m_isBatch = false;
+            m_IsAlive = false;
         }
 
         private void OnDrawGizmosSelected()
