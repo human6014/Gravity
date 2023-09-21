@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
+  companyName: KStudio
   productName: Gravity
   defaultCursor: {fileID: 2800000, guid: d4a814fd6c5953a438ce7c31cb4ba800, type: 3}
   cursorHotspot: {x: 0, y: 0}

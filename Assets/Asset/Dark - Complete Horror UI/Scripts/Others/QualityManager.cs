@@ -36,74 +36,64 @@ namespace Michsky.UI.Dark
                 mixer.SetFloat("SFX", Mathf.Log10(PlayerPrefs.GetFloat(sfxSlider.sliderTag + "DarkSliderValue")) * 20);
             }
 
-            if (isMobile == false)
+            resolutions = Screen.resolutions;
+
+            if (preferCustomDropdown == true)
             {
-                resolutions = Screen.resolutions;
+                if (defaultDropdown != null)
+                    defaultDropdown.gameObject.SetActive(false);
 
-                if (preferCustomDropdown == true)
+                if (customDropdown != null) { customDropdown.gameObject.SetActive(true); }
+                else return;
+
+                customDropdown.dropdownItems.Clear();
+
+                List<string> options = new List<string>();
+
+                int currentResolutionIndex = 0;
+                for (int i = 0; i < resolutions.Length; i++)
                 {
-                    if (defaultDropdown != null)
-                        defaultDropdown.gameObject.SetActive(false);
+                    string option = resolutions[i].width + "x" + resolutions[i].height + " " + resolutions[i].refreshRate + "hz";
+                    customDropdown.CreateNewItem(option, null);
 
-                    if (customDropdown != null) { customDropdown.gameObject.SetActive(true); }
-                    else { return; }
-
-                    customDropdown.dropdownItems.Clear();
-
-                    List<string> options = new List<string>();
-
-                    int currentResolutionIndex = 0;
-                    for (int i = 0; i < resolutions.Length; i++)
-                    {
-#if UNITY_2022_2_OR_NEWER
-                        string option = resolutions[i].width + "x" + resolutions[i].height + " " + resolutions[i].refreshRateRatio + "hz";
-#else
-                        string option = resolutions[i].width + "x" + resolutions[i].height + " " + resolutions[i].refreshRate + "hz";
-#endif
-                        customDropdown.CreateNewItem(option, null);
-
-                        if (resolutions[i].width == Screen.currentResolution.width
-                            && resolutions[i].height == Screen.currentResolution.height)
-                            currentResolutionIndex = i;
-                    }
-
-                    customDropdown.selectedItemIndex = currentResolutionIndex;
-                    customDropdown.UpdateValues();
+                    if (resolutions[i].width == Screen.currentResolution.width
+                        && resolutions[i].height == Screen.currentResolution.height)
+                        currentResolutionIndex = i;
                 }
 
-                else
-                {
-                    if (customDropdown != null)
-                        customDropdown.gameObject.SetActive(false);
-
-                    if (defaultDropdown != null) { defaultDropdown.gameObject.SetActive(true); }
-                    else { return; }
-
-                    defaultDropdown.ClearOptions();
-
-                    List<string> options = new List<string>();
-
-                    int currentResolutionIndex = 0;
-                    for (int i = 0; i < resolutions.Length; i++)
-                    {
-#if UNITY_2022_2_OR_NEWER
-                        string option = resolutions[i].width + "x" + resolutions[i].height + " " + resolutions[i].refreshRateRatio + "hz";
-#else
-                        string option = resolutions[i].width + "x" + resolutions[i].height + " " + resolutions[i].refreshRate + "hz";
-#endif
-                        options.Add(option);
-
-                        if (resolutions[i].width == Screen.currentResolution.width
-                            && resolutions[i].height == Screen.currentResolution.height)
-                            currentResolutionIndex = i;
-                    }
-
-                    defaultDropdown.AddOptions(options);
-                    defaultDropdown.onValueChanged.AddListener(SetResolution);
-                    defaultDropdown.value = currentResolutionIndex;
-                    defaultDropdown.RefreshShownValue();
-                }
+                customDropdown.selectedItemIndex = currentResolutionIndex;
+                customDropdown.UpdateValues();
             }
+
+            else
+            {
+                if (customDropdown != null)
+                    customDropdown.gameObject.SetActive(false);
+
+                if (defaultDropdown != null) { defaultDropdown.gameObject.SetActive(true); }
+                else return;
+
+                defaultDropdown.ClearOptions();
+
+                List<string> options = new List<string>();
+
+                int currentResolutionIndex = 0;
+                for (int i = 0; i < resolutions.Length; i++)
+                {
+                    string option = resolutions[i].width + "x" + resolutions[i].height + " " + resolutions[i].refreshRate + "hz";
+                    options.Add(option);
+
+                    if (resolutions[i].width == Screen.currentResolution.width
+                        && resolutions[i].height == Screen.currentResolution.height)
+                        currentResolutionIndex = i;
+                }
+
+                defaultDropdown.AddOptions(options);
+                defaultDropdown.onValueChanged.AddListener(SetResolution);
+                defaultDropdown.value = currentResolutionIndex;
+                defaultDropdown.RefreshShownValue();
+            }
+
         }
 
         public void UpdateResolution()

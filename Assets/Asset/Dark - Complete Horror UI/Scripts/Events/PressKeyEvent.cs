@@ -12,6 +12,13 @@ namespace Michsky.UI.Dark
         // Events
         public UnityEvent onPressEvent;
 
+        private bool isDisable;
+
+        public void DisableHotKey(bool isDisable)
+        {
+            this.isDisable = isDisable;
+        }
+
         void Start()
         {
             hotkey.Enable();
@@ -19,7 +26,7 @@ namespace Michsky.UI.Dark
 
         void Update()
         {
-            if (hotkey.triggered)
+            if (hotkey.triggered && !isDisable)
                 onPressEvent.Invoke();
         }
     }
