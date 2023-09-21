@@ -9,11 +9,8 @@ namespace UI.Manager
     public class SettingUIManager : MonoBehaviour
     {
         [SerializeField] private PanelController m_SettingPanel;
-        [SerializeField] private UnityEvent PauseEvent;
 
         private PauseModeController m_PauseModeController;
-
-        public System.Action<bool> SettingUIAction { get; set; }
 
         private void Awake()
         {
@@ -30,7 +27,6 @@ namespace UI.Manager
         {
             m_PauseModeController.IsActiveSettingUI = isActive;
             m_SettingPanel.TryActive(isActive);
-            SettingUIAction?.Invoke(isActive);
         }
 
         #region UnityEvent

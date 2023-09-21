@@ -35,9 +35,10 @@ namespace Entity.Object.Weapon
         {
             if (hit.transform.TryGetComponent(out IDamageable damageable))
             {
-                if (inSameTargtIndex == 0) m_SurfaceManager.InstanceBloodEffect(ref hit, m_BloodEffectIndex);
                 Vector3 dir = (hit.point - m_ForcePoint.position).normalized * m_MeleeWeaponStat.m_AttackForce;
-                damageable.Hit(m_RealDamage, m_MeleeWeaponStat.m_BulletType, dir);
+                bool isEffect = damageable.Hit(m_RealDamage, m_MeleeWeaponStat.m_BulletType, dir);
+                if (isEffect && inSameTargtIndex == 0) 
+                    m_SurfaceManager.InstanceBloodEffect(ref hit, m_BloodEffectIndex);
                 return true;
             }
 

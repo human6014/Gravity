@@ -980,6 +980,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243571878092142
 GameObject:
   m_ObjectHideFlags: 0
@@ -1055,6 +1056,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243571884020470
 GameObject:
   m_ObjectHideFlags: 0
@@ -1233,6 +1235,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243571975291447
 GameObject:
   m_ObjectHideFlags: 0
@@ -1308,6 +1311,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243572004968868
 GameObject:
   m_ObjectHideFlags: 0
@@ -1533,6 +1537,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243572101166415
 GameObject:
   m_ObjectHideFlags: 0
@@ -1608,6 +1613,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243572195015960
 GameObject:
   m_ObjectHideFlags: 0
@@ -1784,6 +1790,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243572315697998
 GameObject:
   m_ObjectHideFlags: 0
@@ -1949,6 +1956,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243572413324962
 GameObject:
   m_ObjectHideFlags: 0
@@ -2024,6 +2032,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243572487091430
 GameObject:
   m_ObjectHideFlags: 0
@@ -2317,6 +2326,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243572654214782
 GameObject:
   m_ObjectHideFlags: 0
@@ -2392,6 +2402,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243572658227725
 GameObject:
   m_ObjectHideFlags: 0
@@ -2618,6 +2629,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243572744379000
 GameObject:
   m_ObjectHideFlags: 0
@@ -2693,6 +2705,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243572818926634
 GameObject:
   m_ObjectHideFlags: 0
@@ -2768,6 +2781,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243572868312164
 GameObject:
   m_ObjectHideFlags: 0
@@ -2977,6 +2991,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243573059383475
 GameObject:
   m_ObjectHideFlags: 0
@@ -3099,6 +3114,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243573087488186
 GameObject:
   m_ObjectHideFlags: 0
@@ -3261,6 +3277,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243573249760647
 GameObject:
   m_ObjectHideFlags: 0
@@ -3446,6 +3463,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243573280729537
 GameObject:
   m_ObjectHideFlags: 0
@@ -3521,6 +3539,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243573313544948
 GameObject:
   m_ObjectHideFlags: 0
@@ -3596,6 +3615,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243573316737741
 GameObject:
   m_ObjectHideFlags: 0
@@ -3781,6 +3801,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243573374107431
 GameObject:
   m_ObjectHideFlags: 0
@@ -3959,6 +3980,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243573450156514
 GameObject:
   m_ObjectHideFlags: 0
@@ -4342,6 +4364,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243573753811961
 GameObject:
   m_ObjectHideFlags: 0
@@ -4464,6 +4487,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243573765730750
 GameObject:
   m_ObjectHideFlags: 0
@@ -4539,6 +4563,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 0
+  m_IsEffect: 1
 --- !u!1 &2851243573776390304
 GameObject:
   m_ObjectHideFlags: 0
@@ -5217,6 +5242,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsWeakPoint: 1
+  m_IsEffect: 1
 --- !u!1 &5181653584034408220
 GameObject:
   m_ObjectHideFlags: 0

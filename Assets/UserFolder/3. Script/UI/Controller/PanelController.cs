@@ -25,5 +25,11 @@ namespace UI.Controller
             if (m_Animator == null) return;
             m_Animator.SetTrigger(isActive ? "Show" : "Hide");
         }
+
+        public void BlockPanel(bool isActive)
+        {
+            m_CanvasGroup.interactable = isActive;
+            m_CanvasGroup.blocksRaycasts = isActive;
+        }
     }
 }

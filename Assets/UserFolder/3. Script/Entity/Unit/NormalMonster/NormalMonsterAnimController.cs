@@ -91,6 +91,7 @@ namespace Entity.Unit.Normal
         private IEnumerator CheckForEndGettingUp(TaskCompletionSource<bool> tcs)
         {
             while (!IsEndGettingUp) yield return null;
+            m_Animator.ResetTrigger(m_GettingUp);
             tcs.SetResult(true);
         }
         #endregion
