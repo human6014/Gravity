@@ -41,7 +41,10 @@ public class DataManager : MonoBehaviour
         {
             PlayerPrefs.SetInt("HasData", m_HasData ? 1 : 0);
             foreach (Setting setting in m_Settings)
+            {
+                setting.LoadDefault();
                 setting.SaveData();
+            }
         }
     }
 
