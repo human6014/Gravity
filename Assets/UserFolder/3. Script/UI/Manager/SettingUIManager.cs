@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UI.Controller;
+using UnityEngine.SceneManagement;
+using Michsky.UI.Dark;
 
 namespace UI.Manager
 {
     public class SettingUIManager : MonoBehaviour
     {
-        [SerializeField] private PanelController m_SettingPanel;
+        [SerializeField] private PanelController m_PanelController;
+
+        [SerializeField] private GameObject m_SettingPanel;
 
         private PauseModeController m_PauseModeController;
 
@@ -26,7 +30,7 @@ namespace UI.Manager
         private void SetActiveUI(bool isActive)
         {
             m_PauseModeController.IsActiveSettingUI = isActive;
-            m_SettingPanel.TryActive(isActive);
+            m_PanelController.TryActive(isActive);
         }
 
         #region UnityEvent
@@ -37,12 +41,13 @@ namespace UI.Manager
         
         public void Setting()
         {
-            //연결 안함 아직
+            Debug.Log("Click Setting");
+
         }
 
         public void ReturnLobby()
         {
-            Debug.Log("ReturnLobby");
+            SceneManager.LoadScene("LobbyScene");
         }
         #endregion
     }

@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 public class KeyBind : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField] private KeyBindController m_KeyBindController;
+    [SerializeField] private KeySettingController m_KeyBindController;
     [SerializeField] private TextMeshProUGUI m_TextMesh;
     [SerializeField] private int Index;
 

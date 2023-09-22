@@ -67,31 +67,31 @@ namespace Michsky.UI.Dark
 
             else
             {
-                if (customDropdown != null)
-                    customDropdown.gameObject.SetActive(false);
+                //if (customDropdown != null)
+                //    customDropdown.gameObject.SetActive(false);
 
-                if (defaultDropdown != null) { defaultDropdown.gameObject.SetActive(true); }
-                else return;
+                //if (defaultDropdown != null) { defaultDropdown.gameObject.SetActive(true); }
+                //else return;
 
-                defaultDropdown.ClearOptions();
+                //defaultDropdown.ClearOptions();
 
-                List<string> options = new List<string>();
+                //List<string> options = new List<string>();
 
-                int currentResolutionIndex = 0;
-                for (int i = 0; i < resolutions.Length; i++)
-                {
-                    string option = resolutions[i].width + "x" + resolutions[i].height + " " + resolutions[i].refreshRate + "hz";
-                    options.Add(option);
+                //int currentResolutionIndex = 0;
+                //for (int i = 0; i < resolutions.Length; i++)
+                //{
+                //    string option = resolutions[i].width + "x" + resolutions[i].height + " " + resolutions[i].refreshRate + "hz";
+                //    options.Add(option);
 
-                    if (resolutions[i].width == Screen.currentResolution.width
-                        && resolutions[i].height == Screen.currentResolution.height)
-                        currentResolutionIndex = i;
-                }
+                //    if (resolutions[i].width == Screen.currentResolution.width
+                //        && resolutions[i].height == Screen.currentResolution.height)
+                //        currentResolutionIndex = i;
+                //}
 
-                defaultDropdown.AddOptions(options);
-                defaultDropdown.onValueChanged.AddListener(SetResolution);
-                defaultDropdown.value = currentResolutionIndex;
-                defaultDropdown.RefreshShownValue();
+                //defaultDropdown.AddOptions(options);
+                //defaultDropdown.onValueChanged.AddListener(SetResolution);
+                //defaultDropdown.value = currentResolutionIndex;
+                //defaultDropdown.RefreshShownValue();
             }
 
         }

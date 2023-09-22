@@ -10,7 +10,8 @@ namespace Manager
     {
         [SerializeField] private bool m_IsFixedFrameRate;
         [SerializeField] private int m_FrameRate = 60;
-        
+
+        private DataManager m_DataManager;
 
         public static bool IsGameEnd { get; private set; }
 
@@ -20,6 +21,7 @@ namespace Manager
             IsGameEnd = true;
             Debug.Log("GameClear");
         }
+
         public static void GameEnd()
         {
             if (IsGameEnd) return;
@@ -30,8 +32,10 @@ namespace Manager
         private void Awake()
         {
             IsGameEnd = false;
+            m_DataManager = FindObjectOfType<DataManager>();
+            if (m_DataManager == null) return;
+            Debug.Log("DataManager");
 
-            
         }
 
         private void Start()
