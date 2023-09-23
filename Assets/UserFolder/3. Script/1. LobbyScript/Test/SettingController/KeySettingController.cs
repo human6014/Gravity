@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class KeySettingController : MonoBehaviour
+public class KeySettingController : SettingController
 {
     [SerializeField] private UnityEvent BindStartEvent;
     [SerializeField] private UnityEvent BindEndEvent;
@@ -63,10 +63,5 @@ public class KeySettingController : MonoBehaviour
         }
         BindEndEvent?.Invoke();
         m_ReceiveKeyMode = false;
-    }
-
-    public void LoadKeyBinding()
-    {
-
     }
 }

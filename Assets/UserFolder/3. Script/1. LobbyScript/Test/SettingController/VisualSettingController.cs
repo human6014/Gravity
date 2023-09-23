@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class VisualSettingController : MonoBehaviour
+public class VisualSettingController : SettingController
 {
     [SerializeField] private TMP_Dropdown m_TMP_Dropdown;
     private Resolution[] m_Resolutions;

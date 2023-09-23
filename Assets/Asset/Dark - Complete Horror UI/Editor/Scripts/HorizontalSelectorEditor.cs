@@ -151,10 +151,10 @@ namespace Michsky.UI.Dark
                     invertAnimation.boolValue = DarkUIEditorHandler.DrawToggle(invertAnimation.boolValue, customSkin, "Invert Animation");
                     loopSelection.boolValue = DarkUIEditorHandler.DrawToggle(loopSelection.boolValue, customSkin, "Loop Selection");
                     invokeAtStart.boolValue = DarkUIEditorHandler.DrawToggle(invokeAtStart.boolValue, customSkin, "Invoke At Start");
-                    saveValue.boolValue = DarkUIEditorHandler.DrawToggle(saveValue.boolValue, customSkin, "Save Selection");
+                    //saveValue.boolValue = DarkUIEditorHandler.DrawToggle(saveValue.boolValue, customSkin, "Save Selection");
                     GUILayout.Space(3);
 
-                    if (saveValue.boolValue == true)
+                    if (saveValue != null && saveValue.boolValue == true)
                     {
                         GUILayout.BeginHorizontal();
 

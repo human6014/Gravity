@@ -54,9 +54,9 @@ namespace Michsky.UI.Dark
                     DarkUIEditorHandler.DrawHeader(customSkin, "Options Header", 6);
                     isOn.boolValue = DarkUIEditorHandler.DrawToggle(isOn.boolValue, customSkin, "Is On (on enable)");
                     invokeAtStart.boolValue = DarkUIEditorHandler.DrawToggle(invokeAtStart.boolValue, customSkin, "Invoke At Start");
-                    saveValue.boolValue = DarkUIEditorHandler.DrawToggle(saveValue.boolValue, customSkin, "Save Value");
+                    //saveValue.boolValue = DarkUIEditorHandler.DrawToggle(saveValue.boolValue, customSkin, "Save Value");
 
-                    if (saveValue.boolValue == true)
+                    if (saveValue != null && saveValue.boolValue == true)
                     {
                         GUILayout.BeginHorizontal();
                         GUILayout.Space(35);
