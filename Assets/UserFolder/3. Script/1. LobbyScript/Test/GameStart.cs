@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class GameStart : MonoBehaviour
 {
-    public void OnClickedGameStart(int difficultyIndex)
+    public void OnClickedGameStart()
     {
-        GamePlaySetting.m_DifficultyIndex = difficultyIndex;
         LoadingSceneController.LoadScene("GameScene");
     }
 }

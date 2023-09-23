@@ -28,9 +28,61 @@ public class GameControlSetting : Setting
     public static KeyCode m_GravityZ { get; private set; }      //99
     #endregion
 
+    public object this[string name]
+    {
+        get
+        {
+            switch (name)
+            {
+                case "LookSensitivity": return m_LookSensitivity;
+                case "AimSensitivity": return m_AimSensitivity;
+                case "RunMode": return m_RunMode;
+                case "AimMode": return m_AimMode;
+                case "MoveForward ": return m_MoveForward;
+                case "MoveBack": return m_MoveBack;
+                case "MoveLeft": return m_MoveLeft;
+                case "MoveRight": return m_MoveRight;
+                case "Run": return m_Run;
+                case "Jump": return m_Jump;
+                case "Crouch": return m_Crouch;
+                case "Reload": return m_Reload;
+                case "TimeSlow": return m_TimeSlow;
+                case "GravityX": return m_GravityX;
+                case "GravityY": return m_GravityY;
+                case "GravityZ": return m_GravityZ;
+                default: Debug.Log("Indexer name is null"); return null;
+            }
+        }
+        set
+        {
+            switch (name)
+            {
+                case "LookSensitivity": m_LookSensitivity = (float)value; break;
+                case "AimSensitivity": m_AimSensitivity = (float)value; break;
+                case "RunMode": m_RunMode = (int)value; break;
+                case "AimMode": m_AimMode = (int)value; break;
+                case "MoveForward ": m_MoveForward = (KeyCode)value; break;
+                case "MoveBack": m_MoveBack = (KeyCode)value; break;
+                case "MoveLeft": m_MoveLeft = (KeyCode)value; break;
+                case "MoveRight": m_MoveRight = (KeyCode)value; break;
+                case "Run": m_Run = (KeyCode)value; break;
+                case "Jump": m_Jump = (KeyCode)value; break;
+                case "Crouch": m_Crouch = (KeyCode)value; break;
+                case "Reload": m_Reload = (KeyCode)value; break;
+                case "TimeSlow": m_TimeSlow = (KeyCode)value; break;
+                case "GravityX": m_GravityX = (KeyCode)value; break;
+                case "GravityY": m_GravityY = (KeyCode)value; break;
+                case "GravityZ": m_GravityZ = (KeyCode)value; break;
+                default: Debug.Log("Indexer name is null"); break;
+            }
+        }
+    }
+
     #region Load & Save
     public override void LoadDefault()
     {
+        Debug.Log("Load Default GameControlSettings");
+
         m_LookSensitivity = 1;
         m_AimSensitivity = 1;
         m_RunMode = 0;
@@ -52,6 +104,8 @@ public class GameControlSetting : Setting
 
     public override void LoadData()
     {
+        Debug.Log("Load GameControlSettings");
+
         m_LookSensitivity = PlayerPrefs.GetFloat("LookSensitivity");
         m_AimSensitivity = PlayerPrefs.GetFloat("AimSensitivity");
 
@@ -78,6 +132,8 @@ public class GameControlSetting : Setting
 
     public override void SaveData()
     {
+        Debug.Log("Save GameControlSettings");
+
         PlayerPrefs.SetFloat("LookSensitivity", m_LookSensitivity);
         PlayerPrefs.SetFloat("AimSensitivity", m_AimSensitivity);
 

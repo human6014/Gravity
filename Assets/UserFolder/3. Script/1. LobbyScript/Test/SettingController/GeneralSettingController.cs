@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GeneralSettingController : MonoBehaviour
+public class GeneralSettingController : SettingController
 {
     public void ChangeLookSensitivitySlider(float value)
         => GameControlSetting.m_LookSensitivity = value;

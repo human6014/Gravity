@@ -8,7 +8,7 @@ using TMPro;
 namespace Michsky.UI.Dark
 {
     [RequireComponent(typeof(Animator))]
-    public class HorizontalSelector : MonoBehaviour
+    public class HorizontalSelector : LoadableSettingComponent
     {
         // Resources
         public TextMeshProUGUI label;
@@ -21,10 +21,6 @@ namespace Michsky.UI.Dark
         public HorizontalLayoutGroup contentLayout;
         public HorizontalLayoutGroup contentLayoutHelper;
         string newItemTitle;
-
-        // Saving
-        public bool saveValue;
-        public string selectorTag = "Tag Text";
 
         // Settings
         public bool enableIcon = true;
@@ -72,18 +68,15 @@ namespace Michsky.UI.Dark
             }
         }
 
+        public override void LoadComponent(object value)
+        {
+            defaultIndex = (int)value;
+        }
+
         public void SetupSelector()
         {
             if (itemList.Count != 0)
             {
-                if (saveValue == true)
-                {
-                    if (PlayerPrefs.HasKey("HorizontalSelector" + selectorTag) == true)
-                        defaultIndex = PlayerPrefs.GetInt("HorizontalSelector" + selectorTag);
-                    else
-                        PlayerPrefs.SetInt("HorizontalSelector" + selectorTag, defaultIndex);
-                }
-
                 label.text = itemList[defaultIndex].itemTitle;
                 labelHelper.text = label.text;
 
@@ -140,9 +133,6 @@ namespace Michsky.UI.Dark
                         selectorAnimator.Play("Forward");
                     else
                         selectorAnimator.Play("Previous");
-
-                    if (saveValue == true)
-                        PlayerPrefs.SetInt("HorizontalSelector" + selectorTag, index);
                 }
             }
 
@@ -172,13 +162,7 @@ namespace Michsky.UI.Dark
                     selectorAnimator.Play("Forward");
                 else
                     selectorAnimator.Play("Previous");
-
-                if (saveValue == true)
-                    PlayerPrefs.SetInt("HorizontalSelector" + selectorTag, index);
             }
-
-            if (saveValue == true)
-                PlayerPrefs.SetInt("HorizontalSelector" + selectorTag, index);
 
             if (enableIndicators == true)
             {
@@ -233,9 +217,6 @@ namespace Michsky.UI.Dark
                         selectorAnimator.Play("Previous");
                     else
                         selectorAnimator.Play("Forward");
-
-                    if (saveValue == true)
-                        PlayerPrefs.SetInt("HorizontalSelector" + selectorTag, index);
                 }
             }
 
@@ -265,13 +246,7 @@ namespace Michsky.UI.Dark
                     selectorAnimator.Play("Previous");
                 else
                     selectorAnimator.Play("Forward");
-
-                if (saveValue == true)
-                    PlayerPrefs.SetInt("HorizontalSelector" + selectorTag, index);
             }
-
-            if (saveValue == true)
-                PlayerPrefs.SetInt("HorizontalSelector" + selectorTag, index);
 
             if (enableIndicators == true)
             {

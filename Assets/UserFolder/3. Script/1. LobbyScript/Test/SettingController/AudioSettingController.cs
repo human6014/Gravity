@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioSettingController : MonoBehaviour
+public class AudioSettingController : SettingController
 {
     public void ChangeMasterVolume(float value)
     {

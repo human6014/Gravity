@@ -21,6 +21,56 @@ public class VisualSetting : Setting
     public static int m_AnisotrpicFiltering { get; set; }
     public static bool m_SoftParticle { get; set; }
 
+    public object this [string name]
+    {
+        get
+        {
+            switch (name)
+            {
+                case "ResolutionWidth": return m_ResolutionWidth;
+                case "ResolutionHeight": return m_ResolutionHeight;
+                case "RefreshRate": return m_RefreshRate;
+                case "WindowMode": return m_WindowMode;
+                case "VSyncCount": return m_VSyncCount;
+
+                case "MotionBlur": return m_MotionBlur;
+                case "FOV": return m_FOV;
+                case "FarDistance": return m_FarDistance;
+
+                case "FrameRate": return m_FrameRate;
+                case "AntiAliasing": return m_AntiAliasing;
+                case "TextureQuality": return m_TextureQuality;
+                case "ShadowQuality": return m_ShadowQuality;
+                case "AnisotrpicFiltering": return m_AnisotrpicFiltering;
+                case "SoftParticle": return m_SoftParticle;
+                default:Debug.Log("Indexer name is null"); return null;
+            }
+        }
+        set
+        {
+            switch (name)
+            {
+                case "ResolutionWidth": m_ResolutionWidth = (int)value; break;
+                case "ResolutionHeight": m_ResolutionHeight = (int)value; break;
+                case "RefreshRate": m_RefreshRate = (int)value; break;
+                case "WindowMode": m_WindowMode = (int)value; break;
+                case "VSyncCount": m_VSyncCount = (int)value; break;
+
+                case "MotionBlur": m_MotionBlur = (bool)value; break;
+                case "FOV": m_FOV = (int)value; break;
+                case "FarDistance": m_FarDistance = (int)value; break;
+
+                case "FrameRate": m_FrameRate = (int)value; break;
+                case "AntiAliasing": m_AntiAliasing = (int)value; break;
+                case "TextureQuality": m_TextureQuality = (int)value; break;
+                case "ShadowQuality": m_ShadowQuality = (int)value; break;
+                case "AnisotrpicFiltering": m_AnisotrpicFiltering = (int)value; break;
+                case "SoftParticle": m_SoftParticle = (bool)value; break;
+                default: Debug.Log("Indexer name is null"); break;
+            }
+        }
+    }
+
     #region General
     public int WindowMode
     {
@@ -139,12 +189,26 @@ public class VisualSetting : Setting
 
     public override void LoadDefault()
     {
+        Debug.Log("Load Default VisualSetting");
+
+        
         m_MotionBlur = true;
+        m_FOV = 60;
+        m_FarDistance = 150;
+
+        m_FrameRate = 2;
+        m_AntiAliasing = 0;
+        m_TextureQuality = 2;
+        m_ShadowQuality = 3;
+        m_AnisotrpicFiltering = 1;
+        m_SoftParticle = true;
     }
 
     public override void LoadData()
     {
-        m_ResolutionWidth= PlayerPrefs.GetInt("ResolutionWidth");
+        Debug.Log("Load VisualSetting");
+
+        m_ResolutionWidth = PlayerPrefs.GetInt("ResolutionWidth");
         m_ResolutionHeight = PlayerPrefs.GetInt("ResolutionHeight");
         m_WindowMode = PlayerPrefs.GetInt("WindowMode");
         m_VSyncCount = PlayerPrefs.GetInt("VSyncCount");
@@ -163,6 +227,8 @@ public class VisualSetting : Setting
 
     public override void SaveData()
     {
+        Debug.Log("Save VisualSetting");
+
         PlayerPrefs.SetInt("ResolutionWidth", m_ResolutionWidth);
         PlayerPrefs.SetInt("ResolutionHeight", m_ResolutionHeight);
         PlayerPrefs.SetInt("WindowMode", m_WindowMode);

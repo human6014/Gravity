@@ -6,10 +6,10 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-    private Setting[] m_Settings;
     private bool m_HasData;
 
     public static DataManager Instance { get; private set; }
+    public Setting[] Settings { get; private set; }
 
     private void Awake()
     {
@@ -24,23 +24,23 @@ public class DataManager : MonoBehaviour
 
     private void GameAwake()
     {
-        m_Settings = new Setting[4];
-        m_Settings[0] = new GamePlaySetting();
-        m_Settings[1] = new GameControlSetting();
-        m_Settings[2] = new AudioSetting();
-        m_Settings[3] = new VisualSetting();
+        Settings = new Setting[4];
+        Settings[0] = new GamePlaySetting();
+        Settings[1] = new GameControlSetting();
+        Settings[2] = new AudioSetting();
+        Settings[3] = new VisualSetting();
 
         m_HasData = PlayerPrefs.HasKey("HasData");
-
+        Debug.Log("HasData is " + m_HasData);
         if (m_HasData)
         {
-            foreach (Setting setting in m_Settings)
+            foreach (Setting setting in Settings)
                 setting.LoadData();
         }
         else
         {
             PlayerPrefs.SetInt("HasData", m_HasData ? 1 : 0);
-            foreach (Setting setting in m_Settings)
+            foreach (Setting setting in Settings)
             {
                 setting.LoadDefault();
                 setting.SaveData();
@@ -51,24 +51,24 @@ public class DataManager : MonoBehaviour
     [ContextMenu("DebugGamePlaySetting")]
     public void DebugGamePlaySetting()
     {
-        ((GamePlaySetting)m_Settings[0]).DebugAllSetting();
+        ((GamePlaySetting)Settings[0]).DebugAllSetting();
     }
 
     [ContextMenu("DebugControlSetting")]
     public void DebugControlSetting()
     {
-        ((GameControlSetting)m_Settings[1]).DebugAllSetting();
+        ((GameControlSetting)Settings[1]).DebugAllSetting();
     }
 
     [ContextMenu("DebugAudioSetting")]
     public void DebugAudioSetting()
     {
-        ((AudioSetting)m_Settings[2]).DebugAllSetting();
+        ((AudioSetting)Settings[2]).DebugAllSetting();
     }
 
     [ContextMenu("DebugVisualSetting")]
     public void DebugVisualSetting()
     {
-        ((VisualSetting)m_Settings[3]).DebugAllSetting();
+        ((VisualSetting)Settings[3]).DebugAllSetting();
     }
 }
