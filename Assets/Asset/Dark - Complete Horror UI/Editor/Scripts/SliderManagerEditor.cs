@@ -60,9 +60,9 @@ namespace Michsky.UI.Dark
                     showValue.boolValue = DarkUIEditorHandler.DrawToggle(showValue.boolValue, customSkin, "Show Value");
                     showPopupValue.boolValue = DarkUIEditorHandler.DrawToggle(showPopupValue.boolValue, customSkin, "Show Popup Value");
                     useRoundValue.boolValue = DarkUIEditorHandler.DrawToggle(useRoundValue.boolValue, customSkin, "Use Round Value");
-                    enableSaving.boolValue = DarkUIEditorHandler.DrawToggle(enableSaving.boolValue, customSkin, "Save Value");
+                    //enableSaving.boolValue = DarkUIEditorHandler.DrawToggle(enableSaving.boolValue, customSkin, "Save Value");
 
-                    if (enableSaving.boolValue == true)
+                    if (enableSaving!=null && enableSaving.boolValue == true)
                     {
                         GUILayout.BeginHorizontal();
                         GUILayout.Space(35);

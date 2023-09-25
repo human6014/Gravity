@@ -4,29 +4,29 @@ using UnityEngine;
 
 public class AudioSetting : Setting
 {
-    public static float m_MasterVolume { get; set; }    //0.001 ~ 1
-    public static float m_MusicVolume { get; set; }     //0.001 ~ 1
-    public static float m_SFXVolume { get; set; }       //0.001 ~ 1
+    public float m_MasterVolume { get; set; }    //0.001 ~ 1
+    public float m_MusicVolume { get; set; }     //0.001 ~ 1
+    public float m_SFXVolume { get; set; }       //0.001 ~ 1
 
-    public float this[string name]
+    public float this[int index]
     {
         get
         {
-            switch (name)
+            switch (index)
             {
-                case "MasterVolume": return m_MasterVolume;
-                case "MusicVolume": return m_MusicVolume;
-                case "SFXVolume": return m_SFXVolume;
+                case 0: return m_MasterVolume;
+                case 1: return m_MusicVolume;
+                case 2: return m_SFXVolume;
                 default: Debug.Log("Indexer name is null"); return -1;
             }
         }
         set
         {
-            switch (name)
+            switch (index)
             {
-                case "MasterVolume":m_MasterVolume = value;break;
-                    case "MusicVolume": m_MusicVolume = value; break;
-                case "SFXVolume": m_SFXVolume = value; break;
+                case 0:m_MasterVolume = value;break;
+                case 1: m_MusicVolume = value; break;
+                case 2: m_SFXVolume = value; break;
                 default: Debug.Log("Indexer name is null");break;
             }
         }
@@ -57,6 +57,8 @@ public class AudioSetting : Setting
         PlayerPrefs.SetFloat("MasterVolume",m_MasterVolume);
         PlayerPrefs.SetFloat("MusicVolume", m_MusicVolume);
         PlayerPrefs.SetFloat("SFXVolume", m_SFXVolume);
+
+        PlayerPrefs.Save();
     }
 
     public void DebugAllSetting()

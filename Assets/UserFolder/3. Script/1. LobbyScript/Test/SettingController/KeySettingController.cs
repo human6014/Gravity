@@ -11,9 +11,18 @@ public class KeySettingController : SettingController
 
     [SerializeField] private KeyBind[] m_KeyBinds;
 
+    private GameControlSetting m_GameControlSetting;
+
     private Action<KeyCode> CurrentKeyBindingAction;
     private bool m_ReceiveKeyMode;
     private int m_CurrentReceiveKey;
+
+    private void Start()
+    {
+        if (DataManager.Instance == null) return;
+        m_GameControlSetting = (GameControlSetting)DataManager.Instance.Settings[1];
+        UpdateSettings();
+    }
 
     private bool IsIgnoreKey(KeyCode keyCode)
     {
@@ -34,14 +43,14 @@ public class KeySettingController : SettingController
 
     public void OnClickModalCancel()
     {
+        Debug.Log("BindEndEvent");
         BindEndEvent?.Invoke();
         m_ReceiveKeyMode = false;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if (!m_ReceiveKeyMode) return;
-
         if (!Input.anyKey) return;
 
         Array keyCodeArray = Enum.GetValues(typeof(KeyCode));
@@ -58,10 +67,16 @@ public class KeySettingController : SettingController
         }
         if (input != KeyCode.Escape)
         {
-            GameControlSetting.ChangeKey(m_CurrentReceiveKey, input);
+            Debug.Log("KeyBindEvent");
+            m_GameControlSetting[m_CurrentReceiveKey] = input;
             CurrentKeyBindingAction?.Invoke(input);
         }
-        BindEndEvent?.Invoke();
-        m_ReceiveKeyMode = false;
+        OnClickModalCancel();
+    }
+
+    public override void UpdateSettings()
+    {
+        for (int i = 0; i < m_LoadableSettingComponents.Length; i++)
+            m_LoadableSettingComponents[i].LoadComponent(m_GameControlSetting[i]);
     }
 }

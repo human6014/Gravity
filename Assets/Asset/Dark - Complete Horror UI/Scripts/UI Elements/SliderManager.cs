@@ -6,7 +6,7 @@ using TMPro;
 namespace Michsky.UI.Dark
 {
     [RequireComponent(typeof(Slider))]
-    public class SliderManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class SliderManager : LoadableSettingComponent, IPointerEnterHandler, IPointerExitHandler
     {
         // Resources
         public Animator sliderAnimator;
@@ -21,16 +21,25 @@ namespace Michsky.UI.Dark
         public bool useRoundValue = false;
         public float valueMultiplier = 1;
 
+        private void Awake()
+        {
+            if (mainSlider == null) mainSlider = GetComponent<Slider>();
+        }
+
         void Start()
         {
-            if (mainSlider == null)
-                mainSlider = gameObject.GetComponent<Slider>();
-
             mainSlider.onValueChanged.AddListener(delegate
             {
                 UpdateUI();
             });
 
+            UpdateUI();
+        }
+
+        public override void LoadComponent(object value)
+        {
+            if (mainSlider == null) mainSlider = GetComponent<Slider>();
+            mainSlider.value = (float)value;
             UpdateUI();
         }
 

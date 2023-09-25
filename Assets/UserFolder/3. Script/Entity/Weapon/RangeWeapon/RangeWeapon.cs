@@ -105,6 +105,7 @@ namespace Entity.Object.Weapon
             PlayerInputController.AutoFire += TryAutoFire;
             PlayerInputController.SemiFire += TrySemiFire;
             PlayerInputController.Aiming += TryAiming;
+            PlayerInputController.ToggleAiming += TryToggleAiming;
         }
         #endregion
 
@@ -125,6 +126,27 @@ namespace Entity.Object.Weapon
             {
                 m_IsRunning = false;
                 if (m_RunningCoroutine != null) StopCoroutine(m_RunningCoroutine);
+            }
+
+            if (m_ToggleMode)
+            {
+                if (PlayerData.PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
+                {
+                    m_IsAiming = false;
+                    PlayerData.PlayerState.SetWeaponIdle();
+                    return;
+                }
+                if (m_IsAiming)
+                {
+                    PlayerData.PlayerState.SetWeaponAiming();
+                    AimingPosRot(m_RangeWeaponStat.m_AimingPivotPosition, m_AimingPivotRotation, m_AimingFOV);
+                }
+                else
+                {
+                    PlayerData.PlayerState.SetWeaponIdle();
+                    AimingPosRot(WeaponManager.OriginalPivotPosition, WeaponManager.OriginalPivotRotation, WeaponManager.OriginalFOV);
+                }
+                SetCurrentFireIndex(m_IsAiming);
             }
         }
         
@@ -148,8 +170,18 @@ namespace Entity.Object.Weapon
         #endregion
 
         #region Aiming
+        private bool m_ToggleMode = false;
+        private bool m_IsAiming = false;
+
+        private void TryToggleAiming()
+        {
+            m_ToggleMode = true;
+            m_IsAiming = !m_IsAiming;
+        }
+
         private void TryAiming(bool isAiming)
         {
+            if (m_ToggleMode) return;
             if (PlayerData.PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
             {
                 PlayerData.PlayerState.SetWeaponIdle();
@@ -325,11 +357,13 @@ namespace Entity.Object.Weapon
         protected override void DischargeKeyAction()
         {
             base.DischargeKeyAction();
+            m_IsAiming = false;
             PlayerInputController.Reload -= TryReload;
             PlayerInputController.ChangeFireMode -= TryChangeFireMode;
             PlayerInputController.AutoFire -= TryAutoFire;
             PlayerInputController.SemiFire -= TrySemiFire;
             PlayerInputController.Aiming -= TryAiming;
+            PlayerInputController.ToggleAiming -= TryToggleAiming;
         }
     }
 }

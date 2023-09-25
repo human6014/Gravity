@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class GamePlaySettingController : SettingController
 {
-    protected override void Start()
+    private GamePlaySetting m_GamePlaySetting;
+
+    private void Start()
     {
-        base.Start();
-        base.UpdateSettings();
+        if (DataManager.Instance == null) return;
+        m_GamePlaySetting = (GamePlaySetting)DataManager.Instance.Settings[0];
+        UpdateSettings();
     }
 
-    public void ChangeEnavleNotification(bool value)
+    public void ChangeEnableNotification(bool value)
         => m_GamePlaySetting[0] = value;
     
     public void ChangeLanguage(int value)
@@ -24,4 +27,10 @@ public class GamePlaySettingController : SettingController
 
     public void ChangeDifficultyIndex(int value)
         => m_GamePlaySetting[4] = value;
+
+    public override void UpdateSettings()
+    {
+        for (int i = 0; i < m_LoadableSettingComponents.Length; i++)
+            m_LoadableSettingComponents[i].LoadComponent(m_GamePlaySetting[i]);
+    }
 }

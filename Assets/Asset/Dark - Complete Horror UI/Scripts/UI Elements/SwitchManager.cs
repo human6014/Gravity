@@ -13,8 +13,8 @@ namespace Michsky.UI.Dark
         public UnityEvent offEvents;
 
         // Settings
-        public bool isOn = true;
-        public bool invokeAtStart = true;
+        private bool isOn = false;
+        public bool invokeAtStart = false;
 
         // Resources
         public Animator switchAnimator;
@@ -22,73 +22,40 @@ namespace Michsky.UI.Dark
 
         void Awake()
         {
-            if (switchAnimator == null) { switchAnimator = gameObject.GetComponent<Animator>(); }
+            if (switchAnimator == null)  switchAnimator = GetComponent<Animator>();
             if (switchButton == null)
             {
-                switchButton = gameObject.GetComponent<Button>();
+                switchButton = GetComponent<Button>();
                 switchButton.onClick.AddListener(AnimateSwitch);
             }
         }
 
         public override void LoadComponent(object value)
         {
+            if (switchAnimator == null) switchAnimator = GetComponent<Animator>();
+            Debug.Log("LoadComponent");
             isOn = (bool)value;
-            if (isOn == true)
-            {
-                switchAnimator.Play("Switch On");
-                isOn = true;
-            }
-            else
-            {
-                switchAnimator.Play("Switch Off");
-                isOn = false;
-            }
+            if (isOn == true) switchAnimator.Play("Switch On");
+            else switchAnimator.Play("Switch Off");
         }
 
-        //void Start()
-        //{
-        //    if (isOn == true)
-        //    {
-        //        switchAnimator.Play("Switch On");
-        //        isOn = true;
-        //    }
-        //    else
-        //    {
-        //        switchAnimator.Play("Switch Off");
-        //        isOn = false;
-        //    }
+        void OnEnable()
+        {
+            if (switchAnimator == null) switchAnimator = GetComponent<Animator>();
 
-        //    if (invokeAtStart == true && isOn == true)
-        //        onEvents?.Invoke();
-        //    else if (invokeAtStart == true && isOn == false)
-        //        offEvents?.Invoke();
-        //}
-
-        //void OnEnable()
-        //{
-        //    if (switchAnimator == null)
-        //        return;
-        //    if (isOn == true)
-        //    {
-        //        switchAnimator.Play("Switch On");
-        //        isOn = true;
-        //    }
-        //    else
-        //    {
-        //        switchAnimator.Play("Switch Off");
-        //        isOn = false;
-        //    }
-        //}
+            if (isOn == true) switchAnimator.Play("Switch On");
+            else switchAnimator.Play("Switch Off");
+        }
 
         public void AnimateSwitch()
         {
+            Debug.Log("AnimateSwitch");
             if (isOn == true)
             {
                 switchAnimator.Play("Switch Off");
                 isOn = false;
                 offEvents?.Invoke();
             }
-
             else
             {
                 switchAnimator.Play("Switch On");
