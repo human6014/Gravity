@@ -6,20 +6,20 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-    private bool m_HasData;
-
     public static DataManager Instance { get; private set; }
     public Setting[] Settings { get; private set; }
+
+    private bool m_HasData;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(this);
+            DontDestroyOnLoad(gameObject);
             GameAwake();
         }
-        else Destroy(Instance.gameObject);
+        else Destroy(gameObject);
     }
 
     private void GameAwake()
@@ -32,12 +32,12 @@ public class DataManager : MonoBehaviour
 
         m_HasData = PlayerPrefs.HasKey("HasData");
         Debug.Log("HasData is " + m_HasData);
-        if (m_HasData)
-        {
-            foreach (Setting setting in Settings)
-                setting.LoadData();
-        }
-        else
+        //if (m_HasData)
+        //{
+        //    foreach (Setting setting in Settings)
+        //        setting.LoadData();
+        //}
+        //else
         {
             PlayerPrefs.SetInt("HasData", m_HasData ? 1 : 0);
             foreach (Setting setting in Settings)

@@ -133,7 +133,6 @@ namespace Controller.Player
         private bool m_IsWalking;
 
         private bool m_IsCrouch;
-
         private bool m_IsSlowMode;
 
         public MouseLook MouseLook { get => m_MouseLook; }
@@ -177,7 +176,7 @@ namespace Controller.Player
             m_FovKick.Setup(m_Camera);
             m_HeadMoveBob.Setup(m_UpAxisTransfrom, m_StepInterval);
             m_HeadIdleBob.Setup(m_UpAxisTransfrom, m_StepInterval);
-            m_MouseLook.Setup(m_RightAxisTransform, m_UpAxisTransfrom);
+            m_MouseLook.Setup(m_RightAxisTransform, m_UpAxisTransfrom, m_PlayerData.PlayerState);
         }
 
         private void AssignAction()

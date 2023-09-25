@@ -4,75 +4,85 @@ using UnityEngine;
 
 public class GameControlSetting : Setting
 {
-    public static float m_LookSensitivity { get; set; }
-    public static float m_AimSensitivity { get; set; }
-
-    public static int m_RunMode { get; set; }   //0 : Hold  1 : Toggle
-    public static int m_AimMode { get; set; }    //0 : Hold  1 : Toggle
+    public float m_LookSensitivity { get; set; }
+    public float m_AimSensitivity { get; set; }
+    public int m_AimMode { get; set; }    //0 : Hold  1 : Toggle
 
     #region KeyBinding
-    public static KeyCode m_MoveForward { get; private set; }   //119
-    public static KeyCode m_MoveBack { get; private set; }      //115
-    public static KeyCode m_MoveLeft { get; private set; }      //97
-    public static KeyCode m_MoveRight { get; private set; }     //100
+    public KeyCode m_MoveForward { get; private set; }   //119
+    public KeyCode m_MoveBack { get; private set; }      //115
+    public KeyCode m_MoveLeft { get; private set; }      //97
+    public KeyCode m_MoveRight { get; private set; }     //100
 
-    public static KeyCode m_Run { get; private set; }           //304
-    public static KeyCode m_Jump { get; private set; }          //32
-    public static KeyCode m_Crouch { get; private set; }        //306
-    public static KeyCode m_Reload { get; private set; }        //114
+    public KeyCode m_Run { get; private set; }           //304
+    public KeyCode m_Jump { get; private set; }          //32
+    public KeyCode m_Crouch { get; private set; }        //306
+    public KeyCode m_Reload { get; private set; }        //114
 
-    public static KeyCode m_TimeSlow { get; private set; }      //102
+    public KeyCode m_TimeSlow { get; private set; }      //102
+    public KeyCode m_Heal { get; private set; }          //101
+    public KeyCode m_Change { get; private set; }        //110
 
-    public static KeyCode m_GravityX { get; private set; }      //122
-    public static KeyCode m_GravityY { get; private set; }      //120
-    public static KeyCode m_GravityZ { get; private set; }      //99
+    public KeyCode m_GravityX { get; private set; }      //122
+    public KeyCode m_GravityY { get; private set; }      //120
+    public KeyCode m_GravityZ { get; private set; }      //99
     #endregion
 
-    public object this[string name]
+    public object this[int index]
     {
         get
         {
-            switch (name)
+            switch (index)
             {
-                case "LookSensitivity": return m_LookSensitivity;
-                case "AimSensitivity": return m_AimSensitivity;
-                case "RunMode": return m_RunMode;
-                case "AimMode": return m_AimMode;
-                case "MoveForward ": return m_MoveForward;
-                case "MoveBack": return m_MoveBack;
-                case "MoveLeft": return m_MoveLeft;
-                case "MoveRight": return m_MoveRight;
-                case "Run": return m_Run;
-                case "Jump": return m_Jump;
-                case "Crouch": return m_Crouch;
-                case "Reload": return m_Reload;
-                case "TimeSlow": return m_TimeSlow;
-                case "GravityX": return m_GravityX;
-                case "GravityY": return m_GravityY;
-                case "GravityZ": return m_GravityZ;
+                case 0: return m_LookSensitivity;
+                case 1: return m_AimSensitivity;
+                case 2: return m_AimMode;
+
+                case 3: return m_MoveForward;
+                case 4: return m_MoveBack;
+                case 5: return m_MoveLeft;
+                case 6: return m_MoveRight;
+
+                case 7: return m_Run;
+                case 8: return m_Jump;
+                case 9: return m_Crouch;
+                case 10: return m_Reload;
+                case 11: return m_TimeSlow;
+                case 12: return m_Heal;
+                case 13: return m_Change;
+
+                case 14: return m_GravityX;
+                case 15: return m_GravityY;
+                case 16: return m_GravityZ;
+
                 default: Debug.Log("Indexer name is null"); return null;
             }
         }
         set
         {
-            switch (name)
+            switch (index)
             {
-                case "LookSensitivity": m_LookSensitivity = (float)value; break;
-                case "AimSensitivity": m_AimSensitivity = (float)value; break;
-                case "RunMode": m_RunMode = (int)value; break;
-                case "AimMode": m_AimMode = (int)value; break;
-                case "MoveForward ": m_MoveForward = (KeyCode)value; break;
-                case "MoveBack": m_MoveBack = (KeyCode)value; break;
-                case "MoveLeft": m_MoveLeft = (KeyCode)value; break;
-                case "MoveRight": m_MoveRight = (KeyCode)value; break;
-                case "Run": m_Run = (KeyCode)value; break;
-                case "Jump": m_Jump = (KeyCode)value; break;
-                case "Crouch": m_Crouch = (KeyCode)value; break;
-                case "Reload": m_Reload = (KeyCode)value; break;
-                case "TimeSlow": m_TimeSlow = (KeyCode)value; break;
-                case "GravityX": m_GravityX = (KeyCode)value; break;
-                case "GravityY": m_GravityY = (KeyCode)value; break;
-                case "GravityZ": m_GravityZ = (KeyCode)value; break;
+                case 0: m_LookSensitivity = (float)value; break;
+                case 1: m_AimSensitivity = (float)value; break;
+                case 2: m_AimMode = (int)value; break;
+
+                case 3: m_MoveForward = (KeyCode)value; break;
+                case 4: m_MoveBack = (KeyCode)value; break;
+                case 5: m_MoveLeft = (KeyCode)value; break;
+                case 6: m_MoveRight = (KeyCode)value; break;
+
+                case 7: m_Run = (KeyCode)value; break;
+                case 8: m_Jump = (KeyCode)value; break;
+                case 9: m_Crouch = (KeyCode)value; break;
+                case 10: m_Reload = (KeyCode)value; break;
+                case 11: m_TimeSlow = (KeyCode)value; break;
+                case 12: m_Heal = (KeyCode)value; break;
+                case 13: m_Change = (KeyCode)value; break;
+
+                case 14: m_GravityX = (KeyCode)value; break;
+                case 15: m_GravityY = (KeyCode)value; break;
+                case 16: m_GravityZ = (KeyCode)value; break;
+
                 default: Debug.Log("Indexer name is null"); break;
             }
         }
@@ -83,23 +93,27 @@ public class GameControlSetting : Setting
     {
         Debug.Log("Load Default GameControlSettings");
 
-        m_LookSensitivity = 1;
-        m_AimSensitivity = 1;
-        m_RunMode = 0;
-        m_AimMode = 0;
+        m_LookSensitivity = 1;          //1;
+        m_AimSensitivity = 1;           //1;
+        m_AimMode = 0;                  //0;
+        
+        m_MoveForward = KeyCode.W;      //KeyCode.W; 
+        m_MoveBack = KeyCode.S;         //KeyCode.S; 
+        m_MoveLeft = KeyCode.A;         //KeyCode.A; 
+        m_MoveRight = KeyCode.D;        //KeyCode.D; 
 
-        m_MoveForward = KeyCode.W;      //119
-        m_MoveBack = KeyCode.S;         //115
-        m_MoveLeft = KeyCode.A;         //97
-        m_MoveRight = KeyCode.D;        //100
-        m_Run = KeyCode.LeftShift;      //304
-        m_Jump = KeyCode.Space;         //32
-        m_Crouch = KeyCode.LeftControl; //306
-        m_Reload = KeyCode.R;           //114
-        m_TimeSlow = KeyCode.F;         //102
-        m_GravityX = KeyCode.Z;         //122
-        m_GravityY = KeyCode.X;         //120
-        m_GravityZ = KeyCode.C;         //99
+        m_Run = KeyCode.LeftShift;      //KeyCode.LeftShift;
+        m_Jump = KeyCode.Space;         //KeyCode.Space; 
+        m_Crouch = KeyCode.LeftControl; //KeyCode.LeftControl;
+        m_Reload = KeyCode.R;           //KeyCode.R;
+        m_TimeSlow = KeyCode.F;         //KeyCode.F;
+        m_Heal = KeyCode.E;             //KeyCode.E;
+        m_Change = KeyCode.N;           //KeyCode.N;
+
+        m_GravityX = KeyCode.Z;         //KeyCode.Z;
+        m_GravityY = KeyCode.X;         //KeyCode.X;
+        m_GravityZ = KeyCode.C;         //KeyCode.C;
+
     }
 
     public override void LoadData()
@@ -108,8 +122,6 @@ public class GameControlSetting : Setting
 
         m_LookSensitivity = PlayerPrefs.GetFloat("LookSensitivity");
         m_AimSensitivity = PlayerPrefs.GetFloat("AimSensitivity");
-
-        m_RunMode = PlayerPrefs.GetInt("RunMode");
         m_AimMode = PlayerPrefs.GetInt("AimMode");
 
         //---------------Key---------------
@@ -122,8 +134,9 @@ public class GameControlSetting : Setting
         m_Jump = (KeyCode)PlayerPrefs.GetInt("Jump");
         m_Crouch = (KeyCode)PlayerPrefs.GetInt("Crouch");
         m_Reload = (KeyCode)PlayerPrefs.GetInt("Reload");
-
-        m_TimeSlow = (KeyCode)PlayerPrefs.GetInt("TimeSlow");
+        m_TimeSlow = (KeyCode)PlayerPrefs.GetInt("TimeSlow"); 
+        m_Heal = (KeyCode)PlayerPrefs.GetInt("Heal");
+        m_Change = (KeyCode)PlayerPrefs.GetInt("Change");
 
         m_GravityX = (KeyCode)PlayerPrefs.GetInt("GravityX");
         m_GravityY = (KeyCode)PlayerPrefs.GetInt("GravityY");
@@ -136,8 +149,6 @@ public class GameControlSetting : Setting
 
         PlayerPrefs.SetFloat("LookSensitivity", m_LookSensitivity);
         PlayerPrefs.SetFloat("AimSensitivity", m_AimSensitivity);
-
-        PlayerPrefs.SetInt("RunMode", m_RunMode);
         PlayerPrefs.SetInt("AimMode", m_AimMode);
 
         //---------------Key---------------
@@ -152,14 +163,18 @@ public class GameControlSetting : Setting
         PlayerPrefs.SetInt("Reload", (int)m_Reload);
 
         PlayerPrefs.SetInt("TimeSlow", (int)m_TimeSlow);
+        PlayerPrefs.SetInt("Heal", (int)m_Heal);
+        PlayerPrefs.SetInt("Change", (int)m_Change);
 
         PlayerPrefs.SetInt("GravityX", (int)m_GravityX);
         PlayerPrefs.SetInt("GravityY", (int)m_GravityY);
         PlayerPrefs.SetInt("GravityZ", (int)m_GravityZ);
+        //PlayerPrefs.Save();
     }
     #endregion
-    public static void ChangeKey(int index, KeyCode key)
+    public void ChangeKey(int index, KeyCode key)
     {
+        Debug.Log("ChangeKey");
         switch (index)
         {
             case 119:
@@ -187,9 +202,14 @@ public class GameControlSetting : Setting
             case 114:
                 m_Reload = key;
                 break;
-
             case 102:
                 m_TimeSlow = key;
+                break;
+            case 101:
+                m_Heal = key;
+                break;
+            case 110:
+                m_Change = key;
                 break;
 
             case 122:
@@ -208,7 +228,6 @@ public class GameControlSetting : Setting
     {
         Debug.Log("m_LookSensitivity : " + m_LookSensitivity);
         Debug.Log("m_AimSensitivity : " + m_AimSensitivity);
-        Debug.Log("m_RunMode : " + m_RunMode);
         Debug.Log("m_AimMode : " + m_AimMode);
 
         Debug.Log("-------------KEY--------------");
@@ -222,8 +241,9 @@ public class GameControlSetting : Setting
         Debug.Log("m_Jump : " + m_Jump);
         Debug.Log("m_Crouch : " + m_Crouch);
         Debug.Log("m_Reload : " + m_Reload);
-
         Debug.Log("m_TimeSlow : " + m_TimeSlow);
+        Debug.Log("m_Heal : " + m_Heal);
+        Debug.Log("m_Change" + m_Change);
 
         Debug.Log("m_GravityX : " + m_GravityX);
         Debug.Log("m_GravityY : " + m_GravityY);

@@ -15,6 +15,8 @@ namespace Controller.Player.Utility
         public float smoothTime = 5f;
         public bool lockCursor = true;
 
+        private bool m_HasData;
+
         private float m_RightAxisRecoil;
         private float m_UpAxisRecoil;
         private float m_RecoilSpeed = 5f;
@@ -25,19 +27,46 @@ namespace Controller.Player.Utility
         private Transform m_TargetCharacter;    //y
         private Transform m_TargetCamera;       //x
 
-        public void Setup(Transform character, Transform camera)
+        private PlayerState m_PlayerState;
+        private GameControlSetting m_GameControlSetting;
+
+        public void Setup(Transform character, Transform camera, PlayerState playerState)
         {
             m_TargetCharacter = character;
             m_TargetCamera = camera;
+            m_PlayerState = playerState;
 
             m_CharacterTargetRot = character.localRotation;
             m_CameraTargetRot = camera.localRotation;
+
+            if (DataManager.Instance == null) m_HasData = false;
+            else
+            {
+                m_HasData = true;
+                m_GameControlSetting = (GameControlSetting)DataManager.Instance.Settings[1];
+            }
         }
 
         public void LookRotation(float mouseHorizontal, float mouseVertical)
         {
-            float yRot = m_RightAxisRecoil + mouseHorizontal * XSensitivity;
-            float xRot = m_UpAxisRecoil + mouseVertical * YSensitivity;
+            float xSensitivity = XSensitivity;
+            float ySensitivity = YSensitivity;
+            if (m_HasData)
+            {
+                if(m_PlayerState.PlayerWeaponState == PlayerWeaponState.Aiming)
+                {
+                    xSensitivity = m_GameControlSetting.m_AimSensitivity;
+                    ySensitivity = m_GameControlSetting.m_AimSensitivity;
+                }
+                else
+                {
+                    xSensitivity = m_GameControlSetting.m_LookSensitivity;
+                    ySensitivity = m_GameControlSetting.m_LookSensitivity;
+                }
+            }
+
+            float yRot = m_RightAxisRecoil + mouseHorizontal * xSensitivity;
+            float xRot = m_UpAxisRecoil + mouseVertical * ySensitivity;
 
             m_RightAxisRecoil -= m_RecoilSpeed * Time.deltaTime;
             m_UpAxisRecoil -= m_RecoilSpeed * Time.deltaTime;

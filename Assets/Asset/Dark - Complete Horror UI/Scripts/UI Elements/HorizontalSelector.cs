@@ -47,30 +47,35 @@ namespace Michsky.UI.Dark
             public UnityEvent onItemSelect = new UnityEvent();
         }
 
-        void Start()
+        private void Awake()
         {
             if (selectorAnimator == null)
                 selectorAnimator = gameObject.GetComponent<Animator>();
+        }
 
+        void Start()
+        {
             if (label == null || labelHelper == null)
             {
                 Debug.LogError("<b>[Horizontal Selector]</b> Cannot initalize the object due to missing resources.", this);
                 return;
             }
 
-            SetupSelector();
-            UpdateContentLayout();
+            //SetupSelector();
+            //UpdateContentLayout();
 
-            if (invokeAtStart == true)
-            {
-                itemList[index].onItemSelect.Invoke();
-                onValueChanged.Invoke(index);
-            }
+            //if (invokeAtStart == true)
+            //{
+            //    itemList[index].onItemSelect.Invoke();
+            //    onValueChanged.Invoke(index);
+            //}
         }
 
         public override void LoadComponent(object value)
         {
             defaultIndex = (int)value;
+            SetupSelector();
+            UpdateContentLayout();
         }
 
         public void SetupSelector()

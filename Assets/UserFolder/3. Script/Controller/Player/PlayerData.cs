@@ -244,6 +244,11 @@ public class PlayerData : MonoBehaviour
         PlayerGE = m_MaxPlayerGE;
         PlayerTE = m_MaxPlayerTE;
         m_PlayerUIManager.Init(m_MaxPlayerHP, m_MaxPlayerMP, m_AmountToRealHPConst, m_RealToAmountHPConst, m_Inventory.HealKitHavingCount);
+        
+    }
+
+    private void Start()
+    {
         ChangeSkillPointEvent?.Invoke(PlayerSkillPoint);
     }
 

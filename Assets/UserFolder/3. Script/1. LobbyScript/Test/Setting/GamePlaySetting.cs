@@ -5,13 +5,13 @@ using System;
 
 public class GamePlaySetting : Setting
 {
-    private bool m_Notification { get; set; }
-    private int m_Language { get; set; } //0 : English, 1 : Korean
+    public bool m_Notification { get; set; }
+    public int m_Language { get; set; } //0 : English, 1 : Korean
 
-    private int m_NotificationPosition { get; set; }
-    private bool m_EnableHUD { get; set; }
+    public int m_NotificationPosition { get; set; }
+    public bool m_EnableHUD { get; set; }
 
-    private int m_DifficultyIndex { get; set; }
+    public int m_DifficultyIndex { get; set; }
 
     public object this[int index]
     {
@@ -46,7 +46,7 @@ public class GamePlaySetting : Setting
         Debug.Log("Load Default GamePlaySettings");
 
         m_Notification = true;      //true
-        m_Language = 1;             //0
+        m_Language = 0;             //0
         m_NotificationPosition = 2; //0
         m_EnableHUD = true;         //true
     }
@@ -69,6 +69,8 @@ public class GamePlaySetting : Setting
         PlayerPrefs.SetInt("Language", m_Language);
         PlayerPrefs.SetInt("NotificationPosition", m_NotificationPosition);
         PlayerPrefs.SetInt("EnableHUD", m_EnableHUD ? 1 : 0);
+
+        PlayerPrefs.Save();
     }
 
     public void DebugAllSetting()

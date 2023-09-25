@@ -52,7 +52,7 @@ namespace Michsky.UI.Dark
 
                 case 1:
                     DarkUIEditorHandler.DrawHeader(customSkin, "Options Header", 6);
-                    isOn.boolValue = DarkUIEditorHandler.DrawToggle(isOn.boolValue, customSkin, "Is On (on enable)");
+                    //isOn.boolValue = DarkUIEditorHandler.DrawToggle(isOn.boolValue, customSkin, "Is On (on enable)");
                     invokeAtStart.boolValue = DarkUIEditorHandler.DrawToggle(invokeAtStart.boolValue, customSkin, "Invoke At Start");
                     //saveValue.boolValue = DarkUIEditorHandler.DrawToggle(saveValue.boolValue, customSkin, "Save Value");
 

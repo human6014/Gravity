@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class KeyBind : MonoBehaviour, IPointerClickHandler
+public class KeyBind : LoadableSettingComponent, IPointerClickHandler
 {
     [SerializeField] private KeySettingController m_KeyBindController;
     [SerializeField] private TextMeshProUGUI m_TextMesh;
@@ -17,7 +17,10 @@ public class KeyBind : MonoBehaviour, IPointerClickHandler
         => KeyTextAction = (KeyCode keyCode) => m_TextMesh.text = keyCode.ToString().ToUpper();
 
     public void OnPointerClick(PointerEventData eventData)
-        => m_KeyBindController.OnClickBindKey(Index,KeyTextAction);
+        => m_KeyBindController.OnClickBindKey(Index, KeyTextAction);
 
     public void SetText(string text) => m_TextMesh.text = text.ToUpper();
+
+    public override void LoadComponent(object value)
+        => m_TextMesh.text = ((KeyCode)value).ToString().ToUpper();
 }

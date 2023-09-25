@@ -27,7 +27,10 @@ namespace Michsky.UI.Dark
         void Update()
         {
             if (hotkey.triggered && !isDisable)
+            {
                 onPressEvent.Invoke();
+                Debug.Log("PressHotKey");
+            }
         }
     }
 }

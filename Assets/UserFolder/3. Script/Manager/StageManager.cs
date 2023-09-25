@@ -40,12 +40,16 @@ namespace Manager
         [SerializeField] private UnityEngine.Events.UnityEvent<int> WaveChangeEvnet;
 
         private StageInfo m_CurrentStageInfo;
+        private GamePlaySetting m_GamePlaySetting;
 
         private float m_WaveTimer;
         private float m_StatMultiplier = 0;
+        private float m_Difficulty;
 
         private int m_CurrentStage;
         private int m_CurrentWave;
+
+        private bool m_HasData;
 
         #region Property
         public System.Action<int> SpawnSpecialAction { get; set; }
@@ -57,7 +61,7 @@ namespace Manager
             {
                 m_CurrentStage = value;
                 m_CurrentWave = 1;
-                m_StatMultiplier = (m_CurrentStage - 1) + ((m_CurrentWave - 1) * 0.5f);
+                m_StatMultiplier = ((m_CurrentStage - 1) + ((m_CurrentWave - 1) * 0.5f)) * m_Difficulty;
                 m_WaveTimer = 0;
             }
         }
@@ -68,7 +72,7 @@ namespace Manager
             set
             {
                 m_CurrentWave = value;
-                m_StatMultiplier = (m_CurrentStage - 1) + ((m_CurrentWave - 1) * 0.5f);
+                m_StatMultiplier = ((m_CurrentStage - 1) + ((m_CurrentWave - 1) * 0.5f)) * m_Difficulty;
                 m_WaveTimer = 0;
             }
         }
@@ -80,6 +84,30 @@ namespace Manager
         {
             CurrentStage = 1;
             m_CurrentStageInfo = m_StageInfo[CurrentStage - 1];
+
+            if (DataManager.Instance == null) m_HasData = false;
+            else
+            {
+                m_HasData = true;
+                m_GamePlaySetting = (GamePlaySetting)DataManager.Instance.Settings[0];
+                ApplySetting();
+            }
+        }
+
+        private void ApplySetting()
+        {
+            switch (m_GamePlaySetting.m_DifficultyIndex)
+            {
+                case 0:
+                    m_Difficulty = 1;
+                    break;
+                case 1:
+                    m_Difficulty = 1.5f;
+                    break;
+                default:
+                    m_Difficulty = 1;
+                    break;
+            }
         }
 
         private void Update()
