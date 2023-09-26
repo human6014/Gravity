@@ -4,14 +4,14 @@ using UnityEngine;
 using System;
 using UI.Manager;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 namespace Manager
 {
     public class GameManager : MonoBehaviour
     {
-        [SerializeField] private bool m_IsFixedFrameRate;
-        [SerializeField] private int m_FrameRate = 60;
         [SerializeField] private Volume m_Volume;
+        [SerializeField] private UniversalRenderPipelineAsset []m_UniversalRenderPipelineAsset;
 
         private VisualSetting m_VisualSetting;
 
@@ -55,10 +55,6 @@ namespace Manager
             QualitySettings.vSyncCount = m_VisualSetting.m_VSyncCount ? 1 : 0;
             if (m_Volume.profile.TryGet(out m_MotionBlur)) m_MotionBlur.active = m_VisualSetting.MotionBlur;
 
-            //FOV
-            //DrawDistance
-
-
             Application.targetFrameRate = m_VisualSetting.m_FrameRate;
             switch (m_VisualSetting.m_FrameRate)
             {
@@ -77,21 +73,37 @@ namespace Manager
             switch (m_VisualSetting.m_TextureQuality)
             {
                 case 0:
+                    QualitySettings.masterTextureLimit = 2;
+                    break;
+                case 1:
+                    QualitySettings.masterTextureLimit = 1;
+                    break;
+                case 2:
+                    QualitySettings.masterTextureLimit = 0;
                     break;
             }
 
             switch (m_VisualSetting.m_ShadowQuality)
             {
                 case 0:
+                    QualitySettings.shadows = UnityEngine.ShadowQuality.Disable;
+                    QualitySettings.shadowResolution = UnityEngine.ShadowResolution.Low;
+                    
                     break;
                 case 1:
+                    QualitySettings.shadows = UnityEngine.ShadowQuality.HardOnly;
+                    QualitySettings.shadowResolution = UnityEngine.ShadowResolution.Medium;
                     break;
                 case 2:
+                    QualitySettings.shadows = UnityEngine.ShadowQuality.All;
+                    QualitySettings.shadowResolution = UnityEngine.ShadowResolution.High;
                     break;
                 case 3:
+                    QualitySettings.shadows = UnityEngine.ShadowQuality.All;
+                    QualitySettings.shadowResolution = UnityEngine.ShadowResolution.VeryHigh;
                     break;
             }
-
+            QualitySettings.renderPipeline = m_UniversalRenderPipelineAsset[m_VisualSetting.m_ShadowQuality];
             QualitySettings.anisotropicFiltering = m_VisualSetting.m_AnisotrpicFiltering ? 
                 AnisotropicFiltering.ForceEnable : AnisotropicFiltering.Disable;
 

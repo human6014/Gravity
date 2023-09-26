@@ -93,8 +93,8 @@ public class GameControlSetting : Setting
     {
         Debug.Log("Load Default GameControlSettings");
 
-        m_LookSensitivity = 1;          //1;
-        m_AimSensitivity = 1;           //1;
+        m_LookSensitivity = 2;          //2;
+        m_AimSensitivity = 2;           //2;
         m_AimMode = 0;                  //0;
         
         m_MoveForward = KeyCode.W;      //KeyCode.W; 

@@ -305,19 +305,20 @@ namespace Manager
             switch (currentStage)
             {
                 case 1:
-                    //m_EnvironmentManager.OnRainParticle();
-                    //float time = m_StageManager.GetStageTime(3, 1);
-                    //StartCoroutine(m_EnvironmentManager.RoadWetnessChange(time, true));
-                    IsSP2MonsterEnd = true;
+                    m_EnvironmentManager.OnRainParticle();
+                    float time = m_StageManager.GetStageTime(3, 1);
+                    StartCoroutine(m_EnvironmentManager.RoadWetnessChange(time, true));
                     SpawnSpecialMonster1();
+
+                    //IsSP2MonsterEnd = true;
                     //SpawnSpecialMonster1();
                     break;
                 case 2:
-                    //SpawnSpecialMonster2();
+                    SpawnSpecialMonster2();
                     break;
                 case 3:
-                    //m_EnvironmentManager.OffRainParticle();
-                    //SpawnSpecialMonster3();
+                    m_EnvironmentManager.OffRainParticle();
+                    SpawnSpecialMonster3();
                     break;
             }
         }

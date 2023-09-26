@@ -118,64 +118,6 @@ public class VisualSetting : Setting
     }
     #endregion
 
-    #region Quality
-
-    public int AntiAliasing
-    {
-        get => m_AntiAliasing;
-        set
-        {
-            m_AntiAliasing = value;
-            QualitySettings.antiAliasing = value;
-        }
-    }
-
-    public int TextureQuality
-    {
-        get => m_TextureQuality;
-        set
-        {
-            m_TextureQuality = value;
-            QualitySettings.masterTextureLimit = value;
-        }
-    }
-
-    public int ShadowQuality
-    {
-        get => m_ShadowQuality;
-        set
-        {
-            m_ShadowQuality = value;
-            if (value == 3) QualitySettings.shadowResolution = ShadowResolution.VeryHigh;
-            else if (value == 2) QualitySettings.shadowResolution = ShadowResolution.High;
-            else if (value == 1) QualitySettings.shadowResolution = ShadowResolution.Medium;
-            else if (value == 0) QualitySettings.shadowResolution = ShadowResolution.Low;
-            else QualitySettings.shadows = UnityEngine.ShadowQuality.Disable;
-        }
-    }
-
-    public bool AnisotrpicFiltering
-    {
-        get => m_AnisotrpicFiltering;
-        set
-        {
-            m_AnisotrpicFiltering = value;
-            if (value == false) QualitySettings.anisotropicFiltering = AnisotropicFiltering.Disable;
-            else QualitySettings.anisotropicFiltering = AnisotropicFiltering.ForceEnable;
-        }
-    }
-
-    public bool SoftParticle
-    {
-        get => m_SoftParticle;
-        set
-        {
-            m_SoftParticle = value;
-            QualitySettings.softParticles = value;
-        }
-    }
-    #endregion
-
     public override void LoadDefault()
     {
         Debug.Log("Load Default VisualSetting");
@@ -186,7 +128,7 @@ public class VisualSetting : Setting
 
         m_MotionBlur = true;
         m_FOV = 60;
-        m_FarDistance = 150;
+        m_FarDistance = 140;
 
         m_FrameRate = 2;
         m_AntiAliasing = 0;

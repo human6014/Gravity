@@ -197,6 +197,7 @@ namespace Controller
             if (m_HasData) SavedKeyFixedUpdate();
             else NonSavedKeyFixedUpdate();
         }
+
         private void SavedKeyFixedUpdate()
         {
             if (Input.GetKey(m_GameControlSetting.m_MoveForward)) m_Vertical = 1;

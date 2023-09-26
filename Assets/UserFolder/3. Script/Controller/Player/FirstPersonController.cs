@@ -173,6 +173,14 @@ namespace Controller.Player
 
         private void SupporterSetup()
         {
+            if (DataManager.Instance != null)
+            {
+                VisualSetting visualSetting = ((VisualSetting)DataManager.Instance.Settings[3]);
+
+                m_Camera.farClipPlane = visualSetting.m_FarDistance;
+                m_Camera.fieldOfView = visualSetting.m_FOV;
+            }
+            
             m_FovKick.Setup(m_Camera);
             m_HeadMoveBob.Setup(m_UpAxisTransfrom, m_StepInterval);
             m_HeadIdleBob.Setup(m_UpAxisTransfrom, m_StepInterval);

@@ -16,7 +16,6 @@ public class AudioSettingController : SettingController
 
     public void ChangeMasterVolume(float value)
     {
-        //AudioSetting.m_MasterVolume = Mathf.Log10(value) * 20;
         m_AudioSetting.m_MasterVolume = value;
     }
 
