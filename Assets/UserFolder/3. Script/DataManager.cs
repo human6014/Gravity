@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
+    [SerializeField] private AudioMixer m_AudioMixer;
     public static DataManager Instance { get; private set; }
     public Setting[] Settings { get; private set; }
 
@@ -27,17 +28,17 @@ public class DataManager : MonoBehaviour
         Settings = new Setting[4];
         Settings[0] = new GamePlaySetting();
         Settings[1] = new GameControlSetting();
-        Settings[2] = new AudioSetting();
+        Settings[2] = new AudioSetting(m_AudioMixer);
         Settings[3] = new VisualSetting();
 
         m_HasData = PlayerPrefs.HasKey("HasData");
         Debug.Log("HasData is " + m_HasData);
-        //if (m_HasData)
-        //{
-        //    foreach (Setting setting in Settings)
-        //        setting.LoadData();
-        //}
-        //else
+        if (m_HasData)
+        {
+            foreach (Setting setting in Settings)
+                setting.LoadData();
+        }
+        else
         {
             PlayerPrefs.SetInt("HasData", m_HasData ? 1 : 0);
             foreach (Setting setting in Settings)

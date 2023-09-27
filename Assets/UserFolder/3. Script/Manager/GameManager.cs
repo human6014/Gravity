@@ -52,8 +52,8 @@ namespace Manager
         {
             if (!m_HasData) return;
 
-            QualitySettings.vSyncCount = m_VisualSetting.m_VSyncCount ? 1 : 0;
-            if (m_Volume.profile.TryGet(out m_MotionBlur)) m_MotionBlur.active = m_VisualSetting.MotionBlur;
+            QualitySettings.vSyncCount = m_VisualSetting.m_VSyncCount;
+            if (m_Volume.profile.TryGet(out m_MotionBlur)) m_MotionBlur.active = m_VisualSetting.m_MotionBlur == 1;
 
             Application.targetFrameRate = m_VisualSetting.m_FrameRate;
             switch (m_VisualSetting.m_FrameRate)
@@ -68,7 +68,22 @@ namespace Manager
                     Application.targetFrameRate = 120;
                     break;
             }
-            QualitySettings.antiAliasing = m_VisualSetting.m_AntiAliasing;
+
+            switch (m_VisualSetting.m_AntiAliasing)
+            {
+                case 0:
+                    QualitySettings.antiAliasing = 0;
+                    break;
+                case 1:
+                    QualitySettings.antiAliasing = 2;
+                    break;
+                case 2:
+                    QualitySettings.antiAliasing = 4;
+                    break;
+                case 3:
+                    QualitySettings.antiAliasing = 8;
+                    break;
+            }
 
             switch (m_VisualSetting.m_TextureQuality)
             {
@@ -88,7 +103,6 @@ namespace Manager
                 case 0:
                     QualitySettings.shadows = UnityEngine.ShadowQuality.Disable;
                     QualitySettings.shadowResolution = UnityEngine.ShadowResolution.Low;
-                    
                     break;
                 case 1:
                     QualitySettings.shadows = UnityEngine.ShadowQuality.HardOnly;
@@ -104,12 +118,18 @@ namespace Manager
                     break;
             }
             QualitySettings.renderPipeline = m_UniversalRenderPipelineAsset[m_VisualSetting.m_ShadowQuality];
-            QualitySettings.anisotropicFiltering = m_VisualSetting.m_AnisotrpicFiltering ? 
-                AnisotropicFiltering.ForceEnable : AnisotropicFiltering.Disable;
 
-            QualitySettings.softParticles = m_VisualSetting.m_SoftParticle;
+            switch (m_VisualSetting.m_AnisotrpicFiltering)
+            {
+                case 0:
+                    QualitySettings.anisotropicFiltering = AnisotropicFiltering.Disable;
+                    break;
+                case 1:
+                    QualitySettings.anisotropicFiltering = AnisotropicFiltering.ForceEnable;
+                    break;
+            }
 
-            //해상도, Windowmode마지막에
+            QualitySettings.softParticles = m_VisualSetting.m_SoftParticle == 1;
         }
     }
 }

@@ -93,6 +93,7 @@ namespace Controller.Player
         [SerializeField] float m_CrouchTime = 0.3f;               //앉기, 일어나기 자세 전환 시간
 
         #endregion
+        private VisualSetting m_VisualSetting;
         private PlayerInputController m_PlayerInputController;
         private PlayerShakeController m_PlayerShakeController;
         private GravityManager m_GravityManager;
@@ -135,6 +136,8 @@ namespace Controller.Player
         private bool m_IsCrouch;
         private bool m_IsSlowMode;
 
+        private bool m_HasData;
+
         public MouseLook MouseLook { get => m_MouseLook; }
         private bool IsSlowMode 
         { 
@@ -173,18 +176,26 @@ namespace Controller.Player
 
         private void SupporterSetup()
         {
-            if (DataManager.Instance != null)
+            if (DataManager.Instance == null) m_HasData = false;
+            else
             {
-                VisualSetting visualSetting = ((VisualSetting)DataManager.Instance.Settings[3]);
+                m_HasData = true;
+                m_VisualSetting = ((VisualSetting)DataManager.Instance.Settings[3]);
 
-                m_Camera.farClipPlane = visualSetting.m_FarDistance;
-                m_Camera.fieldOfView = visualSetting.m_FOV;
+                m_Camera.fieldOfView = m_VisualSetting.m_FOV;
+                ApplySetting();
             }
-            
+
             m_FovKick.Setup(m_Camera);
             m_HeadMoveBob.Setup(m_UpAxisTransfrom, m_StepInterval);
             m_HeadIdleBob.Setup(m_UpAxisTransfrom, m_StepInterval);
             m_MouseLook.Setup(m_RightAxisTransform, m_UpAxisTransfrom, m_PlayerData.PlayerState);
+        }
+
+        public void ApplySetting()
+        {
+            if (!m_HasData) return;
+            m_Camera.farClipPlane = m_VisualSetting.m_FarDistance;
         }
 
         private void AssignAction()
@@ -194,7 +205,7 @@ namespace Controller.Player
             m_PlayerData.ThrowingAction += Throwing;
             m_PlayerData.StopSlowModeAction += () => IsSlowMode = false;
 
-            m_PlayerInputController.MouseMovement += (float mouseHorizontal, float mouseVertical) 
+            m_PlayerInputController.MouseMovement += (float mouseHorizontal, float mouseVertical)
                 => m_MouseLook.LookRotation(mouseHorizontal, mouseVertical);
             m_PlayerInputController.PlayerMovement += TryMovement;
             m_PlayerInputController.Run += TryRun;
@@ -202,7 +213,7 @@ namespace Controller.Player
             m_PlayerInputController.Jump += TryJump;
             m_PlayerInputController.DoGravityChange += TryChangeGravity;
             m_PlayerInputController.TimeSlow += TryTimeSlow;
-            
+
         }
         #endregion
 

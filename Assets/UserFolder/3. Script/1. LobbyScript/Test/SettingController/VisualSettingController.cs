@@ -2,15 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class VisualSettingController : SettingController
 {
     [SerializeField] private TMP_Dropdown m_TMP_Dropdown;
+    [SerializeField] private UnityEvent m_ApplySettingEvent;
 
     private VisualSetting m_VisualSetting;
 
     private Resolution[] m_Resolutions;
     private int m_CurrentResolutionIndex;
+
     private void Awake()
     {
         m_Resolutions = Screen.resolutions;
@@ -43,25 +46,34 @@ public class VisualSettingController : SettingController
 
     public void ChangeResolution(int value)
     {
-        //Screen.SetResolution(
-        //    m_Resolutions[value].width, 
-        //    m_Resolutions[value].height, 
-        //    Screen.fullScreen,
-        //    m_Resolutions[value].refreshRate);
+        FullScreenMode fullScreenMode = (FullScreenMode)m_VisualSetting.m_WindowMode;
+        if (fullScreenMode == FullScreenMode.MaximizedWindow) fullScreenMode = FullScreenMode.Windowed;
+
+        Screen.SetResolution(
+            m_Resolutions[value].width,
+            m_Resolutions[value].height,
+            fullScreenMode,
+            m_Resolutions[value].refreshRate);
+
         m_VisualSetting[0] = value;
     }
 
     public void ChangeWindowMode(int value)
     {
+        FullScreenMode fullScreenMode = (FullScreenMode)value;
+        if (fullScreenMode == FullScreenMode.MaximizedWindow) fullScreenMode = FullScreenMode.Windowed;
+        Screen.fullScreenMode = fullScreenMode;
+        //Screen.fullScreen = true;
+
         m_VisualSetting[1] = value;
     }
 
-    public void ChangeVSync(bool value)
+    public void ChangeVSync(int value)
     {
         m_VisualSetting[2] = value;
     }
 
-    public void ChangeMotionBlur(bool value)
+    public void ChangeMotionBlur(int value)
     {
         m_VisualSetting[3] = value;
     }
@@ -96,12 +108,12 @@ public class VisualSettingController : SettingController
         m_VisualSetting[9] = value;
     }
 
-    public void ChangeAnisotropicFiltering(bool value)
+    public void ChangeAnisotropicFiltering(int value)
     {
         m_VisualSetting[10] = value;
     }
 
-    public void ChangeSoftParticle(bool value)
+    public void ChangeSoftParticle(int value)
     {
         m_VisualSetting[11] = value;
     }
@@ -110,5 +122,12 @@ public class VisualSettingController : SettingController
     {
         for (int i = 0; i < m_LoadableSettingComponents.Length; i++)
             m_LoadableSettingComponents[i].LoadComponent(m_VisualSetting[i]);
+    }
+
+    public override void SaveSettings()
+    {
+        if (m_VisualSetting == null) return;
+        m_VisualSetting.SaveData();
+        m_ApplySettingEvent?.Invoke();
     }
 }

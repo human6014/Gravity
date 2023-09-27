@@ -6,9 +6,9 @@ public class VisualSetting : Setting
 {
     public int m_ResolutionIndex { get; set; }
     public int m_WindowMode { get; set; }
-    public bool m_VSyncCount { get; set; }
+    public int m_VSyncCount { get; set; }
 
-    public bool m_MotionBlur { get; set; }
+    public int m_MotionBlur { get; set; }
     public float m_FOV { get; set; }
     public float m_FarDistance { get; set; }
 
@@ -16,8 +16,8 @@ public class VisualSetting : Setting
     public int m_AntiAliasing { get; set; }
     public int m_TextureQuality { get; set; }
     public int m_ShadowQuality { get; set; }
-    public bool m_AnisotrpicFiltering { get; set; }
-    public bool m_SoftParticle { get; set; }
+    public int m_AnisotrpicFiltering { get; set; }
+    public int m_SoftParticle { get; set; }
 
     public object this [int index]
     {
@@ -48,9 +48,9 @@ public class VisualSetting : Setting
             {
                 case 0: m_ResolutionIndex = (int)value; break;
                 case 1: m_WindowMode = (int)value; break;
-                case 2: m_VSyncCount = (bool)value; break;
+                case 2: m_VSyncCount = (int)value; break;
 
-                case 3: m_MotionBlur = (bool)value; break;
+                case 3: m_MotionBlur = (int)value; break;
                 case 4: m_FOV = (float)value; break;
                 case 5: m_FarDistance = (float)value; break;
 
@@ -58,65 +58,12 @@ public class VisualSetting : Setting
                 case 7: m_AntiAliasing = (int)value; break;
                 case 8: m_TextureQuality = (int)value; break;
                 case 9: m_ShadowQuality = (int)value; break;
-                case 10: m_AnisotrpicFiltering = (bool)value; break;
-                case 11: m_SoftParticle = (bool)value; break;
+                case 10: m_AnisotrpicFiltering = (int)value; break;
+                case 11: m_SoftParticle = (int)value; break;
                 default: Debug.Log("Indexer name is null"); break;
             }
         }
     }
-
-    #region General
-    public int WindowMode
-    {
-        get => m_WindowMode;
-        set
-        {
-            m_WindowMode = value;
-            if (value == 0)
-            {
-                Screen.fullScreen = true;
-                Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
-            }
-            else if (value == 1)
-                Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
-            else
-            {
-                Screen.fullScreen = false;
-                Screen.fullScreenMode = FullScreenMode.Windowed;
-            }
-        }
-    }
-
-    public bool VSyncCount
-    {
-        get => m_VSyncCount;
-        set
-        {
-            m_VSyncCount = value;
-            QualitySettings.vSyncCount = value ? 1 : 0;
-        }
-    }
-    #endregion
-
-    #region Rendering
-    public bool MotionBlur
-    {
-        get => m_MotionBlur;
-        set => m_MotionBlur = value;
-    }
-
-    public float FOV
-    {
-        get => m_FOV;
-        set => m_FOV = value;
-    }
-
-    public float FarDistance
-    {
-        get => m_FarDistance;
-        set => m_FarDistance = value;
-    }
-    #endregion
 
     public override void LoadDefault()
     {
@@ -124,9 +71,9 @@ public class VisualSetting : Setting
 
         m_ResolutionIndex = -1;
         m_WindowMode = 1;
-        m_VSyncCount = true;
+        m_VSyncCount = 1;    //1
 
-        m_MotionBlur = true;
+        m_MotionBlur = 1;    //1
         m_FOV = 60;
         m_FarDistance = 140;
 
@@ -134,8 +81,8 @@ public class VisualSetting : Setting
         m_AntiAliasing = 0;
         m_TextureQuality = 2;
         m_ShadowQuality = 3;
-        m_AnisotrpicFiltering = true;
-        m_SoftParticle = true;
+        m_AnisotrpicFiltering = 1;   //1
+        m_SoftParticle = 1;          //1
     }
 
     public override void LoadData()
@@ -144,9 +91,9 @@ public class VisualSetting : Setting
 
         m_ResolutionIndex = PlayerPrefs.GetInt("ResolutionIndex");
         m_WindowMode = PlayerPrefs.GetInt("WindowMode");
-        m_VSyncCount = PlayerPrefs.GetInt("VSyncCount") == 1;
+        m_VSyncCount = PlayerPrefs.GetInt("VSyncCount");
 
-        m_MotionBlur = PlayerPrefs.GetInt("MotionBlur") == 1;
+        m_MotionBlur = PlayerPrefs.GetInt("MotionBlur");
         m_FOV = PlayerPrefs.GetFloat("FOV");
         m_FarDistance = PlayerPrefs.GetFloat("FarDistance");
 
@@ -154,8 +101,18 @@ public class VisualSetting : Setting
         m_AntiAliasing = PlayerPrefs.GetInt("AntiAliasing");
         m_TextureQuality = PlayerPrefs.GetInt("TextureQuality");
         m_ShadowQuality = PlayerPrefs.GetInt("ShadowQuality");
-        m_AnisotrpicFiltering = PlayerPrefs.GetInt("AnisotrpicFiltering") == 1;
-        m_SoftParticle = PlayerPrefs.GetInt("SoftParticle") == 1;
+        m_AnisotrpicFiltering = PlayerPrefs.GetInt("AnisotrpicFiltering");
+        m_SoftParticle = PlayerPrefs.GetInt("SoftParticle");
+
+        FullScreenMode fullScreenMode = (FullScreenMode)m_WindowMode;
+        if (fullScreenMode == FullScreenMode.MaximizedWindow) fullScreenMode = FullScreenMode.Windowed;
+        Screen.fullScreenMode = fullScreenMode;
+
+        Screen.SetResolution(
+                Screen.resolutions[m_ResolutionIndex].width,
+                Screen.resolutions[m_ResolutionIndex].height,
+                fullScreenMode,
+                Screen.resolutions[m_ResolutionIndex].refreshRate);
     }
 
     public override void SaveData()
@@ -164,9 +121,9 @@ public class VisualSetting : Setting
 
         PlayerPrefs.SetInt("ResolutionIndex", m_ResolutionIndex);
         PlayerPrefs.SetInt("WindowMode", m_WindowMode);
-        PlayerPrefs.SetInt("VSyncCount", m_VSyncCount ? 1: 0);
+        PlayerPrefs.SetInt("VSyncCount", m_VSyncCount);
 
-        PlayerPrefs.SetInt("MotionBlur", m_MotionBlur ? 1 : 0);
+        PlayerPrefs.SetInt("MotionBlur", m_MotionBlur);
         PlayerPrefs.SetFloat("FOV", m_FOV);
         PlayerPrefs.SetFloat("FarDistance", m_FarDistance);
 
@@ -174,10 +131,10 @@ public class VisualSetting : Setting
         PlayerPrefs.SetInt("AntiAliasing", m_AntiAliasing);
         PlayerPrefs.SetInt("TextureQuality", m_TextureQuality);
         PlayerPrefs.SetInt("ShadowQuality", m_ShadowQuality);
-        PlayerPrefs.SetInt("AnisotrpicFiltering", m_AnisotrpicFiltering ? 1 : 0);
-        PlayerPrefs.SetInt("SoftParticle", m_SoftParticle ? 1 : 0);
+        PlayerPrefs.SetInt("AnisotrpicFiltering", m_AnisotrpicFiltering);
+        PlayerPrefs.SetInt("SoftParticle", m_SoftParticle);
 
-        //PlayerPrefs.Save();
+        PlayerPrefs.Save();
     }
 
     public void DebugAllSetting()

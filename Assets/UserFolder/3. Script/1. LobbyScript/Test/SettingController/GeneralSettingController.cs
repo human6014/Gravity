@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GeneralSettingController : SettingController
 {
@@ -26,5 +27,11 @@ public class GeneralSettingController : SettingController
     {
         for (int i = 0; i < m_LoadableSettingComponents.Length; i++)
             m_LoadableSettingComponents[i].LoadComponent(m_GameControlSetting[i]);
+    }
+
+    public override void SaveSettings()
+    {
+        if (m_GameControlSetting == null) return;
+        m_GameControlSetting.SaveData();
     }
 }

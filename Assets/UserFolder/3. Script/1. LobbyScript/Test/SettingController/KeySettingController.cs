@@ -79,4 +79,6 @@ public class KeySettingController : SettingController
         for (int i = 0; i < m_LoadableSettingComponents.Length; i++)
             m_LoadableSettingComponents[i].LoadComponent(m_GameControlSetting[i]);
     }
+
+    public override void SaveSettings() { }
 }

@@ -337,23 +337,17 @@ namespace Manager
             specialMonster1.EndSpecialMonsterAction += () => 
             {
                 IsSP1MonsterEnd = true;
-                if (!IsSP2MonsterSpawned) SpawnSpecialMonster2();
+                if (!IsSP2MonsterSpawned && m_IsSP2OnTime) SpawnSpecialMonster2();
             };
             specialMonster1.Init(initRotation, m_StageManager.StatMultiplier);
         }
 
-        private async void SpawnSpecialMonster2()
+        private Vector3 GetFarPosition()
         {
-            if (!IsSP1MonsterEnd) return;
-            IsSP2MonsterSpawned = true;
-            await m_EnvironmentManager.FogDensityChange(0.05f, 10);
-
-            StartCoroutine(ChangeGravityToYDown());
-            
             Vector3 initPosition = Vector3.zero;
             float farDist = 0;
-            float dist = 0;
-            foreach(Transform t in m_SP2SpawnPos)
+            float dist;
+            foreach (Transform t in m_SP2SpawnPos)
             {
                 dist = Vector3.SqrMagnitude(t.position - AI.AIManager.PlayerTransform.position);
                 if (dist > farDist)
@@ -363,12 +357,25 @@ namespace Manager
                 }
             }
 
-            SpecialMonster2 specialMonster2 = Instantiate(m_EntityManager.GetSpecialMonster2, initPosition, Quaternion.identity).GetComponent<SpecialMonster2>();
+            return initPosition;
+        }
+
+        private async void SpawnSpecialMonster2()
+        {
+            m_IsSP2OnTime = true;
+            if (!IsSP1MonsterEnd) return;
+
+            IsSP2MonsterSpawned = true;
+            await m_EnvironmentManager.FogDensityChange(0.05f, 10);
+
+            StartCoroutine(ChangeGravityToYDown());
+
+            SpecialMonster2 specialMonster2 = Instantiate(m_EntityManager.GetSpecialMonster2, GetFarPosition(), Quaternion.identity).GetComponent<SpecialMonster2>();
             specialMonster2.EndSpecialMonsterAction += () => 
             {
                 IsSP2MonsterEnd = true;
                 GravityManager.CantGravityChange = false;
-                if (!IsSP3MonsterSpawned) SpawnSpecialMonster3();
+                if (!IsSP3MonsterSpawned && m_IsSP3OnTime) SpawnSpecialMonster3();
             };
             specialMonster2.Init(m_SP2SpawnPos, m_StageManager.StatMultiplier);
 
@@ -384,7 +391,9 @@ namespace Manager
 
         private async void SpawnSpecialMonster3()
         {
+            m_IsSP3OnTime = true;
             if (!IsSP2MonsterEnd) return;
+
             IsSP3MonsterSpawned = true;
             await m_EnvironmentManager.FogDensityChange(0.1f,15);
 

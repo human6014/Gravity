@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioSetting : Setting
 {
+    private readonly AudioMixer m_AudioMixer;
+
     public float m_MasterVolume { get; set; }    //0.001 ~ 1
     public float m_MusicVolume { get; set; }     //0.001 ~ 1
     public float m_SFXVolume { get; set; }       //0.001 ~ 1
@@ -32,6 +35,11 @@ public class AudioSetting : Setting
         }
     }
 
+    public AudioSetting(AudioMixer audioMixer)
+    {
+        m_AudioMixer = audioMixer;
+    }
+
     public override void LoadDefault()
     {
         Debug.Log("Load Default AudioSetting");
@@ -48,6 +56,10 @@ public class AudioSetting : Setting
         m_MasterVolume = PlayerPrefs.GetFloat("MasterVolume");
         m_MusicVolume = PlayerPrefs.GetFloat("MusicVolume");
         m_SFXVolume = PlayerPrefs.GetFloat("SFXVolume");
+
+        m_AudioMixer.SetFloat("Master", Mathf.Log10(m_MasterVolume) * 20);
+        m_AudioMixer.SetFloat("Music", Mathf.Log10(m_MusicVolume) * 20);
+        m_AudioMixer.SetFloat("SFX", Mathf.Log10(m_SFXVolume) * 20);
     }
 
     public override void SaveData()

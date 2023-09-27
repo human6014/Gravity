@@ -169,9 +169,11 @@ public class GameControlSetting : Setting
         PlayerPrefs.SetInt("GravityX", (int)m_GravityX);
         PlayerPrefs.SetInt("GravityY", (int)m_GravityY);
         PlayerPrefs.SetInt("GravityZ", (int)m_GravityZ);
-        //PlayerPrefs.Save();
+
+        PlayerPrefs.Save();
     }
     #endregion
+
     public void ChangeKey(int index, KeyCode key)
     {
         Debug.Log("ChangeKey");

@@ -28,7 +28,7 @@ public class NotificationUIManager : MonoBehaviour
     public void ApplySetting()
     {
         if (!m_HasData) return;
-        if (!m_GamePlaySetting.m_Notification)
+        if (m_GamePlaySetting.m_Notification == 0)
         {
             m_NotificationObject.SetActive(false);
             return;
@@ -43,6 +43,6 @@ public class NotificationUIManager : MonoBehaviour
 
     public void UpdateText()
     {
-
+        if (m_GamePlaySetting.m_Notification == 0) return;
     }
 }
