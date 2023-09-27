@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioSettingController : SettingController
 {
+    [SerializeField] private AudioMixer m_AudioMixer;
+
     private AudioSetting m_AudioSetting;
 
     private void Start()
@@ -16,17 +19,19 @@ public class AudioSettingController : SettingController
 
     public void ChangeMasterVolume(float value)
     {
-        //AudioSetting.m_MasterVolume = Mathf.Log10(value) * 20;
+        m_AudioMixer.SetFloat("Master", Mathf.Log10(value) * 20);
         m_AudioSetting.m_MasterVolume = value;
     }
 
     public void ChangeMusicVolume(float value)
     {
+        m_AudioMixer.SetFloat("Master", Mathf.Log10(value) * 20);
         m_AudioSetting.m_MusicVolume = value;
     }
 
     public void ChangeSFXVolume(float value)
     {
+        m_AudioMixer.SetFloat("Master", Mathf.Log10(value) * 20);
         m_AudioSetting.m_SFXVolume = value;
     }
 
@@ -34,5 +39,11 @@ public class AudioSettingController : SettingController
     {
         for (int i = 0; i < m_LoadableSettingComponents.Length; i++)
             m_LoadableSettingComponents[i].LoadComponent(m_AudioSetting[i]);
+    }
+
+    public override void SaveSettings()
+    {
+        if (m_AudioSetting == null) return;
+        m_AudioSetting.SaveData();
     }
 }

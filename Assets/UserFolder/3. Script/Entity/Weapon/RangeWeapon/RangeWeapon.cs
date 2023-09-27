@@ -181,7 +181,7 @@ namespace Entity.Object.Weapon
 
         private void TryAiming(bool isAiming)
         {
-            if (m_ToggleMode) return;
+            m_ToggleMode = false;
             if (PlayerData.PlayerState.PlayerBehaviorState == PlayerBehaviorState.Running)
             {
                 PlayerData.PlayerState.SetWeaponIdle();

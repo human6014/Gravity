@@ -25,7 +25,7 @@ public class UIManager : MonoBehaviour
     {
         if (!m_HasData) return;
 
-        bool enable = m_GamePlaySetting.m_EnableHUD;
+        bool enable = m_GamePlaySetting.m_EnableHUD == 1;
 
         foreach (CanvasGroup cg in m_UIGroup)
         {

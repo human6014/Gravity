@@ -5,11 +5,11 @@ using System;
 
 public class GamePlaySetting : Setting
 {
-    public bool m_Notification { get; set; }
-    public int m_Language { get; set; } //0 : English, 1 : Korean
+    public int m_Notification { get; set; } //0 : Disable, 1 : Enable
+    public int m_Language { get; set; }     //0 : English, 1 : Korean
 
     public int m_NotificationPosition { get; set; }
-    public bool m_EnableHUD { get; set; }
+    public int m_EnableHUD { get; set; }    //0 : Disable, 1 : Enable
 
     public int m_DifficultyIndex { get; set; }
 
@@ -31,10 +31,10 @@ public class GamePlaySetting : Setting
         {
             switch (index) 
             {
-                case 0: m_Notification = (bool)value; break;
+                case 0: m_Notification = (int)value; break;
                 case 1: m_Language = (int)value; break;
                 case 2: m_NotificationPosition = (int)value; break;
-                case 3: m_EnableHUD = (bool)value; break;
+                case 3: m_EnableHUD = (int)value; break;
                 case 4: m_DifficultyIndex = (int)value; break;
                 default: Debug.Log("Indexer name is null"); break;
             }
@@ -45,30 +45,30 @@ public class GamePlaySetting : Setting
     {
         Debug.Log("Load Default GamePlaySettings");
 
-        m_Notification = true;      //true
+        m_Notification = 1;      //1
         m_Language = 0;             //0
         m_NotificationPosition = 2; //0
-        m_EnableHUD = true;         //true
+        m_EnableHUD = 1;         //1
     }
 
     public override void LoadData()
     {
         Debug.Log("Load GamePlaySettings");
 
-        m_Notification = PlayerPrefs.GetInt("Notification") == 1;
+        m_Notification = PlayerPrefs.GetInt("Notification");
         m_Language = PlayerPrefs.GetInt("Language");
         m_NotificationPosition = PlayerPrefs.GetInt("NotificationPosition");
-        m_EnableHUD = PlayerPrefs.GetInt("EnableHUD") == 1;
+        m_EnableHUD = PlayerPrefs.GetInt("EnableHUD");
     }
 
     public override void SaveData()
     {
         Debug.Log("Save GamePlaySettings");
 
-        PlayerPrefs.SetInt("Notification", m_Notification ? 1 : 0);
+        PlayerPrefs.SetInt("Notification", m_Notification);
         PlayerPrefs.SetInt("Language", m_Language);
         PlayerPrefs.SetInt("NotificationPosition", m_NotificationPosition);
-        PlayerPrefs.SetInt("EnableHUD", m_EnableHUD ? 1 : 0);
+        PlayerPrefs.SetInt("EnableHUD", m_EnableHUD);
 
         PlayerPrefs.Save();
     }

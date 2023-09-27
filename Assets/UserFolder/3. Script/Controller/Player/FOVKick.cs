@@ -8,19 +8,21 @@ namespace Controller.Player.Utility
     public class FOVKick
     {
         private readonly WaitForEndOfFrame waitForEndOfFrame = new();
-        private Camera Camera;                           // optional camera setup, if null the main camera will be used
+        private Camera Camera;                           
+
         public AnimationCurve IncreaseCurve;
-        [HideInInspector] public float originalFov;     // the original fov
+        
         public float FOVIncrease = 3f;                  // the amount the field of view increases when going into a run
         public float TimeToIncrease = 1f;               // the amount of time the field of view will increase over
         public float TimeToDecrease = 1f;               // the amount of time the field of view will take to return to its original size
-        
+        private float m_OriginalFOV;
+
         public void Setup(Camera camera)
         {
             CheckStatus(camera);
 
             Camera = camera;
-            originalFov = camera.fieldOfView;
+            m_OriginalFOV = camera.fieldOfView;
         }
 
         private void CheckStatus(Camera camera)
@@ -34,10 +36,10 @@ namespace Controller.Player.Utility
 
         public IEnumerator FOVKickUp()
         {
-            float t = Mathf.Abs((Camera.fieldOfView - originalFov) / FOVIncrease);
+            float t = Mathf.Abs((Camera.fieldOfView - m_OriginalFOV) / FOVIncrease);
             while (t < TimeToIncrease)
             {
-                Camera.fieldOfView = originalFov + (IncreaseCurve.Evaluate(t / TimeToIncrease) * FOVIncrease);
+                Camera.fieldOfView = m_OriginalFOV + (IncreaseCurve.Evaluate(t / TimeToIncrease) * FOVIncrease);
                 t += Time.deltaTime;
                 yield return waitForEndOfFrame;
             }
@@ -45,15 +47,15 @@ namespace Controller.Player.Utility
 
         public IEnumerator FOVKickDown()
         {
-            float t = Mathf.Abs((Camera.fieldOfView - originalFov) / FOVIncrease);
+            float t = Mathf.Abs((Camera.fieldOfView - m_OriginalFOV) / FOVIncrease);
             while (t > 0)
             {
-                Camera.fieldOfView = originalFov + (IncreaseCurve.Evaluate(t / TimeToDecrease) * FOVIncrease);
+                Camera.fieldOfView = m_OriginalFOV + (IncreaseCurve.Evaluate(t / TimeToDecrease) * FOVIncrease);
                 t -= Time.deltaTime;
                 yield return waitForEndOfFrame;
             }
             //make sure that fov returns to the original size
-            Camera.fieldOfView = originalFov;
+            Camera.fieldOfView = m_OriginalFOV;
         }
     }
 }

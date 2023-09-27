@@ -36,9 +36,11 @@ namespace Manager.Weapon
         private readonly Dictionary<CustomKey, EntityWeapon> m_WeaponDictionary = new();
         private EntityWeapon m_CurrentWeapon = null;
         private PlayerData m_PlayerData;
+        private VisualSetting m_VisualSetting;
 
         private int m_CurrentEquipIndex = -1; //현재 장착하고 있는 무기 슬롯 번호
         private bool m_IsInteracting;
+        private bool m_HasData;
 
         public ObjectPoolManager.PoolingObject[] EffectPoolingObjectArray { get; private set; }
         public PlayerShakeController PlayerShakeController { get; private set; }
@@ -55,7 +57,8 @@ namespace Manager.Weapon
         {
             OriginalPivotPosition = m_Pivot.localPosition;
             OriginalPivotRotation = m_Pivot.localRotation;
-            OriginalFOV = Camera.main.fieldOfView;
+
+            ApplySetting();
 
             foreach (Transform child in transform)
             {
@@ -74,6 +77,21 @@ namespace Manager.Weapon
             playerInputController.Heal += TryHealInteract;
             m_PlayerData.WeaponDataFunc += RegisterWeapon;
             m_PlayerData.ReInit += () => ((ThrowingWeapon)m_CurrentWeapon).ReInit();
+        }
+
+        private void ApplySetting()
+        {
+            if (DataManager.Instance == null)
+            {
+                m_HasData = false;
+                OriginalFOV = Camera.main.fieldOfView;
+            }
+            else
+            {
+                m_HasData = true;
+                m_VisualSetting = (VisualSetting)DataManager.Instance.Settings[3];
+                OriginalFOV = m_VisualSetting.m_FOV;
+            }
         }
 
         private void Start()
