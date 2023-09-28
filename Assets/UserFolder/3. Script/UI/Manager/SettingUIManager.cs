@@ -25,10 +25,7 @@ namespace UI.Manager
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                SetActiveUI(!m_PauseModeController.IsActiveSettingUI);
-            }
+            if (Input.GetKeyDown(KeyCode.Escape)) SetActiveUI(!m_PauseModeController.IsActiveSettingUI);
         }
 
         private void SetActiveUI(bool isActive)
@@ -47,7 +44,6 @@ namespace UI.Manager
         public void Setting()
         {
             Debug.Log("Click Setting");
-
         }
 
         public void ReturnLobby()

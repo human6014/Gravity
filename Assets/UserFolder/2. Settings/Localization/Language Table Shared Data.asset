@@ -1,0 +1,285 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Language Table Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Language Table
+  m_TableCollectionNameGuidString: ab5c73f4fc4474e4eb1bfae6adb265ef
+  m_Entries:
+  - m_Id: 155390230528
+    m_Key: Test
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81047299211264
+    m_Key: LobbyScene_Home_GameStart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81307966816256
+    m_Key: LobbyScene_Home_Help
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81493640265728
+    m_Key: LobbyScene_Home_Setting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81564184264704
+    m_Key: LobbyScene_Home_Exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82611120291840
+    m_Key: LobbyScene_Start_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82715118059520
+    m_Key: LobbyScene_Start_SubTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82740405518336
+    m_Key: LobbyScene_Start_DifficultyHard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82797871677440
+    m_Key: LobbyScene_Start_DifficultyExtreme
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82958274445312
+    m_Key: LobbyScene_Start_Close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83616146833408
+    m_Key: LobbyScene_Start_DifficultyHardText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83646710726656
+    m_Key: LobbyScene_Start_DifficultyExtremeText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84279455039488
+    m_Key: LobbyScene_Help_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84387324149760
+    m_Key: LobbyScene_Help_SubTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84587778326528
+    m_Key: LobbyScene_Help_Key_WASD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84673073692672
+    m_Key: LobbyScene_Help_Key_SpaceBar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84705566965760
+    m_Key: LobbyScene_Help_Key_LShift
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84755063947264
+    m_Key: LobbyScene_Help_Key_LCtr
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84819891109888
+    m_Key: LobbyScene_Help_Key_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84858424180736
+    m_Key: LobbyScene_Help_Key_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84874337370112
+    m_Key: LobbyScene_Help_Key_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85167145926656
+    m_Key: LobbyScene_Help_Key_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85224641445888
+    m_Key: LobbyScene_Help_Key_Tab
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85251757621248
+    m_Key: LobbyScene_Help_Key_ESC
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85427683508224
+    m_Key: LobbyScene_Help_Key_12345
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85552405331968
+    m_Key: LobbyScene_Help_Key_ZXC
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85661952163840
+    m_Key: LobbyScene_Help_Key_MouseScroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85743262941184
+    m_Key: LobbyScene_Help_Key_Mouse1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85794748022784
+    m_Key: LobbyScene_Help_Key_Mouse2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 86277067816960
+    m_Key: LobbyScene_Help_Close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 88700003991552
+    m_Key: LobbyScene_Setting_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 88761203081216
+    m_Key: LobbyScene_Setting_GamePlayTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 88822511222784
+    m_Key: LobbyScene_Setting_ControlTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 88839053557760
+    m_Key: LobbyScene_Setting_AudioTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 88932284547072
+    m_Key: LobbyScene_Setting_VisualTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 89124463362048
+    m_Key: LobbyScene_Setting_Key_Q
+    m_Metadata:
+      m_Items: []
+  - m_Id: 89198941618176
+    m_Key: LobbyScene_Setting_Key_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 89938691014656
+    m_Key: LobbyScene_Setting_Close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90151182843904
+    m_Key: LobbyScene_Setting_GamePlay_EnableNotification
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90338068447232
+    m_Key: LobbyScene_Setting_GamePlay_NotificationPos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90501239455744
+    m_Key: LobbyScene_Setting_GamePlay_EnableHUD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90660153245696
+    m_Key: LobbyScene_Setting_GamePlay_Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93642274029568
+    m_Key: LobbyScene_Setting_Control_Sensitivity1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93728882212864
+    m_Key: LobbyScene_Setting_Control_Sensitivity2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93837263028224
+    m_Key: LobbyScene_Setting_Control_AimMode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94007857954816
+    m_Key: LobbyScene_Setting_Control_Key_W
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94121662005248
+    m_Key: LobbyScene_Setting_Control_Key_S
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94131929661440
+    m_Key: LobbyScene_Setting_Control_Key_A
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94140368601088
+    m_Key: LobbyScene_Setting_Control_Key_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94629722243072
+    m_Key: LobbyScene_Setting_Control_Key_Z
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94648122654720
+    m_Key: LobbyScene_Setting_Control_Key_X
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94664522383360
+    m_Key: LobbyScene_Setting_Control_Key_C
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96360459845632
+    m_Key: LobbyScene_Setting_Visual_Resolution
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96409998770176
+    m_Key: LobbyScene_Setting_Visual_WindowMode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96433306517504
+    m_Key: LobbyScene_Setting_Visual_V-Sync
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96466303107072
+    m_Key: LobbyScene_Setting_Visual_FrameRate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96491737366528
+    m_Key: LobbyScene_Setting_Visual_MotionBlur
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96525111443456
+    m_Key: LobbyScene_Setting_Visual_FOV
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96545202159616
+    m_Key: LobbyScene_Setting_Visual_FarPlane
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96607554682880
+    m_Key: LobbyScene_Setting_Visual_AntiAliasing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96642845556736
+    m_Key: LobbyScene_Setting_Visual_TextureQuality
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96673522696192
+    m_Key: LobbyScene_Setting_Visual_ShadowQuality
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96690748702720
+    m_Key: LobbyScene_Setting_Visual_AnisotropicFiltering
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96734814060544
+    m_Key: LobbyScene_Setting_Visual_SoftParticle
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 7434359509650505787
+  references:
+    version: 2
+    RefIds:
+    - rid: 7434359509650505787
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1695899851909
