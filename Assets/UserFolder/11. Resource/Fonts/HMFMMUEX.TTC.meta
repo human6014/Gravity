@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 53284e6c21bc9474aae3b04704516907
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - MoeumT R
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: d37aa6244d53ce4439a153d224872bd5, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -8,6 +8,7 @@ public class LoadingSceneController : MonoBehaviour
 {
     private static string m_NextScene;
     [SerializeField] private Image m_ProgressBarImage;
+    [SerializeField] private Slider m_LoadingSlider;
     [SerializeField] private float m_LastWaitTime = 1;
 
     public static void LoadScene(string sceneName)
@@ -31,12 +32,12 @@ public class LoadingSceneController : MonoBehaviour
         {
             yield return null;
 
-            if(operation.progress < 0.9f) m_ProgressBarImage.fillAmount = operation.progress;
+            if(operation.progress < 0.9f) m_LoadingSlider.value = operation.progress * 100;
             else
             {
                 timer += Time.unscaledDeltaTime;
-                m_ProgressBarImage.fillAmount = Mathf.Lerp(0.9f, 1, timer);
-                if(m_ProgressBarImage.fillAmount >= m_LastWaitTime)
+                m_LoadingSlider.value = Mathf.Lerp(90f, 100f, timer / m_LastWaitTime);
+                if(timer >= m_LastWaitTime)
                 {
                     operation.allowSceneActivation = true;
                     yield break;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Localization.Settings;
 
 public class GamePlaySettingController : SettingController
 {
@@ -17,10 +18,19 @@ public class GamePlaySettingController : SettingController
 
     public void ChangeEnableNotification(int value)
         => m_GamePlaySetting[0] = value;
-    
+
     public void ChangeLanguage(int value)
-        => m_GamePlaySetting[1] = value;
+    {
+        m_GamePlaySetting[1] = value;
+        StartCoroutine(ChangeLanguage());
+    }
     
+    private IEnumerator ChangeLanguage()
+    {
+        yield return LocalizationSettings.InitializationOperation;
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[m_GamePlaySetting.m_Language];
+    }
+
     public void ChangeNotificationPosition(int value)
         => m_GamePlaySetting[2] = value;
     
@@ -34,6 +44,7 @@ public class GamePlaySettingController : SettingController
     {
         for (int i = 0; i < m_LoadableSettingComponents.Length; i++)
             m_LoadableSettingComponents[i].LoadComponent(m_GamePlaySetting[i]);
+        ChangeLanguage(m_GamePlaySetting.m_Language);
     }
 
     public override void SaveSettings()

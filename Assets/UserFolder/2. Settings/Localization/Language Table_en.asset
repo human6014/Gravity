@@ -1,0 +1,271 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Language Table_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: ab5c73f4fc4474e4eb1bfae6adb265ef, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 155390230528
+    m_Localized: English,Korean
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81047299211264
+    m_Localized: START
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81307966816256
+    m_Localized: HELP & GUIDE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81493640265728
+    m_Localized: SETTINGS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81564184264704
+    m_Localized: EXIT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82611120291840
+    m_Localized: START
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82715118059520
+    m_Localized: SELECT DIFFICULTY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82740405518336
+    m_Localized: HARD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82797871677440
+    m_Localized: EXTREME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82958274445312
+    m_Localized: CLOSE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84279455039488
+    m_Localized: HELP & GUIDE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84387324149760
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84587778326528
+    m_Localized: MOVE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84673073692672
+    m_Localized: JUMP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84705566965760
+    m_Localized: RUN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84755063947264
+    m_Localized: CROUCH
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84819891109888
+    m_Localized: RELOAD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84858424180736
+    m_Localized: HEAL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85167145926656
+    m_Localized: TIMESLOW
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85251757621248
+    m_Localized: PAUSE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85224641445888
+    m_Localized: SKILLBOARD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84874337370112
+    m_Localized: CHANGE FIRE MODE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85427683508224
+    m_Localized: SELECT WEAPON
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85552405331968
+    m_Localized: SELECT GRAVITY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85661952163840
+    m_Localized: CHANGE GRAVITY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85743262941184
+    m_Localized: FIRE / HEAVY ATTACK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85794748022784
+    m_Localized: AIM / LIGHT ATTACK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 86277067816960
+    m_Localized: CLOSE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 88932284547072
+    m_Localized: VISUALS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 88839053557760
+    m_Localized: AUDIO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 88822511222784
+    m_Localized: CONTROLS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 88761203081216
+    m_Localized: GAMEPLAY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 88700003991552
+    m_Localized: SETTINGS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 89124463362048
+    m_Localized: PREVIOUS TAB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 89198941618176
+    m_Localized: NEXT TAB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 89938691014656
+    m_Localized: CLOSE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90151182843904
+    m_Localized: ENABLE NOTIFICATION
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90338068447232
+    m_Localized: NOTIFICATION POSITION
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90501239455744
+    m_Localized: ENABLE HUD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90660153245696
+    m_Localized: LANGUAGE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93642274029568
+    m_Localized: LOOK SENSITIVITY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93728882212864
+    m_Localized: AIM SENSITIVITY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93837263028224
+    m_Localized: AIM MODE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94007857954816
+    m_Localized: MOVE FORWARD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94121662005248
+    m_Localized: MOVE BACKWARD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94131929661440
+    m_Localized: MOVE LEFT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94140368601088
+    m_Localized: MOVE RIGHT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94629722243072
+    m_Localized: SELECT X AXIS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94648122654720
+    m_Localized: SELECT Y AXIS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94664522383360
+    m_Localized: SELECT Z AXIS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96360459845632
+    m_Localized: RESOLUTION
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96409998770176
+    m_Localized: WINDOW MODE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96433306517504
+    m_Localized: V-SYNC
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96466303107072
+    m_Localized: FRAME RATE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96491737366528
+    m_Localized: MOTION BLUR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96525111443456
+    m_Localized: FIELD OF VIEW
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96545202159616
+    m_Localized: VIEW DISTANCE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96607554682880
+    m_Localized: ANTI ALIASING
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96642845556736
+    m_Localized: TEXTURE QUALITY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96673522696192
+    m_Localized: SHADOW QUALITY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96690748702720
+    m_Localized: ANISOTROPIC FILTERING
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96734814060544
+    m_Localized: SOFT PARTICLE
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
