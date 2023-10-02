@@ -76,9 +76,6 @@ namespace Manager
         public static Vector3Int GetCurrentGravityNormalDirection() 
             => m_GravityNormalDirection[(int)CurrentGravityType];
 
-        //public static Vector3Int GetCurrentGravityDirection()
-        //  => m_GravityRotation[(int)CurrentGravityType];
-
         public static Quaternion GetSpecificGravityRotation(int index) 
             => Quaternion.Euler(m_GravityRotation[index]);
 
@@ -88,13 +85,12 @@ namespace Manager
 
         private void Awake()
         {
-            GravityChangeAction = null;
-
             CurrentGravityType = GravityType.yDown;
             CurrentGravityAxis = GravityDirection.Y;
             GravityDirectionValue = -1;
             IsGravityChanging = false;
             GravityVector = Vector3.down;
+            Physics.gravity = GravityVector * 9.81f;
         }
 
         public bool GravityChange(int gravityKeyInput, float mouseScroll)

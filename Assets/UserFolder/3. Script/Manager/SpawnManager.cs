@@ -130,6 +130,7 @@ namespace Manager
             foreach (float elem in m_MonsterProbs) m_Total += elem;
 
             m_StageManager.SpawnSpecialAction += SpawnSpecialMonster;
+            GravityManager.GravityChangeAction -= ChangeCurrentArea;
             GravityManager.GravityChangeAction += ChangeCurrentArea;
         }
 

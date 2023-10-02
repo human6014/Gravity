@@ -167,7 +167,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 90338068447232
-    m_Localized: NOTIFICATION POSITION
+    m_Localized: NOTIFICATION POS
     m_Metadata:
       m_Items: []
   - m_Id: 90501239455744
@@ -264,6 +264,194 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 96734814060544
     m_Localized: SOFT PARTICLE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339384314019840
+    m_Localized: RESUME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339507014189056
+    m_Localized: QUIT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339725524844544
+    m_Localized: HELP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 358228197818368
+    m_Localized: EXIT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 358493034561536
+    m_Localized: 'ARE YOU SURE
+
+      YOU WANT TO EXIT?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 358512609378304
+    m_Localized: PRESS THE KEY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 358386616680448
+    m_Localized: KEY BINDING
+    m_Metadata:
+      m_Items: []
+  - m_Id: 364409666584576
+    m_Localized: QUIT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 364619704745984
+    m_Localized: 'ARE YOU SURE
+
+      YOU WANT TO QUIT?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 455620427431936
+    m_Localized: Attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 455691831263232
+    m_Localized: Damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 455793111121920
+    m_Localized: AttackSpeed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 455866440138752
+    m_Localized: MaxBullet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 455926846504960
+    m_Localized: ReloadSpeed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 457578655694848
+    m_Localized: Increase the amount of gravity-energy recovery
+    m_Metadata:
+      m_Items: []
+  - m_Id: 457494467624960
+    m_Localized: GravityEnergeRecovery
+    m_Metadata:
+      m_Items: []
+  - m_Id: 457413232345088
+    m_Localized: MaxGravityEnerge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 457321511305216
+    m_Localized: TimeEnergeRecoveryRate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 457163264409600
+    m_Localized: MaxTimeEnerge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 457067357454336
+    m_Localized: MovementSpeed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456968883585024
+    m_Localized: MPConsume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456914223415296
+    m_Localized: MPRecoveryRate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456802659123200
+    m_Localized: MaxMP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456745591422976
+    m_Localized: GetLife
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456672514064384
+    m_Localized: Defense
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456574266687488
+    m_Localized: HealKitRate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456501109637120
+    m_Localized: GetHealKit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456437674983424
+    m_Localized: HPRecoveryRate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456359082115072
+    m_Localized: MaxHP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 457134101413888
+    m_Localized: Increase movement speed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 457302477553664
+    m_Localized: Increase maximum time-energy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 457385394749440
+    m_Localized: Increase the amount of time-energy recovery
+    m_Metadata:
+      m_Items: []
+  - m_Id: 457475836526592
+    m_Localized: Increase maximum gravity- energy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 455725104676864
+    m_Localized: Increase the attack power of all attacks
+    m_Metadata:
+      m_Items: []
+  - m_Id: 455844021583872
+    m_Localized: Increases the attack speed of all attacks
+    m_Metadata:
+      m_Items: []
+  - m_Id: 455905916928000
+    m_Localized: Increase maximum ammunition for range weapons
+    m_Metadata:
+      m_Items: []
+  - m_Id: 455957016133632
+    m_Localized: Increases reload speed of range weapons
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456421510135808
+    m_Localized: Increase maximum HP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456474702299136
+    m_Localized: Increase automatic HP recovery
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456530062917632
+    m_Localized: Get Healkit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456622652178432
+    m_Localized: Increase the recovery amount of Healkit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456691220660224
+    m_Localized: Increases defense
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456783021391872
+    m_Localized: Get extra life
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456893264478208
+    m_Localized: Increase maximum MP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456945445814272
+    m_Localized: Increase automatic MP recovery
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456993118273536
+    m_Localized: Reduce MP consumption
     m_Metadata:
       m_Items: []
   references:

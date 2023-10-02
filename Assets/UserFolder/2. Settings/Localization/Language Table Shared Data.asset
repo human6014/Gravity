@@ -271,6 +271,190 @@ MonoBehaviour:
     m_Key: LobbyScene_Setting_Visual_SoftParticle
     m_Metadata:
       m_Items: []
+  - m_Id: 358228197818368
+    m_Key: LobbyScene_Modal_Exit_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 358493034561536
+    m_Key: LobbyScene_Modal_Exit_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 358386616680448
+    m_Key: LobbyScene_Modal_KeyBinding_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 358512609378304
+    m_Key: LobbyScene_Modal_KeyBinding_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339384314019840
+    m_Key: GameScene_Setting_Main_Resume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339507014189056
+    m_Key: GameScene_Setting_Main_Quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339725524844544
+    m_Key: GameScene_Setting_Main_Help
+    m_Metadata:
+      m_Items: []
+  - m_Id: 364409666584576
+    m_Key: GameScene_Modal_Quit_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 364619704745984
+    m_Key: GameScene_Modal_Quit_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 455620427431936
+    m_Key: GameScene_Skill_Attack_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 455691831263232
+    m_Key: GameScene_Skill_Attack_DamageUp_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 455725104676864
+    m_Key: GameScene_Skill_Attack_DamageUp_Summary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 455793111121920
+    m_Key: GameScene_Skill_Attack_AttackSpeedUp_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 455844021583872
+    m_Key: GameScene_Skill_Attack_AttackSpeedUp_Summary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 455866440138752
+    m_Key: GameScene_Skill_Attack_MaxBulletUp_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 455905916928000
+    m_Key: GameScene_Skill_Attack_MaxBulletUp_Summary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 455926846504960
+    m_Key: GameScene_Skill_Attack_ReloadSpeedUp_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 455957016133632
+    m_Key: GameScene_Skill_Attack_ReloadSpeedUp_Summary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456359082115072
+    m_Key: GameScene_Skill_Defense_MaxHP_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456421510135808
+    m_Key: GameScene_Skill_Defense_MaxHP_Summary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456437674983424
+    m_Key: GameScene_Skill_Defense_HPRecoveryRate_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456474702299136
+    m_Key: GameScene_Skill_Defense_HPRecoveryRate_Summary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456501109637120
+    m_Key: GameScene_Skill_Defense_GetHealKit_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456530062917632
+    m_Key: GameScene_Skill_Defense_GetHealKit_Summary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456574266687488
+    m_Key: GameScene_Skill_Defense_HealKitRate_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456622652178432
+    m_Key: GameScene_Skill_Defense_HealKitRate_Summary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456672514064384
+    m_Key: GameScene_Skill_Defense_Defense_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456691220660224
+    m_Key: GameScene_Skill_Defense_Defense_Summary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456745591422976
+    m_Key: GameScene_Skill_Defense_GetLife_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456783021391872
+    m_Key: GameScene_Skill_Defense_GetLife_Summary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456802659123200
+    m_Key: GameScene_Skill_Support_MaxMP_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456893264478208
+    m_Key: GameScene_Skill_Support_MaxMP_Summary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456914223415296
+    m_Key: GameScene_Skill_Support_MPRecoveryRate_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456945445814272
+    m_Key: GameScene_Skill_Support_MPRecoveryRate_Summary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456968883585024
+    m_Key: GameScene_Skill_Support_MPConsume_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456993118273536
+    m_Key: GameScene_Skill_Support_MPConsume_Summary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 457067357454336
+    m_Key: GameScene_Skill_Support_MovementSpeed_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 457134101413888
+    m_Key: GameScene_Skill_Support_MovementSpeed_Summary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 457163264409600
+    m_Key: GameScene_Skill_Special_MaxTimeEnerge_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 457302477553664
+    m_Key: GameScene_Skill_Special_MaxTimeEnerge_Summary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 457321511305216
+    m_Key: GameScene_Skill_Special_TimeEnergeRecoveryRate_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 457385394749440
+    m_Key: GameScene_Skill_Special_TimeEnergeRecoveryRate_Summary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 457413232345088
+    m_Key: GameScene_Skill_Special_MaxGravityEnerge_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 457475836526592
+    m_Key: GameScene_Skill_Special_MaxGravityEnerge_Summary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 457494467624960
+    m_Key: GameScene_Skill_Special_GravityEnergeRecoveryRate_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 457578655694848
+    m_Key: GameScene_Skill_Special_GravityEnergeRecoveryRate_Summary
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
