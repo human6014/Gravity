@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using TMPro;
 
 public class TooltipChanger : MonoBehaviour
 {
-    [SerializeField] private string[] m_Tooltips;
+    [SerializeField] private GameObject[] m_Tooltips;
+    [SerializeField] private float m_ChangeTimer = 4;
 
-    private Text m_TooltipText;
     private int m_CurrentIndex;
-
-    private readonly float m_ChangeTimer = 4;
     private float m_TooltipTimer;
 
-    private void Awake() => m_TooltipText = GetComponent<Text>();
-
-    private void Start() => ChangeText();
+    private void Start()
+    {
+        m_CurrentIndex = Random.Range(0,m_Tooltips.Length);
+        m_Tooltips[m_CurrentIndex].SetActive(true);
+    }
 
     private void Update()
     {
@@ -31,7 +32,9 @@ public class TooltipChanger : MonoBehaviour
     private void ChangeText()
     {
         IEnumerable<int> range = Enumerable.Range(0, m_Tooltips.Length).Where(i => i!= m_CurrentIndex);
+
+        m_Tooltips[m_CurrentIndex].SetActive(false);
         m_CurrentIndex = range.ElementAt(Random.Range(0, m_Tooltips.Length - 1));
-        m_TooltipText.text = m_Tooltips[m_CurrentIndex];
+        m_Tooltips[m_CurrentIndex].SetActive(true);
     }
 }

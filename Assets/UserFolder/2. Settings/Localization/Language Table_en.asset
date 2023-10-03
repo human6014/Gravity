@@ -454,6 +454,67 @@ MonoBehaviour:
     m_Localized: Reduce MP consumption
     m_Metadata:
       m_Items: []
+  - m_Id: 1523648174931968
+    m_Localized: MASTER VOLUME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1523706878410752
+    m_Localized: MUSIC VOLUME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1523730286821376
+    m_Localized: UI SFX VOLUME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1523751065403392
+    m_Localized: GAME PLAY VOLUME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1543579113275392
+    m_Localized: 'Boss monsters are difficult to face head on
+
+      Identify patterns
+      and target weaknesses'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1543550164189184
+    m_Localized: Change the gravity and gain the upper hand
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1543540362100736
+    m_Localized: 'Bullets are not free
+
+      Use a gun that suits the situation'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1543474750603264
+    m_Localized: Players can be strengthened via the TAB key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1750980693245952
+    m_Localized: Notification1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1753041828757504
+    m_Localized: Tooltip5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1753124817256448
+    m_Localized: Notification2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1753144480153600
+    m_Localized: Notification3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1753153393049600
+    m_Localized: Notification4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1866648298110976
+    m_Localized: RESTART
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -41,7 +41,6 @@ namespace UI.Controller
             nextAnimator.CrossFade(panelFadeIn, 1);
 
             StartCoroutine(DisablePreviousPanel(m_SkillPanels[currentPanelNumber]));
-            //m_SkillPanels[currentPanelNumber].SetActive(false);
             
             currentPanelNumber = number;
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UI.Controller;
 using UnityEngine.SceneManagement;
-using Michsky.UI.Dark;
+using Manager;
 
 namespace UI.Manager
 {
@@ -25,7 +25,8 @@ namespace UI.Manager
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape)) SetActiveUI(!m_PauseModeController.IsActiveSettingUI);
+            if (Input.GetKeyDown(KeyCode.Escape) && !GameManager.IsGameEnd) 
+                SetActiveUI(!m_PauseModeController.IsActiveSettingUI);
         }
 
         private void SetActiveUI(bool isActive)

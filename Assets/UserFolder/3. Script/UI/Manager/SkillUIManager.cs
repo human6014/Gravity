@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UI.Controller;
+using Manager;
 
 namespace UI.Manager
 {
@@ -20,7 +21,7 @@ namespace UI.Manager
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Tab) && !m_PauseModeController.IsActiveSettingUI) 
+            if (Input.GetKeyDown(KeyCode.Tab) && !m_PauseModeController.IsActiveSettingUI && !GameManager.IsGameEnd) 
                 SetActiveUI(!m_PauseModeController.IsActiveSkillEventUI);
         }
 

@@ -405,7 +405,7 @@ namespace Manager
 
             SpecialMonster3 specialMonster3 = Instantiate(m_EntityManager.GetSpecialMonster3, initPosition, Quaternion.identity).GetComponent<SpecialMonster3>();
             specialMonster3.EndSpecialMonsterAction += () => IsSP3MonsterEnd = true;
-            specialMonster3.EndSpecialMonsterAction += () => GameManager.GameClear();
+            specialMonster3.EndSpecialMonsterAction += () => FindObjectOfType<GameManager>().GameClear();
             specialMonster3.Init(pathCreator, m_StageManager.StatMultiplier);
 
             await m_EnvironmentManager.FogDensityChange(0.04f,5);

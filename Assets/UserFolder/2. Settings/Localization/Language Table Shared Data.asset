@@ -455,6 +455,62 @@ MonoBehaviour:
     m_Key: GameScene_Skill_Special_GravityEnergeRecoveryRate_Summary
     m_Metadata:
       m_Items: []
+  - m_Id: 1523648174931968
+    m_Key: LobbyScene_Setting_Audio_Master_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1523706878410752
+    m_Key: LobbyScene_Setting_Audio_Music_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1523730286821376
+    m_Key: LobbyScene_Setting_Audio_UISFX_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1523751065403392
+    m_Key: LobbyScene_Setting_Audio_NormalSFX_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1543474750603264
+    m_Key: LoadingScene_Tooltip1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1543540362100736
+    m_Key: LoadingScene_Tooltip2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1543550164189184
+    m_Key: LoadingScene_Tooltip3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1543579113275392
+    m_Key: LoadingScene_Tooltip4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1753041828757504
+    m_Key: LoadingScene_Tooltip5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1750980693245952
+    m_Key: GameScene_Notification1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1753124817256448
+    m_Key: GameScene_Notification2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1753144480153600
+    m_Key: GameScene_Notification3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1753153393049600
+    m_Key: GameScene_Notification4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1866648298110976
+    m_Key: GameScene_GameEnd_Restart_Title
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

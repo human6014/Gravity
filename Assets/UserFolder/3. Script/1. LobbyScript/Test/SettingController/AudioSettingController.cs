@@ -25,14 +25,20 @@ public class AudioSettingController : SettingController
 
     public void ChangeMusicVolume(float value)
     {
-        m_AudioMixer.SetFloat("Master", Mathf.Log10(value) * 20);
+        m_AudioMixer.SetFloat("Music", Mathf.Log10(value) * 20);
         m_AudioSetting.m_MusicVolume = value;
     }
 
-    public void ChangeSFXVolume(float value)
+    public void ChangeSFXUIVolume(float value)
     {
-        m_AudioMixer.SetFloat("Master", Mathf.Log10(value) * 20);
-        m_AudioSetting.m_SFXVolume = value;
+        m_AudioMixer.SetFloat("SFX_UI", Mathf.Log10(value) * 20);
+        m_AudioSetting.m_SFXUIVolume = value;
+    }
+
+    public void ChangeSFXNormalVolume(float value)
+    {
+        m_AudioMixer.SetFloat("SFX_Normal", Mathf.Log10(value) * 20);
+        m_AudioSetting.m_SFXNormalVolume = value;
     }
 
     public override void UpdateSettings()
