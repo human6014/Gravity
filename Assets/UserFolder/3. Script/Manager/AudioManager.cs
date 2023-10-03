@@ -27,6 +27,6 @@ public class AudioManager : MonoBehaviour
         if (!m_HasData) return;
         m_AudioMixer.SetFloat("Master", Mathf.Log10(m_AudioSetting.m_MasterVolume) * 20);
         m_AudioMixer.SetFloat("Music", Mathf.Log10(m_AudioSetting.m_MusicVolume) * 20);
-        m_AudioMixer.SetFloat("SFX", Mathf.Log10(m_AudioSetting.m_SFXVolume) * 20);
+        m_AudioMixer.SetFloat("SFX", Mathf.Log10(m_AudioSetting.m_SFXUIVolume) * 20);
     }
 }

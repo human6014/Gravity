@@ -1,15 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Components;
 using UnityEngine.UI;
 
 public class NotificationUIManager : MonoBehaviour
 {
     [SerializeField] private GameObject m_NotificationObject;
-    [SerializeField] private Text [] m_NotificationPos;
+    [SerializeField] private TextMeshProUGUI[] m_NotificationPos;
 
     private GamePlaySetting m_GamePlaySetting;
-    private Text m_CurrentText;
+    private TextMeshProUGUI m_CurrentText;
+    private LocalizeStringEvent m_CurrentLocalizeStringEvent;
+
+    private readonly string m_TableReference = "Language Table";
+    private readonly string[] m_TableEntryReference =
+        { 
+            "GameScene_Notification1",
+            "GameScene_Notification2",
+            "GameScene_Notification3",
+            "GameScene_Notification4",
+        };
 
     private bool m_HasData;
 
@@ -38,11 +50,17 @@ public class NotificationUIManager : MonoBehaviour
         m_CurrentText.gameObject.SetActive(false);
         m_CurrentText = m_NotificationPos[m_GamePlaySetting.m_NotificationPosition];
         m_CurrentText.gameObject.SetActive(true);
-        m_CurrentText.text = "CurrentNotificationPos";
+
+        m_CurrentLocalizeStringEvent = m_CurrentText.GetComponent<LocalizeStringEvent>();
+        m_CurrentLocalizeStringEvent.StringReference.TableReference = m_TableReference;
+        m_CurrentLocalizeStringEvent.StringReference.TableEntryReference = m_TableEntryReference[0];
     }
 
-    public void UpdateText()
+    public void UpdateText(int textNumber)
     {
         if (m_GamePlaySetting.m_Notification == 0) return;
+
+        m_CurrentLocalizeStringEvent.StringReference.TableReference = m_TableReference;
+        m_CurrentLocalizeStringEvent.StringReference.TableEntryReference = m_TableEntryReference[textNumber];
     }
 }

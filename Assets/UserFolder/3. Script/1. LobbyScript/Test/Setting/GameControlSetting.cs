@@ -113,7 +113,6 @@ public class GameControlSetting : Setting
         m_GravityX = KeyCode.Z;         //KeyCode.Z;
         m_GravityY = KeyCode.X;         //KeyCode.X;
         m_GravityZ = KeyCode.C;         //KeyCode.C;
-
     }
 
     public override void LoadData()

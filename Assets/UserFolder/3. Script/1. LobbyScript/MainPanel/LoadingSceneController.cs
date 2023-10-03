@@ -9,6 +9,7 @@ public class LoadingSceneController : MonoBehaviour
     private static string m_NextScene;
     [SerializeField] private Image m_ProgressBarImage;
     [SerializeField] private Slider m_LoadingSlider;
+    [SerializeField] private float m_FirstWaitTime = 2;
     [SerializeField] private float m_LastWaitTime = 1;
 
     public static void LoadScene(string sceneName)
@@ -24,6 +25,8 @@ public class LoadingSceneController : MonoBehaviour
 
     private IEnumerator LoadSceneProcess()
     {
+        yield return new WaitForSeconds(m_FirstWaitTime);
+
         AsyncOperation operation = SceneManager.LoadSceneAsync(m_NextScene);
         operation.allowSceneActivation = false;
 

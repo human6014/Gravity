@@ -10,7 +10,8 @@ namespace UI.Event
         HealKitRateUp,      //int
         HealthRecoverUp,    //int
         MaxHealthUp,        //int
-        DefenseUp           //int
+        DefenseUp,          //int
+        GetLife             //int
     }
 
     public class DefenseSkill : SkillUp

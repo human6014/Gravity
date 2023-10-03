@@ -5,6 +5,7 @@ using System;
 using UI.Manager;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Events;
 
 namespace Manager
 {
@@ -12,26 +13,28 @@ namespace Manager
     {
         [SerializeField] private Volume m_Volume;
         [SerializeField] private UniversalRenderPipelineAsset []m_UniversalRenderPipelineAsset;
+        [SerializeField] private UnityEvent m_GameEndEvent;
+        [SerializeField] private UnityEvent m_GameClearEvent;
 
         private VisualSetting m_VisualSetting;
-
+        private MotionBlur m_MotionBlur;
         private bool m_HasData;
 
-        public static bool IsGameEnd { get; private set; }
-
-        private UnityEngine.Rendering.Universal.MotionBlur m_MotionBlur;
+        public static bool IsGameEnd { get; set; }
         
-        public static void GameClear()
+        public void GameClear()
         {
             if (IsGameEnd) return;
             IsGameEnd = true;
+            m_GameClearEvent?.Invoke();
             Debug.Log("GameClear");
         }
 
-        public static void GameEnd()
+        public void GameEnd()
         {
             if (IsGameEnd) return;
             IsGameEnd = true;
+            m_GameEndEvent?.Invoke();
             Debug.Log("GameEnd");
         }
 

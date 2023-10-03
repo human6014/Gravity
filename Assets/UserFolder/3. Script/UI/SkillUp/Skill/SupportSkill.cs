@@ -8,7 +8,6 @@ namespace UI.Event
     {
         MaxStaminaUp,           //int
         MoveSpeedUp,            //float
-        StaminaConsumeDown,     //int
         StaminaRecoverUp        //int
     }
     public class SupportSkill : SkillUp

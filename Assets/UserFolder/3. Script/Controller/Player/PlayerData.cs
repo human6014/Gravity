@@ -115,6 +115,8 @@ public class PlayerData : MonoBehaviour
     private int m_AmountToRealGEConst = 1000;
     private int m_AmountToRealTEConst = 1000;
 
+    private int m_LifeCount = 0;
+
     private int m_DeltaTimeInterporateValue;
     private bool m_IsTimeSlow;
     #endregion
@@ -436,7 +438,18 @@ public class PlayerData : MonoBehaviour
     {
         PlayerHP -= value;
         m_PlayerUIManager.UpdatePlayerHP(m_AmountPlayerHP);
-        if (PlayerHP <= 0) Manager.GameManager.GameEnd();
+        if (PlayerHP <= 0)
+        {
+            if (m_LifeCount >= 1)
+            {
+                //-----------------------------Test Here-----------------------------
+                Debug.Log("Life consume");
+                m_LifeCount--;
+                PlayerHP = PlayerMaxHP;
+                m_PlayerUIManager.UpdatePlayerHP(m_AmountPlayerHP);
+            }
+            else FindObjectOfType<Manager.GameManager>().GameEnd();
+        }
     }
 
     /// <summary>
@@ -570,6 +583,10 @@ public class PlayerData : MonoBehaviour
     public void DefenseUp(int amount)
         => m_Defense += amount;
     
+    public void GetLife(int amount)
+        => m_LifeCount += amount;
+    
+
     #endregion
     #region Support
     public void MaxStaminaUp(int amount)
@@ -577,12 +594,6 @@ public class PlayerData : MonoBehaviour
         PlayerMaxMP += amount;
         PlayerMP += amount;
         m_PlayerUIManager.UpdatePlayerMP(m_AmountPlayerMP);
-    }
-
-    public void StaminaConsumeDown(int amount)
-    {
-        m_RunningMPConsumeAmount -= amount;
-        m_JumpingMPConsumeAmount -= amount * 10;
     }
 
     public void StaminaRecoverUp(int amount)
