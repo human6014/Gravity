@@ -35,6 +35,7 @@ namespace Manager
             if (IsGameEnd) return;
             IsGameEnd = true;
             m_GameEndEvent?.Invoke();
+            //카메라 시점 변환 아직 안돼있음
             Debug.Log("GameEnd");
         }
 

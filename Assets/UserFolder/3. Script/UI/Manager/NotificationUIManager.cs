@@ -10,6 +10,7 @@ public class NotificationUIManager : MonoBehaviour
     [SerializeField] private GameObject m_NotificationObject;
     [SerializeField] private TextMeshProUGUI[] m_NotificationPos;
 
+    private CanvasGroup m_CanvasGroup;
     private GamePlaySetting m_GamePlaySetting;
     private TextMeshProUGUI m_CurrentText;
     private LocalizeStringEvent m_CurrentLocalizeStringEvent;
@@ -25,6 +26,8 @@ public class NotificationUIManager : MonoBehaviour
 
     private bool m_HasData;
 
+    private int m_EntryReferenceNumber;
+
     private void Awake()
     {
         if (DataManager.Instance == null) m_HasData = false;
@@ -32,7 +35,7 @@ public class NotificationUIManager : MonoBehaviour
         {
             m_HasData = true;
             m_GamePlaySetting = (GamePlaySetting)DataManager.Instance.Settings[0];
-            m_CurrentText = m_NotificationPos[0];
+            m_CurrentText = m_NotificationPos[0];   //일부러 이럼
             ApplySetting();
         }
     }
@@ -53,14 +56,41 @@ public class NotificationUIManager : MonoBehaviour
 
         m_CurrentLocalizeStringEvent = m_CurrentText.GetComponent<LocalizeStringEvent>();
         m_CurrentLocalizeStringEvent.StringReference.TableReference = m_TableReference;
-        m_CurrentLocalizeStringEvent.StringReference.TableEntryReference = m_TableEntryReference[0];
+        m_CurrentLocalizeStringEvent.StringReference.TableEntryReference = m_TableEntryReference[m_EntryReferenceNumber];
     }
 
-    public void UpdateText(int textNumber)
+    public void UpdateText(int referenceNumber)
     {
+        m_EntryReferenceNumber = referenceNumber;
         if (m_GamePlaySetting.m_Notification == 0) return;
 
         m_CurrentLocalizeStringEvent.StringReference.TableReference = m_TableReference;
-        m_CurrentLocalizeStringEvent.StringReference.TableEntryReference = m_TableEntryReference[textNumber];
+        m_CurrentLocalizeStringEvent.StringReference.TableEntryReference = m_TableEntryReference[referenceNumber];
+    }
+
+    private IEnumerator DisplayNotification(float duringTime)
+    {
+        yield return FadeCanvas(0, 1);
+
+        float elapsedTime = 0;
+        while (elapsedTime <= duringTime)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        yield return FadeCanvas(1, 0);
+    }
+
+    private IEnumerator FadeCanvas(float fromAlpha, float toAlpha)
+    {
+        float elapsedTime = 0;
+        while (elapsedTime <= 1)
+        {
+            elapsedTime += Time.deltaTime;
+            m_CanvasGroup.alpha = Mathf.Lerp(fromAlpha, toAlpha, elapsedTime);
+            yield return null;
+        }
+        m_CanvasGroup.alpha = toAlpha;
     }
 }

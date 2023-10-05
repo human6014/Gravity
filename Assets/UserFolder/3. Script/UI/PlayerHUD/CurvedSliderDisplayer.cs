@@ -6,21 +6,9 @@ using UnityEngine.UI;
 public class CurvedSliderDisplayer : MonoBehaviour
 {
     [SerializeField] private Image m_BarImage;
-    [SerializeField] private float value = 0;
 
-    private void Update()
+    public void UpdateBarImage(float value)
     {
-        SliderChange(value);
+        m_BarImage.fillAmount = value * 0.2f;
     }
-
-    public void SliderChange(float value)
-    {
-        float amount = value * 0.002f;
-        m_BarImage.fillAmount = amount;
-    }
-    /*
-     * 0~100
-     * ->
-     * 0~0.2
-     * */
 }

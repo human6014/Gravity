@@ -4725,7 +4725,7 @@ MonoBehaviour:
   - m_ElementType: 1
     m_Unicode: 49436
     m_GlyphIndex: 5501
-    m_Scale: 1
+    m_Scale: 0.85
   - m_ElementType: 1
     m_Unicode: 49440
     m_GlyphIndex: 5505

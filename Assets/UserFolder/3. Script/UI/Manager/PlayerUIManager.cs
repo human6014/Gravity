@@ -13,8 +13,8 @@ namespace UI.Manager
         [SerializeField] private ItemSlotDisplayer m_ItemSlotDisplayer;
         [SerializeField] private WeaponPropertyDisplayer m_WeaponPropertyDisplayer;
         [SerializeField] private DamageDisplayer m_DamageDisplayer;
-        [SerializeField] private VerticalBarDisplayer m_GravityEnergeDisplayer;
-        [SerializeField] private VerticalBarDisplayer m_TimeEnergeDisplayer;
+        [SerializeField] private CurvedSliderDisplayer m_GravityEnergeDisplayer;
+        [SerializeField] private CurvedSliderDisplayer m_TimeEnergeDisplayer;
 
         public void Init(int playerMaxHP, int playerMaxMP, int amountToRealConst, float realToAmountConst, int havingHealKit)
         {
