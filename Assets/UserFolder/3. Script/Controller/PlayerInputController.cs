@@ -51,6 +51,8 @@ namespace Controller
         public Action<int> ChangeEquipment { get; set; }
 
 
+        public Action<int> SelectGravityAxis { get; set; }      //0,1,2
+
         public Action Crouch { get; set; }        //Toggle
         public Action TimeSlow { get; set; }        //Toggle
 
@@ -132,9 +134,21 @@ namespace Controller
                 Aiming?.Invoke(m_IsAiming);
             }
 
-            if (Input.GetKeyDown(m_GameControlSetting.m_GravityX)) m_GravityKeyInput = 0;
-            else if (Input.GetKeyDown(m_GameControlSetting.m_GravityY)) m_GravityKeyInput = 1;
-            else if (Input.GetKeyDown(m_GameControlSetting.m_GravityZ)) m_GravityKeyInput = 2;
+            if (Input.GetKeyDown(m_GameControlSetting.m_GravityX))
+            {
+                m_GravityKeyInput = 0;
+                SelectGravityAxis?.Invoke(m_GravityKeyInput);
+            }
+            else if (Input.GetKeyDown(m_GameControlSetting.m_GravityY))
+            {
+                m_GravityKeyInput = 1;
+                SelectGravityAxis?.Invoke(m_GravityKeyInput);
+            }
+            else if (Input.GetKeyDown(m_GameControlSetting.m_GravityZ))
+            {
+                m_GravityKeyInput = 2;
+                SelectGravityAxis?.Invoke(m_GravityKeyInput);
+            }
 
             m_Jump = Input.GetKeyDown(m_GameControlSetting.m_Jump);
             if (m_Jump) Jump?.Invoke();
@@ -168,9 +182,21 @@ namespace Controller
                 Aiming?.Invoke(m_IsAiming);
             }
 
-            if (Input.GetKeyDown(KeyCode.Z)) m_GravityKeyInput = 0;
-            else if (Input.GetKeyDown(KeyCode.X)) m_GravityKeyInput = 1;
-            else if (Input.GetKeyDown(KeyCode.C)) m_GravityKeyInput = 2;
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                m_GravityKeyInput = 0;
+                SelectGravityAxis?.Invoke(m_GravityKeyInput);
+            }
+            else if (Input.GetKeyDown(KeyCode.X))
+            {
+                m_GravityKeyInput = 1;
+                SelectGravityAxis?.Invoke(m_GravityKeyInput);
+            }
+            else if (Input.GetKeyDown(KeyCode.C))
+            {
+                m_GravityKeyInput = 2;
+                SelectGravityAxis?.Invoke(m_GravityKeyInput);
+            }
 
             m_Jump = Input.GetKeyDown(KeyCode.Space);
             if (m_Jump) Jump?.Invoke();
