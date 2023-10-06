@@ -15,6 +15,7 @@ namespace Controller.Util
 
         [SerializeField] private float m_MaxX = 5;
         [SerializeField] private float m_MaxY = 5;
+
         public void Sway(float xMovement, float yMovement)
         {
             //각도 기준 X

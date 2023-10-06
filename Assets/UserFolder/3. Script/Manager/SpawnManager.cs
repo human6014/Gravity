@@ -241,6 +241,7 @@ namespace Manager
 
         private void Update()
         {
+            if (GameManager.IsGameEnd) return;
             SpawnMonster();
         }
 

@@ -485,7 +485,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_LoadingSlider: {fileID: 163765895030555945}
-  m_FirstWaitTime: 3
+  m_FirstWaitTime: 4
   m_LastWaitTime: 4
 --- !u!1 &663834781
 GameObject:

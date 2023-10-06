@@ -15,24 +15,27 @@ namespace Manager
         [SerializeField] private UniversalRenderPipelineAsset []m_UniversalRenderPipelineAsset;
         [SerializeField] private UnityEvent m_GameEndEvent;
         [SerializeField] private UnityEvent m_GameClearEvent;
+        [SerializeField] private bool m_IsInfinityLife; 
 
         private VisualSetting m_VisualSetting;
         private MotionBlur m_MotionBlur;
         private bool m_HasData;
 
         public static bool IsGameEnd { get; set; }
+        public static bool IsGameClear { get; set; }
         
         public void GameClear()
         {
             if (IsGameEnd) return;
             IsGameEnd = true;
+            IsGameClear = true;
             m_GameClearEvent?.Invoke();
             Debug.Log("GameClear");
         }
 
         public void GameEnd()
         {
-            if (IsGameEnd) return;
+            if (IsGameEnd || m_IsInfinityLife) return;
             IsGameEnd = true;
             m_GameEndEvent?.Invoke();
             //카메라 시점 변환 아직 안돼있음
@@ -42,6 +45,7 @@ namespace Manager
         private void Awake()
         {
             IsGameEnd = false;
+            IsGameClear = false;
 
             if (DataManager.Instance == null) m_HasData = false;
             else
@@ -57,7 +61,8 @@ namespace Manager
             if (!m_HasData) return;
 
             QualitySettings.vSyncCount = m_VisualSetting.m_VSyncCount;
-            if (m_Volume.profile.TryGet(out m_MotionBlur)) m_MotionBlur.active = m_VisualSetting.m_MotionBlur == 1;
+            if (m_Volume.profile.TryGet(out m_MotionBlur)) 
+                m_MotionBlur.active = m_VisualSetting.m_MotionBlur == 1;
 
             Application.targetFrameRate = m_VisualSetting.m_FrameRate;
             switch (m_VisualSetting.m_FrameRate)

@@ -6,7 +6,7 @@ namespace Controller.Player.Utility
     [Serializable]
     public class CurveControlledBob
     {
-        [SerializeField] private string m_InspectorText = "";
+        [SerializeField] public string m_InspectorText = "";
         [SerializeField] private float m_HorizontalBobRange = 0.1f;
         [SerializeField] private float m_VerticalBobRange = 0.1f;
 

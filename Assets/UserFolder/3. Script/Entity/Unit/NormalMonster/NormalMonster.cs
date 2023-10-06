@@ -91,6 +91,12 @@ namespace Entity.Unit.Normal
         private void Update()
         {
             if (!m_IsAlive) return;
+            if (Manager.GameManager.IsGameClear)
+            {
+                Die();
+                return;
+            }
+
             m_AttackTimer += Time.deltaTime;
 
             if (m_NormalMonsterAI.CheckCanBehaviorState(out bool isMalfunction))

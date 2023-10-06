@@ -37,6 +37,7 @@ namespace UI.Event
             if (m_CurrentLevel >= m_MaxLevel || !m_PlayerData.CanSkillUpPoint(m_SkillPointCost)) return;
 
             m_CurrentLevel++;
+            m_SkillPointCost += m_SkillPointIncreseRate;
 
             UpdateText();
             DoSkillUp();
