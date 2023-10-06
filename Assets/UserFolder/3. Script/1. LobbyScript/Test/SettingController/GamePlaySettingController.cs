@@ -38,8 +38,11 @@ public class GamePlaySettingController : SettingController
     public void ChangeEnableHUD(int value)
         => m_GamePlaySetting[3] = value;
 
-    public void ChangeDifficultyIndex(int value)
+    public void ChangeDisplayFrameRate(int value)
         => m_GamePlaySetting[4] = value;
+
+    public void ChangeDifficultyIndex(int value)
+        => m_GamePlaySetting[5] = value;
 
     public override void UpdateSettings()
     {

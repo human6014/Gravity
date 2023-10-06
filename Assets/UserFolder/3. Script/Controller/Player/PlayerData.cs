@@ -513,7 +513,7 @@ public class PlayerData : MonoBehaviour
             if (monsterNumber == 4) PlayerSkillPoint += 2;
             else if (monsterNumber == 3) PlayerSkillPoint++;
         }
-        if(allKillCount % 5 == 0) PlayerSkillPoint++;
+        if(allKillCount % m_GetSkillKillCount == 0) PlayerSkillPoint++;
     }
 
     public void GetSkillPoint(int point) => PlayerSkillPoint += point;

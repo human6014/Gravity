@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HP: 630
   m_Def: 0
-  m_Damage: 100
+  m_Damage: 150
   m_MovementSpeed: 6
   m_AttackSpeed: 1
   m_AttackRange: 2
@@ -22,9 +22,9 @@ MonoBehaviour:
   m_ExplosionResistance: 10
   m_MeleeResistance: 10
   m_NoramlAttackType: 0
-  m_HPMultiplier: 63
+  m_HPMultiplier: 95
   m_DefMultiplier: 0
-  m_DamageMultiplier: 10
+  m_DamageMultiplier: 23
   m_MonsterType: 2
   m_CanRunStat: 2
   m_RunningSpeed: 6

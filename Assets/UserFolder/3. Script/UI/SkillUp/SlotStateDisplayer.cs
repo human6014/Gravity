@@ -18,7 +18,6 @@ public class SlotStateDisplayer : MonoBehaviour
 
     private PlayerData m_PlayerData;
     private WeaponInfo m_CurrentWeaponInfo;
-    private bool m_IsSelect;
 
     protected PlayerSkillReceiver PlayerSkillReceiver { get; private set; }
 
@@ -47,7 +46,6 @@ public class SlotStateDisplayer : MonoBehaviour
     
     public void RegisterPlayerSlot(int slotIndex)
     {
-        m_IsSelect = true;
         PlayerSkillReceiver.GetWeaponEvent(m_SlotNumber, slotIndex);
         UpdateAmmoText(m_CurrentWeaponInfo.m_CurrentRemainBullet, m_CurrentWeaponInfo.m_MagazineRemainBullet);
     }

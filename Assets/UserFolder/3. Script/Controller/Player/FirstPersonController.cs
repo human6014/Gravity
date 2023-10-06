@@ -30,9 +30,6 @@ namespace Controller.Player
         [Tooltip("땅에 달라붙는 힘")]
         [SerializeField] private float m_StickToGroundForce = 1;
 
-        [Tooltip("중력 값")]
-        [SerializeField] private float m_GravityMultiplier = 1;
-
         [Space(15)]
         [Tooltip("마우스 입력 처리 클래스")]
         [SerializeField] private MouseLook m_MouseLook;
@@ -92,6 +89,9 @@ namespace Controller.Player
         [SerializeField] Vector3 m_CrouchInterporatePos;          //앉기, 일어나기 증감값
         [SerializeField] float m_CrouchTime = 0.3f;               //앉기, 일어나기 자세 전환 시간
 
+
+        [SerializeField] private Transform m_OverUICamera;
+        [SerializeField] private RectTransform m_OverUICanvas;
         #endregion
         private VisualSetting m_VisualSetting;
         private PlayerInputController m_PlayerInputController;

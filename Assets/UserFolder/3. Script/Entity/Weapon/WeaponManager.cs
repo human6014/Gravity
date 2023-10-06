@@ -40,7 +40,6 @@ namespace Manager.Weapon
 
         private int m_CurrentEquipIndex = -1; //현재 장착하고 있는 무기 슬롯 번호
         private bool m_IsInteracting;
-        private bool m_HasData;
 
         public ObjectPoolManager.PoolingObject[] EffectPoolingObjectArray { get; private set; }
         public PlayerShakeController PlayerShakeController { get; private set; }
@@ -81,14 +80,9 @@ namespace Manager.Weapon
 
         private void ApplySetting()
         {
-            if (DataManager.Instance == null)
-            {
-                m_HasData = false;
-                OriginalFOV = Camera.main.fieldOfView;
-            }
+            if (DataManager.Instance == null) OriginalFOV = Camera.main.fieldOfView;
             else
             {
-                m_HasData = true;
                 m_VisualSetting = (VisualSetting)DataManager.Instance.Settings[3];
                 OriginalFOV = m_VisualSetting.m_FOV;
             }

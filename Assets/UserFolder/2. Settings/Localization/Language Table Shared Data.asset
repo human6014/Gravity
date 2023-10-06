@@ -511,6 +511,10 @@ MonoBehaviour:
     m_Key: GameScene_GameEnd_Restart_Title
     m_Metadata:
       m_Items: []
+  - m_Id: 2583512905072640
+    m_Key: LoadingScene_Setting_GamePlay_DisplayFrameRate
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

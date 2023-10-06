@@ -40,7 +40,6 @@ namespace Manager
         [SerializeField] private UnityEngine.Events.UnityEvent<int> WaveChangeEvnet;
 
         private StageInfo m_CurrentStageInfo;
-        private GamePlaySetting m_GamePlaySetting;
 
         private float m_WaveTimer;
         private float m_StatMultiplier = 0;
@@ -48,8 +47,6 @@ namespace Manager
 
         private int m_CurrentStage;
         private int m_CurrentWave;
-
-        private bool m_HasData;
 
         #region Property
         public System.Action<int> SpawnSpecialAction { get; set; }
@@ -85,18 +82,15 @@ namespace Manager
             CurrentStage = 1;
             m_CurrentStageInfo = m_StageInfo[CurrentStage - 1];
 
-            if (DataManager.Instance == null) m_HasData = false;
-            else
-            {
-                m_HasData = true;
-                m_GamePlaySetting = (GamePlaySetting)DataManager.Instance.Settings[0];
-                ApplySetting();
-            }
+            if (DataManager.Instance == null) m_Difficulty = 1;
+            else ApplySetting();
+            
         }
 
         private void ApplySetting()
         {
-            switch (m_GamePlaySetting.m_DifficultyIndex)
+            GamePlaySetting gamePlaySetting = (GamePlaySetting)DataManager.Instance.Settings[0];
+            switch (gamePlaySetting.m_DifficultyIndex)
             {
                 case 0:
                     m_Difficulty = 1;

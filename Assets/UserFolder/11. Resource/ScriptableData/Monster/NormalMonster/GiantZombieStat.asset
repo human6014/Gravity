@@ -22,9 +22,9 @@ MonoBehaviour:
   m_ExplosionResistance: 10
   m_MeleeResistance: 10
   m_NoramlAttackType: 0
-  m_HPMultiplier: 250
+  m_HPMultiplier: 375
   m_DefMultiplier: 7
-  m_DamageMultiplier: 30
+  m_DamageMultiplier: 45
   m_MonsterType: 4
   m_CanRunStat: 2
   m_RunningSpeed: 5.5

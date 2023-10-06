@@ -399,7 +399,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 457475836526592
-    m_Localized: Increase maximum gravity- energy
+    m_Localized: Increase maximum gravity-energy
     m_Metadata:
       m_Items: []
   - m_Id: 455725104676864
@@ -484,7 +484,7 @@ MonoBehaviour:
   - m_Id: 1543540362100736
     m_Localized: 'Bullets are not free
 
-      Use a gun that suits the situation'
+      Use a weapon that suits the situation'
     m_Metadata:
       m_Items: []
   - m_Id: 1543474750603264
@@ -513,6 +513,24 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1866648298110976
     m_Localized: RESTART
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2583512905072640
+    m_Localized: DISPLAY FRAMERATE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83616146833408
+    m_Localized: 'Normal monsters have basic stats
+
+      Boss monsters only have
+      basic patterns'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83646710726656
+    m_Localized: 'Normal monsters have enhanced stats
+
+      Boss monster patterns
+      are added'
     m_Metadata:
       m_Items: []
   references:

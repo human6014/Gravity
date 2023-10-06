@@ -13,7 +13,6 @@ namespace UI.Controller
 
         private SlotStateDisplayer m_SlotStateDisplayer;
 
-        private bool m_IsSelectWeapon;
         private int m_CurrentWeaponSlotIndex = 0;
 
         private void Awake()
@@ -31,7 +30,6 @@ namespace UI.Controller
         public void ClickWeaponSlot()
         {
             if (!m_SlotStateDisplayer.CanRegisterWeapon()) return;
-            m_IsSelectWeapon = true;
 
             foreach (GameObject go in m_WeaponSlots)
                 go.GetComponent<Image>().raycastTarget = false;
