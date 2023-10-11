@@ -91,7 +91,7 @@ namespace Entity.Unit.Normal
         private void Update()
         {
             if (!m_IsAlive) return;
-            if (Manager.GameManager.IsGameClear)
+            if (Manager.GameManager.IsGameClearEnd)
             {
                 Die();
                 return;

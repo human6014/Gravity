@@ -20,14 +20,6 @@ namespace Entity.Unit.Special
         public static int Size { get => sizeof(float) * 3 * 5; }
     }
 
-    public struct BoidOutput
-    {
-        public Vector3 cohesionVector;
-        public Vector3 alignmentVector;
-        public Vector3 separationVector;
-        public static int Size { get => sizeof(float) * 3 * 3; }
-    }
-
     public class BoidsController : MonoBehaviour
     {
         #region SerializeField

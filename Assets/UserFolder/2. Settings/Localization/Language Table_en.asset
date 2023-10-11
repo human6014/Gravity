@@ -504,7 +504,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1753144480153600
-    m_Localized: Notification3
+    m_Localized: Most enemies have weaknesses
     m_Metadata:
       m_Items: []
   - m_Id: 1753153393049600
@@ -531,6 +531,51 @@ MonoBehaviour:
 
       Boss monster patterns
       are added'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4703264607748096
+    m_Localized: 'Horridomorph is fast and agile
+
+      Keep a distance and fight'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4703277094191104
+    m_Localized: Horridomorph2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4703417762758656
+    m_Localized: 'When caught by Titanockarce,
+
+      You can escape by doing a certain
+      amount of damage to each tentacle.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4703468610306048
+    m_Localized: 'Scyver has a weak body, but you need to be careful of the surrounding
+      swarm bugs.
+
+      Rather than targeting Scyver''s body directly, take out
+      surrounding monsters first.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4703286690758656
+    m_Localized: 'Titanockarce has very high defense
+
+      A strong attack is required'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4703445147369472
+    m_Localized: 'Titanockarce runs away when its health is low
+
+      If you don''t
+      target the recovering Titanockarce, it will come back after it recovers.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4703483378450432
+    m_Localized: 'Scyver''s swarm bugs have no attacks that can kill you.
+
+      If
+      your HP is low, watch out for Scyver and other monsters'
     m_Metadata:
       m_Items: []
   references:

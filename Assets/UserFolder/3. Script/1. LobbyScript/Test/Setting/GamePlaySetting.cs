@@ -11,7 +11,7 @@ public class GamePlaySetting : Setting
     public int m_NotificationPosition { get; set; }
     public int m_EnableHUD { get; set; }    //0 : Disable, 1 : Enable
 
-    public int m_DifficultyIndex { get; set; }
+    public int m_DifficultyIndex { get; set; }  //0 : Hard, 1: Extreme
 
     public int m_HasHardClearData { get; set; } //0 : Not Cleared, 1: Cleared
     public int m_DisplayFrameRate { get; set; } //0 : Disable, 1 : Enable

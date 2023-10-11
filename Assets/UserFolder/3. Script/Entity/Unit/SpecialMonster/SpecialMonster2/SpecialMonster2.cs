@@ -49,6 +49,12 @@ namespace Entity.Unit.Special
         private bool m_IsUsingRecovery;
         private bool m_IsBehaviorWait;
 
+        private bool m_HasSpecialPattern;
+
+        private bool m_IsSendNotification1;
+        private bool m_IsSendNotification2;
+        private bool m_IsSendNotification3;
+
         private int[] m_IsHitParts = new int[6];
 
         private int m_RealMaxHP;
@@ -57,6 +63,10 @@ namespace Entity.Unit.Special
 
         private int m_CurrentHP;
         private int m_RecoveryTriggerHP;
+
+        private readonly int m_NotificationIndex1 = 6;
+        private readonly int m_NotificationIndex2 = 7;
+        private readonly int m_NotificationIndex3 = 8;
 
         public System.Action EndSpecialMonsterAction { get; set; }
 
@@ -100,8 +110,16 @@ namespace Entity.Unit.Special
             m_SpecialMonster2AI.RushCompToPos += RushAttackEnd;
 
             m_SP2AnimationController.DoDamageAction += DoDamage;
-            m_GrabController.AttachedToPlayer += ()
-                => m_PlayerData.PlayerHit(transform, m_Settings.m_GrabAttackDamage + m_RealDamage, m_Settings.m_NoramlAttackType);
+            m_GrabController.AttachedToPlayer += () =>
+            {
+                m_PlayerData.PlayerHit(transform, m_Settings.m_GrabAttackDamage + m_RealDamage, m_Settings.m_NoramlAttackType);
+
+                if (!m_IsSendNotification2)
+                {
+                    m_IsSendNotification2 = true;
+                    NotificationUIManager.CallUpdateText(m_NotificationIndex2);
+                }
+            };
         }
 
         private void Start()
@@ -110,9 +128,10 @@ namespace Entity.Unit.Special
             m_PlayerData = m_PlayerRigidbody.GetComponent<PlayerData>();
         }
 
-        public void Init(Transform spawnPos, float statMultiplier)
+        public void Init(Transform spawnPos, float statMultiplier, int difficulty)
         {
             SetRealStat(statMultiplier);
+            m_HasSpecialPattern = difficulty >= 1;
 
             RecoveryPos = new List<Vector3>(spawnPos.childCount);
             foreach (Transform t in spawnPos)
@@ -148,14 +167,6 @@ namespace Entity.Unit.Special
             GroundDownCheck();
             UpdateTimer();
 
-            //if (m_GroundDownForce != 0)
-            //{
-            //    MoveSelf();
-            //    m_SP2AnimationController.SetRoar(true);
-            //    return;
-            //}
-            //else m_SP2AnimationController.SetRoar(false);
-
             if (!m_IsBehaviorWait)
             {
                 m_TargetDist = Vector3.Distance(transform.position, AIManager.PlayerTransform.position);
@@ -177,7 +188,7 @@ namespace Entity.Unit.Special
             }
             else if (m_IsRushMove)
             {
-                if (!Physics.CheckSphere(transform.position + transform.up * 1.5f, 3.5f, m_Settings.m_AttackableLayer))
+                if (!Physics.CheckSphere(transform.position + transform.up * 1.5f, 4f, m_Settings.m_AttackableLayer))
                     return;
 
                 Vector3 dir = (AIManager.PlayerTransform.position - transform.position).normalized;
@@ -266,6 +277,12 @@ namespace Entity.Unit.Special
             {
                 if (m_DoingRecovery && m_RecoveryCoroutine != null) HitAndStopHeal();
                 else if (!m_IsUsingRecovery && !m_GrabController.IsGrabbing && m_CurrentHP <= m_RecoveryTriggerHP) FindRecoveryPos();
+            }
+
+            if (!m_IsSendNotification1 && !m_GrabController.IsGrabbing)
+            {
+                m_IsSendNotification1 = true;
+                NotificationUIManager.CallUpdateText(m_NotificationIndex1);
             }
         }
 
@@ -410,6 +427,12 @@ namespace Entity.Unit.Special
             m_SpecialMonster2AI.AngularSpeed = m_Settings.m_RecoveryAngularSpeed;
             m_SP2AnimationController.SetMovementSpeed(4);
 
+            if (!m_IsSendNotification3)
+            {
+                m_IsSendNotification3 = true;
+                NotificationUIManager.CallUpdateText(m_NotificationIndex3);
+            }
+
             float dist = 0;
             float curDist;
             Vector3 comparePos = AIManager.PlayerTransform.position;
@@ -463,7 +486,7 @@ namespace Entity.Unit.Special
             {
                 m_GroundTimer = 0;
                 GroundDown();
-    }
+            }
             else
             {
                 m_GroundTimer += Time.deltaTime;

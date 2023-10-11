@@ -94,7 +94,7 @@ namespace Controller
         private void Update()
         {
             if (m_PauseModeController.IsPause) return;
-            if (Manager.GameManager.IsGameEnd) return;
+            if (Manager.GameManager.IsGameDeathEnd) return;
 
             m_MouseX = Input.GetAxis("Mouse X");
             m_MouseY = Input.GetAxis("Mouse Y");
@@ -220,7 +220,7 @@ namespace Controller
         private void FixedUpdate()
         {
             if (m_PauseModeController.IsPause) return;
-            if (Manager.GameManager.IsGameEnd) return;
+            if (Manager.GameManager.IsGameDeathEnd) return;
 
             if (m_HasData) SavedKeyFixedUpdate();
             else NonSavedKeyFixedUpdate();

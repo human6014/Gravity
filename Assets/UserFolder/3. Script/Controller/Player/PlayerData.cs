@@ -448,7 +448,7 @@ public class PlayerData : MonoBehaviour
                 PlayerHP = PlayerMaxHP;
                 m_PlayerUIManager.UpdatePlayerHP(m_AmountPlayerHP);
             }
-            else FindObjectOfType<Manager.GameManager>().GameEnd();
+            else FindObjectOfType<Manager.GameManager>().GameDeathEnd();
         }
     }
 
@@ -472,6 +472,8 @@ public class PlayerData : MonoBehaviour
     /// <param name="attackType">공격 종류</param>
     public void PlayerHit(Transform target, int damage, AttackType attackType)
     {
+        if (Manager.GameManager.IsGameClearEnd) return;
+
         if (attackType == AttackType.OnlyDamage)
         {
             if (PlayerHP - damage <= 0) damage = PlayerHP - 1;
@@ -495,6 +497,8 @@ public class PlayerData : MonoBehaviour
     /// <param name="attackType">공격 종류</param>
     public void PlayerHit(int damage, AttackType attackType)
     {
+        if (Manager.GameManager.IsGameClearEnd) return;
+
         //가끔 자기가 쏘고 자기가 맞는거 방지
         if ((int)attackType >= 1 && (int)attackType <= 4) return;
         if (attackType == AttackType.Explosion) damage = (int)(damage * 0.25f);

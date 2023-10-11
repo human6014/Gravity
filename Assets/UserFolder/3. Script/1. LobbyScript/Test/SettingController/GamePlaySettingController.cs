@@ -43,6 +43,7 @@ public class GamePlaySettingController : SettingController
 
     public void ChangeDifficultyIndex(int value)
         => m_GamePlaySetting[5] = value;
+    
 
     public override void UpdateSettings()
     {
