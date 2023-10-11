@@ -299,8 +299,6 @@ namespace Manager
         #endregion
 
         #region SpawnSpecialMonsters
-        //Original
-        
         private void SpawnSpecialMonster(int currentStage)
         {
             if (!m_IsActiveSpecialSpawn) return;
@@ -341,7 +339,7 @@ namespace Manager
                 IsSP1MonsterEnd = true;
                 if (!IsSP2MonsterSpawned && m_IsSP2OnTime) SpawnSpecialMonster2();
             };
-            specialMonster1.Init(initRotation, m_StageManager.StatMultiplier);
+            specialMonster1.Init(initRotation, m_StageManager.StatMultiplier, m_StageManager.Difficulty);
         }
 
         private Vector3 GetFarPosition()
@@ -379,7 +377,7 @@ namespace Manager
                 GravityManager.CantGravityChange = false;
                 if (!IsSP3MonsterSpawned && m_IsSP3OnTime) SpawnSpecialMonster3();
             };
-            specialMonster2.Init(m_SP2SpawnPos, m_StageManager.StatMultiplier);
+            specialMonster2.Init(m_SP2SpawnPos, m_StageManager.StatMultiplier, m_StageManager.Difficulty);
 
             await m_EnvironmentManager.FogDensityChange(0.03f, 10);
         }
@@ -400,14 +398,15 @@ namespace Manager
             await m_EnvironmentManager.FogDensityChange(0.1f,15);
 
             Camera.main.farClipPlane = 120;
+            //냅둘까요?? 말까요??
 
             Vector3 initPosition = m_SP3SpawnPos.position;
             PathCreation.PathCreator pathCreator = m_SP3SpawnPos.parent.GetComponent<PathCreation.PathCreator>();
 
             SpecialMonster3 specialMonster3 = Instantiate(m_EntityManager.GetSpecialMonster3, initPosition, Quaternion.identity).GetComponent<SpecialMonster3>();
             specialMonster3.EndSpecialMonsterAction += () => IsSP3MonsterEnd = true;
-            specialMonster3.EndSpecialMonsterAction += () => FindObjectOfType<GameManager>().GameClear();
-            specialMonster3.Init(pathCreator, m_StageManager.StatMultiplier);
+            specialMonster3.EndSpecialMonsterAction += () => FindObjectOfType<GameManager>().GameClearEnd();
+            specialMonster3.Init(pathCreator, m_StageManager.StatMultiplier, m_StageManager.Difficulty);
 
             await m_EnvironmentManager.FogDensityChange(0.04f,5);
         }

@@ -7,6 +7,8 @@ namespace Manager
 {
     public class StatisticsManager : MonoBehaviour
     {
+        [SerializeField] private UnityEvent<int, int, int> MonsterKillEvent;
+
         private int m_UrbanZombieKillCount;
         private int m_OldmanZombieKillCount;
         private int m_WomenZombieKillCount;
@@ -81,8 +83,6 @@ namespace Manager
                 MonsterKillEvent?.Invoke(1,0, m_AllKillCount);
             }
         }
-
-        [SerializeField] private UnityEvent<int, int, int> MonsterKillEvent;
 
         public void NormalMonsterKillCount(int type)
         {

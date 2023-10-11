@@ -25,15 +25,25 @@ public class SpecialMonsterAI : MonoBehaviour
     #endregion
 
     #region Property
+    public float OriginalSpeed {
+        get => m_OriginalSpeed;
+        set
+        {
+            m_OriginalSpeed = value;
+            m_NavMeshAgent.speed = value;
+        }
+    }
+
     public bool IsOnMeshLink { get; private set; } = false;
     public bool IsClimbing { get; private set; } = false;
+    public bool GetIsOnOffMeshLink { get => m_NavMeshAgent.isOnOffMeshLink; }
+    public bool SetNavMeshEnable { set => m_NavMeshAgent.enabled = value; }
+
     public Vector3 ProceduralForwardAngle { get; set; }
     public Vector3 ProceduralUpAngle { get; set; }
     public Vector3 ProceduralPosition { get; set; }
     #endregion
 
-    public bool GetIsOnOffMeshLink { get => m_NavMeshAgent.isOnOffMeshLink; }
-    public bool SetNavMeshEnable { set => m_NavMeshAgent.enabled = value; }
     public void SetNavMeshPos(Vector3 pos) => m_NavMeshAgent.Warp(pos);
     
     private void Awake()
@@ -105,16 +115,6 @@ public class SpecialMonsterAI : MonoBehaviour
             m_NavMeshAgent.nextPosition = ProceduralPosition + Time.deltaTime * m_NavMeshAgent.speed * targetDirection;
             transform.position = m_NavMeshAgent.nextPosition;
         }
-        return isWalk;
-    }
-
-    public bool TestOperateAIBehavior(ref bool changeFlag)
-    {
-        bool isWalk = false;
-        if (!m_IsInit || !m_NavMeshAgent.isActiveAndEnabled) return isWalk;
-
-
-
         return isWalk;
     }
 

@@ -13,7 +13,7 @@ public class BackGroundImageChanger : MonoBehaviour
     [SerializeField] private float m_ImageDuration = 3;
 
     private readonly Color m_DisableColor = new Color(255,255,255,0);
-    private readonly float m_FadeInOutTime = 2;
+    private readonly float m_FadeInOutTime = 1.5f;
 
     private bool m_IsActiveFirst;
     private float m_CurrentDuration;

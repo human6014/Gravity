@@ -491,6 +491,14 @@ MonoBehaviour:
     m_Key: LoadingScene_Tooltip5
     m_Metadata:
       m_Items: []
+  - m_Id: 1866648298110976
+    m_Key: GameScene_GameEnd_Restart_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2583512905072640
+    m_Key: LoadingScene_Setting_GamePlay_DisplayFrameRate
+    m_Metadata:
+      m_Items: []
   - m_Id: 1750980693245952
     m_Key: GameScene_Notification1
     m_Metadata:
@@ -507,12 +515,32 @@ MonoBehaviour:
     m_Key: GameScene_Notification4
     m_Metadata:
       m_Items: []
-  - m_Id: 1866648298110976
-    m_Key: GameScene_GameEnd_Restart_Title
+  - m_Id: 4703264607748096
+    m_Key: GameScene_Notification5
     m_Metadata:
       m_Items: []
-  - m_Id: 2583512905072640
-    m_Key: LoadingScene_Setting_GamePlay_DisplayFrameRate
+  - m_Id: 4703277094191104
+    m_Key: GameScene_Notification6
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4703286690758656
+    m_Key: GameScene_Notification7
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4703417762758656
+    m_Key: GameScene_Notification8
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4703445147369472
+    m_Key: GameScene_Notification9
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4703468610306048
+    m_Key: GameScene_Notification10
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4703483378450432
+    m_Key: GameScene_Notification11
     m_Metadata:
       m_Items: []
   m_Metadata:

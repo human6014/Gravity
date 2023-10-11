@@ -499,7 +499,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1753144480153600
-    m_Localized: "\uD3013"
+    m_Localized: "\uB300\uBD80\uBD84\uC758 \uC801\uB4E4\uC740 \uC57D\uC810\uC744
+      \uAC00\uC9C0\uACE0 \uC788\uC2B5\uB2C8\uB2E4"
     m_Metadata:
       m_Items: []
   - m_Id: 1753153393049600
@@ -524,6 +525,41 @@ MonoBehaviour:
     m_Localized: "\uC77C\uBC18 \uBAAC\uC2A4\uD130\uB4E4\uC774 \uAC15\uD654\uB41C
       \uB2A5\uB825\uCE58\uB97C \uAC00\uC9D1\uB2C8\uB2E4\r\n\uBCF4\uC2A4 \uBAAC\uC2A4\uD130\uC758
       \uD328\uD134\uC774 \uCD94\uAC00\uB429\uB2C8\uB2E4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4703264607748096
+    m_Localized: "Horridomorph\uB294 \uBE60\uB974\uACE0 \uBBFC\uCCA9\uD569\uB2C8\uB2E4\n\uC77C\uC815\uAC70\uB9AC\uB97C
+      \uC720\uC9C0\uD558\uBA74\uC11C \uC2F8\uC6B0\uC138\uC694"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4703286690758656
+    m_Localized: "Titanockarce\uB294 \uBC29\uC5B4\uB825\uC774 \uB9E4\uC6B0 \uB192\uC2B5\uB2C8\uB2E4\n\uAC15\uB825\uD55C
+      \uACF5\uACA9\uC774 \uD544\uC694\uD569\uB2C8\uB2E4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4703417762758656
+    m_Localized: "Titanockarce\uC5D0\uAC8C \uC7A1\uD614\uC744 \uB550,\n\uAC01 \uCD09\uC218\uC5D0
+      \uC77C\uC815\uB7C9\uC758 \uB370\uBBF8\uC9C0\uB97C \uC8FC\uBA74 \uD0C8\uCD9C\uD560
+      \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4703445147369472
+    m_Localized: "Titanockarce\uB294 \uCCB4\uB825\uC774 \uC5C6\uC744 \uB54C \uB3C4\uB9DD\uAC11\uB2C8\uB2E4\n\uD68C\uBCF5\uC911\uC778
+      Titanockarce\uB97C \uB178\uB9AC\uC9C0 \uC54A\uC73C\uBA74 \uD68C\uBCF5 \uD6C4
+      \uB2E4\uC2DC \uC62C\uAC81\uB2C8\uB2E4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4703468610306048
+    m_Localized: "Scyver\uB294 \uBCF8\uCCB4\uB294 \uC57D\uD558\uC9C0\uB9CC \uC8FC\uBCC0
+      \uAD70\uC9D1 \uBC8C\uB808\uB97C \uC870\uC2EC\uD574\uC57C \uD569\uB2C8\uB2E4\n\uBCF8\uCCB4\uB97C
+      \uC9C1\uC811 \uB178\uB9AC\uB294 \uAC83\uBCF4\uB2E8 \uC8FC\uBCC0 \uBAAC\uC2A4\uD130\uB97C
+      \uBA3C\uC800 \uCC98\uB9AC\uD558\uC138\uC694"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4703483378450432
+    m_Localized: "Scyver\uC758 \uAD70\uC9D1 \uBC8C\uB808\uB294 \uB2F9\uC2E0\uC744
+      \uC8FD\uC77C \uC218 \uC788\uB294 \uACF5\uACA9\uC744 \uD558\uC9C0 \uBABB\uD569\uB2C8\uB2E4.\r\n\uCCB4\uB825\uC774
+      \uC5C6\uB2E4\uBA74 Scyver\uC640 \uB2E4\uB978 \uBAAC\uC2A4\uD130\uB97C \uC870\uC2EC\uD558\uC138\uC694"
     m_Metadata:
       m_Items: []
   references:

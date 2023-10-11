@@ -37,7 +37,7 @@ namespace Entity.Unit.Flying
         private void Update()
         {
             if (!m_IsAlive) return;
-            if (Manager.GameManager.IsGameClear) Die();
+            if (Manager.GameManager.IsGameClearEnd) Die();
 
             m_AttackTimer += Time.deltaTime;
             if (m_FlyingMovementController.AttackableToTarget && m_AttackTimer >= settings.m_AttackSpeed) Attack();

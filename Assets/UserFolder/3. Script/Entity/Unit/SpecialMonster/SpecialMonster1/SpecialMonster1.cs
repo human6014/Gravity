@@ -43,15 +43,21 @@ namespace Entity.Unit.Special
         private float m_GrabAttackTimer;
         private float m_JumpAttackTimer;
         private float m_JumpTimer;
+        private float m_ResetTimer = 0;
+        private float m_TimeAcceleration = 1f;
 
         private bool m_IsAlive;
         private bool m_DoingBehaviour;
         private bool m_IsGrabbing;
+        private bool m_IsSendNotification1;
+        private bool m_HasSpecialPattern;
 
         private int m_RealMaxHP;
         private int m_RealDef;
         private int m_RealCriticalHP;
         private int m_RealDamage;
+
+        private readonly int m_NotificationIndex1 = 4;
 
         public System.Action EndSpecialMonsterAction { get; set; }
 
@@ -94,7 +100,7 @@ namespace Entity.Unit.Special
             m_SP1AnimationController.DoDamageAction += DoDamage;
         }
 
-        public void Init(Quaternion rotation, float statMultiplier)
+        public void Init(Quaternion rotation, float statMultiplier, int difficulty)
         {
             m_PlayerData = AIManager.PlayerTransform.GetComponent<PlayerData>();
             m_PlayerShakeController = m_PlayerData.GetComponent<Controller.Player.Utility.PlayerShakeController>();
@@ -102,10 +108,23 @@ namespace Entity.Unit.Special
             m_DistanceShakeController.Init(m_PlayerShakeController);
 
             SetRealStat(statMultiplier);
+            m_HasSpecialPattern = difficulty >= 1;
 
             m_SpecialMonsterAI.Init(rotation);
             m_SP1AnimationController.SetWalk(true);
             m_PlayerData.GrabPointAssign(m_GrabCameraPoint, m_GrabBodyPoint, m_LookPoint);
+
+            if (!m_IsSendNotification1)
+            {
+                m_IsSendNotification1 = true;
+                StartCoroutine(NotificateMessage(m_NotificationIndex1, 10));
+            }
+        }
+
+        private IEnumerator NotificateMessage(int key, float waitTime = 0)
+        {
+            yield return new WaitForSeconds(waitTime);
+            NotificationUIManager.CallUpdateText(key);
         }
 
         private void SetRealStat(float statMultiplier)
@@ -138,8 +157,8 @@ namespace Entity.Unit.Special
         {
             m_NormalAttackTimer += Time.deltaTime;
             m_GrabAttackTimer += Time.deltaTime; 
-            m_JumpAttackTimer += Time.deltaTime;
-            m_JumpTimer += Time.deltaTime;
+            m_JumpAttackTimer += Time.deltaTime * m_TimeAcceleration;
+            m_JumpTimer += Time.deltaTime * m_TimeAcceleration;
         }
 
         public void Move()
@@ -161,13 +180,13 @@ namespace Entity.Unit.Special
 
             if (CanJumpAttack())
             {
-                if (!m_Settings.CanJumpAttackPercentage()) m_JumpAttackTimer = 0;
+                if (!m_Settings.CanJumpAttackPercentage()) m_JumpAttackTimer = m_ResetTimer;
                 else JumpBehavior(ref m_JumpAttackTimer, m_Settings.m_JumpAttackHeightRatio, 
                     m_Settings.m_DestinationDist, m_Settings.m_PreJumpAttackTime, true);
             }
             else if (CanJump())
             {
-                if (!m_Settings.CanJumpPercentage()) m_JumpTimer = 0;
+                if (!m_Settings.CanJumpPercentage()) m_JumpTimer = m_ResetTimer;
                 else JumpBehavior(ref m_JumpTimer, m_Settings.m_JumpHeightRatio, 0, m_Settings.m_PreJumpTime, false);
             }
             else if (CanGrabAttack(toPlayerAngle)) GrabAttack();
@@ -177,7 +196,7 @@ namespace Entity.Unit.Special
         private async void NormalAttack()
         {
             m_DoingBehaviour = true;
-            m_NormalAttackTimer = 0;
+            m_NormalAttackTimer = m_ResetTimer;
 
             m_DistanceShakeController.CheckPlayerShake(ShakeType.SP1NormalAttack, m_NavMeshTransform.position + m_NavMeshTransform.forward * 3, 20);
 
@@ -205,7 +224,7 @@ namespace Entity.Unit.Special
             m_PlayerData.PlayerHit(m_GrabCameraPoint, m_Settings.m_GrabAttackDamage + m_RealDamage, m_Settings.m_NoramlAttackType);
             m_PlayerData.GrabAction(false, (m_GrabCameraPoint.position - m_ThrowingPoint.position).normalized * m_Settings.m_GrabThrowingForce);
 
-            m_GrabAttackTimer = 0;
+            m_GrabAttackTimer = m_ResetTimer;
             m_NormalAttackTimer = m_Settings.m_AttackSpeed - m_AttackBetweenTime;
             m_IsGrabbing = false;
             
@@ -364,6 +383,16 @@ namespace Entity.Unit.Special
             m_SkinnedMeshRenderer.GetPropertyBlock(m_MaterialPropertyBlock);
             m_MaterialPropertyBlock.SetColor("_BaseColor", newColor);
             m_SkinnedMeshRenderer.SetPropertyBlock(m_MaterialPropertyBlock);
+        }
+
+        private void ChangeHPbyStat()
+        {
+            float enforceRate = (1 - Mathf.Clamp01(m_CurrentHP / m_RealMaxHP)) * 0.5f;  //0.5f ~ 0.0f
+
+            m_RealDamage += (int)(m_RealDamage * enforceRate);
+            m_SpecialMonsterAI.OriginalSpeed += (m_SpecialMonsterAI.OriginalSpeed * enforceRate);
+            m_TimeAcceleration += enforceRate * 0.5f;       //0.25f ~ 0.0f
+            if (enforceRate >= 0.25f) m_ResetTimer = 1f;
         }
         #endregion
 

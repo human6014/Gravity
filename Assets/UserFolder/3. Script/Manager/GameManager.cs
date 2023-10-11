@@ -13,7 +13,7 @@ namespace Manager
     {
         [SerializeField] private Volume m_Volume;
         [SerializeField] private UniversalRenderPipelineAsset []m_UniversalRenderPipelineAsset;
-        [SerializeField] private UnityEvent m_GameEndEvent;
+        [SerializeField] private UnityEvent m_GameDeathEndEvent;
         [SerializeField] private UnityEvent m_GameClearEvent;
         [SerializeField] private bool m_IsInfinityLife; 
 
@@ -22,30 +22,39 @@ namespace Manager
         private bool m_HasData;
 
         public static bool IsGameEnd { get; set; }
-        public static bool IsGameClear { get; set; }
-        
-        public void GameClear()
+        public static bool IsGameDeathEnd { get; set; }
+        public static bool IsGameClearEnd { get; set; }
+
+        [ContextMenu("SetGameClear")]
+        public void GameClearEnd()
         {
             if (IsGameEnd) return;
+
             IsGameEnd = true;
-            IsGameClear = true;
+            IsGameClearEnd = true;
             m_GameClearEvent?.Invoke();
+
             Debug.Log("GameClear");
         }
 
-        public void GameEnd()
+        [ContextMenu("SetGameEnd")]
+        public void GameDeathEnd()
         {
             if (IsGameEnd || m_IsInfinityLife) return;
+
             IsGameEnd = true;
-            m_GameEndEvent?.Invoke();
+            IsGameDeathEnd = true;
+            m_GameDeathEndEvent?.Invoke();
             //카메라 시점 변환 아직 안돼있음
+
             Debug.Log("GameEnd");
         }
 
         private void Awake()
         {
             IsGameEnd = false;
-            IsGameClear = false;
+            IsGameClearEnd = false;
+            IsGameDeathEnd = false;
 
             if (DataManager.Instance == null) m_HasData = false;
             else

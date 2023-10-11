@@ -7,10 +7,10 @@ public class AudioSetting : Setting
 {
     private readonly AudioMixer m_AudioMixer;
 
-    public float m_MasterVolume { get; set; }    //0.001 ~ 1
-    public float m_MusicVolume { get; set; }     //0.001 ~ 1
-    public float m_SFXUIVolume { get; set; }       //0.001 ~ 1
-    public float m_SFXNormalVolume { get; set; }
+    public float m_MasterVolume { get; set; }       //0.001 ~ 1
+    public float m_MusicVolume { get; set; }        //0.001 ~ 1
+    public float m_SFXUIVolume { get; set; }        //0.001 ~ 1
+    public float m_SFXNormalVolume { get; set; }    //0.001 ~ 1
     public float this[int index]
     {
         get
@@ -61,10 +61,10 @@ public class AudioSetting : Setting
         m_SFXUIVolume = PlayerPrefs.GetFloat("SFXUIVolume");
         m_SFXNormalVolume = PlayerPrefs.GetFloat("SFXNormalVolume");
 
-        m_AudioMixer.SetFloat("Master", Mathf.Log10(m_MasterVolume) * 20);
-        m_AudioMixer.SetFloat("Music", Mathf.Log10(m_MusicVolume) * 20);
-        m_AudioMixer.SetFloat("SFX_UI", Mathf.Log10(m_SFXUIVolume) * 20);
-        m_AudioMixer.SetFloat("SFX_Normal", Mathf.Log10(m_SFXNormalVolume) * 20);
+        m_AudioMixer.SetFloat("MasterVolume", Mathf.Log10(m_MasterVolume) * 20);
+        m_AudioMixer.SetFloat("MusicVolume", Mathf.Log10(m_MusicVolume) * 20);
+        m_AudioMixer.SetFloat("SFXUIVolume", Mathf.Log10(m_SFXUIVolume) * 20);
+        m_AudioMixer.SetFloat("SFXNormalVolume", Mathf.Log10(m_SFXNormalVolume) * 20);
     }
 
     public override void SaveData()

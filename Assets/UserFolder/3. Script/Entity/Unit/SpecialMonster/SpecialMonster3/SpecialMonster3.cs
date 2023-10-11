@@ -26,12 +26,19 @@ namespace Entity.Unit.Special
         private bool m_IsAlive;
         private bool m_IsRespawned;
         private bool m_CanMove = true;
+        private bool m_HasSpecialPattern;
+
+        private bool m_IsSendNotification1;
+        private bool m_IsSendNotification2;
 
         private int m_RealMaxHP;
         private int m_RespawnBoidsHP;
         private int m_RealDef;
         private int m_RealDamage;
         private int m_CurrentHP;
+
+        private readonly int m_NotificationIndex1 = 9;
+        private readonly int m_NotificationIndex2 = 10;
 
         private float m_AttackTimer;
         private float m_TraceAttackTimer;
@@ -80,9 +87,9 @@ namespace Entity.Unit.Special
             m_NormalAttackWait = new WaitForSeconds(1);
         }
 
-        public void Init(PathCreator pathCreator, float statMultiplier)
+        public void Init(PathCreator pathCreator, float statMultiplier, int difficulty)
         {
-            m_BoidsController.Init(m_Setting.m_BoidsMonsterTraceTime,m_Setting.m_BoidsPatrolTime);
+            m_BoidsController.Init(m_Setting.m_BoidsMonsterTraceTime, m_Setting.m_BoidsPatrolTime);
             m_SP3AnimationController.Init();
             m_PathFollower.Init(pathCreator);
 
@@ -90,15 +97,32 @@ namespace Entity.Unit.Special
             m_SP3AnimationController.EndDieHitGroundAnimation += () => m_Rigidbody.isKinematic = true;
 
             SetRealStat(statMultiplier);
+            m_HasSpecialPattern = difficulty >= 1;
 
             m_PollingObject = ObjectPoolManager.Register(m_PoisonSphere, GameObject.Find("ActiveObjectPool").transform);
             m_PollingObject.GenerateObj(3);
 
             m_CurrentHP += m_BoidsController.GenerateBoidMonster(m_Setting.m_BoidsSpawnCount);
-            
+
             m_RespawnBoidsHP = (int)(m_CurrentHP * 0.3f);
 
             StartCoroutine(m_BoidsController.BoidsDispatch());
+            if (!m_IsSendNotification1)
+            {
+                StartCoroutine(NotificateMessage(m_NotificationIndex1, 5));
+                m_IsSendNotification1 = true;
+            }
+            if (!m_IsSendNotification2)
+            {
+                StartCoroutine(NotificateMessage(m_NotificationIndex2, 20));
+                m_IsSendNotification2 = true;
+            }
+        }
+
+        private IEnumerator NotificateMessage(int key, float waitTime = 0)
+        {
+            yield return new WaitForSeconds(waitTime);
+            NotificationUIManager.CallUpdateText(key);
         }
 
         private void SetRealStat(float statMultiplier)

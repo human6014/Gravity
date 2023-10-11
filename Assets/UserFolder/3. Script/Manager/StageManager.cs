@@ -43,10 +43,13 @@ namespace Manager
 
         private float m_WaveTimer;
         private float m_StatMultiplier = 0;
-        private float m_Difficulty;
+        private float m_DifficultyMultiplier;
 
         private int m_CurrentStage;
         private int m_CurrentWave;
+        private readonly int m_NotificationIndex1 = 2;
+
+        private bool m_IsSendNotification1;
 
         #region Property
         public System.Action<int> SpawnSpecialAction { get; set; }
@@ -58,7 +61,7 @@ namespace Manager
             {
                 m_CurrentStage = value;
                 m_CurrentWave = 1;
-                m_StatMultiplier = ((m_CurrentStage - 1) + ((m_CurrentWave - 1) * 0.5f)) * m_Difficulty;
+                m_StatMultiplier = ((m_CurrentStage - 1) + ((m_CurrentWave - 1) * 0.5f)) * m_DifficultyMultiplier;
                 m_WaveTimer = 0;
             }
         }
@@ -69,11 +72,12 @@ namespace Manager
             set
             {
                 m_CurrentWave = value;
-                m_StatMultiplier = ((m_CurrentStage - 1) + ((m_CurrentWave - 1) * 0.5f)) * m_Difficulty;
+                m_StatMultiplier = ((m_CurrentStage - 1) + ((m_CurrentWave - 1) * 0.5f)) * m_DifficultyMultiplier;
                 m_WaveTimer = 0;
             }
         }
 
+        public int Difficulty { get; set; }
         public float StatMultiplier { get => m_StatMultiplier; }
         #endregion
 
@@ -82,24 +86,33 @@ namespace Manager
             CurrentStage = 1;
             m_CurrentStageInfo = m_StageInfo[CurrentStage - 1];
 
-            if (DataManager.Instance == null) m_Difficulty = 1;
+            WaveChangeEvnet.AddListener((int wave) => 
+            {
+                if (m_CurrentStage == 1 && wave == 2 && !m_IsSendNotification1)
+                {
+                    m_IsSendNotification1 = true;
+                    NotificationUIManager.CallUpdateText(m_NotificationIndex1);
+                }
+            });
+
+            if (DataManager.Instance == null) Difficulty = 0;
             else ApplySetting();
-            
         }
 
         private void ApplySetting()
         {
             GamePlaySetting gamePlaySetting = (GamePlaySetting)DataManager.Instance.Settings[0];
+            Difficulty = gamePlaySetting.m_DifficultyIndex;
             switch (gamePlaySetting.m_DifficultyIndex)
             {
                 case 0:
-                    m_Difficulty = 1;
+                    m_DifficultyMultiplier = 1;
                     break;
                 case 1:
-                    m_Difficulty = 1.5f;
+                    m_DifficultyMultiplier = 1.5f;
                     break;
                 default:
-                    m_Difficulty = 1;
+                    m_DifficultyMultiplier = 1;
                     break;
             }
         }
