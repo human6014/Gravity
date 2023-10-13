@@ -64,7 +64,7 @@ namespace Manager
 
         #region Object Value
         private readonly BoxCollider[][] m_SpawnAreaCollider = new BoxCollider[6][];
-        private BoxCollider[] m_CurrentAreaCollider;
+        //private BoxCollider[] m_CurrentAreaCollider;
 
         private StatisticsManager m_StatisticsManager;
         private EnvironmentManager m_EnvironmentManager;
@@ -79,7 +79,7 @@ namespace Manager
         #endregion
 
         #region Normal Value
-        private GravityType m_CurrentGravityType = GravityType.yDown;
+        //private GravityType m_CurrentGravityType = GravityType.yDown;
         private readonly float[] m_Probs = new float[] { 50, 19, 19, 8, 4 };
 
         private float m_Total = 0;
@@ -121,8 +121,6 @@ namespace Manager
 
             for (int i = 0; i < spawnAreaTransform.Length; i++)
                 m_SpawnAreaCollider[i] = spawnAreaTransform[i].GetComponentsInChildren<BoxCollider>();
-            
-            m_CurrentAreaCollider = m_SpawnAreaCollider[2]; // YDown
 
             NormalMonsterCount = 0;
             FlyingMonsterCount = 0;
@@ -130,8 +128,6 @@ namespace Manager
             foreach (float elem in m_MonsterProbs) m_Total += elem;
 
             m_StageManager.SpawnSpecialAction += SpawnSpecialMonster;
-            GravityManager.GravityChangeAction -= ChangeCurrentArea;
-            GravityManager.GravityChangeAction += ChangeCurrentArea;
         }
 
         private void Start()
@@ -165,12 +161,6 @@ namespace Manager
 
             m_PoisonSpherePooling = ObjectPoolManager.Register(m_EntityManager.GetPoisonSphere, activeUnitPool);
             m_PoisonSpherePooling.GenerateObj(poisonSpherePoolingCount);
-        }
-
-        private void ChangeCurrentArea(GravityType gravityType)
-        {
-            m_CurrentGravityType = gravityType;
-            m_CurrentAreaCollider = m_SpawnAreaCollider[(int)gravityType];
         }
         #endregion
 
@@ -269,7 +259,7 @@ namespace Manager
             m_RandomNormalMonsterIndex = RandomUnitIndex();
             NormalMonsterCount++;
 
-            BoxCollider boxCollider = GetClosetArea(m_CurrentAreaCollider);
+            BoxCollider boxCollider = GetClosetArea(m_SpawnAreaCollider[(int)GravityManager.CurrentGravityType]);
             Vector3 initPosition = GetRandomPos(boxCollider, 1);
 
             NormalMonster currentNormalMonster = (NormalMonster)m_NormalMonsterPoolingObjectArray[m_RandomNormalMonsterIndex].GetObject(false);
@@ -309,9 +299,6 @@ namespace Manager
                     float time = m_StageManager.GetStageTime(3, 1);
                     StartCoroutine(m_EnvironmentManager.RoadWetnessChange(time, true));
                     SpawnSpecialMonster1();
-
-                    //IsSP2MonsterEnd = true;
-                    //SpawnSpecialMonster1();
                     break;
                 case 2:
                     SpawnSpecialMonster2();
@@ -327,7 +314,7 @@ namespace Manager
         {
             IsSP1MonsterSpawned = true;
 
-            BoxCollider[] initColliders = ExcludeRandomIndex((int)m_CurrentGravityType, out int specificIndex);
+            BoxCollider[] initColliders = ExcludeRandomIndex((int)GravityManager.CurrentGravityType, out int specificIndex);
             BoxCollider initCollider = GetClosetArea(initColliders);
 
             Vector3 initPosition = GetRandomPos(initCollider, 4);

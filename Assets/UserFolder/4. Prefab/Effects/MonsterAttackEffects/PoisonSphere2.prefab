@@ -14165,7 +14165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1589481fdaf7d504f86b998024191066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MovementSpeed: 25
+  m_MovementSpeed: 34
 --- !u!114 &6284951730196211074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14180,7 +14180,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ParticleSystems:
   - {fileID: 745658033167998217}
-  m_Duration: 5
 --- !u!1 &3756255163644338915
 GameObject:
   m_ObjectHideFlags: 0

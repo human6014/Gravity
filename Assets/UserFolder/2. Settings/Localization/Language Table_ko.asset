@@ -487,7 +487,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1750980693245952
-    m_Localized: "\uD3011"
+    m_Localized: "Tab\uD0A4\uB97C \uB20C\uB7EC \uD544\uC694\uD55C \uC7A5\uBE44\uB97C
+      \uC5BB\uACE0,\n\uC5C5\uADF8\uB808\uC774\uB4DC\uB97C \uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 1753041828757504
@@ -560,6 +561,11 @@ MonoBehaviour:
     m_Localized: "Scyver\uC758 \uAD70\uC9D1 \uBC8C\uB808\uB294 \uB2F9\uC2E0\uC744
       \uC8FD\uC77C \uC218 \uC788\uB294 \uACF5\uACA9\uC744 \uD558\uC9C0 \uBABB\uD569\uB2C8\uB2E4.\r\n\uCCB4\uB825\uC774
       \uC5C6\uB2E4\uBA74 Scyver\uC640 \uB2E4\uB978 \uBAAC\uC2A4\uD130\uB97C \uC870\uC2EC\uD558\uC138\uC694"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4703277094191104
+    m_Localized: "Horridomorph\uB294 \uCCB4\uB825\uC774 \uC801\uC5B4\uC9C8\uC218\uB85D
+      \uB354 \uAC15\uB825\uD574\uC9D1\uB2C8\uB2E4"
     m_Metadata:
       m_Items: []
   references:

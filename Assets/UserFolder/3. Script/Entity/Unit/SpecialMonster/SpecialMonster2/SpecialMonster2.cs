@@ -276,7 +276,7 @@ namespace Entity.Unit.Special
             else
             {
                 if (m_DoingRecovery && m_RecoveryCoroutine != null) HitAndStopHeal();
-                else if (!m_IsUsingRecovery && !m_GrabController.IsGrabbing && m_CurrentHP <= m_RecoveryTriggerHP) FindRecoveryPos();
+                else if (!m_IsUsingRecovery && m_CurrentHP <= m_RecoveryTriggerHP && !m_GrabController.IsGrabbing) FindRecoveryPos();
             }
 
             if (!m_IsSendNotification1 && !m_GrabController.IsGrabbing)
@@ -471,7 +471,7 @@ namespace Entity.Unit.Special
                 yield return null;
             }
 
-            m_IsUsingRecovery = false;
+            if (m_HasSpecialPattern) m_IsUsingRecovery = false;
             //회복 중에 공격 안받으면 회복하러 계속 감
             //난이도 보고 결정함
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using Manager.AI;
 using Scriptable.Monster;
@@ -26,16 +27,21 @@ namespace Entity.Unit.Normal
         
         private float m_AttackTimer;
 
-        public System.Action<NoramlMonsterType> KilledNormalMonsterAction { get; set; }
-        public System.Action EndNormalMonsterAction { get; set; }
+        public Action<NoramlMonsterType> KilledNormalMonsterAction { get; set; }
 
-        private bool CanAttackRange(float plusRange = 0) 
-            => Vector3.Distance(AIManager.PlayerTransform.position, transform.position) <= m_Settings.m_AttackRange + plusRange;
-        
+        public Action EndNormalMonsterAction { get; set; }
+
+        public NoramlMonsterType GetMonsterType { get => m_Settings.m_MonsterType; }
+
+
         private bool CanAttack() 
             => m_AttackTimer >= m_Settings.m_AttackSpeed && m_NormalMonsterState.CanAttackState;
-        
-        public NoramlMonsterType GetMonsterType { get => m_Settings.m_MonsterType; }
+
+        private bool CanAttackRange(float additionalRange = 0)
+        {
+            return Vector3.Distance(AIManager.PlayerTransform.position, transform.position)
+                <= m_Settings.m_AttackRange + additionalRange;
+        }
 
         public void OnOffRagdoll(bool isActive)
         {
@@ -44,22 +50,25 @@ namespace Entity.Unit.Normal
             else m_RagDollChanger.ChangeToOriginal();
         }
 
+        #region Only one init
         private void Awake()
         {
             m_CapsuleCollider = GetComponent<CapsuleCollider>();
             m_RagDollChanger = GetComponent<RagDollCachedChanger>();
             m_NormalMonsterAI = GetComponent<NormalMonsterAI>();
+
             NormalMonsterAnimController normalMonsterAnimController = GetComponentInChildren<NormalMonsterAnimController>();
-            
+            normalMonsterAnimController.DoDamageAction += DoDamage;
             m_NormalMonsterState = new NormalMonsterState(normalMonsterAnimController);
 
             m_NormalMonsterAI.NormalMonsterState = m_NormalMonsterState;
             m_NormalMonsterAI.RagdollOnOffAction += OnOffRagdoll;
-            normalMonsterAnimController.DoDamageAction += DoDamage;
         }
 
         private void Start() => m_PlayerData = AIManager.PlayerTransform.GetComponent<PlayerData>();
+        #endregion
 
+        #region Init
         public void Init(Vector3 pos, Manager.ObjectPoolManager.PoolingObject poolingObject, float statMultiplier)
         {
             OnOffRagdoll(false);
@@ -73,6 +82,10 @@ namespace Entity.Unit.Normal
             m_NormalMonsterAI.Init(pos, m_CanRun, movementSpeed);
         }
 
+        /// <summary>
+        /// 난이도, Stage, Wave 반영 능력치 변경
+        /// </summary>
+        /// <param name="statMultiplier">능력치 증가값 계수</param>
         private void SetRealStat(float statMultiplier)
         {
             m_IsAlive = true;
@@ -85,9 +98,15 @@ namespace Entity.Unit.Normal
             m_CurrentHP = m_RealMaxHP;
         }
 
+        /// <summary>
+        /// 몬스터 소환 시 엎드린 상태에서 기상시키는 애니메이션 수행
+        /// </summary>
         public void PlayStartAnimation()
-            => m_NormalMonsterState.SetTriggerGettingUp();
-        
+        {
+            if (m_NormalMonsterState != null) m_NormalMonsterState.SetTriggerGettingUp();
+        }
+        #endregion
+
         private void Update()
         {
             if (!m_IsAlive) return;
@@ -120,31 +139,49 @@ namespace Entity.Unit.Normal
             else m_NormalMonsterAI.AutoBehavior();
         }
 
+        #region Attack
         public void Attack()
         {
-            m_AttackTimer = 0;
+            //m_AttackTimer = 0;
+            m_AttackTimer -= m_Settings.m_AttackSpeed;
 
             m_NormalMonsterState.SetTriggerAttacking();
         }
 
+        /// <summary>
+        /// 애니메이션에서 공격 타이밍이 됐을 때 호출
+        /// </summary>
         private void DoDamage()
         {
             if (!CanAttackRange(2) || !AIManager.IsInsideAngleToPlayer(transform, m_Settings.m_AttackAbleAngle)) return;
             m_PlayerData.PlayerHit(transform, m_RealDamage, m_Settings.m_NoramlAttackType);
         }
+        #endregion
 
-        public void Hit(int damage, AttackType bulletType)
+        #region Hit
+        /// <summary>
+        /// 물리적 요소 없이 데미지만 처리할 경우 해당 함수로 Hit호출
+        /// </summary>
+        /// <param name="damage">공격 데미지</param>
+        /// <param name="attackType">공격 타입</param>
+        public void Hit(int damage, AttackType attackType)
         {
             if (!m_IsAlive) return;
-            TypeToDamage(damage, bulletType);
+            TypeToDamage(damage, attackType);
 
             if (m_CurrentHP <= 0) Die();
         }
 
-        public bool PhysicsableHit(int damage, AttackType bulletType)
+        /// <summary>
+        /// 죽었을 때 레그돌에 무기 반동 반영할 경우 해당 함수로 Hit 호출
+        /// </summary>
+        /// <param name="damage">공격 데미지</param>
+        /// <param name="attackType">공격 타입</param>
+        /// <returns></returns>
+        public bool PhysicsableHit(int damage, AttackType attackType)
         {
             if (!m_IsAlive) return false;
-            TypeToDamage(damage, bulletType);
+            TypeToDamage(damage, attackType);
 
             if (m_CurrentHP <= 0)
             {
@@ -154,12 +191,18 @@ namespace Entity.Unit.Normal
             return false;
         }
 
-        private void TypeToDamage(int damage, AttackType bulletType)
+        /// <summary>
+        /// 무기 타입별로 데미지 적용
+        /// </summary>
+        /// <param name="damage">공격 데미지</param>
+        /// <param name="attackType">공격 타입</param>
+        private void TypeToDamage(int damage, AttackType attackType)
         {
-            if (bulletType == AttackType.Explosion) m_CurrentHP -= (damage / m_Settings.m_ExplosionResistance);
-            else if (bulletType == AttackType.Melee) m_CurrentHP -= (damage / m_Settings.m_MeleeResistance);
+            if (attackType == AttackType.Explosion) m_CurrentHP -= (damage / m_Settings.m_ExplosionResistance);
+            else if (attackType == AttackType.Melee) m_CurrentHP -= (damage / m_Settings.m_MeleeResistance);
             else m_CurrentHP -= (damage - m_RealDef);
         }
+        #endregion
 
         public void Die()
         {
@@ -173,6 +216,9 @@ namespace Entity.Unit.Normal
             Invoke(nameof(ReturnObject),10);
         }
 
+        /// <summary>
+        /// 오브젝트 Pool로 반환
+        /// </summary>
         public override void ReturnObject()
         {
             EndNormalMonsterAction?.Invoke();

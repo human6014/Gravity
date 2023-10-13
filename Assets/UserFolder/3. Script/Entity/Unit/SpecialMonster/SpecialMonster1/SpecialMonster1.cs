@@ -49,15 +49,20 @@ namespace Entity.Unit.Special
         private bool m_IsAlive;
         private bool m_DoingBehaviour;
         private bool m_IsGrabbing;
-        private bool m_IsSendNotification1;
         private bool m_HasSpecialPattern;
 
+        private bool m_IsSendNotification1;
+        private bool m_IsSendNotification2;
+        
         private int m_RealMaxHP;
         private int m_RealDef;
         private int m_RealCriticalHP;
         private int m_RealDamage;
 
+        private int m_RealBaseDamage;
+
         private readonly int m_NotificationIndex1 = 4;
+        private readonly int m_NotificationIndex2 = 5;
 
         public System.Action EndSpecialMonsterAction { get; set; }
 
@@ -117,7 +122,7 @@ namespace Entity.Unit.Special
             if (!m_IsSendNotification1)
             {
                 m_IsSendNotification1 = true;
-                StartCoroutine(NotificateMessage(m_NotificationIndex1, 10));
+                StartCoroutine(NotificateMessage(m_NotificationIndex1, 12));
             }
         }
 
@@ -135,7 +140,8 @@ namespace Entity.Unit.Special
             m_RealDef = m_Settings.m_Def + (int)(statMultiplier * m_Settings.m_DefMultiplier);
             m_RealDamage = (int)(statMultiplier * m_Settings.m_DamageMultiplier);
             m_RealCriticalHP = (int)(m_RealMaxHP * m_Settings.m_HitHP);
-            
+
+            m_RealBaseDamage = m_RealDamage;
             m_CurrentHP = m_RealMaxHP;
         }
 
@@ -227,8 +233,11 @@ namespace Entity.Unit.Special
             m_GrabAttackTimer = m_ResetTimer;
             m_NormalAttackTimer = m_Settings.m_AttackSpeed - m_AttackBetweenTime;
             m_IsGrabbing = false;
-            
-            await Task.Delay(1500);
+
+            float elapsedTime = 0;
+            while ((elapsedTime += Time.deltaTime) <= 1.75f)
+                await Task.Yield();
+
             m_DoingBehaviour = false;
         }
 
@@ -363,6 +372,7 @@ namespace Entity.Unit.Special
             m_CurrentHP -= realDamage;
 
             ChangeBaseColor();
+            if (m_HasSpecialPattern) ChangeStatbyHP();
             if (m_CurrentHP <= 0) Die();
             else if (CanCriticalHit(realDamage)) CriticalHit();
         }
@@ -385,14 +395,19 @@ namespace Entity.Unit.Special
             m_SkinnedMeshRenderer.SetPropertyBlock(m_MaterialPropertyBlock);
         }
 
-        private void ChangeHPbyStat()
+        private void ChangeStatbyHP()
         {
             float enforceRate = (1 - Mathf.Clamp01(m_CurrentHP / m_RealMaxHP)) * 0.5f;  //0.5f ~ 0.0f
 
-            m_RealDamage += (int)(m_RealDamage * enforceRate);
-            m_SpecialMonsterAI.OriginalSpeed += (m_SpecialMonsterAI.OriginalSpeed * enforceRate);
-            m_TimeAcceleration += enforceRate * 0.5f;       //0.25f ~ 0.0f
+            m_RealDamage = (int)(m_RealBaseDamage * (1 + enforceRate));
+            m_SpecialMonsterAI.OriginalSpeed = m_SpecialMonsterAI.OriginalBaseSpeed * (1 + enforceRate);
+            m_TimeAcceleration = 1 + enforceRate * 0.5f;       //0.25f ~ 0.0f
             if (enforceRate >= 0.25f) m_ResetTimer = 1f;
+            if (enforceRate >= 0.2f && !m_IsSendNotification2)
+            {
+                m_IsSendNotification2 = true;
+                NotificationUIManager.CallUpdateText(m_NotificationIndex2);
+            }
         }
         #endregion
 

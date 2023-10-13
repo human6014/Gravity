@@ -19016,7 +19016,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1589481fdaf7d504f86b998024191066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MovementSpeed: 8
+  m_MovementSpeed: 10
 --- !u!114 &1730170087901032929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19031,4 +19031,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ParticleSystems:
   - {fileID: 2880098131131895978}
-  m_Duration: 5

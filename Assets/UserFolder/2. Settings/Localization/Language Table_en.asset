@@ -492,7 +492,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1750980693245952
-    m_Localized: Notification1
+    m_Localized: 'Press the Tab key to get the necessary equipment,
+
+      You can
+      upgrade.'
     m_Metadata:
       m_Items: []
   - m_Id: 1753041828757504
@@ -540,7 +543,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4703277094191104
-    m_Localized: Horridomorph2
+    m_Localized: The Horridomorph becomes more powerful as it has less health.
     m_Metadata:
       m_Items: []
   - m_Id: 4703417762758656

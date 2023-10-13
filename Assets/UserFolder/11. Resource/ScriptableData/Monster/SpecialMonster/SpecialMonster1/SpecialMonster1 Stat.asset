@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HP: 26000
   m_Def: 100
-  m_Damage: 350
+  m_Damage: 340
   m_MovementSpeed: 11
   m_AttackSpeed: 5
   m_AttackRange: 7.5
@@ -24,7 +24,7 @@ MonoBehaviour:
   m_NoramlAttackType: 0
   m_HPMultiplier: 2600
   m_DefMultiplier: 10
-  m_DamageMultiplier: 35
+  m_DamageMultiplier: 34
   m_MonsterType: 0
   m_AttackableLayer:
     serializedVersion: 2
@@ -33,10 +33,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 409728
   m_GrabAttackType: 7
-  m_GrabAttackDamage: 500
+  m_GrabAttackDamage: 450
   m_GrabAttackSpeed: 9
   m_GrabAttackRange: 7
   m_GrabAttackAbleAngle: 45
+  m_GrabThrowingForce: 50
   m_JumpAttackDamage: 350
   m_JumpAttackRange: 4
   m_JumpAttackSpeed: 9

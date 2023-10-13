@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08eafbf28b04655439fe19aefe31360f, type: 3}
   m_Name: SpecialMonster2Stat
   m_EditorClassIdentifier: 
-  m_HP: 30000
+  m_HP: 32000
   m_Def: 180
   m_Damage: 250
   m_MovementSpeed: 3
@@ -22,7 +22,7 @@ MonoBehaviour:
   m_ExplosionResistance: 20
   m_MeleeResistance: 2
   m_NoramlAttackType: 0
-  m_HPMultiplier: 3000
+  m_HPMultiplier: 3200
   m_DefMultiplier: 20
   m_DamageMultiplier: 30
   m_MonsterType: 1
@@ -54,8 +54,8 @@ MonoBehaviour:
   m_GrabCancellationDamage: 250
   m_GroundDownForceMultiplier: 5
   m_MaxGroundDownForce: 35
-  m_RecoveryTriggerHP: 0.4
+  m_RecoveryTriggerHP: 0.35
   m_RecoveryMovementSpeed: 15
   m_RecoveryAngularSpeed: 120
-  m_RecoveryHPAmount: 0.5
+  m_RecoveryHPAmount: 0.55
   m_RecoveryTime: 30

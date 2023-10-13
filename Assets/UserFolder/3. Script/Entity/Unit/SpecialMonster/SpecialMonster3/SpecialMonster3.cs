@@ -236,7 +236,7 @@ namespace Entity.Unit.Special
             m_CurrentHP -= realDamage;
 
             if (m_CurrentHP <= 0) Die();
-            else if (!m_IsRespawned && m_CurrentHP <= m_RespawnBoidsHP) RespawnBoids();
+            else if (m_HasSpecialPattern && !m_IsRespawned && m_CurrentHP <= m_RespawnBoidsHP) RespawnBoids();
         }
 
         private void RespawnBoids()

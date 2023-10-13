@@ -34,6 +34,8 @@ public class SpecialMonsterAI : MonoBehaviour
         }
     }
 
+    public float OriginalBaseSpeed { get; private set; }
+
     public bool IsOnMeshLink { get; private set; } = false;
     public bool IsClimbing { get; private set; } = false;
     public bool GetIsOnOffMeshLink { get => m_NavMeshAgent.isOnOffMeshLink; }
@@ -62,7 +64,7 @@ public class SpecialMonsterAI : MonoBehaviour
         m_IsInit = true;
         transform.rotation = roatation;
         m_NavMeshAgent.enabled = true;
-        m_OriginalSpeed = m_NavMeshAgent.speed;
+        m_OriginalSpeed = OriginalBaseSpeed = m_NavMeshAgent.speed;
     }
 
     public void Dispose()

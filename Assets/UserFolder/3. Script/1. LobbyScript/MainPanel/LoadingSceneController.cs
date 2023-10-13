@@ -24,8 +24,7 @@ public class LoadingSceneController : MonoBehaviour
 
     private IEnumerator LoadSceneProcess()
     {
-        yield return new WaitForSeconds(m_FirstWaitTime);
-
+        yield return new WaitForSecondsRealtime(m_FirstWaitTime);
         if (m_NextScene == "")
         {
             Debug.LogWarning("Scene name is null");

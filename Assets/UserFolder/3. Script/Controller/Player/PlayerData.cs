@@ -246,7 +246,6 @@ public class PlayerData : MonoBehaviour
         PlayerGE = m_MaxPlayerGE;
         PlayerTE = m_MaxPlayerTE;
         m_PlayerUIManager.Init(m_MaxPlayerHP, m_MaxPlayerMP, m_AmountToRealHPConst, m_RealToAmountHPConst, m_Inventory.HealKitHavingCount);
-        
     }
 
     private void Start()
@@ -442,8 +441,6 @@ public class PlayerData : MonoBehaviour
         {
             if (m_LifeCount >= 1)
             {
-                //-----------------------------Test Here-----------------------------
-                Debug.Log("Life consume");
                 m_LifeCount--;
                 PlayerHP = PlayerMaxHP;
                 m_PlayerUIManager.UpdatePlayerHP(m_AmountPlayerHP);

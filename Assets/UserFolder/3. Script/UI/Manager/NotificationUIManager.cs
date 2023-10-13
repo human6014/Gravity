@@ -20,7 +20,7 @@ public class NotificationUIManager : MonoBehaviour
     private readonly string m_TableReference = "Language Table";
     private readonly string[] m_TableEntryReference =
         { 
-            "GameScene_Notification1",      //미정1
+            "GameScene_Notification1",      //Tab 눌러봐            //완
             "GameScene_Notification2",      //미정2
             "GameScene_Notification3",      //약점이 있어용         //완
             "GameScene_Notification4",      //미정4
@@ -69,6 +69,12 @@ public class NotificationUIManager : MonoBehaviour
         m_CurrentLocalizeStringEvent = m_CurrentText.GetComponent<LocalizeStringEvent>();
         m_CurrentLocalizeStringEvent.StringReference.TableReference = m_TableReference;
         m_CurrentLocalizeStringEvent.StringReference.TableEntryReference = m_TableEntryReference[m_EntryReferenceNumber];
+    }
+
+    private IEnumerator Start()
+    {
+        yield return new WaitForSeconds(3);
+        UpdateText(0);
     }
 
     public static void CallUpdateText(int referenceNumber)
